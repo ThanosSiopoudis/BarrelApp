@@ -30,14 +30,11 @@
 #import "NSImage+OEDrawingAdditions.h"
 #import "OEMainWindow.h"
 #import "NSWindow+OEFullScreenAdditions.h"
-//#import "OESetupAssistant.h"
 #import "OECoreUpdater.h"
 #import "OELibraryController.h"
 
 #import "NSViewController+OEAdditions.h"
-#import "OEGameDocument.h"
 #import "OEGameCoreManager.h"
-#import "OEGameViewController.h"
 
 #import "OEHUDAlert+DefaultAlertsAdditions.h"
 #import "OEDBGame.h"
@@ -91,8 +88,6 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
     gamesRunning = 0;
     mainWindowRunsGame = NO;
     _shouldUndockGameWindowOnFullScreenExit = NO;
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(OE_gameDidFinishEmulating:) name:OEGameViewControllerEmulationDidFinishNotification object:nil];
     
     return self;
 }
@@ -137,8 +132,6 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
 
     if(forcePopout)
     {
-        [[aDocument gameViewController] playGame:self];
-        [aDocument showInSeparateWindow:self fullScreen:fullScreen];
     }
     else
     {
@@ -155,8 +148,6 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
         }
         else
         {
-            [self setCurrentContentController:[aDocument viewController]];
-            [[aDocument gameViewController] playGame:self];
         }
     }
 }
@@ -285,8 +276,6 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
     {
         [self OE_replaceCurrentContentController:[self currentContentController] withViewController:nil];
         [self setCurrentContentController:nil];
-
-        [_gameDocument showInSeparateWindow:self fullScreen:NO];
         _gameDocument = nil;
     }
 }
@@ -304,52 +293,12 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
     OEDBSaveState   *state = [aGame autosaveForLastPlayedRom];
     OEGameDocument  *gameDocument = nil;
     
-    if(state && [[OEHUDAlert loadAutoSaveGameAlert] runModal] == NSAlertDefaultReturn)
-        gameDocument = [[OEGameDocument alloc] initWithSaveState:state error:&error];
-    else
-        gameDocument = [[OEGameDocument alloc] initWithGame:aGame error:&error];
-    
     if(gameDocument == nil)
     {
         if(error!=nil)
         {
-            if([[error domain] isEqualToString:OEGameDocumentErrorDomain] && [error code]==OENoCoreForSystemError)
-            {
-                [[OECoreUpdater sharedUpdater] installCoreForGame:aGame withCompletionHandler:^(NSError *error) {
-                    if(error == nil)
-                        [self libraryController:sender didSelectGame:aGame];
-                    else
-                        [NSApp presentError:error];
-                }];
-            }
-            else if([[error domain] isEqualToString:OEGameDocumentErrorDomain] && [error code]==OEFileDoesNotExistError)
-            {
-                NSString *messageText = [NSString stringWithFormat:NSLocalizedString(@"The game '%@' could not be started because a rom file could not be found. Do you want to locate it?", @""), [aGame name]];
-                if([[OEHUDAlert alertWithMessageText:messageText
-                                       defaultButton:NSLocalizedString(@"Locate", @"")
-                                     alternateButton:NSLocalizedString(@"Cancel", @"")] runModal] == NSAlertDefaultReturn)
-                {
-                    OEDBRom  *missingRom = [[aGame roms] anyObject];
-                    NSURL   *originalURL = [missingRom URL];
-                    NSString  *extension = [originalURL pathExtension];
-
-					NSString *panelTitle = [NSString stringWithFormat:NSLocalizedString(@"Locate '%@'", @"Locate panel title"), [[originalURL pathComponents] lastObject]];
-                    NSOpenPanel  *panel = [NSOpenPanel openPanel];
-					[panel setTitle:panelTitle];
-                    [panel setCanChooseDirectories:NO];
-                    [panel setCanChooseFiles:YES];
-                    [panel setDirectoryURL:[originalURL URLByDeletingLastPathComponent]];
-                    [panel setAllowsOtherFileTypes:NO];
-                    [panel setAllowedFileTypes:@[extension]];
-                    
-                    if([panel runModal])
-                    {
-                        [missingRom setURL:[panel URL]];
-                        [self libraryController:sender didSelectGame:aGame];
-                    }
-                }
-            } else
-                [NSApp presentError:error];
+            
+            [NSApp presentError:error];
         }
         return;
     }
@@ -362,27 +311,6 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
 - (void)libraryController:(OELibraryController *)sender didSelectSaveState:(OEDBSaveState *)aSaveState
 {
     NSError        *error = nil;
-    OEGameDocument *gameDocument = [[OEGameDocument alloc] initWithSaveState:aSaveState error:&error];
-    
-    if(gameDocument != nil)
-    {
-        [[NSDocumentController sharedDocumentController] addDocument:gameDocument];
-        [self openGameDocument:gameDocument];
-    }
-    else if(error != nil)
-    {
-        if([[error domain] isEqualToString:OEGameDocumentErrorDomain] && [error code]==OENoCoreForSaveStateError)
-        {
-            [[OECoreUpdater sharedUpdater] installCoreForSaveState:aSaveState withCompletionHandler:^(NSError *error) {
-                if(error == nil)
-                    [self libraryController:sender didSelectSaveState:aSaveState];
-                else
-                    [NSApp presentError:error];
-            }];
-        }
-        else
-            [NSApp presentError:error];
-    }
 }
 
 #pragma mark - OEGameViewControllerDelegate protocol conformance
@@ -395,17 +323,6 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
     }
 }
 
-- (void)emulationWillFinishForGameViewController:(OEGameViewController *)sender
-{
-    // If we are in full screen mode and terminating the emulation will exit full screen,
-    // the controller switching animation interferes with the exiting full screen animation.
-    // We therefore only animate controller switching in case there won't be a concurrent
-    // exit full screen animation. See issue #245.
-    _gameDocument = nil;
-    mainWindowRunsGame = NO;
-    BOOL animate = !(_shouldExitFullScreenWhenGameFinishes && [[self window] isFullScreen]);
-    [self setCurrentContentController:nil animate:animate];
-}
 #pragma mark -
 #pragma mark NSWindow delegate
 - (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)frameSize
@@ -419,7 +336,6 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
         return YES;
     else
     {
-        [[_gameDocument gameViewController] performClose:self];
         return NO;
     }
 }
@@ -461,8 +377,6 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
 {
     if(_gameDocument)
     {
-        _resumePlayingAfterFullScreenTransition = [[_gameDocument gameViewController] isEmulationRunning];
-        [[_gameDocument gameViewController] pauseGame:self];
     }
 }
 
@@ -471,11 +385,6 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:OEMainWindowFullscreenKey];
     if(_gameDocument)
     {
-        if(_shouldExitFullScreenWhenGameFinishes)
-            [self setCurrentContentController:[_gameDocument viewController]];
-    
-        if(_resumePlayingAfterFullScreenTransition)
-            [[_gameDocument gameViewController] playGame:self];
     }
 }
 
@@ -483,8 +392,6 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
 {
     if(_gameDocument)
     {
-        _resumePlayingAfterFullScreenTransition = [[_gameDocument gameViewController] isEmulationRunning];
-        [[_gameDocument gameViewController] pauseGame:self];
     }
 }
 
@@ -499,17 +406,10 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
         [self OE_replaceCurrentContentController:[self currentContentController] withViewController:nil];
         [self setCurrentContentController:nil];
 
-        [_gameDocument showInSeparateWindow:self fullScreen:NO];
-
-        if(_resumePlayingAfterFullScreenTransition)
-            [[_gameDocument gameViewController] playGame:self];
-
         _gameDocument = nil;
     }
     else if(_gameDocument)
     {
-        if(_resumePlayingAfterFullScreenTransition)
-            [[_gameDocument gameViewController] playGame:self];
     }
 }
 
@@ -518,18 +418,6 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
 
 - (IBAction)launchLastPlayedROM:(id)sender
 {
-    OEDBRom *rom = [sender representedObject];
-    if(!rom) return;
-    
-    NSError        *error = nil;
-    OEGameDocument *gameDocument = [[OEGameDocument alloc] initWithRom:rom error:&error];
-    
-    if(gameDocument != nil)
-    {
-        [[NSDocumentController sharedDocumentController] addDocument:gameDocument];
-        [self openGameDocument:gameDocument];
-    }
-    else if(error != nil) [NSApp presentError:error];
 }
 
 @end

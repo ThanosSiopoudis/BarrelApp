@@ -27,8 +27,6 @@
 #import "OEDBDataSourceAdditions.h"
 #import "OEDBImage.h"
 #import "OEDBRom.h"
-#import "OEGameDocument.h"
-#import "OEGameViewController.h"
 #import "NSArray+OEAdditions.h"
 
 static NSDateFormatter *_OEListViewDateFormatter;
@@ -167,20 +165,7 @@ static NSString * OE_stringFromElapsedTime(NSTimeInterval);
 
 - (NSString *)OE_listViewStatusImageName
 {
-    return ([self OE_hasOpenDocument] ? @"list_indicators_playing"  :
-            ([[self status] intValue] == OEDBGameStatusAlert) ? @"list_indicators_missing"  :
-            ![self lastPlayed]        ? @"list_indicators_unplayed" : nil);
-}
-
-- (BOOL)OE_hasOpenDocument
-{
-    id doc = [[[NSDocumentController sharedDocumentController] documents] firstObjectMatchingBlock:
-              ^ BOOL (OEGameDocument *doc)
-              {
-                  return [doc isKindOfClass:[OEGameDocument class]] && [[[[doc gameViewController] rom] game] isEqual:self];
-              }];
-    
-    return doc != nil;
+    return @"";
 }
 
 - (void)setListViewRating:(NSNumber *)number

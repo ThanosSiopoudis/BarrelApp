@@ -27,8 +27,6 @@
 #import "OEPrefGameplayController.h"
 #import "OEPlugin.h"
 #import "OECompositionPlugin.h"
-#import "OEShaderPlugin.h"
-#import "OEGameViewController.h"
 #import "OEDBSystem.h"
 
 @implementation OEPrefGameplayController
@@ -40,7 +38,6 @@
     NSMutableSet   *filterSet     = [NSMutableSet set];
     NSMutableArray *filterPlugins = [NSMutableArray array];
     [filterSet addObjectsFromArray:[OECompositionPlugin allPluginNames]];
-    [filterSet addObjectsFromArray:[OEShaderPlugin allPluginNames]];
     [filterSet filterUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF beginswith '_'"]];
     [filterPlugins addObjectsFromArray:[filterSet allObjects]];
     [filterPlugins sortUsingSelector:@selector(caseInsensitiveCompare:)];
@@ -53,12 +50,7 @@
 	[[self filterSelection] setMenu:filterMenu];
 
 	NSUserDefaults *sud = [NSUserDefaults standardUserDefaults];
-	NSString *selectedFilterName = [sud objectForKey:OEGameDefaultVideoFilterKey];
-
-	if(selectedFilterName != nil && [[self filterSelection] itemWithTitle:selectedFilterName])
-		[[self filterSelection] selectItemWithTitle:selectedFilterName];
-    else
-		[[self filterSelection] selectItemAtIndex:0];
+    [[self filterSelection] selectItemAtIndex:0];
 }
 
 #pragma mark ViewController Overrides
@@ -98,13 +90,6 @@
 	NSString *filterName = [[[self filterSelection] selectedItem] title];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray *allSystemIdentifiers = [OEDBSystem allSystemIdentifiers];
-    
-    for(OECorePlugin *systemIdentifiers in allSystemIdentifiers)
-    {
-        [defaults removeObjectForKey:[NSString stringWithFormat:OEGameSystemVideoFilterKeyFormat, systemIdentifiers]];
-    }
-
-	[defaults setObject:filterName forKey:OEGameDefaultVideoFilterKey];
 }
 
 @end

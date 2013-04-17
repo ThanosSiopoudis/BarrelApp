@@ -26,8 +26,6 @@
 
 #import "OEGameCoreManager.h"
 #import "OECorePlugin.h"
-#import "OEGameCoreHelper.h"
-#import "OEGameDocument.h"
 #import "OETaskWrapper.h"
 
 @implementation OEGameCoreManager
@@ -88,17 +86,11 @@
     @try
     {
         DLog(@"[self rootProxy]: %@", [self rootProxy]);
-        ret = [[self rootProxy] loadRomAtPath:romPath withCorePluginAtPath:[[plugin bundle] bundlePath]];
     }
     @catch(NSException *exception)
     {
         NSLog(@"%@", exception);
     }
-    
-    if(!ret && outError != NULL) 
-        *outError = [NSError errorWithDomain:@"OEHelperProcessErrorDomain"
-                                        code:OECouldNotLoadROMError
-                                    userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"The ROM couldn't be loaded.", @"OEGameCoreManager loadROMError: error reason.") forKey:NSLocalizedFailureReasonErrorKey]];
     
     return ret;
 }
@@ -136,10 +128,6 @@
     
     if(![helper isRunning])
     {
-        if(outError != NULL)
-            *outError = [NSError errorWithDomain:OEGameDocumentErrorDomain
-                                            code:OEHelperAppNotRunningError
-                                        userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"The background process couldn't be launched", @"Not running background process error") forKey:NSLocalizedFailureReasonErrorKey]];
         return NO;
     }
     
@@ -157,12 +145,6 @@
         if(-[start timeIntervalSinceNow] > 3.0)
         {
             [self endHelperProcess];
-            if(outError != NULL)
-            {
-                *outError = [NSError errorWithDomain:OEGameDocumentErrorDomain
-                                                code:OEConnectionTimedOutError
-                                            userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Couldn't connect to the background process.", @"Timed out error reason.") forKey:NSLocalizedFailureReasonErrorKey]];
-            }
             return NO;
         }
     }
@@ -171,10 +153,6 @@
     if(![taskConnection isValid])
     {
         [self endHelperProcess];
-        if(outError != NULL)
-            *outError = [NSError errorWithDomain:OEGameDocumentErrorDomain
-                                            code:OEInvalidHelperConnectionError
-                                        userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"The background process connection couldn't be established", @"Invalid helper connection error reason.") forKey:NSLocalizedFailureReasonErrorKey]];
         
         return NO;
     }
@@ -186,12 +164,6 @@
     {
         NSLog(@"nil root proxy object?");
         [self endHelperProcess];
-        if(outError != NULL)
-        {
-            *outError = [NSError errorWithDomain:OEGameDocumentErrorDomain
-                                            code:OENilRootProxyObjectError
-                                        userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"The root proxy object is nil.", @"Nil root proxy object error reason.") forKey:NSLocalizedFailureReasonErrorKey]];
-        }
         return NO;
     }
     
@@ -202,7 +174,6 @@
 
 - (void)endHelperProcess
 {
-    [rootProxy stopEmulation];
     
     // kill our background friend
     [helper stopProcess];
@@ -271,14 +242,6 @@
     
     if(![helper isExecuting])
     {
-        if(outError != NULL)
-            *outError = [NSError errorWithDomain:OEGameDocumentErrorDomain
-                                            code:OEHelperAppNotRunningError
-                                        userInfo:
-                         [NSDictionary dictionaryWithObjectsAndKeys:
-                          NSLocalizedString(@"The background process couldn't be launched", @"Not running background process error"), NSLocalizedFailureReasonErrorKey,
-                          error, NSUnderlyingErrorKey,
-                          nil]];
         return NO;
     }
     
@@ -302,12 +265,6 @@
         if(-[start timeIntervalSinceNow] > 3.0)
         {
             [self endHelperProcess];
-            if(outError != NULL)
-            {
-                *outError = [NSError errorWithDomain:OEGameDocumentErrorDomain
-                                                code:OEConnectionTimedOutError
-                                            userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Couldn't connect to the background process.", @"Timed out error reason.") forKey:NSLocalizedFailureReasonErrorKey]];
-            }
             return NO;
         }
     }
@@ -316,12 +273,6 @@
     if(![taskConnection isValid])
     {
         [self endHelperProcess];
-        if(outError != NULL)
-        {
-            *outError = [NSError errorWithDomain:OEGameDocumentErrorDomain
-                                            code:OEInvalidHelperConnectionError
-                                        userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"The background process connection couldn't be established", @"Invalid helper connection error reason.") forKey:NSLocalizedFailureReasonErrorKey]];
-        }
         return NO;
     }
     
@@ -331,12 +282,6 @@
     {
         NSLog(@"nil root proxy object?");
         [self endHelperProcess];
-        if(outError != NULL)
-        {
-            *outError = [NSError errorWithDomain:OEGameDocumentErrorDomain
-                                            code:OENilRootProxyObjectError
-                                        userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"The root proxy object is nil.", @"Nil root proxy object error reason.") forKey:NSLocalizedFailureReasonErrorKey]];
-        }
         return NO;
     }
     

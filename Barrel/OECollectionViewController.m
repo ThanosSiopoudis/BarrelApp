@@ -26,10 +26,7 @@
 
 #import "OECollectionViewController.h"
 #import "NSImage+OEDrawingAdditions.h"
-#import "OEGameControlsBar.h"
 #import "OEMainWindowController.h"
-#import "OEGameViewController.h"
-#import "OEGameDocument.h"
 
 #import "OELibraryController.h"
 #import "OEROMImporter.h"
@@ -835,15 +832,6 @@ static NSArray *OE_defaultSortDescriptors;
             item = [[NSMenuItem alloc] initWithTitle:itemTitle action:@selector(startSelectedGameWithSaveState:) keyEquivalent:@""];
             [item setRepresentedObject:saveState];
             [saveGamesMenu addItem:item];
-
-            if([[NSUserDefaults standardUserDefaults] boolForKey:OEGameControlsBarCanDeleteSaveStatesKey])
-            {
-                NSMenuItem *alternateItem = [[NSMenuItem alloc] initWithTitle:itemTitle action:@selector(deleteSaveState:) keyEquivalent:@""];
-                [alternateItem setAlternate:YES];
-                [alternateItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
-                [alternateItem setRepresentedObject:saveState];
-                [saveGamesMenu addItem:alternateItem];
-            }
         }
     }];
     

@@ -35,18 +35,15 @@
 
 #import "OESystemPlugin.h"
 #import "OECompositionPlugin.h"
-#import "OEShaderPlugin.h"
 
 #import "NSAttributedString+Hyperlink.h"
 #import "NSImage+OEDrawingAdditions.h"
 #import "NSWindow+OEFullScreenAdditions.h"
 
 #import "OEMainWindowController.h"
-//#import "OESetupAssistant.h"
 #import "OELibraryController.h"
 
 #import "OEHUDAlert+DefaultAlertsAdditions.h"
-#import "OEGameDocument.h"
 
 #import "OEDBRom.h"
 #import "OEDBGame.h"
@@ -54,8 +51,6 @@
 #import "OEBuildVersion.h"
 
 #import "OEPreferencesController.h"
-#import "OEGameViewController.h"
-#import "OEGameControlsBar.h"
 
 #import <FeedbackReporter/FRFeedbackReporter.h>
 #import "OEToolTipManager.h"
@@ -89,9 +84,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
                                       OEDefaultDatabasePathKey : path,
                                              OEDatabasePathKey : path,
                                      OEAutomaticallyGetInfoKey : @YES,
-                                   OEGameDefaultVideoFilterKey : @"Nearest Neighbor",
-                                               OEGameVolumeKey : @0.5f,
-                       OEGameControlsBarCanDeleteSaveStatesKey : @YES,
                             @"defaultCore.openemu.system.snes" : @"org.openemu.SNES9x",
                                             OEDisplayGameTitle : @YES
          }];
@@ -212,14 +204,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
     [super openDocumentWithContentsOfURL:url display:NO completionHandler:
      ^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error)
      {
-         if([document isKindOfClass:[OEGameDocument class]])
-             [mainWindowController openGameDocument:(OEGameDocument *)document];
-
-         if([[error domain] isEqualToString:OEGameDocumentErrorDomain] && [error code] == OEImportRequiredError)
-         {
-             completionHandler(nil, NO, nil);
-             return;
-         }
 
          if(completionHandler != nil)
              completionHandler(document, documentWasAlreadyOpen, error);
@@ -366,9 +350,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
     [OEPlugin registerPluginClass:[OECorePlugin class]];
     [OEPlugin registerPluginClass:[OESystemPlugin class]];
     [OEPlugin registerPluginClass:[OECompositionPlugin class]];
-    [OEPlugin registerPluginClass:[OECGShaderPlugin class]];
-    [OEPlugin registerPluginClass:[OEGLSLShaderPlugin class]];
-    [OEPlugin registerPluginClass:[OEMultipassShaderPlugin class]];
 
     // Preload composition plugins
     [OECompositionPlugin allPlugins];
