@@ -49,7 +49,6 @@
 
 	[[self filterSelection] setMenu:filterMenu];
 
-	NSUserDefaults *sud = [NSUserDefaults standardUserDefaults];
     [[self filterSelection] selectItemAtIndex:0];
 }
 
@@ -87,9 +86,7 @@
 
 - (IBAction)changeFilter:(id)sender
 {
-	NSString *filterName = [[[self filterSelection] selectedItem] title];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSArray *allSystemIdentifiers = [OEDBSystem allSystemIdentifiers];
+	
 }
 
 @end

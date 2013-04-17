@@ -37,8 +37,6 @@
 #import "OEDBSmartCollection.h"
 #import "OECollectionViewItemProtocol.h"
 
-#import "OEStorageDeviceManager.h"
-
 #import "OEHUDAlert.h"
 
 #import "NSImage+OEDrawingAdditions.h"
@@ -51,7 +49,6 @@ extern NSString * const OEDBSystemsDidChangeNotification;
 NSString * const OESidebarSelectionDidChangeNotificationName = @"OESidebarSelectionDidChange";
 
 NSString * const OESidebarGroupConsolesAutosaveName    = @"sidebarConsolesItem";
-NSString * const OESidebarGroupDevicesAutosaveName     = @"sidebarDevicesItem";
 NSString * const OESidebarGroupCollectionsAutosaveName = @"sidebarCollectionsItem";
 
 NSString * const OESidebarMinWidth = @"sidebarMinWidth";
@@ -94,8 +91,7 @@ NSString * const OEMainViewMinWidth = @"mainViewMinWidth";
 - (void)awakeFromNib
 {
     self.groups = [NSArray arrayWithObjects:
-                   [OESidebarGroupItem groupItemWithName:NSLocalizedString(@"CONSOLES", @"") autosaveName:OESidebarGroupConsolesAutosaveName],
-                   [OESidebarGroupItem groupItemWithName:NSLocalizedString(@"DEVICES", @"") autosaveName:OESidebarGroupDevicesAutosaveName],
+                   [OESidebarGroupItem groupItemWithName:NSLocalizedString(@"LIBRARY", @"") autosaveName:OESidebarGroupConsolesAutosaveName],
                    [OESidebarGroupItem groupItemWithName:NSLocalizedString(@"COLLECTIONS", @"") autosaveName:OESidebarGroupCollectionsAutosaveName],
                    nil];
 
@@ -135,23 +131,6 @@ NSString * const OEMainViewMinWidth = @"mainViewMinWidth";
         [sidebarView setBackgroundColor:[NSColor colorWithDeviceWhite:0.19 alpha:1.0]];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDataAndPreserveSelection) name:OEDBSystemsDidChangeNotification object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidAppear:) name:OEStorageDeviceDidAppearNotificationName object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidDisappear:) name:OEStorageDeviceDidDisappearNotificationName object:nil];
-}
-
-- (void)deviceDidAppear:(id)notification
-{
-    [self reloadDataAndPreserveSelection];
-    id devicesItem = [self.groups firstObjectMatchingBlock:^BOOL(id obj) {
-        return [[obj autosaveName] isEqualTo:OESidebarGroupDevicesAutosaveName];
-    }];
-    [[self view] expandItem:devicesItem];
-}
-
-- (void)deviceDidDisappear:(id)notification
-{
-    [self reloadDataAndPreserveSelection];
 }
 
 - (void)dealloc
@@ -481,17 +460,12 @@ NSString * const OEMainViewMinWidth = @"mainViewMinWidth";
 {
     if(item == nil)
     {
-        if(index!=0 && [[[OEStorageDeviceManager sharedStorageDeviceManager] devices] count] == 0)
-            index += 1;
-
         return [[self groups] objectAtIndex:index];
     }
 
     NSString *autosaveName = [item isKindOfClass:[OESidebarGroupItem class]]?[item autosaveName]:nil;
     if([autosaveName isEqualToString:OESidebarGroupConsolesAutosaveName])
         return [[self systems] objectAtIndex:index];
-    else if([autosaveName isEqualToString:OESidebarGroupDevicesAutosaveName])
-        return [[[OEStorageDeviceManager sharedStorageDeviceManager] devices] objectAtIndex:index];
     else if([autosaveName isEqualToString:OESidebarGroupCollectionsAutosaveName])
         return [[self collections] objectAtIndex:index];
 
@@ -507,10 +481,7 @@ NSString * const OEMainViewMinWidth = @"mainViewMinWidth";
 {
     if(item == nil)
     {
-        if([[[OEStorageDeviceManager sharedStorageDeviceManager] devices] count] == 0)
-            return [[self groups] count] -1;
-        else
-            return [[self groups] count];
+        return [[self groups] count];
     }
 
     if(![self database])
@@ -521,8 +492,6 @@ NSString * const OEMainViewMinWidth = @"mainViewMinWidth";
     NSString *autosaveName = [item isKindOfClass:[OESidebarGroupItem class]]?[item autosaveName]:nil;
     if([autosaveName isEqualToString:OESidebarGroupConsolesAutosaveName])
         return [[self systems] count];
-    else if([autosaveName isEqualToString:OESidebarGroupDevicesAutosaveName])
-        return [[[OEStorageDeviceManager sharedStorageDeviceManager] devices] count];
     else if([autosaveName isEqualToString:OESidebarGroupCollectionsAutosaveName])
         return [[self collections] count];
 
