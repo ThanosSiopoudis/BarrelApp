@@ -30,7 +30,7 @@
 #import "NSImage+OEDrawingAdditions.h"
 #import "OEMainWindow.h"
 #import "NSWindow+OEFullScreenAdditions.h"
-#import "OESetupAssistant.h"
+//#import "OESetupAssistant.h"
 #import "OECoreUpdater.h"
 #import "OELibraryController.h"
 
@@ -112,25 +112,8 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
     [window setRestorable:NO];
     [window setExcludedFromWindowsMenu:YES];
     
-    if(![[NSUserDefaults standardUserDefaults] boolForKey:OESetupAssistantHasFinishedKey])
-    {
-        OESetupAssistant *setupAssistant = [[OESetupAssistant alloc] init];
-        [setupAssistant setCompletionBlock:
-         ^(BOOL discoverRoms, NSArray* volumes)
-         {
-             if(discoverRoms)
-                 [[[OELibraryDatabase defaultDatabase] importer] discoverRoms:volumes];
-             [self setCurrentContentController:[self libraryController] animate:NO];
-         }];
-        
-        [window center];
-        
-        [self setCurrentContentController:setupAssistant];
-    }
-    else
-    {
-        [self setCurrentContentController:[self libraryController] animate:NO];
-    }
+    
+    [self setCurrentContentController:[self libraryController] animate:NO];
     
 #if DEBUG_PRINT
     [window setTitle:[[window title] stringByAppendingString:@" (DEBUG BUILD)"]];

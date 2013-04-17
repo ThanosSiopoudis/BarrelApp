@@ -42,7 +42,7 @@
 #import "NSWindow+OEFullScreenAdditions.h"
 
 #import "OEMainWindowController.h"
-#import "OESetupAssistant.h"
+//#import "OESetupAssistant.h"
 #import "OELibraryController.h"
 
 #import "OEHUDAlert+DefaultAlertsAdditions.h"
@@ -56,8 +56,6 @@
 #import "OEPreferencesController.h"
 #import "OEGameViewController.h"
 #import "OEGameControlsBar.h"
-
-#import "OEFiniteStateMachine.h"
 
 #import <OpenEmuSystem/OpenEmuSystem.h>
 #import <FeedbackReporter/FRFeedbackReporter.h>
@@ -190,10 +188,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
 
 - (void)application:(NSApplication *)sender openFiles:(NSArray *)filenames
 {
-    if(![[NSUserDefaults standardUserDefaults] boolForKey:OESetupAssistantHasFinishedKey]){
-        [NSApp replyToOpenOrPrint:NSApplicationDelegateReplyCancel];
-        return;
-    }
 
     if([filenames count] == 1)
     {
