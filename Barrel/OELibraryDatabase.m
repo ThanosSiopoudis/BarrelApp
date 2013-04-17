@@ -92,7 +92,7 @@ static OELibraryDatabase *defaultDatabase = nil;
     if(![[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] || !isDir)
     {
         if(outError!=NULL){
-			NSString     *description = NSLocalizedString(@"The OpenEmu Library could not be found.", @"");
+			NSString     *description = NSLocalizedString(@"The Barrel Library could not be found.", @"");
 			NSDictionary *dict        = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
 			
             *outError = [NSError errorWithDomain:@"OELibraryDatabase" code:OELibraryErrorCodeFolderNotFound userInfo:dict];
@@ -154,6 +154,17 @@ static OELibraryDatabase *defaultDatabase = nil;
     {
         NSLog(@"%@:%@ No model to generate a store from", [self class], NSStringFromSelector(_cmd));
         return NO;
+    }
+    
+    NSString *defaultStorePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"Library" ofType:@"storedata"];
+    NSString *storePath = [NSString stringWithFormat:@"%@/%@", [databaseURL path], OEDatabaseFileName];
+    NSError *error;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:storePath])
+    {
+        if ([[NSFileManager defaultManager] copyItemAtPath:defaultStorePath toPath:storePath error:&error])
+            NSLog(@"Copied starting data to %@", storePath);
+        else
+            NSLog(@"Error copying default DB to %@ (%@)", storePath, error);
     }
 
     NSURL *url = [self.databaseURL URLByAppendingPathComponent:OEDatabaseFileName];

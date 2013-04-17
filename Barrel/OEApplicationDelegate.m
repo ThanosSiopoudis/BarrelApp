@@ -55,7 +55,6 @@
 #import <FeedbackReporter/FRFeedbackReporter.h>
 #import "OEToolTipManager.h"
 
-#import "OERetrodeDeviceManager.h"
 static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplicationDelegateAllPluginsContext;
 
 @interface OEApplicationDelegate ()
