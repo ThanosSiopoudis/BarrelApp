@@ -57,7 +57,6 @@
 #import "OEGameViewController.h"
 #import "OEGameControlsBar.h"
 
-#import <OpenEmuSystem/OpenEmuSystem.h>
 #import <FeedbackReporter/FRFeedbackReporter.h>
 #import "OEToolTipManager.h"
 
@@ -87,7 +86,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
 
         [[NSUserDefaults standardUserDefaults] registerDefaults:
          @{
-                                       OEWiimoteSupportEnabled : @YES,
                                       OEDefaultDatabasePathKey : path,
                                              OEDatabasePathKey : path,
                                      OEAutomaticallyGetInfoKey : @YES,
@@ -98,7 +96,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
                                             OEDisplayGameTitle : @YES
          }];
 
-        [OEControllerDescription class];
         [OEToolTipManager class];
     }
 }
@@ -373,10 +370,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
     [OEPlugin registerPluginClass:[OEGLSLShaderPlugin class]];
     [OEPlugin registerPluginClass:[OEMultipassShaderPlugin class]];
 
-    // Register all system controllers with the bindings controller
-    for(OESystemPlugin *plugin in [OESystemPlugin allPlugins])
-        [OEBindingsController registerSystemController:[plugin controller]];
-
     // Preload composition plugins
     [OECompositionPlugin allPlugins];
 
@@ -389,8 +382,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
 - (void)OE_setupHIDSupport
 {
     // Setup OEBindingsController
-    [OEBindingsController class];
-    [OEDeviceManager sharedDeviceManager];
 }
 
 #pragma mark -

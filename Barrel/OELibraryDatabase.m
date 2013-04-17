@@ -43,9 +43,6 @@
 #import "OEFSWatcher.h"
 #import "OEROMImporter.h"
 
-#import <OpenEmuBase/OpenEmuBase.h>
-#import <OpenEmuSystem/OpenEmuSystem.h>
-
 NSString *const OEDatabasePathKey            = @"databasePath";
 NSString *const OEDefaultDatabasePathKey     = @"defaultDatabasePath";
 NSString *const OESaveStateLastFSEventIDKey  = @"lastSaveStateEventID";
@@ -341,7 +338,7 @@ static OELibraryDatabase *defaultDatabase = nil;
 
         if([[thread name] isEqualToString:@""])
         {
-            NSString *name = [NSString stringWithUUID];
+            NSString *name = @"";
             [thread setName:name];
         }
 

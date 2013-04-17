@@ -28,8 +28,6 @@
 #import "OEDBImage.h"
 #import "OELibraryDatabase.h"
 
-#import <OpenEmuBase/OpenEmuBase.h>
-
 @implementation OEDBImageThumbnail
 
 - (id)initWithImage:(NSImage*)image size:(NSSize)size inLibrary:(OELibraryDatabase*)library{
@@ -41,12 +39,9 @@
     
     BOOL     resize      = !NSEqualSizes(size, NSZeroSize);
     NSString *version    = !resize ? @"original" : [NSString stringWithFormat:@"%d", (int)size.width];
-    NSString *uuid       = [NSString stringWithUUID];
     
     NSURL    *coverFolderURL = [library coverFolderURL];
               coverFolderURL = [coverFolderURL URLByAppendingPathComponent:version isDirectory:YES];
-    
-    NSURL *url          = [coverFolderURL URLByAppendingPathComponent:uuid];
     
     NSBitmapImageRep    *bitmapRep   = nil;
     NSSize              imageSize;
@@ -95,8 +90,6 @@
             [image unlockFocus];
         }
     }
-    
-    [self setRelativePath:[NSString stringWithFormat:@"%@/%@", version, uuid]];
     [self setWidth:[NSNumber numberWithFloat:thumbnailSize.width]];
     [self setHeight:[NSNumber numberWithFloat:thumbnailSize.height]];
     
@@ -105,13 +98,7 @@
     NSDictionary *properties = [NSDictionary dictionary];
     NSData       *imageData  = [bitmapRep representationUsingType:NSPNGFileType properties:properties];
     
-    [[NSFileManager defaultManager] createDirectoryAtURL:[url URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil];
-    
     NSError *error = nil;
-    if(![imageData writeToURL:url options:0 error:&error]){
-       [context deleteObject:self];
-        self = nil;
-    }
     
     return self;
 }

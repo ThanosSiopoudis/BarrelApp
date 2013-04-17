@@ -31,21 +31,13 @@
 
 #import "OEDBGame.h"
 
-#import <OpenEmuSystem/OpenEmuSystem.h>
-
 @implementation OEPrefDebugController
 @synthesize regionSelector, dbActionSelector, contentView;
 
 #pragma mark -
 
 - (void)awakeFromNib
-{    
-    if([[NSUserDefaults standardUserDefaults] valueForKey:OERegionKey])
-    {
-        OERegion currentRegion = [[OELocalizationHelper sharedHelper] region];
-        [[self regionSelector] selectItemWithTag:currentRegion];
-    }
-        
+{
     NSScrollView *scrollView = (NSScrollView*)[self view];    
     [scrollView setDocumentView:[self contentView]];
     [[self contentView] setFrameOrigin:(NSPoint){ 0 , -[[self contentView] frame].size.height + [scrollView frame].size.height}];
@@ -60,11 +52,6 @@
 
 - (IBAction)changeRegion:(id)sender
 {
-    if([sender selectedTag] == -1)
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:OERegionKey];
-    else 
-        [[NSUserDefaults standardUserDefaults] setInteger:[sender selectedTag] forKey:OERegionKey];
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:OEDBSystemsDidChangeNotification object:self];
 }
 

@@ -53,8 +53,6 @@
 
 #import "OEPreferencesController.h"
 
-#import <OpenEmuSystem/OpenEmuSystem.h>
-
 NSString *const OEGameVolumeKey = @"volume";
 NSString *const OEGameDefaultVideoFilterKey = @"videoFilter";
 NSString *const OEGameSystemVideoFilterKeyFormat = @"videoFilter.%@";
@@ -242,8 +240,6 @@ typedef enum : NSUInteger
 {
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc removeObserver:self name:NSViewFrameDidChangeNotification object:gameView];
-    [nc removeObserver:self name:OEDeviceHandlerDidReceiveLowBatteryWarningNotification object:nil];
-    [nc removeObserver:self name:OEDeviceManagerDidRemoveDeviceHandlerNotification object:nil];
 
     [controlsWindow close];
     controlsWindow = nil;
@@ -352,7 +348,6 @@ typedef enum : NSUInteger
 {
     if([[OEHUDAlert resetSystemAlert] runModal] == NSAlertDefaultReturn)
     {
-        [[rootProxy gameCore] resetEmulation];
         [self playGame:self];
     }
 }
@@ -402,8 +397,6 @@ typedef enum : NSUInteger
 {
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc removeObserver:self name:NSViewFrameDidChangeNotification object:gameView];
-    [nc removeObserver:self name:OEDeviceHandlerDidReceiveLowBatteryWarningNotification object:nil];
-    [nc removeObserver:self name:OEDeviceManagerDidRemoveDeviceHandlerNotification object:nil];
 
     _emulationStatus = OEGameViewControllerEmulationStatusNotStarted;
 
@@ -455,10 +448,7 @@ typedef enum : NSUInteger
 
     rootProxy = [gameCoreManager rootProxy];
     
-    OEGameCore *gameCore = [rootProxy gameCore];
     gameSystemController = [[[[[self rom] game] system] plugin] controller];
-    gameSystemResponder  = [gameSystemController newGameSystemResponder];
-    [gameSystemResponder setClient:gameCore];
 
     gameView = [[OEGameView alloc] initWithFrame:[[self view] bounds]];
     [gameView setRootProxy:rootProxy];
@@ -471,8 +461,6 @@ typedef enum : NSUInteger
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(viewDidChangeFrame:) name:NSViewFrameDidChangeNotification object:gameView];
-    [nc addObserver:self selector:@selector(OE_lowDeviceBattery:) name:OEDeviceHandlerDidReceiveLowBatteryWarningNotification object:nil];
-    [nc addObserver:self selector:@selector(OE_deviceDidDisconnect:) name:OEDeviceManagerDidRemoveDeviceHandlerNotification object:nil];
 
     NSWindow *window = [self OE_rootWindow];
     [window makeFirstResponder:gameView];
@@ -579,7 +567,6 @@ typedef enum : NSUInteger
 {
     if(core == [gameCoreManager plugin])
     {
-        [[rootProxy gameCore] resetEmulation];
         return;
     }
 
@@ -747,8 +734,7 @@ typedef enum : NSUInteger
 
 - (BOOL)cheatSupport
 {
-    OEGameCore *gameCore = [rootProxy gameCore];
-    return [gameCore canCheat];
+    return YES;
 }
 
 - (void)setCheatWithCodeAndType:(NSString *)code setType:(NSString *)type setEnabled:(BOOL)enabled
@@ -807,47 +793,7 @@ typedef enum : NSUInteger
         BOOL      success                = NO;
         NSString *temporaryDirectoryPath = NSTemporaryDirectory();
         NSURL    *temporaryDirectoryURL  = [NSURL fileURLWithPath:temporaryDirectoryPath];
-        NSURL    *temporaryStateFileURL  = [NSURL URLWithString:[NSString stringWithUUID] relativeToURL:temporaryDirectoryURL];
         OECorePlugin *core = [gameCoreManager plugin];
-
-        temporaryStateFileURL = [temporaryStateFileURL uniqueURLUsingBlock:
-                                 ^ NSURL *(NSInteger triesCount)
-                                 {
-                                     return [NSURL URLWithString:[NSString stringWithUUID] relativeToURL:temporaryDirectoryURL];
-                                 }];
-
-        success = [rootProxy saveStateToFileAtPath:[temporaryStateFileURL path]];
-        if(!success)
-        {
-            NSLog(@"Could not create save state file at url: %@", temporaryStateFileURL);
-            return;
-        }
-
-        BOOL isSpecialSaveState = [stateName hasPrefix:OESaveStateSpecialNamePrefix];
-        OEDBSaveState *state;
-        if(isSpecialSaveState)
-        {
-            state = [[self rom] saveStateWithName:stateName];
-            [state setCoreIdentifier:[core bundleIdentifier]];
-            [state setCoreVersion:[core version]];
-        }
-
-        if(state == nil)
-            state = [OEDBSaveState createSaveStateNamed:stateName forRom:[self rom] core:core withFile:temporaryStateFileURL];
-        else
-        {
-            [state replaceStateFileWithFile:temporaryStateFileURL];
-            [state setTimestamp:[NSDate date]];
-            [state writeInfoPlist];
-        }
-
-        NSImage *screenshotImage = [gameView nativeScreenshot];
-        NSData *TIFFData = [screenshotImage TIFFRepresentation];
-        NSBitmapImageRep *bitmapImageRep = [NSBitmapImageRep imageRepWithData:TIFFData];
-        NSData *PNGData = [bitmapImageRep representationUsingType:NSPNGFileType properties:nil];
-        success = [PNGData writeToURL:[state screenshotURL] atomically: YES];
-
-        if(!success) NSLog(@"Could not create screenshot at url: %@", [state screenshotURL]);
     }
     @finally
     {
@@ -978,24 +924,13 @@ typedef enum : NSUInteger
 - (NSSize)defaultScreenSize
 {
     NSAssert(rootProxy, @"Default screen size requires a running rootProxy");
-
-    OEGameCore *gameCore = [rootProxy gameCore];
-    OEIntRect screenRect = [gameCore screenRect];
     
-    float wr = (float) rootProxy.aspectSize.width / screenRect.size.width;
-    float hr = (float) rootProxy.aspectSize.height / screenRect.size.height;
-    float ratio = MAX(hr, wr);
-    NSSize scaled = NSMakeSize((wr / ratio), (hr / ratio));
-    
-    float halfw = scaled.width;
-    float halfh = scaled.height;
-    
-    return NSMakeSize(screenRect.size.width / halfh, screenRect.size.height / halfw);
+    return NSMakeSize(500, 500);
 }
 
 - (NSString *)systemIdentifier
 {
-    return [gameSystemController systemIdentifier];
+    return @"";
 }
 
 - (NSString *)coreIdentifier
@@ -1108,14 +1043,6 @@ typedef enum : NSUInteger
     BOOL isRunning = [self isEmulationRunning];
     [self pauseGame:self];
     
-    OEDeviceHandler *devHandler = [notification object];
-    NSString *lowBatteryString = [NSString stringWithFormat:NSLocalizedString(@"The battery in device number %lu, %@, is low. Please charge or replace the battery.", @"Low battery alert detail message."), [devHandler deviceNumber], [[devHandler deviceDescription] name]];
-    OEHUDAlert *alert = [OEHUDAlert alertWithMessageText:lowBatteryString
-                                           defaultButton:NSLocalizedString(@"Resume", nil)
-                                         alternateButton:nil];
-    [alert setHeadlineText:[NSString stringWithFormat:NSLocalizedString(@"Low Controller Battery", @"Device battery level is low.")]];
-    [alert runModal];
-    
     if(isRunning)
         [self playGame:self];
 }
@@ -1124,14 +1051,6 @@ typedef enum : NSUInteger
 {
     BOOL isRunning = [self isEmulationRunning];
     [self pauseGame:self];
-    
-    OEDeviceHandler *devHandler = [[notification userInfo] objectForKey:OEDeviceManagerDeviceHandlerUserInfoKey];
-    NSString *lowBatteryString = [NSString stringWithFormat:NSLocalizedString(@"Device number %lu, %@, has disconnected.", @"Device disconnection detail message."), [devHandler deviceNumber], [[devHandler deviceDescription] name]];
-    OEHUDAlert *alert = [OEHUDAlert alertWithMessageText:lowBatteryString
-                                           defaultButton:NSLocalizedString(@"Resume", nil)
-                                         alternateButton:nil];
-    [alert setHeadlineText:[NSString stringWithFormat:NSLocalizedString(@"Device Disconnected", @"A controller device has disconnected.")]];
-    [alert runModal];
 
     if(isRunning)
         [self playGame:self];

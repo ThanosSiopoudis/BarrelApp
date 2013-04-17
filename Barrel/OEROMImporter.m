@@ -41,7 +41,6 @@
 #import "ArchiveVGThrottling.h"
 
 #import <CommonCrypto/CommonDigest.h>
-#import <OpenEmuSystem/OpenEmuSystem.h>
 #import <XADMaster/XADArchive.h>
 #import <objc/runtime.h>
 
@@ -584,23 +583,7 @@ static void importBlock(OEROMImporter *importer, OEImportItem *item)
     BOOL organizeLibrary = [standardUserDefaults boolForKey:OEOrganizeLibraryKey];
     if((copyToLibrary || organizeLibrary) && [[[[item URL] pathExtension] lastPathComponent] isEqualToString:@"cue"])
     {
-        NSString *referencedFilesDirectory = [[[item sourceURL] path] stringByDeletingLastPathComponent];
-        OECUESheet *cue = [[OECUESheet alloc] initWithPath:[[item URL] path] andReferencedFilesDirectory:referencedFilesDirectory];
-        if(cue == nil)
-        {
-            // TODO: Create user info
-            NSError *error = [NSError errorWithDomain:OEImportErrorDomainFatal code:OEImportErrorCodeInvalidFile userInfo:nil];
-            [self stopImportForItem:item withError:error];
-            return;
-        }
-        
-        if(![cue allFilesAvailable])
-        {
-            // TODO: Create user info
-            NSError *error = [NSError errorWithDomain:OEImportErrorDomainFatal code:OEImportErrorCodeAdditionalFiles userInfo:nil];
-            [self stopImportForItem:item withError:error];
-            return;
-        }
+        NSString *referencedFilesDirectory = @"";
         
         NSURL *sourceURL = [item sourceURL], *url = [item URL];
         NSString *targetDirectory = [[url path] stringByDeletingLastPathComponent];
@@ -608,23 +591,12 @@ static void importBlock(OEROMImporter *importer, OEImportItem *item)
         {
             DLog(@"copy to '%@'", targetDirectory);
             NSError *error = nil;
-            if(![cue copyReferencedFilesToPath:targetDirectory withError:&error])
-            {
-                DLog(@"%@", error);
-                [self stopImportForItem:item withError:error];
-                return;
-            }
+            
         }
         else if(organizeLibrary && [sourceURL isSubpathOfURL:[[self database] romsFolderURL]])
         {
             DLog(@"move to '%@'", targetDirectory);
             NSError *error = nil;
-            if(![cue moveReferencedFilesToPath:targetDirectory withError:&error])
-            {
-                DLog(@"%@", error);
-                [self stopImportForItem:item withError:error];
-                return;
-            }
         }
     }
 }

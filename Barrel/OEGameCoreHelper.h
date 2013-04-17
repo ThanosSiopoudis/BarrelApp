@@ -27,13 +27,10 @@
 
 #import <Cocoa/Cocoa.h>
 #import <CoreAudio/CoreAudio.h>
-#import <OpenEmuBase/OpenEmuBase.h>
 
 @class OEGameCoreController;
 
 @protocol OEGameCoreHelperDelegate <NSObject>
-- (void)gameCoreDidChangeScreenSizeTo:(OEIntSize)screenSize;
-- (void)gameCoreDidChangeAspectSizeTo:(OEIntSize)aspectSize;
 - (void)toggleVSync:(GLint)swapInt;
 - (void)setPauseEmulation:(BOOL)paused;
 @end
@@ -49,15 +46,11 @@
 - (oneway void)setAudioOutputDeviceID:(AudioDeviceID)deviceID;
 
 // gamecore attributes
-@property(readonly) OEIntSize screenSize;
-@property(readonly) OEIntSize aspectSize;
 @property(readonly) BOOL isEmulationPaused;
 
 @property(readwrite) BOOL drawSquarePixels;
 @property(readonly) IOSurfaceID surfaceID;
 @property(weak) id <OEGameCoreHelperDelegate> delegate;
-
-- (byref OEGameCore *)gameCore;
 
 - (BOOL)loadRomAtPath:(bycopy NSString *)aPath withCorePluginAtPath:(bycopy NSString *)pluginPath;
 - (void)setupEmulation;

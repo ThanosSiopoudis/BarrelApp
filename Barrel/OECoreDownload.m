@@ -32,8 +32,6 @@
 
 #import "OESystemPlugin.h"
 
-#import <OpenEmuBase/OpenEmuBase.h>
-
 @interface OECoreDownload () <NSURLDownloadDelegate>
 {
     NSString           *_downloadPath;
@@ -117,7 +115,6 @@
 
 - (void)download:(NSURLDownload *)download decideDestinationWithSuggestedFilename:(NSString *)filename
 {
-    _downloadPath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"OEDownload.%@", [NSString stringWithUUID]]];
     [download setDestination:_downloadPath allowOverwrite:NO];
 }
 

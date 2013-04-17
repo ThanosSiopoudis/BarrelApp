@@ -39,7 +39,6 @@
 
 #import "OEGameCoreHelper.h"
 
-#import <OpenEmuSystem/OpenEmuSystem.h>
 #import <OpenGL/CGLMacro.h>
 #import <IOSurface/IOSurface.h>
 #import <OpenGL/CGLIOSurface.h>
@@ -89,7 +88,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
 @property NSUInteger         frameCount;
 @property GLuint            *multipassTextures;
 @property GLuint            *multipassFBOs;
-@property OEIntSize         *multipassSizes;
 
 @property snes_ntsc_t       *ntscTable;
 @property uint16_t          *ntscSource;
@@ -99,8 +97,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
 @property int                ntscBurstPhase;
 @property int                ntscMergeFields;
 
-@property OEIntSize          gameScreenSize;
-@property OEIntSize          gameAspectSize;
 @property CVDisplayLinkRef   gameDisplayLinkRef;
 @property SyphonServer      *gameServer;
 
@@ -113,7 +109,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
 @property BOOL               filterHasOutputMousePositionKeys;
 
 - (void)OE_renderToTexture:(GLuint)renderTarget usingTextureCoords:(const GLint *)texCoords inCGLContext:(CGLContextObj)cgl_ctx;
-- (void)OE_applyCgShader:(OECGShader *)shader usingVertices:(const GLfloat *)vertices withTextureSize:(const OEIntSize)textureSize withOutputSize:(const OEIntSize)outputSize inPassNumber:(const NSUInteger)passNumber inCGLContext:(CGLContextObj)cgl_ctx;
 - (void)OE_calculateMultipassSizes:(OEMultipassShader *)multipassShader;
 - (void)OE_multipassRender:(OEMultipassShader *)multipassShader usingVertices:(const GLfloat *)vertices inCGLContext:(CGLContextObj)cgl_ctx;
 - (void)OE_drawSurface:(IOSurfaceRef)surfaceRef inCGLContext:(CGLContextObj)glContext usingShader:(OEGameShader *)shader;
@@ -177,7 +172,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
         glBindTexture(GL_TEXTURE_2D, _rttGameTextures[i]);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,  _gameScreenSize.width, _gameScreenSize.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, _rttFBOs[i]);
         glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _rttGameTextures[i], 0);
     }
@@ -213,12 +207,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
     _ntscSetup.merge_fields = _ntscMergeFields;
     snes_ntsc_init(_ntscTable, &_ntscSetup);
 
-    _ntscSource      = (uint16_t *) malloc(sizeof(uint16_t) * _gameScreenSize.width * _gameScreenSize.height);
-    if(_gameScreenSize.width <= 256)
-        _ntscDestination = (uint16_t *) malloc(sizeof(uint16_t) * SNES_NTSC_OUT_WIDTH(_gameScreenSize.width) * _gameScreenSize.height);
-    else if(_gameScreenSize.width <= 512)
-        _ntscDestination = (uint16_t *) malloc(sizeof(uint16_t) * SNES_NTSC_OUT_WIDTH_HIRES(_gameScreenSize.width) * _gameScreenSize.height);
-
     glGenTextures(1, &_ntscTexture);
     glBindTexture(GL_TEXTURE_2D, _ntscTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
@@ -234,9 +222,7 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
 
     // filters
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *systemIdentifier = [[_gameResponder controller] systemIdentifier];
     NSString *filter;
-    filter = [defaults objectForKey:[NSString stringWithFormat:_OESystemVideoFilterKeyFormat, systemIdentifier]];
     if(filter == nil)
     {
         filter = [defaults objectForKey:_OEDefaultVideoFilterKey];
@@ -246,7 +232,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
     // our texture is in NTSC colorspace from the cores
     _rgbColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
 
-    _gameScreenSize = _rootProxy.screenSize;
     _gameSurfaceID = _rootProxy.surfaceID;
 
     // rendering
@@ -318,10 +303,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
     _ntscDestination = 0;
     glDeleteTextures(1, &_ntscTexture);
     _ntscTexture = 0;
-
-    if(_multipassSizes)
-        free(_multipassSizes);
-    _multipassSizes = 0;
 
     CGLUnlockContext(cgl_ctx);
     [super clearGLContext];
@@ -490,17 +471,12 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
     if(_gameSurfaceRef != NULL)
     {
         NSDictionary *options = [NSDictionary dictionaryWithObject:(__bridge id)_rgbColorSpace forKey:kCIImageColorSpace];
-        CGRect textureRect = CGRectMake(0, 0, _gameScreenSize.width, _gameScreenSize.height);
 
         CGLContextObj cgl_ctx = [[self openGLContext] CGLContextObj];
 
         [[self openGLContext] makeCurrentContext];
 
         CGLLockContext(cgl_ctx);
-
-        // always set the CIImage, so save states save
-        // TODO: Since screenshots do not use gameCIImage anymore, should we remove it as a property?
-        [self setGameCIImage:[[CIImage imageWithIOSurface:_gameSurfaceRef options:options] imageByCroppingToRect:textureRect]];
 
         OEGameShader *shader = [_filters objectForKey:_filterName];
 
@@ -538,9 +514,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
             }
         }
 
-        if([self.gameServer hasClients])
-            [self.gameServer publishFrameTexture:_gameTexture textureTarget:GL_TEXTURE_RECTANGLE_ARB imageRegion:textureRect textureDimensions:textureRect.size flipped:NO];
-
         [[self openGLContext] flushBuffer];
 
         CGLUnlockContext(cgl_ctx);
@@ -563,8 +536,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
         -1,  1
     };
 
-    glViewport(0, 0, _gameScreenSize.width, _gameScreenSize.height);
-
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, _rttFBOs[_frameCount % OEFramesSaved]);
 
     glBindTexture(GL_TEXTURE_2D, renderTarget);
@@ -583,129 +554,10 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
 }
 
-- (void)OE_applyCgShader:(OECGShader *)shader usingVertices:(const GLfloat *)vertices withTextureSize:(const OEIntSize)textureSize withOutputSize:(const OEIntSize)outputSize inPassNumber:(const NSUInteger)passNumber inCGLContext:(CGLContextObj)cgl_ctx
-{
-    // enable vertex program, bind parameters
-    cgGLBindProgram([shader vertexProgram]);
-    cgGLSetParameter2f([shader vertexVideoSize], textureSize.width, textureSize.height);
-    cgGLSetParameter2f([shader vertexTextureSize], textureSize.width, textureSize.height);
-    cgGLSetParameter2f([shader vertexOutputSize], outputSize.width, outputSize.height);
-    cgGLSetParameter1f([shader vertexFrameCount], [shader frameCountMod] ? _frameCount % [shader frameCountMod] : _frameCount);
-    cgGLSetStateMatrixParameter([shader modelViewProj], CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
-
-    // bind ORIG parameters
-    cgGLSetParameterPointer([shader vertexOriginalTextureCoords], 2, GL_FLOAT, 0, cg_coords);
-    cgGLEnableClientState([shader vertexOriginalTextureCoords]);
-    cgGLSetParameter2f([shader vertexOriginalTextureVideoSize], _gameScreenSize.width, _gameScreenSize.height);
-    cgGLSetParameter2f([shader vertexOriginalTextureSize], _gameScreenSize.width, _gameScreenSize.height);
-
-    // bind PREV parameters
-    for(NSUInteger i = 0; i < (OEFramesSaved - 1); ++i)
-    {
-        cgGLSetParameterPointer([shader vertexPreviousTextureCoords][i], 2, GL_FLOAT, 0, cg_coords);
-        cgGLEnableClientState([shader vertexPreviousTextureCoords][i]);
-        cgGLSetParameter2f([shader vertexPreviousTextureVideoSizes][i], textureSize.width, textureSize.height);
-        cgGLSetParameter2f([shader vertexPreviousTextureSizes][i], textureSize.width, textureSize.height);
-    }
-
-    // bind PASS parameters
-    for(NSUInteger i = 0; i < passNumber; ++i)
-    {
-        cgGLSetParameterPointer([shader vertexPassTextureCoords][i], 2, GL_FLOAT, 0, cg_coords);
-        cgGLEnableClientState([shader vertexPassTextureCoords][i]);
-        cgGLSetParameter2f([shader vertexPassTextureVideoSizes][i], _multipassSizes[i+1].width, _multipassSizes[i+1].height);
-        cgGLSetParameter2f([shader vertexPassTextureSizes][i], _multipassSizes[i+1].width, _multipassSizes[i+1].height);
-    }
-
-    cgGLEnableProfile([shader vertexProfile]);
-
-    // enable fragment program, bind parameters
-    cgGLBindProgram([shader fragmentProgram]);
-    cgGLSetParameter2f([shader fragmentVideoSize], textureSize.width, textureSize.height);
-    cgGLSetParameter2f([shader fragmentTextureSize], textureSize.width, textureSize.height);
-    cgGLSetParameter2f([shader fragmentOutputSize], outputSize.width, outputSize.height);
-    cgGLSetParameter1f([shader fragmentFrameCount], [shader frameCountMod] ? _frameCount % [shader frameCountMod] : _frameCount);
-
-    // bind ORIG parameters
-    cgGLSetTextureParameter([shader fragmentOriginalTexture], _rttGameTextures[_frameCount % OEFramesSaved]);
-    cgGLEnableTextureParameter([shader fragmentOriginalTexture]);
-    cgGLSetParameter2f([shader fragmentOriginalTextureVideoSize], _gameScreenSize.width, _gameScreenSize.height);
-    cgGLSetParameter2f([shader fragmentOriginalTextureSize], _gameScreenSize.width, _gameScreenSize.height);
-
-    // bind PREV parameters
-    for(NSUInteger i = 0; i < (OEFramesSaved - 1); ++i)
-    {
-        cgGLSetTextureParameter([shader fragmentPreviousTextures][i], _rttGameTextures[(_frameCount + OEFramesSaved - 1 - i) % OEFramesSaved]);
-        cgGLEnableTextureParameter([shader fragmentPreviousTextures][i]);
-        cgGLSetParameter2f([shader fragmentPreviousTextureVideoSizes][i], textureSize.width, textureSize.height);
-        cgGLSetParameter2f([shader fragmentPreviousTextureSizes][i], textureSize.width, textureSize.height);
-    }
-
-    // bind PASS parameters
-    for(NSUInteger i = 0; i < passNumber; ++i)
-    {
-        cgGLSetTextureParameter([shader fragmentPassTextures][i], _multipassTextures[i]);
-        cgGLEnableTextureParameter([shader fragmentPassTextures][i]);
-        cgGLSetParameter2f([shader fragmentPassTextureVideoSizes][i], _multipassSizes[i+1].width, _multipassSizes[i+1].height);
-        cgGLSetParameter2f([shader fragmentPassTextureSizes][i], _multipassSizes[i+1].width, _multipassSizes[i+1].height);
-    }
-
-    cgGLEnableProfile([shader fragmentProfile]);
-
-    glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-    glTexCoordPointer(2, GL_FLOAT, 0, cg_coords );
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(2, GL_FLOAT, 0, vertices );
-    glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
-    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-    glDisableClientState(GL_VERTEX_ARRAY);
-
-    // turn off profiles
-    cgGLDisableProfile([shader vertexProfile]);
-    cgGLDisableProfile([shader fragmentProfile]);
-}
-
 // calculates the texture size for each pass
 - (void)OE_calculateMultipassSizes:(OEMultipassShader *)multipassShader
 {
-    NSUInteger numberOfPasses = [multipassShader numberOfPasses];
-    NSArray *shaders = [multipassShader shaders];
-    int width = _gameScreenSize.width;
-    int height = _gameScreenSize.height;
-
-    if([multipassShader NTSCFilter] != OENTSCFilterTypeNone && _gameScreenSize.width <= 512)
-    {
-        if(_gameScreenSize.width <= 256)
-            width = SNES_NTSC_OUT_WIDTH(width);
-        else
-            width = SNES_NTSC_OUT_WIDTH_HIRES(width);
-    }
-
-    // multipassSize[0] contains the initial texture size
-    _multipassSizes[0] = OEIntSizeMake(width, height);
-
-    for(NSUInteger i = 0; i < numberOfPasses; ++i)
-    {
-        OEScaleType xScaleType = [shaders[i] xScaleType];
-        OEScaleType yScaleType = [shaders[i] yScaleType];
-        CGSize      scaler     = [shaders[i] scaler];
-
-        if(xScaleType == OEScaleTypeViewPort)
-            width = self.frame.size.width * scaler.width;
-        else if(xScaleType == OEScaleTypeAbsolute)
-            width = scaler.width;
-        else
-            width = width * scaler.width;
-
-        if(yScaleType == OEScaleTypeViewPort)
-            height = self.frame.size.height * scaler.height;
-        else if(yScaleType == OEScaleTypeAbsolute)
-            height = scaler.height;
-        else
-            height = height * scaler.height;
-
-        _multipassSizes[i + 1] = OEIntSizeMake(width, height);
-    }
+    
 }
 
 - (void)OE_multipassRender:(OEMultipassShader *)multipassShader usingVertices:(const GLfloat *)vertices inCGLContext:(CGLContextObj)cgl_ctx
@@ -722,22 +574,7 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
     NSUInteger  numberOfPasses = [multipassShader numberOfPasses];
     [self OE_calculateMultipassSizes:multipassShader];
 
-    // apply NTSC filter if needed
-    if([multipassShader NTSCFilter] != OENTSCFilterTypeNone && _gameScreenSize.width <= 512)
-    {
-        glGetTexImage(GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5_REV, _ntscSource);
-
-        if(!_ntscMergeFields) _ntscBurstPhase ^= 1;
-
-        glBindTexture(GL_TEXTURE_2D, _ntscTexture);
-        if(_gameScreenSize.width <= 256)
-            snes_ntsc_blit(_ntscTable, _ntscSource, _gameScreenSize.width, _ntscBurstPhase, _gameScreenSize.width, _gameScreenSize.height, _ntscDestination, SNES_NTSC_OUT_WIDTH(_gameScreenSize.width)*2);
-        else
-            snes_ntsc_blit_hires(_ntscTable, _ntscSource, _gameScreenSize.width, _ntscBurstPhase, _gameScreenSize.width, _gameScreenSize.height, _ntscDestination, SNES_NTSC_OUT_WIDTH_HIRES(_gameScreenSize.width)*2);
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _multipassSizes[0].width, _multipassSizes[0].height, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5_REV, _ntscDestination);
-    }
-
+    
     // render all passes to FBOs
     for(NSUInteger i = 0; i < numberOfPasses; ++i)
     {        
@@ -748,15 +585,10 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
 
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, _multipassFBOs[i]);
         glBindTexture(GL_TEXTURE_2D, _multipassTextures[i]);
-        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat,  _multipassSizes[i + 1].width, _multipassSizes[i + 1].height, 0, GL_RGBA, dataType, NULL);
 
-        glViewport(0, 0, _multipassSizes[i + 1].width, _multipassSizes[i + 1].height);
 
         if(i == 0)
         {
-            if([multipassShader NTSCFilter] != OENTSCFilterTypeNone && _gameScreenSize.width <= 512)
-                glBindTexture(GL_TEXTURE_2D, _ntscTexture);
-            else
                 glBindTexture(GL_TEXTURE_2D, _rttGameTextures[_frameCount % OEFramesSaved]);
         }
         else
@@ -772,8 +604,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         }
-
-        [self OE_applyCgShader:shaders[i] usingVertices:rtt_verts withTextureSize:_multipassSizes[i] withOutputSize:_multipassSizes[i + 1] inPassNumber:i inCGLContext:cgl_ctx];
     }
 
     // render to screen
@@ -785,9 +615,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
 
     if(numberOfPasses == 0)
     {
-        if([multipassShader NTSCFilter] != OENTSCFilterTypeNone && _gameScreenSize.width <= 512)
-            glBindTexture(GL_TEXTURE_2D, _ntscTexture);
-        else
             glBindTexture(GL_TEXTURE_2D, _rttGameTextures[_frameCount % OEFramesSaved]);
     }
     else
@@ -833,12 +660,7 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
 
     // calculate aspect ratio
     NSSize scaled;
-    OEIntSize aspectSize = self.gameAspectSize;
-    float wr = aspectSize.width / self.frame.size.width;
-    float hr = aspectSize.height / self.frame.size.height;
     float ratio;
-    ratio = (hr < wr ? wr : hr);
-    scaled = NSMakeSize(( wr / ratio), (hr / ratio));
 
     float halfw = scaled.width;
     float halfh = scaled.height;
@@ -851,18 +673,10 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
         -halfw,  halfh
     };
 
-    const GLint tex_coords[] =
-    {
-        0, 0,
-        _gameScreenSize.width, 0,
-        _gameScreenSize.width, _gameScreenSize.height,
-        0, _gameScreenSize.height
-    };
 
     if([shader isBuiltIn])
     {
         glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-        glTexCoordPointer(2, GL_INT, 0, tex_coords );
         glEnableClientState(GL_VERTEX_ARRAY);
         glVertexPointer(2, GL_FLOAT, 0, verts );
         glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
@@ -873,7 +687,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
     {
         if([shader isKindOfClass:[OEMultipassShader class]])
         {
-            [self OE_renderToTexture:_rttGameTextures[_frameCount % OEFramesSaved] usingTextureCoords:tex_coords inCGLContext:cgl_ctx];
 
             [self OE_multipassRender:(OEMultipassShader *)shader usingVertices:verts inCGLContext:cgl_ctx];
             ++_frameCount;
@@ -881,9 +694,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
         else if([shader isKindOfClass:[OECGShader class]])
         {
             // renders to texture because we need TEXTURE_2D not TEXTURE_RECTANGLE
-            [self OE_renderToTexture:_rttGameTextures[_frameCount % OEFramesSaved] usingTextureCoords:tex_coords inCGLContext:cgl_ctx];
-
-            [self OE_applyCgShader:(OECGShader *)shader usingVertices:verts withTextureSize:_gameScreenSize withOutputSize:OEIntSizeMake(self.frame.size.width, self.frame.size.height) inPassNumber:0 inCGLContext:cgl_ctx];
             
             ++_frameCount;
         }
@@ -895,7 +705,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
             glUniform1iARB([(OEGLSLShader *)shader uniformLocationWithName:"OETexture"], 0);
 
             glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-            glTexCoordPointer(2, GL_INT, 0, tex_coords );
             glEnableClientState(GL_VERTEX_ARRAY);
             glVertexPointer(2, GL_FLOAT, 0, verts );
             glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
@@ -959,9 +768,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
     [filter compileShaders];
     if([filter isKindOfClass:[OEMultipassShader class]])
     {
-        if(_multipassSizes)
-            free(_multipassSizes);
-        _multipassSizes = (OEIntSize *) malloc(sizeof(OEIntSize) * ([(OEMultipassShader *)filter numberOfPasses] + 1));
 
         if([(OEMultipassShader *)filter NTSCFilter])
         {
@@ -1005,8 +811,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
         else
             self.filterHasOutputMousePositionKeys = NO;
 
-        if([[_filterRenderer inputKeys] containsObject:@"OESystemIDInput"])
-            [_filterRenderer setValue:[[_gameResponder controller] systemIdentifier] forInputKey:@"OESystemIDInput"];
 
         CGLUnlockContext(cgl_ctx);
     }
@@ -1016,98 +820,8 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
 
 - (NSImage *)screenshot
 {
-    const OEIntSize   aspectSize     = [self gameAspectSize];
-    const NSSize      frameSize      = [self frame].size;
-    const float       wr             = frameSize.width / aspectSize.width;
-    const float       hr             = frameSize.height / aspectSize.height;
-    const OEIntSize   textureIntSize = (wr > hr ?
-                                        (OEIntSize){hr * aspectSize.width, frameSize.height      } :
-                                        (OEIntSize){frameSize.width      , wr * aspectSize.height});
-    const NSSize      textureNSSize  = NSSizeFromOEIntSize(textureIntSize);
-
-    NSBitmapImageRep *imageRep       = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
-                                                                               pixelsWide:textureIntSize.width
-                                                                               pixelsHigh:textureIntSize.height
-                                                                            bitsPerSample:8
-                                                                          samplesPerPixel:4
-                                                                                 hasAlpha:YES
-                                                                                 isPlanar:NO
-                                                                           colorSpaceName:NSDeviceRGBColorSpace
-                                                                              bytesPerRow:textureIntSize.width * 4
-                                                                             bitsPerPixel:32];
-
-    CGLContextObj cgl_ctx = [[self openGLContext] CGLContextObj];
-    [[self openGLContext] makeCurrentContext];
-    CGLLockContext(cgl_ctx);
-    {
-        glReadPixels((frameSize.width - textureNSSize.width) / 2, (frameSize.height - textureNSSize.height) / 2,
-                     textureIntSize.width, textureIntSize.height,
-                     GL_RGBA, GL_UNSIGNED_BYTE, [imageRep bitmapData]);
-    }
-    CGLUnlockContext(cgl_ctx);
-
-    NSImage *screenshotImage = [[NSImage alloc] initWithSize:textureNSSize];
-    [screenshotImage addRepresentation:imageRep];
-
-    // Flip the image
-    [screenshotImage lockFocusFlipped:YES];
-    [imageRep drawInRect:(NSRect){.size = textureNSSize}];
-    [screenshotImage unlockFocus];
-
-    return screenshotImage;
-}
-
-- (NSImage *)nativeScreenshot
-{
-    if(_gameSurfaceRef == NULL)
-        return nil;
-
-    NSBitmapImageRep *imageRep;
-
-    IOSurfaceLock(_gameSurfaceRef, kIOSurfaceLockReadOnly, NULL);
-    {
-        imageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
-                                                           pixelsWide:_gameScreenSize.width
-                                                           pixelsHigh:_gameScreenSize.height
-                                                        bitsPerSample:8
-                                                      samplesPerPixel:4
-                                                             hasAlpha:YES
-                                                             isPlanar:NO
-                                                       colorSpaceName:NSDeviceRGBColorSpace
-                                                          bytesPerRow:_gameScreenSize.width * 4
-                                                         bitsPerPixel:32];
-
-        vImage_Buffer src =
-        {
-            .data     = IOSurfaceGetBaseAddress(_gameSurfaceRef),
-            .width    = _gameScreenSize.width,
-            .height   = _gameScreenSize.height,
-            .rowBytes = IOSurfaceGetBytesPerRow(_gameSurfaceRef)
-        };
-        vImage_Buffer dest =
-        {
-            .data     = [imageRep bitmapData],
-            .width    = _gameScreenSize.width,
-            .height   = _gameScreenSize.height,
-            .rowBytes = _gameScreenSize.width * 4
-        };
-
-        // Convert IOSurface pixel format to NSBitmapImageRep
-        const uint8_t permuteMap[] = {2,1,0,3};
-        vImagePermuteChannels_ARGB8888(&src, &dest, permuteMap, 0);
-    }
-    IOSurfaceUnlock(_gameSurfaceRef, kIOSurfaceLockReadOnly, NULL);
-
-    const NSSize imageSize   = NSSizeFromOEIntSize(_gameScreenSize);
-    NSImage *screenshotImage = [[NSImage alloc] initWithSize:imageSize];
-    [screenshotImage addRepresentation:imageRep];
-
-    // Flip the image
-    [screenshotImage lockFocusFlipped:YES];
-    [imageRep drawInRect:(NSRect){.size = imageSize}];
-    [screenshotImage unlockFocus];
-
-    return screenshotImage;
+    
+    return nil;
 }
 
 #pragma mark -
@@ -1121,49 +835,6 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
         [_rootProxy setDelegate:self];
         _rootProxy.drawSquarePixels = [self composition] != nil;
     }
-}
-
-- (void)gameCoreDidChangeScreenSizeTo:(OEIntSize)size
-{
-    // Recache the new resized surfaceID, so we can get our surfaceRef from it, to draw.
-    _gameSurfaceID = _rootProxy.surfaceID;
-
-    [self rebindIOSurface];
-
-    self.gameScreenSize = size;
-
-    CGLContextObj cgl_ctx = [[self openGLContext] CGLContextObj];
-    [[self openGLContext] makeCurrentContext];
-    CGLLockContext(cgl_ctx);
-    {
-        if(_rttGameTextures)
-        {
-            for(NSUInteger i = 0; i < OEFramesSaved; ++i)
-            {
-                glBindTexture(GL_TEXTURE_2D, _rttGameTextures[i]);
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,  size.width, size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-                glBindTexture(GL_TEXTURE_2D, 0);
-            }
-        }
-        free(_ntscSource);
-        _ntscSource      = (uint16_t *) malloc(sizeof(uint16_t) * size.width * size.height);
-        if(size.width <= 256)
-        {
-            free(_ntscDestination);
-            _ntscDestination = (uint16_t *) malloc(sizeof(uint16_t) * SNES_NTSC_OUT_WIDTH(size.width) * size.height);
-        }
-        else if(size.width <= 512)
-        {
-            free(_ntscDestination);
-            _ntscDestination = (uint16_t *) malloc(sizeof(uint16_t) * SNES_NTSC_OUT_WIDTH_HIRES(size.width) * size.height);
-        }
-    }
-    CGLUnlockContext(cgl_ctx);
-}
-
-- (void)gameCoreDidChangeAspectSizeTo:(OEIntSize)size
-{
-    self.gameAspectSize = size;
 }
 
 #pragma mark -
@@ -1198,26 +869,12 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
 
 - (void)setGameResponder:(OESystemResponder *)value
 {
-    if(_gameResponder != value)
-    {
-        id next = (_gameResponder == nil
-                   ? [super nextResponder]
-                   : [_gameResponder nextResponder]);
-
-        _gameResponder = value;
-
-        [value setNextResponder:next];
-        if(value == nil) value = next;
-        [super setNextResponder:value];
-    }
+    
 }
 
 - (void)setNextResponder:(NSResponder *)aResponder
 {
-    if(_gameResponder != nil)
-        [_gameResponder setNextResponder:aResponder];
-    else
-        [super setNextResponder:aResponder];
+    
 }
 
 - (void)viewDidMoveToWindow
@@ -1232,96 +889,69 @@ static NSString *const _OESystemVideoFilterKeyFormat = @"videoFilter.%@";
 
 - (NSEvent *)OE_mouseEventWithEvent:(NSEvent *)anEvent;
 {
-    CGRect  frame    = [self frame];
-    CGPoint location = [anEvent locationInWindow];
-    location = [self convertPoint:location fromView:nil];
-    location.y = frame.size.height - location.y;
-    OEIntRect rect = [[[self rootProxy] gameCore] screenRect];
-
-    CGRect screenRect = { .size = { rect.size.width, rect.size.height } };
-
-    CGFloat scale = MIN(CGRectGetWidth(frame)  / CGRectGetWidth(screenRect),
-                        CGRectGetHeight(frame) / CGRectGetHeight(screenRect));
-
-    screenRect.size.width  *= scale;
-    screenRect.size.height *= scale;
-    screenRect.origin.x     = CGRectGetMidX(frame) - CGRectGetWidth(screenRect)  / 2;
-    screenRect.origin.y     = CGRectGetMidY(frame) - CGRectGetHeight(screenRect) / 2;
-
-    location.x -= screenRect.origin.x;
-    location.y -= screenRect.origin.y;
-
-    OEIntPoint point = {
-        .x = MAX(0, MIN(round(location.x * rect.size.width  / CGRectGetWidth(screenRect)), rect.size.width)),
-        .y = MAX(0, MIN(round(location.y * rect.size.height / CGRectGetHeight(screenRect)), rect.size.height))
-    };
-
-    return (id)[OEEvent eventWithMouseEvent:anEvent withLocationInGameView:point];
+  
+    return nil;
 }
 
 - (void)mouseDown:(NSEvent *)theEvent;
 {
-    [[self gameResponder] mouseDown:[self OE_mouseEventWithEvent:theEvent]];
 }
 
 - (void)rightMouseDown:(NSEvent *)theEvent;
 {
-    [[self gameResponder] rightMouseDown:[self OE_mouseEventWithEvent:theEvent]];
 }
 
 - (void)otherMouseDown:(NSEvent *)theEvent;
 {
-    [[self gameResponder] otherMouseDown:[self OE_mouseEventWithEvent:theEvent]];
 }
 
 - (void)mouseUp:(NSEvent *)theEvent;
 {
-    [[self gameResponder] mouseUp:[self OE_mouseEventWithEvent:theEvent]];
+
 }
 
 - (void)rightMouseUp:(NSEvent *)theEvent;
 {
-    [[self gameResponder] rightMouseUp:[self OE_mouseEventWithEvent:theEvent]];
+
 }
 
 - (void)otherMouseUp:(NSEvent *)theEvent;
 {
-    [[self gameResponder] otherMouseUp:[self OE_mouseEventWithEvent:theEvent]];
+
 }
 
 - (void)mouseMoved:(NSEvent *)theEvent;
 {
-    [[self gameResponder] mouseMoved:[self OE_mouseEventWithEvent:theEvent]];
+
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent;
 {
-    [[self gameResponder] mouseDragged:[self OE_mouseEventWithEvent:theEvent]];
+
 }
 
 - (void)scrollWheel:(NSEvent *)theEvent;
 {
-    [[self gameResponder] scrollWheel:[self OE_mouseEventWithEvent:theEvent]];
+
 }
 
 - (void)rightMouseDragged:(NSEvent *)theEvent;
 {
-    [[self gameResponder] rightMouseDragged:[self OE_mouseEventWithEvent:theEvent]];
 }
 
 - (void)otherMouseDragged:(NSEvent *)theEvent;
 {
-    [[self gameResponder] otherMouseDragged:[self OE_mouseEventWithEvent:theEvent]];
+
 }
 
 - (void)mouseEntered:(NSEvent *)theEvent;
 {
-    [[self gameResponder] mouseEntered:[self OE_mouseEventWithEvent:theEvent]];
+
 }
 
 - (void)mouseExited:(NSEvent *)theEvent;
 {
-    [[self gameResponder] mouseExited:[self OE_mouseEventWithEvent:theEvent]];
+
 }
 
 @end

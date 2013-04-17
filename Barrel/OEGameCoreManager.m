@@ -27,11 +27,8 @@
 #import "OEGameCoreManager.h"
 #import "OECorePlugin.h"
 #import "OEGameCoreHelper.h"
-#import "OpenEmuHelperApp.h"
 #import "OEGameDocument.h"
 #import "OETaskWrapper.h"
-
-#import <OpenEmuBase/OpenEmuBase.h>
 
 @implementation OEGameCoreManager
 @synthesize romPath, plugin, owner;
@@ -129,7 +126,7 @@
     NSString *cliPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"OpenEmuHelperApp" ofType: @""];
     
     // generate a UUID string so we can have multiple screen capture background tasks running.
-    taskUUIDForDOServer = [NSString stringWithUUID];
+    taskUUIDForDOServer = @"";
     // NSLog(@"helper tool UUID should be %@", taskUUIDForDOServer);
     
     NSArray *args = [NSArray arrayWithObjects:cliPath, taskUUIDForDOServer, nil];
@@ -242,18 +239,10 @@
 {
     @autoreleasepool
     {
-        taskUUIDForDOServer = [NSString stringWithUUID];
-        
-        [[NSThread currentThread] setName:[OEHelperServerNamePrefix stringByAppendingString:taskUUIDForDOServer]];
-        
-        helperObject = [[OpenEmuHelperApp alloc] init];
-        
         NSError *localError;
         
-        if([helperObject launchConnectionWithIdentifierSuffix:taskUUIDForDOServer error:&localError])
-            CFRunLoopRun();
-        else
-            error = localError;
+        
+        error = localError;
     }
 }
 
@@ -264,7 +253,7 @@
 
 - (void)stopRunLoop
 {
-    [helperObject stopEmulation];
+    // [helperObject stopEmulation];
     CFRunLoopStop(CFRunLoopGetCurrent());
     
     [self performSelector:@selector(dumpUpperLoop) onThread:[NSThread currentThread] withObject:nil waitUntilDone:NO];
@@ -360,9 +349,6 @@
 {
     // kill our background friend
     [self performSelector:@selector(stopRunLoop) onThread:helper withObject:nil waitUntilDone:NO];
-    
-    // Runs the runloop until the helper is actually done to prevent deadlocks if the game core wants the main thread to do stuff...
-    while([helperObject isRunning]) CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, YES);
     
     helper = nil;
     

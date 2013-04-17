@@ -29,8 +29,6 @@
 #import "OEDBSystem.h"
 #import "OELibraryDatabase.h"
 
-#import <OpenEmuSystem/OpenEmuSystem.h>
-
 @implementation OESystemPlugin
 @dynamic controller;
 
@@ -87,9 +85,6 @@ static NSArray *_cachedSupportedTypeExtensions = nil;
 {
     if((self = [super initWithFileAtPath:aPath name:aName]))
     {
-        _systemIdentifier = [[self infoDictionary] objectForKey:OESystemIdentifier];
-        _responderClass   = [[self controller] responderClass];
-
         NSString *iconPath = [[self bundle] pathForResource:[[self infoDictionary] objectForKey:@"CFIconName"] ofType:@"icns"];
 
         _bundleIcon = [[NSImage alloc] initWithContentsOfFile:iconPath];
@@ -102,24 +97,22 @@ static NSArray *_cachedSupportedTypeExtensions = nil;
 
 - (id)newPluginControllerWithClass:(Class)bundleClass
 {
-    if(![bundleClass isSubclassOfClass:[OESystemController class]]) return nil;
-
     return [[bundleClass alloc] initWithBundle:[self bundle]];
 }
 
 - (NSString *)systemName
 {
-    return [[self controller] systemName];
+    return @"";
 }
 
 - (NSImage *)systemIcon
 {
-    return [[self controller] systemIcon];
+    return nil;
 }
 
 - (NSArray *)supportedTypeExtensions;
 {
-    return [[self controller] fileTypes];
+    return nil;
 }
 
 @end

@@ -26,7 +26,6 @@
 
 #import <Cocoa/Cocoa.h>
 #import "OETaskWrapper.h"
-#import <OpenEmuBase/OpenEmuBase.h>
 
 @protocol OEGameCoreHelper;
 @class OECorePlugin, OEGameCoreController, OpenEmuHelperApp;

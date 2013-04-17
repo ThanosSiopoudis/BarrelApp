@@ -28,8 +28,6 @@
 #import "OESystemPlugin.h"
 #import "OELibraryDatabase.h"
 
-#import <OpenEmuSystem/OpenEmuSystem.h>
-
 NSString * const OEDBSystemsDidChangeNotification = @"OEDBSystemsDidChangeNotification";
 @implementation OEDBSystem
 + (NSInteger)systemsCount
@@ -132,24 +130,6 @@ NSString * const OEDBSystemsDidChangeNotification = @"OEDBSystemsDidChangeNotifi
     NSMutableArray         *otherSystemsThatMightBeAbleToHandleTheFile = [NSMutableArray array];
     
     NSString *fileExtension = [url pathExtension];
-    
-    [[OESystemPlugin allPlugins] enumerateObjectsUsingBlock:^(OESystemPlugin *systemPlugin, NSUInteger idx, BOOL *stop) {
-        if([[systemPlugin controller] canHandleFileExtension:fileExtension])
-        {
-            OECanHandleState handleState = [[systemPlugin controller] canHandleFile:[url path]];
-
-            if (handleState == OECanHandleYes)
-            {
-                theOneAndOnlySystemThatGetsAChanceToHandleTheFile = systemPlugin;
-                *stop = YES;
-            }
-            else if (handleState != OECanHandleNo)
-            {
-                [otherSystemsThatMightBeAbleToHandleTheFile addObject:systemPlugin];
-            }
-        }
-    }];
-    
     
     if(theOneAndOnlySystemThatGetsAChanceToHandleTheFile != nil)
     {

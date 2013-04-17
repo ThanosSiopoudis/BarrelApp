@@ -43,7 +43,6 @@
 #import "OEHUDAlert+DefaultAlertsAdditions.h"
 
 #import "OEPreferencesController.h"
-#import <OpenEmuSystem/OpenEmuSystem.h>
 
 NSString *const OELastControlsPluginIdentifierKey = @"lastControlsPlugin";
 NSString *const OELastControlsPlayerKey           = @"lastControlsPlayer";
@@ -76,12 +75,12 @@ static NSString *const _OEKeyboardMenuItemRepresentedObject = @"org.openemu.Bind
 
 static Boolean _OEHIDEventIsEqualSetCallback(OEHIDEvent *value1, OEHIDEvent *value2)
 {
-    return [value1 isUsageEqualToEvent:value2];
+    return YES;
 }
 
 static CFHashCode _OEHIDEventHashSetCallback(OEHIDEvent *value)
 {
-    return [value controlIdentifier];
+    return nil;
 }
 
 @implementation OEPrefControlsController
@@ -151,9 +150,6 @@ static CFHashCode _OEHIDEventHashSetCallback(OEHIDEvent *value)
     [center addObserver:self selector:@selector(systemsChanged) name:OEDBSystemsDidChangeNotification object:nil];
     [center addObserver:self selector:@selector(OE_preparePaneWithNotification:) name:OEPreferencesOpenPaneNotificationName object:nil];
     [center addObserver:self selector:@selector(OE_preparePaneWithNotification:) name:OEPreferencesSetupPaneNotificationName object:nil];
-
-    [center addObserver:self selector:@selector(OE_devicesDidUpdateNotification:) name:OEDeviceManagerDidAddDeviceHandlerNotification object:[OEDeviceManager sharedDeviceManager]];
-    [center addObserver:self selector:@selector(OE_devicesDidUpdateNotification:) name:OEDeviceManagerDidRemoveDeviceHandlerNotification object:[OEDeviceManager sharedDeviceManager]];
     
     [center addObserver:self selector:@selector(OE_scrollerStyleDidChange) name:NSPreferredScrollerStyleDidChangeNotification object:nil];
 }
@@ -166,8 +162,6 @@ static CFHashCode _OEHIDEventHashSetCallback(OEHIDEvent *value)
 - (void)viewWillDisappear
 {
     [super viewWillDisappear];
-
-    [[OEBindingsController defaultBindingsController] synchronize];
 }
 
 - (void)animationDidStart:(CAAnimation *)theAnimation
@@ -214,13 +208,7 @@ static CFHashCode _OEHIDEventHashSetCallback(OEHIDEvent *value)
 
 - (OEPlayerBindings *)currentPlayerBindings
 {
-    OEPlayerBindings *ret = ([self isKeyboardEventSelected]
-                             ? [[self currentSystemBindings] keyboardPlayerBindingsForPlayer:[self selectedPlayer]]
-                             : [[self currentSystemBindings] devicePlayerBindingsForPlayer:[self selectedPlayer]]);
-
-    NSAssert(ret == nil || [ret isKindOfClass:[OEPlayerBindings class]], @"Expecting OEPlayerBindingsController instance, got: %@", ret);
-
-    return ret;
+    return nil;
 }
 
 #pragma mark -
@@ -286,37 +274,15 @@ static CFHashCode _OEHIDEventHashSetCallback(OEHIDEvent *value)
     NSPopUpButton *inputButton = [self inputPopupButton];
     BOOL keyboardIsSelected = [[NSUserDefaults standardUserDefaults] boolForKey:OEKeyboardBindingsIsSelectedKey];
 
-    OEDeviceHandler *currentDeviceHandler = [[[self currentSystemBindings] devicePlayerBindingsForPlayer:[self selectedPlayer]] deviceHandler];
-    id representedObject = (keyboardIsSelected || currentDeviceHandler == nil ? _OEKeyboardMenuItemRepresentedObject : currentDeviceHandler);
-
-    if(!keyboardIsSelected && currentDeviceHandler == nil)
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:OEKeyboardBindingsIsSelectedKey];
-
     for(NSMenuItem *item in [inputButton itemArray])
     {
         if([item state] == NSOnState) continue;
-        if([item representedObject])
-            [item setState:[item representedObject] == currentDeviceHandler ? NSMixedState : NSOffState];
     }
-
-    [inputButton selectItemAtIndex:MAX(0, [inputButton indexOfItemWithRepresentedObject:representedObject])];
 }
 
 - (void)OE_addControllersToInputMenu:(NSMenu *)inputMenu
 {
-    NSArray *controllers = [[OEDeviceManager sharedDeviceManager] controllerDeviceHandlers];
-    if([controllers count] == 0)
-    {
-        [[inputMenu addItemWithTitle:NSLocalizedString(@"No available controllers", @"Menu item indicating that no controllers is plugged in") action:NULL keyEquivalent:@""] setEnabled:NO];
-        return;
-    }
-
-    for(OEDeviceHandler *handler in controllers)
-    {
-        NSString *deviceName = [[handler deviceDescription] name];
-        NSMenuItem *item = [inputMenu addItemWithTitle:deviceName action:NULL keyEquivalent:@""];
-        [item setRepresentedObject:handler];
-    }
+    
 }
 
 - (IBAction)changeSystem:(id)sender
@@ -341,16 +307,12 @@ static CFHashCode _OEHIDEventHashSetCallback(OEHIDEvent *value)
     OESystemController *systemController = [self currentSystemController];
 
     NSAssert(systemController != nil, @"The systemController of the plugin %@ with system identifier %@ is nil for some reason.", selectedPlugin, [selectedPlugin systemIdentifier]);
-    [self setCurrentSystemBindings:[[OEBindingsController defaultBindingsController] systemBindingsForSystemController:systemController]];
 
     //[self setKeyBindings:[[systemController controllerKeyPositions] allKeys]];
 
-    // Rebuild player menu
-    [self OE_setUpPlayerMenuForNumberOfPlayers:[systemController numberOfPlayers]];
 
     OEControlsButtonSetupView *preferenceView = [self controlsSetupView];
     [preferenceView setBindingsProvider:[self currentPlayerBindings]];
-    [preferenceView setupWithControlList:[systemController controlPageList]];
     [preferenceView setAutoresizingMask:NSViewMaxXMargin | NSViewMaxYMargin];
 
     NSRect rect = (NSRect){ .size = { [self controlsSetupView].bounds.size.width, preferenceView.frame.size.height }};
@@ -381,9 +343,6 @@ static CFHashCode _OEHIDEventHashSetCallback(OEHIDEvent *value)
     OESystemController *systemController = [self currentSystemController];
 
     OEControllerImageView *newControllerView = [[OEControllerImageView alloc] initWithFrame:[[self controllerContainerView] bounds]];
-    [newControllerView setImage:[systemController controllerImage]];
-    [newControllerView setImageMask:[systemController controllerImageMask]];
-    [newControllerView setKeyPositions:[systemController controllerKeyPositions]];
     [newControllerView setTarget:self];
     [newControllerView setAction:@selector(changeInputControl:)];
 
@@ -434,11 +393,6 @@ static CFHashCode _OEHIDEventHashSetCallback(OEHIDEvent *value)
 
     if(!isSelectingKeyboard)
     {
-        NSAssert([representedObject isKindOfClass:[OEDeviceHandler class]], @"Expecting instance of class OEDeviceHandler got: %@", representedObject);
-
-        OEDeviceHandler *currentPlayerHandler = [[[self currentSystemBindings] devicePlayerBindingsForPlayer:[self selectedPlayer]] deviceHandler];
-        if(![representedObject isEqual:currentPlayerHandler])
-            [[self currentSystemBindings] setDeviceHandler:representedObject forPlayer:[self selectedPlayer]];
     }
 
     [self OE_updateInputPopupButtonSelection];
@@ -465,9 +419,7 @@ static CFHashCode _OEHIDEventHashSetCallback(OEHIDEvent *value)
 
     if([alert runModal])
     {
-        // Start WiiRemote support
-        if([[NSUserDefaults standardUserDefaults] boolForKey:OEWiimoteSupportEnabled])
-            [[OEDeviceManager sharedDeviceManager] startWiimoteSearch];
+
     }
 }
 
@@ -498,10 +450,7 @@ static CFHashCode _OEHIDEventHashSetCallback(OEHIDEvent *value)
 - (void)OE_setCurrentBindingsForEvent:(OEHIDEvent *)anEvent;
 {
     [self willChangeValueForKey:@"currentPlayerBindings"];
-    BOOL isKeyboardEvent = [anEvent type] == OEHIDEventTypeKeyboard;
-    [[NSUserDefaults standardUserDefaults] setBool:isKeyboardEvent forKey:OEKeyboardBindingsIsSelectedKey];
 
-    if(!isKeyboardEvent) [self setSelectedPlayer:[[self currentSystemBindings] playerNumberForEvent:anEvent]];
 
     [self OE_updateInputPopupButtonSelection];
     [self didChangeValueForKey:@"currentPlayerBindings"];
@@ -518,18 +467,12 @@ static CFHashCode _OEHIDEventHashSetCallback(OEHIDEvent *value)
 - (void)registerEvent:(OEHIDEvent *)anEvent;
 {
     // Ignore any off state events
-    if([anEvent hasOffState]) return;
 
     if([self selectedKey] != nil)
     {
         [self OE_setCurrentBindingsForEvent:anEvent];
 
-        id assignedKey = [[self currentPlayerBindings] assignEvent:anEvent toKeyWithName:[self selectedKey]];
-
-        if([assignedKey isKindOfClass:[OEKeyBindingGroupDescription class]])
-            [[self controlsSetupView] selectNextKeyAfterKeys:[assignedKey keyNames]];
-        else
-            [[self controlsSetupView] selectNextKeyButton];
+        [[self controlsSetupView] selectNextKeyButton];
 
         [self changeInputControl:[self controlsSetupView]];
     }
@@ -545,45 +488,23 @@ static CFHashCode _OEHIDEventHashSetCallback(OEHIDEvent *value)
 
 - (BOOL)OE_shouldRegisterEvent:(OEHIDEvent *)anEvent;
 {
-    // The event is the currently read event,
-    // if its state is off, nil the reading event,
-    // in either case, this event shouldn't be registered.
-    if([readingEvent isUsageEqualToEvent:anEvent])
-    {
-        if([anEvent hasOffState])
-            readingEvent = nil;
-
-        return NO;
-    }
-
     if([self selectedKey] == nil && [self view] != [[[self view] window] firstResponder])
         [[[self view] window] makeFirstResponder:[self view]];
 
     // Check if the event is ignored
     if([ignoredEvents containsObject:anEvent])
     {
-        // Ignored events going back to off-state are removed from the ignored events
-        if([anEvent hasOffState]) [ignoredEvents removeObject:anEvent];
 
         return NO;
     }
-
-    // Ignore keyboard events if the user hasn’t explicitly chosen to configure
-    // keyboard bindings. See https://github.com/OpenEmu/OpenEmu/issues/403
-    if([anEvent type] == OEHIDEventTypeKeyboard && ![self isKeyboardEventSelected])
-        return NO;
 
     // No event currently read, if it's not off state, store it and read it
     if(readingEvent == nil)
     {
-        // The event is not ignored but it's off, ignore it anyway
-        if([anEvent hasOffState]) return NO;
 
         readingEvent = anEvent;
         return YES;
     }
-
-    if(![anEvent hasOffState]) [ignoredEvents addObject:anEvent];
 
     return NO;
 }
