@@ -4,113 +4,12 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>tar.gz</string>
-				<string>tar</string>
-				<string>gz</string>
-				<string>zip</string>
-				<string>7z</string>
-				<string>rar</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string></string>
-			<key>CFBundleTypeName</key>
-			<string>Archived Game</string>
-			<key>CFBundleTypeOSTypes</key>
-			<array>
-				<string>????</string>
-			</array>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>NSDocumentClass</key>
-			<string>OEGameDocument</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>oesavestate</string>
-				<string>savestate</string>
-			</array>
-			<key>CFBundleTypeName</key>
-			<string>OpenEmu Save State</string>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>org.openemu.savestate</string>
-			</array>
-			<key>LSTypeIsPackage</key>
-			<true/>
-			<key>NSDocumentClass</key>
-			<string>OEGameDocument</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>oecoreplugin</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string>OECorePluginIcon.icns</string>
-			<key>CFBundleTypeName</key>
-			<string>GameCorePlugin</string>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSTypeIsPackage</key>
-			<true/>
-			<key>NSDocumentClass</key>
-			<string>OEPluginDocument</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>oesystemplugin</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string>OECorePluginIcon.icns</string>
-			<key>CFBundleTypeName</key>
-			<string>System Plugin</string>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSTypeIsPackage</key>
-			<true/>
-			<key>NSDocumentClass</key>
-			<string>OEPluginDocument</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>oefilterplugin</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string>OEFilterPluginIcon.icns</string>
-			<key>CFBundleTypeName</key>
-			<string>VideoFilterPlugin</string>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSTypeIsPackage</key>
-			<true/>
-			<key>NSDocumentClass</key>
-			<string>OEPluginDocument</string>
-		</dict>
-	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
 	<string>Barrel_Empty</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.openemu.${PRODUCT_NAME:identifier}</string>
+	<string>com.appcake.${PRODUCT_NAME:identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -118,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
-	<string>OpEm</string>
+	<string>Bar</string>
 	<key>CFBundleVersion</key>
 	<string>1.0.0b10</string>
 	<key>FRFeedbackReporter.targetURL</key>
@@ -141,25 +40,5 @@
 	<string>http://openemu.org/updater/appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
-	<key>UTExportedTypeDeclarations</key>
-	<array>
-		<dict>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>com.apple.package</string>
-			</array>
-			<key>UTTypeDescription</key>
-			<string>OpenEmu Save State</string>
-			<key>UTTypeIdentifier</key>
-			<string>org.openemu.savestate</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>oesavestate</string>
-				</array>
-			</dict>
-		</dict>
-	</array>
 </dict>
 </plist>

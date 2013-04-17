@@ -77,14 +77,14 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
 {
     if(self == [OEApplicationDelegate class])
     {
-        NSString *path = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"OpenEmu/Game Library"] path];
+        NSString *path = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/Game Library"] path];
 
         [[NSUserDefaults standardUserDefaults] registerDefaults:
          @{
                                       OEDefaultDatabasePathKey : path,
                                              OEDatabasePathKey : path,
                                      OEAutomaticallyGetInfoKey : @YES,
-                            @"defaultCore.openemu.system.snes" : @"org.openemu.SNES9x",
+                            @"defaultCore.barrel.genre.action" : @"com.appcake.barrel",
                                             OEDisplayGameTitle : @YES
          }];
 
@@ -140,9 +140,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
     // update extensions
     [self updateInfoPlist];
 
-    // Setup HID Support
-    [self OE_setupHIDSupport];
-
     // Preload Composition plugins so HUDControls Bar and Gameplay Preferneces load faster
     [OECompositionPlugin allPluginNames];
 
@@ -153,13 +150,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
     BOOL startInFullscreen = [[NSUserDefaults standardUserDefaults] boolForKey:OEMainWindowFullscreenKey];
     if(startInFullscreen != [[mainWindowController window] isFullScreen])
         [[mainWindowController window] toggleFullScreen:self];
-
-    [NSApp bind:@"logHIDEvents" toObject:[NSUserDefaultsController sharedUserDefaultsController] withKeyPath:@"values.logsHIDEvents" options:nil];
-    //[NSApp bind:@"logHIDEventsNoKeyboard" toObject:[NSUserDefaultsController sharedUserDefaultsController] withKeyPath:@"values.logsHIDEventsNoKeyboard" options:nil];
-
-    // Start retrode support
-    if([[NSUserDefaults standardUserDefaults] boolForKey:OERetrodeSupportEnabledKey])
-        [OERetrodeDeviceManager load];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender

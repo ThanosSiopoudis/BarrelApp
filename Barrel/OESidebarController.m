@@ -208,7 +208,7 @@ NSString * const OEMainViewMinWidth = @"mainViewMinWidth";
 {
     if(![self database]) return;
 
-    self.systems     = [OEDBSystem enabledSystemsInDatabase:[self database]] ? : [NSArray array];
+    self.systems     = [OEDBSystem allSystemsInDatabase:[self database]] ? : [NSArray array];
     self.collections = [[self database] collections]    ? : [NSArray array];
 
     OESidebarOutlineView *sidebarView = (OESidebarOutlineView*)[self view];

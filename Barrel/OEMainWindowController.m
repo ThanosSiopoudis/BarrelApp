@@ -290,7 +290,6 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
 - (void)libraryController:(OELibraryController *)sender didSelectGame:(OEDBGame *)aGame
 {
     NSError         *error = nil;
-    OEDBSaveState   *state = [aGame autosaveForLastPlayedRom];
     OEGameDocument  *gameDocument = nil;
     
     if(gameDocument == nil)
@@ -302,15 +301,12 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
         }
         return;
     }
-    
-    [[NSDocumentController sharedDocumentController] addDocument:gameDocument];
     [self openGameDocument:gameDocument];
 }
 
 
 - (void)libraryController:(OELibraryController *)sender didSelectSaveState:(OEDBSaveState *)aSaveState
 {
-    NSError        *error = nil;
 }
 
 #pragma mark - OEGameViewControllerDelegate protocol conformance
