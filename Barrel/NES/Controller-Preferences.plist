@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>OEControllerImageKey</key>
+	<string>controller_nes.png</string>
+	<key>OEControllerImageMaskKey</key>
+	<string>controller_nes_mask.png</string>
+	<key>OEControllerKeyPositionKey</key>
+	<dict>
+		<key>OENESButtonUp</key>
+		<string>{109, 235}</string>
+		<key>OENESButtonDown</key>
+		<string>{109, 188}</string>
+		<key>OENESButtonLeft</key>
+		<string>{86, 211}</string>
+		<key>OENESButtonRight</key>
+		<string>{133, 211}</string>
+		<key>OENESButtonStart</key>
+		<string>{256, 189}</string>
+		<key>OENESButtonSelect</key>
+		<string>{206, 189}</string>
+		<key>OENESButtonA</key>
+		<string>{391, 188}</string>
+		<key>OENESButtonB</key>
+		<string>{334, 188}</string>
+	</dict>
+</dict>
+</plist>

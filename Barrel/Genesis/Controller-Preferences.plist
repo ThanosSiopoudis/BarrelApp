@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>OEControllerImageKey</key>
+	<string>controller_genesis.png</string>
+	<key>OEControllerImageMaskKey</key>
+	<string>controller_genesis_mask.png</string>
+	<key>OEControllerKeyPositionKey</key>
+	<dict>
+		<key>OEGenesisButtonUp</key>
+		<string>{140, 255}</string>
+		<key>OEGenesisButtonDown</key>
+		<string>{140, 205}</string>
+		<key>OEGenesisButtonLeft</key>
+		<string>{111, 229}</string>
+		<key>OEGenesisButtonRight</key>
+		<string>{168, 229}</string>
+		<key>OEGenesisButtonStart</key>
+		<string>{241, 230}</string>
+		<key>OEGenesisButtonMode</key>
+		<string>{0, 0}</string>
+		<key>OEGenesisButtonA</key>
+		<string>{318, 190}</string>
+		<key>OEGenesisButtonB</key>
+		<string>{362, 209}</string>
+		<key>OEGenesisButtonC</key>
+		<string>{405, 222}</string>
+		<key>OEGenesisButtonX</key>
+		<string>{304, 233}</string>
+		<key>OEGenesisButtonY</key>
+		<string>{340, 250}</string>
+		<key>OEGenesisButtonZ</key>
+		<string>{377, 262}</string>
+	</dict>
+</dict>
+</plist>

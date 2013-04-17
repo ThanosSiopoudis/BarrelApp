@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>OEControllerImageKey</key>
+	<string>controller_saturn.png</string>
+	<key>OEControllerImageMaskKey</key>
+	<string>controller_saturn_mask.png</string>
+	<key>OEControllerKeyPositionKey</key>
+	<dict>
+		<key>OESaturnButtonUp</key>
+		<string>{0, 0}</string>
+		<key>OESaturnButtonDown</key>
+		<string>{0, 0}</string>
+		<key>OESaturnButtonLeft</key>
+		<string>{0, 0}</string>
+		<key>OESaturnButtonRight</key>
+		<string>{0, 0}</string>
+		<key>OESaturnButtonA</key>
+		<string>{0, 0}</string>
+		<key>OESaturnButtonB</key>
+		<string>{0, 0}</string>
+		<key>OESaturnButtonC</key>
+		<string>{0, 0}</string>
+		<key>OESaturnButtonX</key>
+		<string>{0, 0}</string>
+		<key>OESaturnButtonY</key>
+		<string>{0, 0}</string>
+		<key>OESaturnButtonZ</key>
+		<string>{0, 0}</string>
+		<key>OESaturnButtonStart</key>
+		<string>{0, 0}</string>
+		<key>OESaturnButtonL</key>
+		<string>{0, 0}</string>
+		<key>OESaturnButtonR</key>
+		<string>{0, 0}</string>
+	</dict>
+</dict>
+</plist>
