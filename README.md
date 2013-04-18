@@ -1,4 +1,4 @@
-BarrelApp
+Barrel for Mac OS X
 =========
 
 A PC game library manager for Wine games on Mac with bundling abilities, based on the source code and amazing
