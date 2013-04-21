@@ -516,7 +516,7 @@ static NSArray *OE_defaultSortDescriptors;
         [[[self libraryController] toolbarSlider] setEnabled:NO];
         
         if([[self representedObject] isKindOfClass:[OEDBSystem class]])
-            [blankSlateView setRepresentedSystemPlugin:[(OEDBSystem*)[self representedObject] plugin]];
+            [blankSlateView showBlankSlateForGenre: [(OEDBSystem *)[self representedObject] name]];
         else if([[self representedObject] respondsToSelector:@selector(collectionViewName)])
             [blankSlateView setRepresentedCollectionName:[[self representedObject] collectionViewName]];
     }

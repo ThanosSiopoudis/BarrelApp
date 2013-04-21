@@ -43,7 +43,7 @@
 - (void)OE_commonInit;
 - (void)OE_showView:(NSView*)view;
 - (void)OE_setupView:(NSView*)view withCollectionName:(NSString *)representedCollectionName;
-- (void)OE_setupView:(NSView*)view withSystemPlugin:(OESystemPlugin *)systemPlugin;
+- (void)OE_setupView:(NSView*)view forGenre: (NSString *)genre;
 
 - (void)OE_addLeftHeadlineWithText:(NSString*)text toView:(NSView*)view;
 - (void)OE_setupBoxInView:(NSView*)view;
@@ -120,6 +120,14 @@
     [[NSWorkspace sharedWorkspace] openURL:url];
 }
 #pragma mark -
+- (void)showBlankSlateForGenre:(NSString *)genre {
+    if (genre != nil) {
+        NSView *view = [[NSView alloc] initWithFrame:(NSRect){ .size = { ViewWidth, ViewHeight }}];
+        [self OE_setupView:view forGenre:genre];
+        [self OE_showView:view];
+    }
+}
+
 - (void)setRepresentedCollectionName:(NSString *)representedCollectionName
 {
     if(representedCollectionName == _representedCollectionName) return;
@@ -158,35 +166,20 @@
     [view addSubview:textView];
 }
 
-- (void)setRepresentedSystemPlugin:(OESystemPlugin *)representedSystemPlugin
-{
-    if(representedSystemPlugin == _representedSystemPlugin) return;
-    _representedSystemPlugin = representedSystemPlugin;
-    _representedCollectionName = nil;
-    
-    NSView *view = [[NSView alloc] initWithFrame:(NSRect){ .size = { ViewWidth, ViewHeight }}];
-    [self OE_setupView:view withSystemPlugin:representedSystemPlugin];
-    [self OE_showView:view];
-}
-
-- (void)OE_setupView:(NSView*)view withSystemPlugin:(OESystemPlugin *)plugin
+- (void)OE_setupView:(NSView*)view forGenre:(NSString *)genre
 {
     [self OE_setupBoxInView:view];
-    [self OE_addLeftHeadlineWithText:(plugin ? [plugin systemName] : NSLocalizedString(@"System", @"")) toView:view];
+    [self OE_addLeftHeadlineWithText:(genre ? [NSString stringWithFormat:@"%@ Games", genre] : NSLocalizedString(@"System", @"")) toView:view];
     
-    NSRect      rect     = (NSRect){ .size = {[view frame].size.width/12*7, bottomTextViewHeight}};
+    NSRect      rect     = (NSRect){ .size = {[view frame].size.width, bottomTextViewHeight}};
     NSTextView *textView = [[NSTextView alloc] initWithFrame:NSInsetRect(rect, -4, 0)];
-    NSString   *text     = [NSString stringWithFormat:NSLocalizedString(@"%@ games you add to OpenEmu will appear in this Console Library", @""), [plugin systemName]];
+    NSString   *text     = [NSString stringWithFormat:NSLocalizedString(@"To install a game in the '%@' Genre Library, drag and drop a mounted disk from the desktop. Barrel will start the installation and create an icon in the Library.", @""), genre];
     [textView setDrawsBackground:NO];
     [textView setEditable:NO];
     [textView setSelectable:NO];
     [textView setFont:[[NSFontManager sharedFontManager] fontWithFamily:@"Lucida Grande" traits:0 weight:0 size:11.0]];
     [textView setTextColor:[NSColor colorWithDeviceWhite:0.86 alpha:1.0]];
     [textView setTextContainerInset:NSMakeSize(0, 0)];
-    
-    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
-    [paraStyle setLineSpacing:2];
-    [textView setDefaultParagraphStyle:paraStyle];
     [textView setString:text];
     
     NSShadow *shadow = [[NSShadow alloc] init];
@@ -196,58 +189,6 @@
     [textView setShadow:shadow];
     
     [view addSubview:textView];
-    
-    NSImageView *coreIconView = [[NSImageView alloc] initWithFrame:(NSRect){{coreIconX, [view frame].size.height-40-coreIconTopToViewTop},{40, 40}}];
-    [coreIconView setImage:[NSImage imageNamed:@"blank_slate_core_icon"]];
-    [view addSubview:coreIconView];
-    [coreIconView unregisterDraggedTypes];
-    
-    OECenteredTextFieldCell *cell = [[OECenteredTextFieldCell alloc] initTextCell:@""];
-    shadow = [[NSShadow alloc] init];
-    [shadow setShadowColor:[NSColor colorWithDeviceWhite:0.0 alpha:1.0]];
-    [shadow setShadowOffset:(NSSize){0, -1}];
-    [shadow setShadowBlurRadius:0];
-    
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                [[NSFontManager sharedFontManager] fontWithFamily:@"Lucida Grande" traits:0 weight:15 size:11.0], NSFontAttributeName,
-                                shadow, NSShadowAttributeName,
-                                [NSColor colorWithDeviceWhite:1.0 alpha:1.0], NSForegroundColorAttributeName,
-                                nil];
-    [cell setTextAttributes:dictionary];
-    
-    NSTextField *coreSuppliedByLabel = [[NSTextField alloc] initWithFrame:(NSRect){{rightColumnX, bottomTextViewHeight-16},{[view frame].size.width-rightColumnX, 17}}];
-    [coreSuppliedByLabel setCell:cell];
-    [coreSuppliedByLabel setEditable:NO];
-    [coreSuppliedByLabel setSelectable:NO];
-    [coreSuppliedByLabel setDrawsBackground:NO];
-    [coreSuppliedByLabel setBezeled:NO];
-    [coreSuppliedByLabel setStringValue:NSLocalizedString(@"Core Provided By…", @"")];
-    [view addSubview:coreSuppliedByLabel];
-    
-    // Get core plugins that can handle the system
-    NSPredicate *pluginFilter = [NSPredicate predicateWithBlock: ^ BOOL(OECorePlugin *evaluatedPlugin, NSDictionary *bindings) {
-        return [[evaluatedPlugin systemIdentifiers] containsObject:[plugin systemIdentifier]];
-    }];
-    NSArray *pluginsForSystem = [[OECorePlugin allPlugins] filteredArrayUsingPredicate:pluginFilter];
-    [pluginsForSystem enumerateObjectsUsingBlock:^(OECorePlugin *core, NSUInteger idx, BOOL *stop) {
-        NSString *projectURL = [[core infoDictionary] valueForKey:@"OEProjectURL"];
-        NSString *name       = [core displayName];
-        
-        // Create weblink button for current core
-        OEButton *gotoButton = [[OEButton alloc] initWithFrame:(NSRect){{ rightColumnX, bottomTextViewHeight - 16 * (idx+2) -1}, { [view frame].size.width - rightColumnX, 20 }}];
-        [gotoButton setAutoresizingMask:NSViewWidthSizable];
-        [gotoButton setAlignment:NSLeftTextAlignment];
-        [gotoButton setImagePosition:NSImageRight];
-        [gotoButton setThemeKey:@"open_weblink"];
-        [gotoButton setTarget:self];
-        [gotoButton setAction:@selector(gotoProjectURL:)];
-        [gotoButton setTitle:name];
-        [gotoButton setToolTip:[NSString stringWithFormat:NSLocalizedString(@"Takes you to the %@ project website", @"Weblink tooltip"), name]];
-        [[gotoButton cell] setRepresentedObject:projectURL];
-        [gotoButton sizeToFit];
-        
-        [view addSubview:gotoButton];
-    }];
 }
 
 - (void)OE_addLeftHeadlineWithText:(NSString*)text toView:(NSView*)view

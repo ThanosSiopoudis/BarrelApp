@@ -44,4 +44,5 @@
 @property (assign) id <OEBlankSlateViewDelegate> delegate;
 
 - (void)gotoProjectURL:(id)sender;
+- (void)showBlankSlateForGenre:(NSString *)genre;
 @end
