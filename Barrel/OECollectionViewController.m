@@ -30,6 +30,9 @@
 
 #import "OELibraryController.h"
 #import "OEROMImporter.h"
+
+#import "BLGameImporter.h"
+
 #import "OECoverGridForegroundLayer.h"
 #import "OECoverGridViewCell.h"
 
@@ -659,9 +662,16 @@ static NSArray *OE_defaultSortDescriptors;
         return NO;
     
     NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
+    
+    BLGameImporter *gameImporter = [[[self libraryController] database] importer];
+    
+    /*
     OEROMImporter *romImporter = [[[self libraryController] database] importer];
+    */
     OEDBCollection *collection = [[self representedObject] isKindOfClass:[OEDBCollection class]] ? [self representedObject] : nil;
-    [romImporter importItemsAtPaths:files intoCollectionWithID:[[collection objectID] URIRepresentation]];
+    OEDBSystem *intoSystem = [[self representedObject] isKindOfClass:[OEDBSystem class]] ? [self representedObject] : nil;
+    
+    [gameImporter importItemAtPath:[files objectAtIndex:0] intoCollectionWithID:(collection != nil ? [[collection objectID] URIRepresentation] : [NSURL URLWithString: [intoSystem systemIdentifier]])];
 
     return YES;
 }

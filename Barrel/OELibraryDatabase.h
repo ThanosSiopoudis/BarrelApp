@@ -26,6 +26,7 @@
 
 #import <Foundation/Foundation.h>
 #import "OEROMImporter.h"
+#import "BLGameImporter.h"
 
 #import "OEDBRom.h"
 #import "OEDBGame.h"
@@ -53,7 +54,7 @@ extern NSString *const OESaveStateFolderURLKey;
 
 - (id)objectWithURI:(NSURL*)uri;
 
-@property (strong) OEROMImporter *importer;
+@property (strong) BLGameImporter *importer;
 
 #pragma mark - Administration
 - (void)disableSystemsWithoutPlugin;

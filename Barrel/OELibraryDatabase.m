@@ -41,6 +41,9 @@
 #import "NSFileManager+OEHashingAdditions.h"
 
 #import "OEFSWatcher.h"
+
+#import "BLGameImporter.h"
+
 #import "OEROMImporter.h"
 
 NSString *const OEDatabasePathKey            = @"databasePath";
@@ -120,7 +123,7 @@ static OELibraryDatabase *defaultDatabase = nil;
 
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [[defaultDatabase importer] start];
+        // [[defaultDatabase importer] start];
         [defaultDatabase OE_resumeArchiveSync];
     });
 
@@ -197,9 +200,10 @@ static OELibraryDatabase *defaultDatabase = nil;
         romsController = [[NSArrayController alloc] init];
         managedObjectContexts = [[NSMutableDictionary alloc] init];
 
-        OEROMImporter *romImporter = [[OEROMImporter alloc] initWithDatabase:self];
-        [romImporter loadQueue];
-        [self setImporter:romImporter];
+        BLGameImporter *gameImporter = [[BLGameImporter alloc] initWithDatabase:self];
+        
+        //[romImporter loadQueue];
+        [self setImporter:gameImporter];
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:NSApplicationWillTerminateNotification object:NSApp];
     }
@@ -221,7 +225,7 @@ static OELibraryDatabase *defaultDatabase = nil;
 - (void)applicationWillTerminate:(id)sender
 {
     [self OE_removeStateWatcher];
-    [[self importer] saveQueue];
+    // [[self importer] saveQueue];
 
     NSError *error = nil;
     if(![self save:&error])

@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Barrel/OELibraryDatabase.m"
-         timestampString = "387920437.659745"
+         timestampString = "388360755.166333"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "171"
-         endingLineNumber = "171"
+         startingLineNumber = "174"
+         endingLineNumber = "174"
          landmarkName = "-loadPersistantStoreWithError:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Barrel/OELibraryDatabase.m"
-         timestampString = "387920434.736724"
+         timestampString = "388360755.166333"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "159"
-         endingLineNumber = "159"
+         startingLineNumber = "162"
+         endingLineNumber = "162"
          landmarkName = "-loadPersistantStoreWithError:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -112,11 +112,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Barrel/OECollectionViewController.m"
-         timestampString = "388235237.5221"
+         timestampString = "388360755.166333"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "223"
-         endingLineNumber = "223"
+         startingLineNumber = "226"
+         endingLineNumber = "226"
          landmarkName = "-loadView"
          landmarkType = "5">
       </FileBreakpoint>
@@ -138,11 +138,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Barrel/OECollectionViewController.m"
-         timestampString = "388235963.228862"
+         timestampString = "388360755.166333"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "493"
-         endingLineNumber = "493"
+         startingLineNumber = "496"
+         endingLineNumber = "496"
          landmarkName = "-OE_updateBlankSlate"
          landmarkType = "5">
       </FileBreakpoint>
@@ -151,11 +151,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Barrel/OECollectionViewController.m"
-         timestampString = "388236957.507521"
+         timestampString = "388360755.166333"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "519"
-         endingLineNumber = "519"
+         startingLineNumber = "522"
+         endingLineNumber = "522"
          landmarkName = "-OE_updateBlankSlate"
          landmarkType = "5">
       </FileBreakpoint>
@@ -170,6 +170,19 @@
          startingLineNumber = "172"
          endingLineNumber = "172"
          landmarkName = "-OE_setupView:forGenre:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Barrel/OECollectionViewController.m"
+         timestampString = "388360752.111055"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "660"
+         endingLineNumber = "660"
+         landmarkName = "-blankSlateView:acceptDrop:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
