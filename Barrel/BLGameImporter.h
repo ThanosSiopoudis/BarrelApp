@@ -77,5 +77,15 @@ typedef enum : NSInteger {
 #pragma mark - Importing Game into collections with completion handler
 - (BOOL)importItemAtPath:(NSString *)path intoCollectionWithID:(NSURL *)collectionID withCompletionHandler:(OEImportItemCompletionBlock)handler;
 - (BOOL)importItemAtURL:(NSURL *)url intoCollectionWithID:(NSURL *)collectionID withCompletionHandler:(OEImportItemCompletionBlock)handler;
+@end
 
+#pragma mark - Controlling Import
+@interface BLGameImporter (Control)
+- (void)start;
+
+- (void)processNextItemIfNeeded;
+- (void)removeFinished;
+
+@property(readonly) NSInteger totalNumberOfItems;
+@property(readonly) NSInteger numberOfProcessedItems;
 @end

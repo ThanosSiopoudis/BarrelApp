@@ -316,6 +316,7 @@
 		8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		94F6CB7C16DD727600CD48A4 /* OECheats.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F6CB7B16DD727600CD48A4 /* OECheats.m */; };
+		C117A943172688BA00143421 /* BLImportItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C117A942172688BA00143421 /* BLImportItem.m */; };
 		C1E4FB47171E9A020081FE1D /* Barrel_Empty.icns in Resources */ = {isa = PBXBuildFile; fileRef = C1E4FB46171E99FE0081FE1D /* Barrel_Empty.icns */; };
 		C6289C32135B215B00EEE97C /* OESystemPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = C6289C31135B215B00EEE97C /* OESystemPlugin.m */; };
 		C62D53050FFB51D6007C2649 /* OECompositionPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = C62D53040FFB51D6007C2649 /* OECompositionPlugin.m */; };
@@ -901,6 +902,8 @@
 		8D15AC370486D014006FF6A4 /* Barrel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Barrel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		94F6CB7A16DD727600CD48A4 /* OECheats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OECheats.h; sourceTree = "<group>"; };
 		94F6CB7B16DD727600CD48A4 /* OECheats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OECheats.m; sourceTree = "<group>"; };
+		C117A941172688B900143421 /* BLImportItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLImportItem.h; sourceTree = "<group>"; };
+		C117A942172688BA00143421 /* BLImportItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLImportItem.m; sourceTree = "<group>"; };
 		C1E4FB46171E99FE0081FE1D /* Barrel_Empty.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Barrel_Empty.icns; sourceTree = "<group>"; };
 		C6289C30135B215B00EEE97C /* OESystemPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OESystemPlugin.h; sourceTree = "<group>"; };
 		C6289C31135B215B00EEE97C /* OESystemPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OESystemPlugin.m; sourceTree = "<group>"; };
@@ -1276,6 +1279,8 @@
 				83199721142741790068C865 /* OEROMImporter.m */,
 				E2B1B7791725E1850054D800 /* BLGameImporter.h */,
 				E2B1B77A1725E1850054D800 /* BLGameImporter.m */,
+				C117A941172688B900143421 /* BLImportItem.h */,
+				C117A942172688BA00143421 /* BLImportItem.m */,
 				8356AEF015DA703100AA6B44 /* OEImportItem.h */,
 				8356AEF115DA703100AA6B44 /* OEImportItem.m */,
 				53439A8D13B92C56005C0CC8 /* Items */,
@@ -2547,6 +2552,7 @@
 				83B867BC171D63940038988C /* NSString+OERangeAdditions.m in Sources */,
 				83F7EADA171D911400D32E26 /* OESearchField.m in Sources */,
 				E2B1B77B1725E1850054D800 /* BLGameImporter.m in Sources */,
+				C117A943172688BA00143421 /* BLImportItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
