@@ -1,4 +1,4 @@
-Barrel for Mac OS X
+Barrel for Mac OS X [![Build Status](https://travis-ci.org/thanoulas/BarrelApp.png?branch=master)](https://travis-ci.org/thanoulas/BarrelApp)
 =========
 
 A PC game library manager for Wine games on Mac with bundling abilities, based on the source code and amazing
