@@ -51,6 +51,9 @@ NSString *const BLImportInfoCollectionID    = @"collectionID";
 
 #pragma mark - Import Steps
 - (void)performImportStepCheckVolume:(BLImportItem *)item;
+- (void)performImportStepCheckDirectory:(BLImportItem *)item;
+
+- (void)scheduleItemForNextStep:(BLImportItem *)item;
 
 @end
 
@@ -162,7 +165,25 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
                 case BLImportStepCheckVolume:
                     [importer performImportStepCheckVolume:item];
                     break;
+                case BLImportStepCheckDirectory:
+                    [importer performImportStepCheckDirectory:item];
+                    break;
+                case BLImportStepLookupEntry:
+                    break;
+                case BLImportStepBuildEngine:
+                    break;
+                case BLImportStepCreateBundle:
+                    break;
+                case BLImportStepOrganize:
+                    break;
+                case BLImportStepCreateGame:
+                    break;
+                default:
+                    return;
             }
+            
+            if ([item importState] == BLImportItemStatusActive)
+                [importer scheduleItemForNextStep:item];
         }
     }
 }
@@ -178,19 +199,37 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     {
         // Split the path
         NSArray *pathComponents = [[url path] componentsSeparatedByString:@"/"];
-        if (![(NSString *)[pathComponents objectAtIndex:1] isEqualToString:@"Volumes"]) {
+        if (![(NSString *)[pathComponents objectAtIndex:1] isEqualToString:@"Volumes"] || [pathComponents count] != 3) {
             // Throw the error here
         }
     }
+}
+
+- (void)performImportStepCheckDirectory:(BLImportItem *)item
+{
+    // Try to identify the game name that will be used to lookup for an entry
+    // in the online db
+    IMPORTDLog(@"Volume URL: %@", [item sourceURL]);
+    NSURL *url = [item URL];
+    NSString *volumeName;
+    NSError *error;
     
+    [url getResourceValue:&volumeName forKey:NSURLVolumeNameKey error:&error];
+    NSLog(@"%@", volumeName);
+}
+
+- (void)scheduleItemForNextStep:(BLImportItem *)item
+{
+    IMPORTDLog(@"URL: %@", [item sourceURL]);
+    item.importStep++;
     if ([self status] == BLImporterStatusRunning)
     {
-        self.totalNumberOfItems--;
-        [item setImportState:BLImportItemStatusFinished];
-        [[self queue] removeObjectIdenticalTo:item];
-        [self processNextItem];
-        self.activeImports--;
+        dispatch_async(dispatchQueue, ^{
+            importBlock(self, item);
+        });
     }
+    else
+        self.activeImports--;
 }
 
 #pragma mark - Importing games into collections
@@ -220,6 +259,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         {
             if (collectionID) [[item importInfo] setObject:collectionID forKey:BLImportInfoCollectionID];
             [[self queue] addObject:item];
+            self.totalNumberOfItems++;
             [self start];
             return YES;
         }
