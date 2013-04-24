@@ -28,6 +28,7 @@
 #import "BLImportItem.h"
 
 #import "NSArray+OEAdditions.h"
+#import "NSURL+OELibraryAdditions.h"
 
 static const int MaxSimultaneousImports = 1; // imports can't really be simultaneous because access to queue is not ready for multithreadding right now
 
@@ -47,6 +48,9 @@ NSString *const BLImportInfoCollectionID    = @"collectionID";
 @property(weak)                 OELibraryDatabase *database;
 
 - (void)processNextItemIfNeeded;
+
+#pragma mark - Import Steps
+- (void)performImportStepCheckVolume:(BLImportItem *)item;
 
 @end
 
@@ -145,8 +149,47 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         }
         else if ([importer status] == BLImporterStatusStopping || [importer status] == BLImporterStatusStopping)
         {
-            
+            importer.activeImports--;
+            [item setError:nil];
+            [item setImportState:BLImportItemStatusCancelled];
+            // [importer cleanupImportForItem: item];
+            DLog(@"Deleting item...");
         }
+        else
+        {
+            switch ([item importStep])
+            {
+                case BLImportStepCheckVolume:
+                    [importer performImportStepCheckVolume:item];
+                    break;
+            }
+        }
+    }
+}
+
+#pragma mark - Import Steps
+- (void)performImportStepCheckVolume:(BLImportItem *)item
+{
+    // Make sure that the item points to a mounted disk volume
+    IMPORTDLog(@"Volume URL: %@", [item sourceURL]);
+    NSURL *url = [item URL];
+    
+    if ([url isDirectory])
+    {
+        // Split the path
+        NSArray *pathComponents = [[url path] componentsSeparatedByString:@"/"];
+        if (![(NSString *)[pathComponents objectAtIndex:1] isEqualToString:@"Volumes"]) {
+            // Throw the error here
+        }
+    }
+    
+    if ([self status] == BLImporterStatusRunning)
+    {
+        self.totalNumberOfItems--;
+        [item setImportState:BLImportItemStatusFinished];
+        [[self queue] removeObjectIdenticalTo:item];
+        [self processNextItem];
+        self.activeImports--;
     }
 }
 

@@ -18,8 +18,8 @@ typedef enum {
 } BLImportItemState;
 
 typedef enum {
-    BLImportStepCheckDirectory,
     BLImportStepCheckVolume,
+    BLImportStepCheckDirectory,
     BLImportStepLookupEntry,
     BLImportStepBuildEngine,
     BLImportStepCreateBundle,
