@@ -32,8 +32,13 @@
 
 static const int MaxSimultaneousImports = 1; // imports can't really be simultaneous because access to queue is not ready for multithreadding right now
 
-NSString *const BLImportInfoSystemID        = @"systemID";
-NSString *const BLImportInfoCollectionID    = @"collectionID";
+#pragma mark Error Codes -
+NSString *const BLImportErrorDomainFatal        = @"BLImportFatalDomain";
+NSString *const BLImportErrorDomainResolvable   = @"BLImportResolvableDomain";
+NSString *const BLImportErrorDomainSuccess      = @"BLImportSuccessDomain";
+
+NSString *const BLImportInfoSystemID            = @"systemID";
+NSString *const BLImportInfoCollectionID        = @"collectionID";
 
 @interface BLGameImporter ()
 {
@@ -54,6 +59,8 @@ NSString *const BLImportInfoCollectionID    = @"collectionID";
 - (void)performImportStepCheckDirectory:(BLImportItem *)item;
 
 - (void)scheduleItemForNextStep:(BLImportItem *)item;
+- (void)stopImportForItem:(BLImportItem *)item withError:(NSError *)error;
+- (void)cleanupImportForItem:(BLImportItem *)item;
 
 @end
 
@@ -201,6 +208,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         NSArray *pathComponents = [[url path] componentsSeparatedByString:@"/"];
         if (![(NSString *)[pathComponents objectAtIndex:1] isEqualToString:@"Volumes"] || [pathComponents count] != 3) {
             // Throw the error here
+            [self stopImportForItem:item withError:[NSError errorWithDomain:@"BLImportFatalDomain" code:1000 userInfo:nil]];
         }
     }
 }
@@ -230,6 +238,52 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     }
     else
         self.activeImports--;
+}
+
+- (void)stopImportForItem:(BLImportItem *)item withError:(NSError *)error
+{
+    IMPORTDLog(@"URL: %@", [item sourceURL]);
+    if ([[error domain] isEqualTo:BLImportErrorDomainResolvable])
+        [item setImportState:BLImportItemStatusResolvableError];
+    else if (error == nil || [[error domain] isEqualTo:BLImportErrorDomainSuccess])
+        [item setImportState:BLImportItemStatusFinished];
+    else
+        [item setImportState:BLImportItemStatusFatalError];
+    
+    [item setError:error];
+    self.activeImports--;
+    
+    if (([item importState] == BLImportItemStatusFinished || [item importState] == BLImportItemStatusFatalError || [item importState] == BLImportItemStatusCancelled))
+    {
+        if ([item completionHandler] != nil)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [item completionHandler]();
+            });
+        }
+        
+        if ([item error]) DLog(@"%@", [item error]);
+        self.numberOfProcessedItems++;
+        
+        [self cleanupImportForItem:item];
+    }
+    
+    [self processNextItemIfNeeded];
+}
+
+- (void)cleanupImportForItem:(BLImportItem *)item
+{
+    NSError *error = [item error];
+    if (error && [[error domain] isEqualTo:BLImportErrorDomainResolvable])
+        return;
+    
+    if ([item importState] == BLImportItemStatusFinished)
+    {
+        // TODO: Set item properties, add it in the collection and
+        // save it in the database.
+    }
+    
+    [[self queue] removeObjectIdenticalTo:item];
 }
 
 #pragma mark - Importing games into collections
