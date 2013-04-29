@@ -30,6 +30,9 @@
 #import "NSArray+OEAdditions.h"
 #import "NSURL+OELibraryAdditions.h"
 
+#import "OEHUDAlert.h"
+#import "OEHUDAlert+DefaultAlertsAdditions.h"
+
 static const int MaxSimultaneousImports = 1; // imports can't really be simultaneous because access to queue is not ready for multithreadding right now
 
 #pragma mark Error Codes -
@@ -51,6 +54,7 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 @property(readwrite, nonatomic) NSInteger          totalNumberOfItems;
 @property(readwrite)            NSMutableArray    *queue;
 @property(weak)                 OELibraryDatabase *database;
+@property(readwrite)            OEHUDAlert        *progressWindow;
 
 - (void)processNextItemIfNeeded;
 
@@ -200,6 +204,9 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 {
     // Make sure that the item points to a mounted disk volume
     IMPORTDLog(@"Volume URL: %@", [item sourceURL]);
+    
+    [[self progressWindow] setMessageText:@"Checking Volume..."];
+    
     NSURL *url = [item URL];
     
     if ([url isDirectory])
@@ -218,6 +225,9 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     // Try to identify the game name that will be used to lookup for an entry
     // in the online db
     IMPORTDLog(@"Volume URL: %@", [item sourceURL]);
+    
+    [[self progressWindow] setMessageText:@"Checking Directory..."];
+    
     NSURL *url = [item URL];
     NSString *volumeName;
     NSError *error;
@@ -328,6 +338,11 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     IMPORTDLog();
     if ([self status] == BLImporterStatusPaused || [self status] == BLImporterStatusStopped)
     {
+        // Show a progress window
+        self.progressWindow = [OEHUDAlert showImportProgressAlert];
+        
+        [[self progressWindow] open];
+        
         [self setStatus:BLImporterStatusRunning];
         [self processNextItemIfNeeded];
         // Perform selector here

@@ -82,6 +82,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 
 @synthesize defaultButton = _defaultButton, alternateButton = _alternateButton, otherButton=_otherButton;
 @synthesize progressbar = _progressbar;
+@synthesize indeterminateProgressbar = _indeterminateProgressbar;
 @synthesize messageTextView = _messageTextView, headlineTextView= _headlineTextView;
 @synthesize suppressionButton = _suppressionButton;
 @synthesize inputField = _inputField, inputLabelView = _inputLabelView, otherInputField = _otherInputField, otherInputLabelView = _otherInputLabelView;
@@ -134,6 +135,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
         _otherButton = [[OEButton alloc] init];
         
         _progressbar = [[OEHUDProgressbar alloc] init];
+        _indeterminateProgressbar = [[OEHUDProgressbar alloc] init];
         
         _messageTextView = [[NSTextView alloc] init];
         _headlineTextView = [[NSTextView alloc] init];
@@ -155,6 +157,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 - (void)dealloc
 {    
     _progressbar = nil;
+    _indeterminateProgressbar = nil;
     _suppressionButton = nil;
         
     // Remove Callbacks
@@ -163,6 +166,20 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 }
 
 #pragma mark -
+
+- (void)open
+{
+    [self OE_autosizeWindow];
+    [self setDefaultButtonAction:@selector(close) andTarget:self];
+    [_window makeKeyAndOrderFront:self];
+    [_window center];
+}
+
+- (void)close
+{
+    [self OE_performCallback];
+    [_window close];
+}
 
 - (NSUInteger)runModal
 {
@@ -263,6 +280,35 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 - (void)setProgress:(CGFloat)progress
 {
     [[self progressbar] setValue:progress];
+}
+
+- (void)setShowsIndeterminateProgressbar:(BOOL)showsIndeterminateProgressbar
+{
+    [[self indeterminateProgressbar] setHidden:!showsIndeterminateProgressbar];
+    
+    // Make the progresssbar act like it's indeterminate
+    [[self indeterminateProgressbar] setMinValue:0.0f];
+    [[self indeterminateProgressbar] setMaxValue:60.0f];
+    [[self indeterminateProgressbar] setValue: 0.0f];
+    
+    [NSTimer scheduledTimerWithTimeInterval:0.1f target:self selector:@selector(autoProgressProgressbar) userInfo:nil repeats:YES];
+}
+
+- (void)autoProgressProgressbar
+{
+    CGFloat cVal = [[self indeterminateProgressbar] value];
+    if (cVal < 60.0f) {
+        cVal = cVal + 1;
+        [[self indeterminateProgressbar] setValue:cVal];
+    }
+    else {
+        [[self indeterminateProgressbar] setValue:0.0f];
+    }
+}
+
+- (BOOL)showsIndeterminateProgressbar
+{
+    return [[self indeterminateProgressbar] isHidden];
 }
 
 #pragma mark -
@@ -677,6 +723,10 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     [[self progressbar] setFrame:NSMakeRect(64, 47, 258, 16)];
     [[self progressbar] setHidden:YES];
     [[self boxView] addSubview:[self progressbar]];
+    
+    [[self indeterminateProgressbar] setFrame:NSMakeRect(64, 47, 258, 16)];
+    [[self indeterminateProgressbar] setHidden:YES];
+    [[self boxView] addSubview:[self indeterminateProgressbar]];
     
     // Setup Suppression Button
     [[self suppressionButton] setTitle:NSLocalizedString(@"Do not ask me again", @"")];

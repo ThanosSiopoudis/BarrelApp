@@ -195,4 +195,15 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
     return alert;
 }
 
++ (id)showImportProgressAlert
+{
+    OEHUDAlert *alert = [[OEHUDAlert alloc] init];
+    [alert setTitle:@"Importing Game..."];
+    [alert setShowsIndeterminateProgressbar:YES];
+    [alert setMessageText:@"Importing Game, Please Wait..."];
+    [alert setDefaultButtonTitle:@"Cancel Import"];
+    
+    return  alert;
+}
+
 @end

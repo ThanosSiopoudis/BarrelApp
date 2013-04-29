@@ -665,9 +665,6 @@ static NSArray *OE_defaultSortDescriptors;
     
     BLGameImporter *gameImporter = [[[self libraryController] database] importer];
     
-    /*
-    OEROMImporter *romImporter = [[[self libraryController] database] importer];
-    */
     OEDBCollection *collection = [[self representedObject] isKindOfClass:[OEDBCollection class]] ? [self representedObject] : nil;
     OEDBSystem *intoSystem = [[self representedObject] isKindOfClass:[OEDBSystem class]] ? [self representedObject] : nil;
     

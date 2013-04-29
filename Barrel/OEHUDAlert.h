@@ -25,6 +25,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "BLHUDProgressIndicator.h"
 
 @class OEHUDAlert;
 @class OEHUDProgressbar;
@@ -39,6 +40,8 @@ typedef void (^OEAlertCompletionHandler)(OEHUDAlert *alert, NSUInteger result);
 
 #pragma mark -
 
+- (void)open;
+- (void)close;
 - (NSUInteger)runModal;
 - (void)closeWithResult:(NSInteger)res;
 
@@ -76,6 +79,9 @@ typedef void (^OEAlertCompletionHandler)(OEHUDAlert *alert, NSUInteger result);
 
 @property BOOL showsProgressbar;
 @property(strong, readonly) OEHUDProgressbar *progressbar;
+
+@property BOOL showsIndeterminateProgressbar;
+@property(strong, readonly) OEHUDProgressbar *indeterminateProgressbar;
 
 @property CGFloat progress;
 
