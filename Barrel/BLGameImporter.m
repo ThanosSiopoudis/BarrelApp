@@ -33,6 +33,8 @@
 #import "OEHUDAlert.h"
 #import "OEHUDAlert+DefaultAlertsAdditions.h"
 
+#import "AppCakeAPI.h"
+
 static const int MaxSimultaneousImports = 1; // imports can't really be simultaneous because access to queue is not ready for multithreadding right now
 
 #pragma mark Error Codes -
@@ -55,12 +57,15 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 @property(readwrite)            NSMutableArray    *queue;
 @property(weak)                 OELibraryDatabase *database;
 @property(readwrite)            OEHUDAlert        *progressWindow;
+@property(readwrite)            NSString          *volumeName;
+@property(readwrite)            AppCakeAPI        *appCake;
 
 - (void)processNextItemIfNeeded;
 
 #pragma mark - Import Steps
 - (void)performImportStepCheckVolume:(BLImportItem *)item;
 - (void)performImportStepCheckDirectory:(BLImportItem *)item;
+- (void)performImportStepLookupEntry:(BLImportItem *)item;
 
 - (void)scheduleItemForNextStep:(BLImportItem *)item;
 - (void)stopImportForItem:(BLImportItem *)item withError:(NSError *)error;
@@ -171,26 +176,30 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         }
         else
         {
-            switch ([item importStep])
-            {
-                case BLImportStepCheckVolume:
-                    [importer performImportStepCheckVolume:item];
-                    break;
-                case BLImportStepCheckDirectory:
-                    [importer performImportStepCheckDirectory:item];
-                    break;
-                case BLImportStepLookupEntry:
-                    break;
-                case BLImportStepBuildEngine:
-                    break;
-                case BLImportStepCreateBundle:
-                    break;
-                case BLImportStepOrganize:
-                    break;
-                case BLImportStepCreateGame:
-                    break;
-                default:
-                    return;
+            // Do we need to wait?
+            if ([item importState] != BLImportItemStatusWait) {
+                switch ([item importStep])
+                {
+                    case BLImportStepCheckVolume:
+                        [importer performImportStepCheckVolume:item];
+                        break;
+                    case BLImportStepCheckDirectory:
+                        [importer performImportStepCheckDirectory:item];
+                        break;
+                    case BLImportStepLookupEntry:
+                        [importer performImportStepLookupEntry:item];
+                        break;
+                    case BLImportStepBuildEngine:
+                        break;
+                    case BLImportStepCreateBundle:
+                        break;
+                    case BLImportStepOrganize:
+                        break;
+                    case BLImportStepCreateGame:
+                        break;
+                    default:
+                        return;
+                }
             }
             
             if ([item importState] == BLImportItemStatusActive)
@@ -229,17 +238,34 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     [[self progressWindow] setMessageText:@"Checking Directory..."];
     
     NSURL *url = [item URL];
-    NSString *volumeName;
+    NSString *cvolumeName;
     NSError *error;
     
-    [url getResourceValue:&volumeName forKey:NSURLVolumeNameKey error:&error];
-    NSLog(@"%@", volumeName);
+    [url getResourceValue:&cvolumeName forKey:NSURLVolumeNameKey error:&error];
+    [self setVolumeName:cvolumeName];
+}
+
+- (void)performImportStepLookupEntry:(BLImportItem *)item
+{
+    IMPORTDLog(@"Volume URL: %@", [item sourceURL]);
+    
+    [[self progressWindow] setMessageText:@"Looking up game..."];
+    
+    self.appCake = [[AppCakeAPI alloc] init];
+    [item setImportState:BLImportItemStatusWait];
+    [[self appCake] listOfAllWineBuildsToBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"Load collection of Articles: %@", mappingResult.array);
+        [item setImportState:BLImportItemStatusActive];
+        [self scheduleItemForNextStep:item];
+    }];
 }
 
 - (void)scheduleItemForNextStep:(BLImportItem *)item
 {
     IMPORTDLog(@"URL: %@", [item sourceURL]);
-    item.importStep++;
+    if ([item importState] != BLImportItemStatusWait)
+        item.importStep++;
+    
     if ([self status] == BLImporterStatusRunning)
     {
         dispatch_async(dispatchQueue, ^{

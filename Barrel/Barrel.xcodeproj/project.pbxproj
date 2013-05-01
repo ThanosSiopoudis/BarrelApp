@@ -317,6 +317,10 @@
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		94F6CB7C16DD727600CD48A4 /* OECheats.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F6CB7B16DD727600CD48A4 /* OECheats.m */; };
 		C117A943172688BA00143421 /* BLImportItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C117A942172688BA00143421 /* BLImportItem.m */; };
+		C1A030C8173111B900BF897F /* AppCakeAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = C1A030C7173111B900BF897F /* AppCakeAPI.m */; };
+		C1A030CE17312FF700BF897F /* RestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1A030CD17312FF700BF897F /* RestKit.framework */; };
+		C1A030CF1731300A00BF897F /* RestKit.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = C1A030CD17312FF700BF897F /* RestKit.framework */; };
+		C1A030D717316E0A00BF897F /* AC_WineBuild.m in Sources */ = {isa = PBXBuildFile; fileRef = C1A030D617316E0A00BF897F /* AC_WineBuild.m */; };
 		C1DE8FA0172EC1300081FEC7 /* BLHUDProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = C1DE8F9F172EC12F0081FEC7 /* BLHUDProgressIndicator.m */; };
 		C1E4FB47171E9A020081FE1D /* Barrel_Empty.icns in Resources */ = {isa = PBXBuildFile; fileRef = C1E4FB46171E99FE0081FE1D /* Barrel_Empty.icns */; };
 		C6289C32135B215B00EEE97C /* OESystemPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = C6289C31135B215B00EEE97C /* OESystemPlugin.m */; };
@@ -396,6 +400,7 @@
 				82DE4B8010265600007184EB /* UniversalDetector.framework in Copy Frameworks to App Frameworks */,
 				82DE4B7F102655FC007184EB /* XADMaster.framework in Copy Frameworks to App Frameworks */,
 				8CAD37CF16A18C3000AE25F5 /* Cg.framework in Copy Frameworks to App Frameworks */,
+				C1A030CF1731300A00BF897F /* RestKit.framework in Copy Frameworks to App Frameworks */,
 				1B42C66F14295130004691D7 /* Syphon.framework in Copy Frameworks to App Frameworks */,
 				143F299A164DE0CC00544CCF /* MagicKit.framework in Copy Frameworks to App Frameworks */,
 			);
@@ -905,6 +910,12 @@
 		94F6CB7B16DD727600CD48A4 /* OECheats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OECheats.m; sourceTree = "<group>"; };
 		C117A941172688B900143421 /* BLImportItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLImportItem.h; sourceTree = "<group>"; };
 		C117A942172688BA00143421 /* BLImportItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLImportItem.m; sourceTree = "<group>"; };
+		C1A030C6173111B900BF897F /* AppCakeAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCakeAPI.h; sourceTree = "<group>"; };
+		C1A030C7173111B900BF897F /* AppCakeAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCakeAPI.m; sourceTree = "<group>"; };
+		C1A030CD17312FF700BF897F /* RestKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RestKit.framework; sourceTree = "<group>"; };
+		C1A030D117313F3D00BF897F /* AC_Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AC_Game.h; sourceTree = "<group>"; };
+		C1A030D517316E0A00BF897F /* AC_WineBuild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AC_WineBuild.h; sourceTree = "<group>"; };
+		C1A030D617316E0A00BF897F /* AC_WineBuild.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AC_WineBuild.m; sourceTree = "<group>"; };
 		C1DE8F9E172EC12F0081FEC7 /* BLHUDProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLHUDProgressIndicator.h; sourceTree = "<group>"; };
 		C1DE8F9F172EC12F0081FEC7 /* BLHUDProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLHUDProgressIndicator.m; sourceTree = "<group>"; };
 		C1E4FB46171E99FE0081FE1D /* Barrel_Empty.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Barrel_Empty.icns; sourceTree = "<group>"; };
@@ -983,6 +994,7 @@
 				1B42C66D1429510A004691D7 /* Syphon.framework in Frameworks */,
 				82DE4B63102655DA007184EB /* UniversalDetector.framework in Frameworks */,
 				82DE4B62102655D5007184EB /* XADMaster.framework in Frameworks */,
+				C1A030CE17312FF700BF897F /* RestKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1167,6 +1179,7 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C1A030C31731119200BF897F /* AppCake.api */,
 				8314A9B8155422E800DF13B5 /* Archive.VG */,
 				3887A8011024D29D000FC4CF /* OpenEmuQLGenerator */,
 				828E64D00E84656900B1860B /* OpenEmuCore */,
@@ -1208,6 +1221,7 @@
 		2A37F4C3FDCFA73011CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C1A030CD17312FF700BF897F /* RestKit.framework */,
 				C6711810136368330034379A /* Cocoa.framework */,
 				1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */,
 				C6711812136368330034379A /* Other Frameworks */,
@@ -2130,6 +2144,26 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C1A030C31731119200BF897F /* AppCake.api */ = {
+			isa = PBXGroup;
+			children = (
+				C1A030D017313F0800BF897F /* APIClasses */,
+				C1A030C6173111B900BF897F /* AppCakeAPI.h */,
+				C1A030C7173111B900BF897F /* AppCakeAPI.m */,
+			);
+			name = AppCake.api;
+			sourceTree = "<group>";
+		};
+		C1A030D017313F0800BF897F /* APIClasses */ = {
+			isa = PBXGroup;
+			children = (
+				C1A030D117313F3D00BF897F /* AC_Game.h */,
+				C1A030D517316E0A00BF897F /* AC_WineBuild.h */,
+				C1A030D617316E0A00BF897F /* AC_WineBuild.m */,
+			);
+			name = APIClasses;
+			sourceTree = "<group>";
+		};
 		C62F546E0FE6AD6700DF15BA /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
@@ -2559,6 +2593,8 @@
 				E2B1B77B1725E1850054D800 /* BLGameImporter.m in Sources */,
 				C117A943172688BA00143421 /* BLImportItem.m in Sources */,
 				C1DE8FA0172EC1300081FEC7 /* BLHUDProgressIndicator.m in Sources */,
+				C1A030C8173111B900BF897F /* AppCakeAPI.m in Sources */,
+				C1A030D717316E0A00BF897F /* AC_WineBuild.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

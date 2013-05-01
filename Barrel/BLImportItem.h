@@ -14,7 +14,8 @@ typedef enum {
     BLImportItemStatusResolvableError,
     BLImportItemStatusFatalError,
     BLImportItemStatusFinished,
-    BLImportItemStatusCancelled
+    BLImportItemStatusCancelled,
+    BLImportItemStatusWait
 } BLImportItemState;
 
 typedef enum {
