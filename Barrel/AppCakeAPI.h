@@ -29,7 +29,8 @@
 
 @interface AppCakeAPI : NSObject
 
-- (void)listOfAllWineBuildsToBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock;
+- (void)listOfAllWineBuildsToBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock
+failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
 - (void)searchDBForGameWithName:(NSString *)gameName;
 
 @end

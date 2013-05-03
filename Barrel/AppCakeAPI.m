@@ -37,10 +37,14 @@
 
 - (void)searchDBForGameWithName:(NSString *)gameName
 {
-    // RKObjectMapping *mapping
+    RKObjectMapping *gameMapping = [RKObjectMapping mappingForClass:[AC_Game class]];
+    [gameMapping addAttributeMappingsFromDictionary:@{
+        @"id": @"id",
+        
+     }]
 }
 
-- (void)listOfAllWineBuildsToBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock;
+- (void)listOfAllWineBuildsToBlock:(void (^)(RKObjectRequestOperation *, RKMappingResult *))completionBlock failBlock:(void (^)(RKObjectRequestOperation *, NSError *))errorBlock
 {
     RKObjectMapping *wineBuildsMapping = [RKObjectMapping mappingForClass:[AC_WineBuild class]];
     [wineBuildsMapping addAttributeMappingsFromDictionary:@{
@@ -55,9 +59,7 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
     [objectRequestOperation setCompletionBlockWithSuccess:completionBlock
-    failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        RKLogError(@"Operation failed with error: %@", error);
-    }];
+    failure:errorBlock];
     
     [objectRequestOperation start];
 }

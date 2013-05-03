@@ -254,9 +254,19 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     self.appCake = [[AppCakeAPI alloc] init];
     [item setImportState:BLImportItemStatusWait];
     [[self appCake] listOfAllWineBuildsToBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSLog(@"Load collection of Articles: %@", mappingResult.array);
+        if ([mappingResult count] < 1) {
+            [[self progressWindow] setShowsIndeterminateProgressbar:NO];
+            [[self progressWindow] setMessageText:@"No results found on the server! You can either search using a different name, or proceed with a manual import."];
+            [[self progressWindow] setDefaultButtonTitle:@"Manual Import"];
+            [[self progressWindow] setAlternateButtonTitle:@"Change Search"];
+        }
         [item setImportState:BLImportItemStatusActive];
         [self scheduleItemForNextStep:item];
+    } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
+        [[self progressWindow] setShowsIndeterminateProgressbar:NO];
+        [[self progressWindow] setMessageText:@"Error communicating with the server! Would you like to proceed with a manual import?"];
+        [[self progressWindow] setDefaultButtonTitle:@"Yes"];
+        [[self progressWindow] setAlternateButtonTitle:@"No"];
     }];
 }
 
