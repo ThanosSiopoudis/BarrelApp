@@ -317,6 +317,7 @@
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		94F6CB7C16DD727600CD48A4 /* OECheats.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F6CB7B16DD727600CD48A4 /* OECheats.m */; };
 		C117A943172688BA00143421 /* BLImportItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C117A942172688BA00143421 /* BLImportItem.m */; };
+		C19A4EE4174B83710023E064 /* AC_Game.m in Sources */ = {isa = PBXBuildFile; fileRef = C19A4EE3174B83710023E064 /* AC_Game.m */; };
 		C1A030C8173111B900BF897F /* AppCakeAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = C1A030C7173111B900BF897F /* AppCakeAPI.m */; };
 		C1A030CE17312FF700BF897F /* RestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1A030CD17312FF700BF897F /* RestKit.framework */; };
 		C1A030CF1731300A00BF897F /* RestKit.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = C1A030CD17312FF700BF897F /* RestKit.framework */; };
@@ -910,6 +911,7 @@
 		94F6CB7B16DD727600CD48A4 /* OECheats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OECheats.m; sourceTree = "<group>"; };
 		C117A941172688B900143421 /* BLImportItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLImportItem.h; sourceTree = "<group>"; };
 		C117A942172688BA00143421 /* BLImportItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLImportItem.m; sourceTree = "<group>"; };
+		C19A4EE3174B83710023E064 /* AC_Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AC_Game.m; sourceTree = "<group>"; };
 		C1A030C6173111B900BF897F /* AppCakeAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCakeAPI.h; sourceTree = "<group>"; };
 		C1A030C7173111B900BF897F /* AppCakeAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCakeAPI.m; sourceTree = "<group>"; };
 		C1A030CD17312FF700BF897F /* RestKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RestKit.framework; sourceTree = "<group>"; };
@@ -2158,6 +2160,7 @@
 			isa = PBXGroup;
 			children = (
 				C1A030D117313F3D00BF897F /* AC_Game.h */,
+				C19A4EE3174B83710023E064 /* AC_Game.m */,
 				C1A030D517316E0A00BF897F /* AC_WineBuild.h */,
 				C1A030D617316E0A00BF897F /* AC_WineBuild.m */,
 			);
@@ -2595,6 +2598,7 @@
 				C1DE8FA0172EC1300081FEC7 /* BLHUDProgressIndicator.m in Sources */,
 				C1A030C8173111B900BF897F /* AppCakeAPI.m in Sources */,
 				C1A030D717316E0A00BF897F /* AC_WineBuild.m in Sources */,
+				C19A4EE4174B83710023E064 /* AC_Game.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

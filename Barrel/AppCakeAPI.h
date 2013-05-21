@@ -31,6 +31,6 @@
 
 - (void)listOfAllWineBuildsToBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock
 failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
-- (void)searchDBForGameWithName:(NSString *)gameName;
+- (void)searchDBForGameWithName:(NSString *)gameName toBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
 
 @end

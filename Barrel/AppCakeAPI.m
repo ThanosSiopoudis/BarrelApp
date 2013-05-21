@@ -35,13 +35,26 @@
 
 @implementation AppCakeAPI
 
-- (void)searchDBForGameWithName:(NSString *)gameName
+- (void)searchDBForGameWithName:(NSString *)gameName toBlock:(void (^)(RKObjectRequestOperation *, RKMappingResult *))completionBlock failBlock:(void (^)(RKObjectRequestOperation *, NSError *))errorBlock
 {
     RKObjectMapping *gameMapping = [RKObjectMapping mappingForClass:[AC_Game class]];
     [gameMapping addAttributeMappingsFromDictionary:@{
-        @"id": @"id",
-        
-     }]
+        @"id":          @"id",
+        @"identifier":  @"identifier",
+        @"name":        @"name",
+        @"wineBuildID": @"wineBuildID",
+        @"rating":      @"rating",
+        @"description": @"description"
+     }];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:gameMapping pathPattern:nil keyPath:@"games" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?gameName=%@", @"http://api.appcake.co.uk/Games/searchForGame.json", gameName]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
+    [objectRequestOperation setCompletionBlockWithSuccess:completionBlock failure:errorBlock];
+    
+    [objectRequestOperation start];
 }
 
 - (void)listOfAllWineBuildsToBlock:(void (^)(RKObjectRequestOperation *, RKMappingResult *))completionBlock failBlock:(void (^)(RKObjectRequestOperation *, NSError *))errorBlock

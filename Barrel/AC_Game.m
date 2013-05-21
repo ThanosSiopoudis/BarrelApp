@@ -24,17 +24,8 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
+#import "AC_Game.h"
 
-@interface AC_Game : NSObject {
-    
-}
-
-@property(nonatomic, readwrite) NSInteger id;
-@property(nonatomic, copy) NSString *identifier;
-@property(nonatomic, copy) NSString *name;
-@property(nonatomic, readwrite) NSInteger wineBuildID;
-@property(nonatomic, copy) NSNumber *rating;
-@property(nonatomic, copy) NSString *description;
+@implementation AC_Game
 
 @end
