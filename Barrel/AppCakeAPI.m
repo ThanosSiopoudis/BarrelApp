@@ -47,7 +47,7 @@
         @"description": @"description"
      }];
     
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:gameMapping pathPattern:nil keyPath:@"games" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:gameMapping pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?gameName=%@", @"http://api.appcake.co.uk/Games/searchForGame.json", gameName]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];

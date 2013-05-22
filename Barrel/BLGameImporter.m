@@ -250,24 +250,45 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     IMPORTDLog(@"Volume URL: %@", [item sourceURL]);
     
     [[self progressWindow] setMessageText:@"Looking up game..."];
+    [[self progressWindow] setShowsIndeterminateProgressbar:YES];
+    [[self progressWindow] setAlternateButtonTitle:@""];
     
     self.appCake = [[AppCakeAPI alloc] init];
     [item setImportState:BLImportItemStatusWait];
-    [[self appCake] listOfAllWineBuildsToBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [[self appCake] searchDBForGameWithName:[self volumeName] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         if ([mappingResult count] < 1) {
             [[self progressWindow] setShowsIndeterminateProgressbar:NO];
             [[self progressWindow] setMessageText:@"No results found on the server! You can either search using a different name, or proceed with a manual import."];
+            
             [[self progressWindow] setDefaultButtonTitle:@"Manual Import"];
-            [[self progressWindow] setAlternateButtonTitle:@"Change Search"];
+            
+            
+            [[self progressWindow] setAlternateButtonTitle:@"Search Again"];
+            [[self progressWindow] setAlternateButtonAction:@selector(reSearchItem:) andTarget:self];
+            
+            [[self progressWindow] setOtherButtonTitle:@"Cancel"];
         }
-        [item setImportState:BLImportItemStatusActive];
-        [self scheduleItemForNextStep:item];
+        else if ([mappingResult count] == 1) {
+            // We found a result.
+            [item setImportState:BLImportItemStatusActive];
+            [self scheduleItemForNextStep:item];
+        }
+        else {
+            // If the results were more than one, let the user choose
+        }
     } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
         [[self progressWindow] setShowsIndeterminateProgressbar:NO];
         [[self progressWindow] setMessageText:@"Error communicating with the server! Would you like to proceed with a manual import?"];
         [[self progressWindow] setDefaultButtonTitle:@"Yes"];
         [[self progressWindow] setAlternateButtonTitle:@"No"];
+        [[self progressWindow] setOtherButtonTitle:@"Retry"];
     }];
+}
+
+- (void)reSearchItem:(BLImportItem *)item {
+    [item setImportState:BLImportItemStatusActive];
+    item.importStep = BLImportStepCheckDirectory;
+    [self scheduleItemForNextStep:item];
 }
 
 - (void)scheduleItemForNextStep:(BLImportItem *)item
