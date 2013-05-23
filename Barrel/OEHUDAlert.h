@@ -30,6 +30,7 @@
 @class OEHUDAlert;
 @class OEHUDProgressbar;
 @class OEButton;
+@class OEPopUpButton;
 @class OETextField;
 typedef void (^OEAlertCompletionHandler)(OEHUDAlert *alert, NSUInteger result);
 
@@ -64,14 +65,15 @@ typedef void (^OEAlertCompletionHandler)(OEHUDAlert *alert, NSUInteger result);
 @property(readonly, strong) NSTextView *messageTextView;
 @property(readonly, strong) NSTextView *headlineTextView;
 
-@property(strong) NSString *stringValue, *otherStringValue, *inputLabelText, *otherInputLabelText;
+@property(strong) NSString *stringValue, *otherStringValue, *inputLabelText, *otherInputLabelText, *popupButtonLabelText;
 @property(strong) NSString *defaultButtonTitle, *alternateButtonTitle, *otherButtonTitle, *title, *messageText, *headlineText;
 
 #pragma mark -
 #pragma mark Input Field
-@property(readonly, strong) NSTextView *inputLabelView, *otherInputLabelView;
+@property(readonly, strong) NSTextView *inputLabelView, *otherInputLabelView, *popupButtonLabelView;
 @property(readonly, strong) OETextField *inputField, *otherInputField;
-@property BOOL showsInputField, showsOtherInputField;
+@property(readonly, strong) OEPopUpButton *popupButton;
+@property BOOL showsInputField, showsOtherInputField, showsPopupButton;
 @property NSInteger inputLimit;
 
 #pragma mark -

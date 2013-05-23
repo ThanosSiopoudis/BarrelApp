@@ -59,6 +59,7 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 @property(readwrite)            OEHUDAlert        *progressWindow;
 @property(readwrite)            NSString          *volumeName;
 @property(readwrite)            AppCakeAPI        *appCake;
+@property(readwrite)            BLImportItem      *currentItem;
 
 - (void)processNextItemIfNeeded;
 
@@ -70,6 +71,7 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 - (void)scheduleItemForNextStep:(BLImportItem *)item;
 - (void)stopImportForItem:(BLImportItem *)item withError:(NSError *)error;
 - (void)cleanupImportForItem:(BLImportItem *)item;
+- (void)reSearchItem:(BLImportItem *)item;
 
 @end
 
@@ -251,7 +253,6 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     
     [[self progressWindow] setMessageText:@"Looking up game..."];
     [[self progressWindow] setShowsIndeterminateProgressbar:YES];
-    [[self progressWindow] setAlternateButtonTitle:@""];
     
     self.appCake = [[AppCakeAPI alloc] init];
     [item setImportState:BLImportItemStatusWait];
@@ -261,7 +262,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             [[self progressWindow] setMessageText:@"No results found on the server! You can either search using a different name, or proceed with a manual import."];
             
             [[self progressWindow] setDefaultButtonTitle:@"Manual Import"];
-            
+            [[self progressWindow] setDefaultButtonAction:@selector(startManualImport:) andTarget:self];
             
             [[self progressWindow] setAlternateButtonTitle:@"Search Again"];
             [[self progressWindow] setAlternateButtonAction:@selector(reSearchItem:) andTarget:self];
@@ -278,17 +279,35 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         }
     } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
         [[self progressWindow] setShowsIndeterminateProgressbar:NO];
-        [[self progressWindow] setMessageText:@"Error communicating with the server! Would you like to proceed with a manual import?"];
+        [[self progressWindow] setMessageText:@"Error communicating with the server! Proceed with a manual import?"];
         [[self progressWindow] setDefaultButtonTitle:@"Yes"];
         [[self progressWindow] setAlternateButtonTitle:@"No"];
         [[self progressWindow] setOtherButtonTitle:@"Retry"];
     }];
 }
 
-- (void)reSearchItem:(BLImportItem *)item {
-    [item setImportState:BLImportItemStatusActive];
-    item.importStep = BLImportStepCheckDirectory;
-    [self scheduleItemForNextStep:item];
+- (void)reSearchItem:(id)sender {
+    [[self progressWindow] setMessageText:@""];
+    [[self progressWindow] setAlternateButtonTitle:@""];
+    [[self progressWindow] setOtherButtonTitle:@""];
+    [[self progressWindow] setDefaultButtonTitle:@"Cancel"];
+    
+    [[self currentItem] setImportState:BLImportItemStatusActive];
+    [[self currentItem] setImportStep:BLImportStepCheckDirectory];
+    [self scheduleItemForNextStep:[self currentItem]];
+}
+
+- (void)startManualImport:(id)sender {
+    [[self progressWindow] setShowsInputField:YES];
+    [[self progressWindow] setInputLabelText:@"Game"];
+    [[self progressWindow] setStringValue:[self volumeName]];
+    
+    [[self progressWindow] setShowsPopupButton:YES];
+    [[self progressWindow] setPopupButtonLabelText:@"Engine"];
+    
+    [[self progressWindow] setAlternateButtonTitle:@""];
+    [[self progressWindow] setOtherButtonTitle:@""];
+    [[self progressWindow] setDefaultButtonTitle:@"OK"];
 }
 
 - (void)scheduleItemForNextStep:(BLImportItem *)item
@@ -381,6 +400,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             if (collectionID) [[item importInfo] setObject:collectionID forKey:BLImportInfoCollectionID];
             [[self queue] addObject:item];
             self.totalNumberOfItems++;
+            [self setCurrentItem:item];
             [self start];
             return YES;
         }
