@@ -195,15 +195,40 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
     return alert;
 }
 
-+ (id)showImportProgressAlert
-{
++ (id)showProgressAlertWithMessage:(NSString *)message andTitle:(NSString *)title {
     OEHUDAlert *alert = [[OEHUDAlert alloc] init];
-    [alert setTitle:@"Importing Game..."];
+    [alert setTitle:title];
     [alert setShowsIndeterminateProgressbar:YES];
-    [alert setMessageText:@"Importing Game, Please Wait..."];
-    [alert setDefaultButtonTitle:@"Cancel Import"];
+    [alert setMessageText:message];
+    [alert setDefaultButtonTitle:@"Cancel"];
     
     return  alert;
+}
+
++ (id)showManualImportAlertWithVolumeName:(NSString *)volumeName {
+    OEHUDAlert *alert = [[OEHUDAlert alloc] init];
+    [alert setShowsInputField:YES];
+    [alert setInputLabelText:@"Game"];
+    [alert setStringValue:volumeName];
+    
+    [alert setShowsPopupButton:YES];
+    [alert setPopupButtonLabelText:@"Engine"];
+    
+    [alert setAlternateButtonTitle:@""];
+    [alert setOtherButtonTitle:@""];
+    [alert setDefaultButtonTitle:@"OK"];
+    
+    return alert;
+}
+
++ (id)alertWithMessageText:(NSString *)msgText defaultButton:(NSString *)defaultButtonLabel alternateButton:(NSString *)alternateButtonLabel otherButton:(NSString *)otherButton {
+    OEHUDAlert *alert = [[OEHUDAlert alloc] init];
+    [alert setMessageText:msgText];
+    [alert setDefaultButtonTitle:defaultButtonLabel];
+    [alert setAlternateButtonTitle:alternateButtonLabel];
+    [alert setOtherButtonTitle:otherButton];
+    
+    return alert;
 }
 
 @end

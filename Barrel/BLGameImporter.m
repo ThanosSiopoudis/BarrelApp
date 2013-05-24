@@ -260,6 +260,8 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         if ([mappingResult count] < 1) {
             [[self progressWindow] setShowsIndeterminateProgressbar:NO];
             [[self progressWindow] setMessageText:@"No results found on the server! You can either search using a different name, or proceed with a manual import."];
+            [[[self progressWindow] messageTextView] setFrame:NSMakeRect(self.progressWindow.messageTextView.frame.origin.x, 16.0, self.progressWindow.messageTextView.frame.size.width,
+                                                                         self.progressWindow.messageTextView.frame.size.height)];
             
             [[self progressWindow] setDefaultButtonTitle:@"Manual Import"];
             [[self progressWindow] setDefaultButtonAction:@selector(startManualImport:) andTarget:self];
@@ -268,6 +270,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             [[self progressWindow] setAlternateButtonAction:@selector(reSearchItem:) andTarget:self];
             
             [[self progressWindow] setOtherButtonTitle:@"Cancel"];
+            [[self progressWindow] setOtherButtonAction:@selector(closeWindowAndStop:) andTarget:self];
         }
         else if ([mappingResult count] == 1) {
             // We found a result.
@@ -278,11 +281,10 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             // If the results were more than one, let the user choose
         }
     } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
-        [[self progressWindow] setShowsIndeterminateProgressbar:NO];
-        [[self progressWindow] setMessageText:@"Error communicating with the server! Proceed with a manual import?"];
-        [[self progressWindow] setDefaultButtonTitle:@"Yes"];
-        [[self progressWindow] setAlternateButtonTitle:@"No"];
-        [[self progressWindow] setOtherButtonTitle:@"Retry"];
+        [[self progressWindow] close];
+        
+        OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error communicating with the server! Please try again later!" defaultButton:@"OK" alternateButton:@""];
+        [errorAlert runModal];
     }];
 }
 
@@ -298,12 +300,43 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)startManualImport:(id)sender {
+    [self fetchListOfEngines];
+}
+
+- (void)fetchListOfEngines {
+    [[self appCake] listOfAllWineBuildsToBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        if ([mappingResult count] > 0) {
+            [self showSelectionAlertWithItems:mappingResult];
+        }
+        else {
+            [[self progressWindow] close];
+            
+            OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Oops! No engines were found in the database! Please try again later!" defaultButton:@"OK" alternateButton:@""];
+            [errorAlert runModal];
+        }
+    } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
+        [[self progressWindow] close];
+        
+        OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error communicating with the server! Please try again later!" defaultButton:@"OK" alternateButton:@""];
+        [errorAlert runModal];
+    }];
+}
+
+- (void)closeWindowAndStop:(id)sender {
+    [[self progressWindow] close];
+}
+
+- (void)showSelectionAlertWithItems:(RKMappingResult *)items {
+    // Prepare the NSMutableArray from the objects in the result
+    NSMutableArray *engines = [NSMutableArray arrayWithArray:[items array]];
+    
     [[self progressWindow] setShowsInputField:YES];
     [[self progressWindow] setInputLabelText:@"Game"];
     [[self progressWindow] setStringValue:[self volumeName]];
     
     [[self progressWindow] setShowsPopupButton:YES];
     [[self progressWindow] setPopupButtonLabelText:@"Engine"];
+    [[self progressWindow] setPopupButtonItems:engines];
     
     [[self progressWindow] setAlternateButtonTitle:@""];
     [[self progressWindow] setOtherButtonTitle:@""];
@@ -416,7 +449,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     if ([self status] == BLImporterStatusPaused || [self status] == BLImporterStatusStopped)
     {
         // Show a progress window
-        self.progressWindow = [OEHUDAlert showImportProgressAlert];
+        self.progressWindow = [OEHUDAlert showProgressAlertWithMessage:@"Importing game, please wait..." andTitle:@"Importing Game"];
         
         [[self progressWindow] open];
         

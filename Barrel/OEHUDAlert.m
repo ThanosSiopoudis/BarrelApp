@@ -40,6 +40,7 @@
 #import "NSWindow+OECustomWindow.h"
 
 #import "OEInputLimitFormatter.h"
+#import "AC_WineBuild.h"
 
 static const CGFloat _OEHUDAlertBoxSideMargin           =  18.0;
 static const CGFloat _OEHUDAlertBoxTopMargin            =  51.0;
@@ -416,8 +417,8 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 
 - (void)setOtherButtonAction:(SEL)sel andTarget:(id)aTarget
 {
-    [[self alternateButton] setTarget:aTarget];
-    [[self alternateButton] setAction:sel];
+    [[self otherButton] setTarget:aTarget];
+    [[self otherButton] setAction:sel];
 }
 
 #pragma mark -
@@ -633,6 +634,22 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 
 - (NSString *)popupButtonLabelText {
     return [[self popupButtonLabelView] string];
+}
+
+- (void)setPopupButtonItems:(NSMutableArray *)items {
+    NSMenu *filterMenu = [[NSMenu alloc] init];
+    
+    for(AC_WineBuild *wineBuild in items)
+		[filterMenu addItemWithTitle:[wineBuild name] action:NULL keyEquivalent:@""];
+    
+    [[self popupButton] setMenu:filterMenu];
+    [[self popupButton] selectItemAtIndex:0];
+}
+
+- (NSMutableArray *)popupButtonsItems {
+    NSMutableArray *popupItems = [[NSMutableArray alloc] init];
+    
+    return popupItems;
 }
 
 #pragma mark -

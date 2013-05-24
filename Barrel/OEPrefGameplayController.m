@@ -32,7 +32,7 @@
 @implementation OEPrefGameplayController
 @synthesize filterSelection;
 
-- (void)awakeFromNib
+- (void)awakeFromNib 
 {
     // Setup plugins menu
     NSMutableSet   *filterSet     = [NSMutableSet set];

@@ -93,6 +93,10 @@ typedef void (^OEAlertCompletionHandler)(OEHUDAlert *alert, NSUInteger result);
 - (void)setAlternateButtonAction:(SEL)sel andTarget:(id)target;
 - (void)setOtherButtonAction:(SEL)sel andTarget:(id)target;
 #pragma mark -
+#pragma mark PopupButtonItems
+- (void)setPopupButtonItems:(NSMutableArray *)items;
+- (NSMutableArray *)popupButtonItems;
+#pragma mark -
 #pragma mark Callbacks
 @property (weak) id target;
 @property SEL callback;

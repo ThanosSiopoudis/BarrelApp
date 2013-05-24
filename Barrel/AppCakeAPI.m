@@ -61,9 +61,9 @@
 {
     RKObjectMapping *wineBuildsMapping = [RKObjectMapping mappingForClass:[AC_WineBuild class]];
     [wineBuildsMapping addAttributeMappingsFromDictionary:@{
-        @"id":          @"id",
-        @"name":        @"name",
-        @"archivePath": @"archivePath"
+        @"WineBuild.id":          @"id",
+        @"WineBuild.name":        @"name",
+        @"WineBuild.archivePath": @"archivePath"
      }];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:wineBuildsMapping pathPattern:nil keyPath:@"wineBuilds" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
