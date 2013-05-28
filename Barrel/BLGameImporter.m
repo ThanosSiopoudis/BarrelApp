@@ -68,6 +68,7 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 - (void)performImportStepCheckVolume:(BLImportItem *)item;
 - (void)performImportStepCheckDirectory:(BLImportItem *)item;
 - (void)performImportStepLookupEntry:(BLImportItem *)item;
+- (void)performImportStepDownloadBundle:(BLImportItem *)item;
 
 - (void)scheduleItemForNextStep:(BLImportItem *)item;
 - (void)stopImportForItem:(BLImportItem *)item withError:(NSError *)error;
@@ -192,6 +193,9 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
                     case BLImportStepLookupEntry:
                         [importer performImportStepLookupEntry:item];
                         break;
+                    case BLImportStepDownloadBundle:
+                        [importer performImportStepDownloadBundle:item];
+                        break;
                     case BLImportStepBuildEngine:
                         break;
                     case BLImportStepCreateBundle:
@@ -287,6 +291,10 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         [errorAlert setDefaultButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
         [errorAlert runModal];
     }];
+}
+
+- (void)performImportStepDownloadBundle:(BLImportItem *)item {
+    FIXME("Stub");
 }
 
 - (void)reSearchItem:(id)sender {
