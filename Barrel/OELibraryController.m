@@ -32,7 +32,7 @@
 #import "OELibrarySplitView.h"
 
 #import "OELibrarySubviewController.h"
-#import "OEROMImporter.h"
+#import "BLGameImporter.h"
 
 #import "OEDBGame.h"
 #import "OESystemPlugin.h"
@@ -272,8 +272,9 @@ static const CGFloat _OEToolbarHeight = 44;
          {
              // exit our initial open panels completion handler
              //[self performSelector:@selector(startImportSheet:) withObject:[openPanel URLs] afterDelay:0.0];
-             OEROMImporter *romImporter = [[self database] importer];
-             [romImporter importItemsAtURLs:[openPanel URLs]];
+             BLGameImporter *gameImporter = [[self database] importer];
+             FIXME("Add importItemsAtURLs method");
+             // [gameImporter importItemsAtURLs:[openPanel URLs]];
          }
      }];
 }

@@ -355,8 +355,10 @@ NSString * const OEMainViewMinWidth = @"mainViewMinWidth";
         // import and add to collection
         NSArray *files = [pboard readObjectsForClasses:@[[NSURL class]] options:nil];
         NSURL *collectionID = [[collection objectID] URIRepresentation];
-        OEROMImporter *importer = [[OELibraryDatabase defaultDatabase] importer];
-        [importer importItemsAtURLs:files intoCollectionWithID:collectionID];
+        BLGameImporter *importer = [[OELibraryDatabase defaultDatabase] importer];
+        
+        FIXME("Add importItemsAtURLs method");
+        // [importer importItemsAtURLs:files intoCollectionWithID:collectionID];
     }
 
     return YES;

@@ -29,7 +29,6 @@
 #import "OEMainWindowController.h"
 
 #import "OELibraryController.h"
-#import "OEROMImporter.h"
 
 #import "BLGameImporter.h"
 
@@ -592,10 +591,12 @@ static NSArray *OE_defaultSortDescriptors;
         return NO;
     
     NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
-    OEROMImporter *romImporter = [[[self libraryController] database] importer];
+    BLGameImporter *gameImporter = [[[self libraryController] database] importer];
     
     OEDBCollection *collection = [[self representedObject] isKindOfClass:[OEDBCollection class]] ? [self representedObject] : nil;
-    [romImporter importItemsAtPaths:files intoCollectionWithID:[[collection objectID] URIRepresentation]];
+   
+    FIXME("Add importItemsAtPaths method");
+    //[gameImporter importItemsAtPaths:files intoCollectionWithID:[[collection objectID] URIRepresentation]];
     
     return YES;
 }
@@ -1288,9 +1289,11 @@ static NSArray *OE_defaultSortDescriptors;
         return NO;
 
     NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
-    OEROMImporter *romImporter = [[[self libraryController] database] importer];
+    BLGameImporter *gameImporter = [[[self libraryController] database] importer];
     OEDBCollection *collection = [[self representedObject] isKindOfClass:[OEDBCollection class]] ? [self representedObject] : nil;
-    [romImporter importItemsAtPaths:files intoCollectionWithID:[[collection objectID] URIRepresentation]];
+    
+    FIXME("Add importItemsAtPaths method");
+    // [romImporter importItemsAtPaths:files intoCollectionWithID:[[collection objectID] URIRepresentation]];
     
     return YES;
 }

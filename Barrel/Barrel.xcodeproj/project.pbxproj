@@ -317,6 +317,7 @@
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		94F6CB7C16DD727600CD48A4 /* OECheats.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F6CB7B16DD727600CD48A4 /* OECheats.m */; };
 		C117A943172688BA00143421 /* BLImportItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C117A942172688BA00143421 /* BLImportItem.m */; };
+		C176B63017551589003E65EB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C176B62F17551588003E65EB /* SystemConfiguration.framework */; };
 		C19A4EE4174B83710023E064 /* AC_Game.m in Sources */ = {isa = PBXBuildFile; fileRef = C19A4EE3174B83710023E064 /* AC_Game.m */; };
 		C1A030C8173111B900BF897F /* AppCakeAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = C1A030C7173111B900BF897F /* AppCakeAPI.m */; };
 		C1A030CE17312FF700BF897F /* RestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1A030CD17312FF700BF897F /* RestKit.framework */; };
@@ -911,6 +912,7 @@
 		94F6CB7B16DD727600CD48A4 /* OECheats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OECheats.m; sourceTree = "<group>"; };
 		C117A941172688B900143421 /* BLImportItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLImportItem.h; sourceTree = "<group>"; };
 		C117A942172688BA00143421 /* BLImportItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLImportItem.m; sourceTree = "<group>"; };
+		C176B62F17551588003E65EB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C19A4EE3174B83710023E064 /* AC_Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AC_Game.m; sourceTree = "<group>"; };
 		C1A030C6173111B900BF897F /* AppCakeAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCakeAPI.h; sourceTree = "<group>"; };
 		C1A030C7173111B900BF897F /* AppCakeAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCakeAPI.m; sourceTree = "<group>"; };
@@ -973,6 +975,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C176B63017551589003E65EB /* SystemConfiguration.framework in Frameworks */,
 				83B867BE171D63C70038988C /* DiskArbitration.framework in Frameworks */,
 				3D1D8D821650C22900DBC37D /* Accelerate.framework in Frameworks */,
 				83FA054B13B9DEFD0055A520 /* AppKit.framework in Frameworks */,
@@ -1168,6 +1171,7 @@
 		2A37F4AAFDCFA73011CA2CEA /* OpenEmu */ = {
 			isa = PBXGroup;
 			children = (
+				C176B62F17551588003E65EB /* SystemConfiguration.framework */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,

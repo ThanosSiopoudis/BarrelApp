@@ -180,9 +180,12 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
     else
     {
         NSApplicationDelegateReply reply = NSApplicationDelegateReplyFailure;
-        OEROMImporter *importer = [[OELibraryDatabase defaultDatabase] importer];
+        BLGameImporter *importer = [[OELibraryDatabase defaultDatabase] importer];
+
+        FIXME("Add importItemsAtPaths method");
+        /*
         if([importer importItemsAtPaths:filenames])
-            reply = NSApplicationDelegateReplySuccess;
+            reply = NSApplicationDelegateReplySuccess; */
 
         [NSApp replyToOpenOrPrint:reply];
     }
