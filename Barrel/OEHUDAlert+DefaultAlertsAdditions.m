@@ -231,4 +231,16 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
     return alert;
 }
 
++ (id)manualGameSearchWithVolumeName:(NSString *)gameName {
+    OEHUDAlert *alert = [[OEHUDAlert alloc] init];
+    [alert setShowsInputField:YES];
+    [alert setInputLabelText:@"Game"];
+    [alert setStringValue:gameName];
+    
+    [alert setDefaultButtonTitle:@"Search"];
+    [alert setAlternateButtonTitle:@"Cancel"];
+    
+    return alert;
+}
+
 @end
