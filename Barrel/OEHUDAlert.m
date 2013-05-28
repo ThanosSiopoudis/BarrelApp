@@ -739,6 +739,29 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     [[self inputLabelView] setHidden:YES];
     [[_window contentView] addSubview:[self inputLabelView]];
     
+    // Setup Engine Choice
+    OEPopUpButtonCell *popupButtonCell = [[OEPopUpButtonCell alloc] init];
+    [[self popupButton] setCell:popupButtonCell];
+    [[self popupButton] setFrame:NSMakeRect(68, 90, 337, 23)];
+    [[self popupButton] setHidden:YES];
+    [[self popupButton] setAutoresizingMask:NSViewWidthSizable | NSViewMaxYMargin];
+    [[self popupButton] setFocusRingType:NSFocusRingTypeNone];
+    [[self popupButton] setWantsLayer:YES];
+    [[self popupButton] setThemeKey:@"dark_popup_button"];
+    [[self popupButton] setMenuStyle:1];
+    [[_window contentView] addSubview:[self popupButton]];
+    
+    [[self popupButtonLabelView] setEditable:NO];
+    [[self popupButtonLabelView] setSelectable:NO];
+    [[self popupButtonLabelView] setAutoresizingMask:NSViewMaxXMargin | NSViewMaxYMargin];
+    [[self popupButtonLabelView] setFont:defaultFont];
+    [[self popupButtonLabelView] setTextColor:defaultColor];
+    [[self popupButtonLabelView] setDrawsBackground:NO];
+    [[self popupButtonLabelView] setAlignment:NSRightTextAlignment];
+    [[self popupButtonLabelView] setFrame:NSMakeRect(1, 96, 61, 23)];
+    [[self popupButtonLabelView] setHidden:NO];
+    [[_window contentView] addSubview:[self popupButtonLabelView]];
+    
     // Setup Other Input Field
     OETextFieldCell *otherInputCell = [[OETextFieldCell alloc] init];
     [[self otherInputField] setCell:otherInputCell];
@@ -771,27 +794,6 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     [[self indeterminateProgressbar] setFrame:NSMakeRect(64, 47, 258, 16)];
     [[self indeterminateProgressbar] setHidden:YES];
     [[self boxView] addSubview:[self indeterminateProgressbar]];
-    
-    // Setup Engine Choice
-    OEPopUpButtonCell *popupButtonCell = [[OEPopUpButtonCell alloc] init];
-    [[self popupButton] setCell:popupButtonCell];
-    [[self popupButton] setFrame:NSMakeRect(68, 90, 337, 23)];
-    [[self popupButton] setHidden:YES];
-    [[self popupButton] setAutoresizingMask:NSViewWidthSizable | NSViewMaxYMargin];
-    [[self popupButton] setThemeKey:@"dark_popup_button"];
-    [[self popupButton] setMenuStyle:1];
-    [[_window contentView] addSubview:[self popupButton]];
-    
-    [[self popupButtonLabelView] setEditable:NO];
-    [[self popupButtonLabelView] setSelectable:NO];
-    [[self popupButtonLabelView] setAutoresizingMask:NSViewMaxXMargin | NSViewMaxYMargin];
-    [[self popupButtonLabelView] setFont:defaultFont];
-    [[self popupButtonLabelView] setTextColor:defaultColor];
-    [[self popupButtonLabelView] setDrawsBackground:NO];
-    [[self popupButtonLabelView] setAlignment:NSRightTextAlignment];
-    [[self popupButtonLabelView] setFrame:NSMakeRect(1, 96, 61, 23)];
-    [[self popupButtonLabelView] setHidden:NO];
-    [[_window contentView] addSubview:[self popupButtonLabelView]];
     
     // Setup Suppression Button
     [[self suppressionButton] setTitle:NSLocalizedString(@"Do not ask me again", @"")];
