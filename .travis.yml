@@ -1,1 +1,5 @@
 language: objective-c
+env:
+  global:
+    - XCWORKSPACE=BarrelWorkspace.xcworkspace
+    - DEFAULT_TARGETS=Barrel
