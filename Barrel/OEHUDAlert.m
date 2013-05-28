@@ -646,7 +646,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     [[self popupButton] selectItemAtIndex:0];
 }
 
-- (NSMutableArray *)popupButtonsItems {
+- (NSMutableArray *)popupButtonItems {
     NSMutableArray *popupItems = [[NSMutableArray alloc] init];
     
     return popupItems;
@@ -720,7 +720,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     // Setup Input Field
     OETextFieldCell *inputCell = [[OETextFieldCell alloc] init];
     [[self inputField] setCell:inputCell];
-    [[self inputField] setFrame:NSMakeRect(68, 81, 337, 23)];
+    [[self inputField] setFrame:NSMakeRect(68, 51, 337, 23)];
     [[self inputField] setHidden:YES];
     [[self inputField] setAutoresizingMask:NSViewWidthSizable | NSViewMaxYMargin];
     [[self inputField] setTarget:self andAction:@selector(buttonAction:)];
@@ -735,7 +735,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     [[self inputLabelView] setTextColor:defaultColor];
     [[self inputLabelView] setDrawsBackground:NO];
     [[self inputLabelView] setAlignment:NSRightTextAlignment];
-    [[self inputLabelView] setFrame:NSMakeRect(1, 87, 61, 23)];
+    [[self inputLabelView] setFrame:NSMakeRect(1, 57, 61, 23)];
     [[self inputLabelView] setHidden:YES];
     [[_window contentView] addSubview:[self inputLabelView]];
     
@@ -775,7 +775,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     // Setup Engine Choice
     OEPopUpButtonCell *popupButtonCell = [[OEPopUpButtonCell alloc] init];
     [[self popupButton] setCell:popupButtonCell];
-    [[self popupButton] setFrame:NSMakeRect(68, 50, 337, 23)];
+    [[self popupButton] setFrame:NSMakeRect(68, 90, 337, 23)];
     [[self popupButton] setHidden:YES];
     [[self popupButton] setAutoresizingMask:NSViewWidthSizable | NSViewMaxYMargin];
     [[self popupButton] setThemeKey:@"dark_popup_button"];
@@ -789,7 +789,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     [[self popupButtonLabelView] setTextColor:defaultColor];
     [[self popupButtonLabelView] setDrawsBackground:NO];
     [[self popupButtonLabelView] setAlignment:NSRightTextAlignment];
-    [[self popupButtonLabelView] setFrame:NSMakeRect(1, 56, 61, 23)];
+    [[self popupButtonLabelView] setFrame:NSMakeRect(1, 96, 61, 23)];
     [[self popupButtonLabelView] setHidden:NO];
     [[_window contentView] addSubview:[self popupButtonLabelView]];
     
@@ -809,7 +809,9 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     
     if([[self boxView] isHidden])
     {
-        if([self showsOtherInputField])
+        if([self showsOtherInputField] && [self showsPopupButton])
+            frame.size.height = 192;
+        else if([self showsOtherInputField] || [self showsPopupButton])
             frame.size.height = 150;
         else
             frame.size.height = 112;
