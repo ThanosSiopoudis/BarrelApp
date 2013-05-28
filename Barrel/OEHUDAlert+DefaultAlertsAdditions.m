@@ -207,6 +207,8 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
 
 + (id)showManualImportAlertWithVolumeName:(NSString *)volumeName andPopupItems:(NSMutableArray *)items {
     OEHUDAlert *alert = [[OEHUDAlert alloc] init];
+    [alert setTitle:@"Game Import"];
+    
     [alert setShowsInputField:YES];
     [alert setInputLabelText:@"Game"];
     [alert setStringValue:volumeName];
