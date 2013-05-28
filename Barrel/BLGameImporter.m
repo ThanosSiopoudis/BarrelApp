@@ -60,6 +60,7 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 @property(readwrite)            NSString          *volumeName;
 @property(readwrite)            AppCakeAPI        *appCake;
 @property(readwrite)            BLImportItem      *currentItem;
+@property(readwrite)            OEHUDAlert        *alertCache;
 
 - (void)processNextItemIfNeeded;
 
@@ -258,19 +259,18 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     [item setImportState:BLImportItemStatusWait];
     [[self appCake] searchDBForGameWithName:[self volumeName] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         if ([mappingResult count] < 1) {
-            [[self progressWindow] setShowsIndeterminateProgressbar:NO];
-            [[self progressWindow] setMessageText:@"No results found on the server! You can either search using a different name, or proceed with a manual import."];
-            [[[self progressWindow] messageTextView] setFrame:NSMakeRect(self.progressWindow.messageTextView.frame.origin.x, 16.0, self.progressWindow.messageTextView.frame.size.width,
+            [[self progressWindow] close];
+            
+            OEHUDAlert *noResultsAlert = [OEHUDAlert alertWithMessageText:@"No results found on the server! You can either search using a different name, or proceed with a manual import." defaultButton:@"Manual Import" alternateButton:@"Manual Search" otherButton:@"Cancel"];
+            /*
+            [[noResultsAlert messageTextView] setFrame:NSMakeRect(self.progressWindow.messageTextView.frame.origin.x, 16.0, self.progressWindow.messageTextView.frame.size.width,
                                                                          self.progressWindow.messageTextView.frame.size.height)];
+            */
+            [noResultsAlert setDefaultButtonAction:@selector(startManualImport:) andTarget:self];
+            [noResultsAlert setAlternateButtonAction:@selector(reSearchItem:) andTarget:self];
+            [noResultsAlert setOtherButtonAction:@selector(cancelModalWindow:) andTarget:self];
             
-            [[self progressWindow] setDefaultButtonTitle:@"Manual Import"];
-            [[self progressWindow] setDefaultButtonAction:@selector(startManualImport:) andTarget:self];
-            
-            [[self progressWindow] setAlternateButtonTitle:@"Search Again"];
-            [[self progressWindow] setAlternateButtonAction:@selector(reSearchItem:) andTarget:self];
-            
-            [[self progressWindow] setOtherButtonTitle:@"Cancel"];
-            [[self progressWindow] setOtherButtonAction:@selector(closeWindowAndStop:) andTarget:self];
+            [noResultsAlert runModal];
         }
         else if ([mappingResult count] == 1) {
             // We found a result.
@@ -289,17 +289,32 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)reSearchItem:(id)sender {
-    [[self progressWindow] setMessageText:@""];
-    [[self progressWindow] setAlternateButtonTitle:@""];
-    [[self progressWindow] setOtherButtonTitle:@""];
-    [[self progressWindow] setDefaultButtonTitle:@"Cancel"];
+    [self cancelModalWindow:sender];
     
+    FIXME("Open the new alert in a callback to give the already open alert a chance to close");
+    
+    OEHUDAlert *manualSearchAlert = [OEHUDAlert manualGameSearchWithVolumeName:[self volumeName]];
+    [manualSearchAlert setDefaultButtonAction:@selector(startManualGameSearch:) andTarget:self];
+    [manualSearchAlert setAlternateButtonAction:@selector(cancelModalWindow:) andTarget:self];
+    [self setAlertCache:manualSearchAlert];
+    
+    [manualSearchAlert runModal];
+}
+
+- (void)startManualGameSearch:(id)sender {
+    [self cancelModalWindow:sender];
+    
+    [[self progressWindow] open];
+    [self setVolumeName:[[self alertCache] stringValue]];
     [[self currentItem] setImportState:BLImportItemStatusActive];
     [[self currentItem] setImportStep:BLImportStepCheckDirectory];
     [self scheduleItemForNextStep:[self currentItem]];
 }
 
 - (void)startManualImport:(id)sender {
+    [self cancelModalWindow:sender];
+    
+    [[self progressWindow] close];
     [self fetchListOfEngines];
 }
 
@@ -322,25 +337,22 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     }];
 }
 
-- (void)closeWindowAndStop:(id)sender {
-    [[self progressWindow] close];
-}
-
 - (void)showSelectionAlertWithItems:(RKMappingResult *)items {
     // Prepare the NSMutableArray from the objects in the result
     NSMutableArray *engines = [NSMutableArray arrayWithArray:[items array]];
     
-    [[self progressWindow] setShowsInputField:YES];
-    [[self progressWindow] setInputLabelText:@"Game"];
-    [[self progressWindow] setStringValue:[self volumeName]];
+    OEHUDAlert *selectionAlert = [OEHUDAlert showManualImportAlertWithVolumeName:[self volumeName] andPopupItems:engines];
+    [selectionAlert setAlternateButtonAction:@selector(cancelModalWindow:) andTarget:self];
     
-    [[self progressWindow] setShowsPopupButton:YES];
-    [[self progressWindow] setPopupButtonLabelText:@"Engine"];
-    [[self progressWindow] setPopupButtonItems:engines];
-    
-    [[self progressWindow] setAlternateButtonTitle:@""];
-    [[self progressWindow] setOtherButtonTitle:@""];
-    [[self progressWindow] setDefaultButtonTitle:@"OK"];
+    [selectionAlert runModal];
+}
+
+- (void)closeWindowAndStop:(id)sender {
+    [[self progressWindow] close];
+}
+
+- (void)cancelModalWindow:(id)sender {
+    [NSApp stopModal];
 }
 
 - (void)scheduleItemForNextStep:(BLImportItem *)item
