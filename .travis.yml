@@ -1,1 +1,4 @@
 language: objective-c
+env:
+  global:
+    - XCWORKSPACE=BarrelWorkspace.xcworkspace
