@@ -142,7 +142,7 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
                 {
                     [self setQueue:[NSMutableArray array]];
                     [self setNumberOfProcessedItems:0];
-                    
+                    [self setTotalNumberOfItems:0];
                     [self setStatus:BLImporterStatusStopped];
                 }
                 else
@@ -268,7 +268,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             */
             [noResultsAlert setDefaultButtonAction:@selector(startManualImport:) andTarget:self];
             [noResultsAlert setAlternateButtonAction:@selector(reSearchItem:) andTarget:self];
-            [noResultsAlert setOtherButtonAction:@selector(cancelModalWindow:) andTarget:self];
+            [noResultsAlert setOtherButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
             
             [noResultsAlert runModal];
         }
@@ -284,6 +284,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         [[self progressWindow] close];
         
         OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error communicating with the server! Please try again later!" defaultButton:@"OK" alternateButton:@""];
+        [errorAlert setDefaultButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
         [errorAlert runModal];
     }];
 }
@@ -295,7 +296,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     
     OEHUDAlert *manualSearchAlert = [OEHUDAlert manualGameSearchWithVolumeName:[self volumeName]];
     [manualSearchAlert setDefaultButtonAction:@selector(startManualGameSearch:) andTarget:self];
-    [manualSearchAlert setAlternateButtonAction:@selector(cancelModalWindow:) andTarget:self];
+    [manualSearchAlert setAlternateButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
     [self setAlertCache:manualSearchAlert];
     
     [manualSearchAlert runModal];
@@ -313,8 +314,6 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 
 - (void)startManualImport:(id)sender {
     [self cancelModalWindow:sender];
-    
-    [[self progressWindow] close];
     [self fetchListOfEngines];
 }
 
@@ -324,15 +323,13 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             [self showSelectionAlertWithItems:mappingResult];
         }
         else {
-            [[self progressWindow] close];
-            
             OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Oops! No engines were found in the database! Please try again later!" defaultButton:@"OK" alternateButton:@""];
+            [errorAlert setDefaultButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
             [errorAlert runModal];
         }
     } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
-        [[self progressWindow] close];
-        
         OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error communicating with the server! Please try again later!" defaultButton:@"OK" alternateButton:@""];
+        [errorAlert setDefaultButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
         [errorAlert runModal];
     }];
 }
@@ -342,17 +339,33 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     NSMutableArray *engines = [NSMutableArray arrayWithArray:[items array]];
     
     OEHUDAlert *selectionAlert = [OEHUDAlert showManualImportAlertWithVolumeName:[self volumeName] andPopupItems:engines];
-    [selectionAlert setAlternateButtonAction:@selector(cancelModalWindow:) andTarget:self];
-    
-    [selectionAlert runModal];
+
+    [self setAlertCache:selectionAlert];
+    [[self alertCache] setAlternateButtonAction:@selector(closeCachedWindowAndStop:) andTarget:self];
+    [[self alertCache] open];
 }
 
 - (void)closeWindowAndStop:(id)sender {
+    [self stopImportForItem:[self currentItem] withError:nil];
     [[self progressWindow] close];
+}
+
+- (void)closeCachedWindow:(id)sender {
+    [[self alertCache] close];
+}
+
+- (void)closeCachedWindowAndStop:(id)sender {
+    [self stopImportForItem:[self currentItem] withError:nil];
+    [[self alertCache] close];
 }
 
 - (void)cancelModalWindow:(id)sender {
     [NSApp stopModal];
+}
+
+- (void)cancelModalWindowAndStop:(id)sender {
+    [NSApp stopModal];
+    [self stopImportForItem:[self currentItem] withError:nil];
 }
 
 - (void)scheduleItemForNextStep:(BLImportItem *)item
