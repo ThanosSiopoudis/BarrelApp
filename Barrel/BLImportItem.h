@@ -22,6 +22,7 @@ typedef enum {
     BLImportStepCheckVolume,
     BLImportStepCheckDirectory,
     BLImportStepLookupEntry,
+    BLImportStepDownloadBundle,
     BLImportStepBuildEngine,
     BLImportStepCreateBundle,
     BLImportStepOrganize,
