@@ -1,5 +1,4 @@
 language: objective-c
-script: travisBuild.sh
 env:
   global:
     - XCWORKSPACE=BarrelWorkspace.xcworkspace
