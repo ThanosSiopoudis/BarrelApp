@@ -205,7 +205,7 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
     return  alert;
 }
 
-+ (id)showManualImportAlertWithVolumeName:(NSString *)volumeName {
++ (id)showManualImportAlertWithVolumeName:(NSString *)volumeName andPopupItems:(NSMutableArray *)items {
     OEHUDAlert *alert = [[OEHUDAlert alloc] init];
     [alert setShowsInputField:YES];
     [alert setInputLabelText:@"Game"];
@@ -213,10 +213,10 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
     
     [alert setShowsPopupButton:YES];
     [alert setPopupButtonLabelText:@"Engine"];
+    [alert setPopupButtonItems:items];
     
-    [alert setAlternateButtonTitle:@""];
-    [alert setOtherButtonTitle:@""];
     [alert setDefaultButtonTitle:@"OK"];
+    [alert setAlternateButtonTitle:@"Cancel"];
     
     return alert;
 }
