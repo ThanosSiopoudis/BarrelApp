@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>Barr</string>
 	<key>CFBundleVersion</key>
-	<string>a23</string>
+	<string>a24</string>
 	<key>FRFeedbackReporter.targetURL</key>
 	<string>http://openemu.org/feedback/submit.php?project=%@</string>
 	<key>LSApplicationCategoryType</key>
