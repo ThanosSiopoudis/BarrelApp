@@ -911,7 +911,6 @@
 		94F6CB7B16DD727600CD48A4 /* OECheats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OECheats.m; sourceTree = "<group>"; };
 		C117A941172688B900143421 /* BLImportItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLImportItem.h; sourceTree = "<group>"; };
 		C117A942172688BA00143421 /* BLImportItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLImportItem.m; sourceTree = "<group>"; };
-		C176B62C1754D379003E65EB /* travisBuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = travisBuild.sh; sourceTree = "<group>"; };
 		C19A4EE3174B83710023E064 /* AC_Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AC_Game.m; sourceTree = "<group>"; };
 		C1A030C6173111B900BF897F /* AppCakeAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCakeAPI.h; sourceTree = "<group>"; };
 		C1A030C7173111B900BF897F /* AppCakeAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCakeAPI.m; sourceTree = "<group>"; };
@@ -1169,7 +1168,6 @@
 		2A37F4AAFDCFA73011CA2CEA /* OpenEmu */ = {
 			isa = PBXGroup;
 			children = (
-				C176B62C1754D379003E65EB /* travisBuild.sh */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
