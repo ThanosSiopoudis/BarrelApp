@@ -647,7 +647,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 }
 
 - (NSMutableArray *)popupButtonItems {
-    NSMutableArray *popupItems = [[NSMutableArray alloc] init];
+    NSMutableArray *popupItems = [[NSMutableArray alloc] initWithArray:[[[self popupButton] menu] itemArray]];
     
     return popupItems;
 }
