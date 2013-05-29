@@ -43,7 +43,7 @@ extern NSString *const OEMaxSaveGameNameLengthKey;
 + (id)removeGamesFromLibraryAlert:(BOOL)multipleGames;
 + (id)removeGameFilesFromLibraryAlert:(BOOL)multipleGames;
 
-+ (id)showProgressAlertWithMessage:(NSString *)message andTitle:(NSString *)title;
++ (id)showProgressAlertWithMessage:(NSString *)message andTitle:(NSString *)title indeterminate:(BOOL)indeterminate;
 + (id)showManualImportAlertWithVolumeName:(NSString *)volumeName andPopupItems:(NSMutableArray *)items;
 + (id)alertWithMessageText:(NSString *)msgText defaultButton:(NSString *)defaultButtonLabel alternateButton:(NSString *)alternateButtonLabel otherButton:(NSString *)otherButton;
 + (id)manualGameSearchWithVolumeName:(NSString *)gameName;

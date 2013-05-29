@@ -195,10 +195,15 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
     return alert;
 }
 
-+ (id)showProgressAlertWithMessage:(NSString *)message andTitle:(NSString *)title {
++ (id)showProgressAlertWithMessage:(NSString *)message andTitle:(NSString *)title indeterminate:(BOOL)indeterminate {
     OEHUDAlert *alert = [[OEHUDAlert alloc] init];
     [alert setTitle:title];
-    [alert setShowsIndeterminateProgressbar:YES];
+    
+    if (indeterminate)
+        [alert setShowsIndeterminateProgressbar:YES];
+    else
+        [alert setShowsProgressbar:YES];
+    
     [alert setMessageText:message];
     [alert setDefaultButtonTitle:@"Cancel"];
     
