@@ -36,6 +36,7 @@
 #import "AppCakeAPI.h"
 #import "AC_WineBuild.h"
 #import "BLFileDownloader.h"
+#import "BLArchiver.h"
 
 static const int MaxSimultaneousImports = 1; // imports can't really be simultaneous because access to queue is not ready for multithreadding right now
 
@@ -298,12 +299,24 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)performImportStepDownloadBundle:(BLImportItem *)item {
+    [item setImportState:BLImportItemStatusWait];
     OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading..." andTitle:@"Download" indeterminate:NO];
     [self setAlertCache:downloadAlert];
     [[self alertCache] open];
     NSString *path = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
     BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
-    [fileDownloader downloadWithNSURLConnectionFromURL:[self downloadPath]];
+    [fileDownloader downloadWithNSURLConnectionFromURL:[self downloadPath] withCompletionBlock:^(int result, NSString *resultPath) {
+        if (result) {
+            // The bundle has been downloaded, so proceed with extracting it and deleting the archive
+            [[self alertCache] close];
+            [self setAlertCache:[OEHUDAlert showProgressAlertWithMessage:@"Extracting archive..." andTitle:@"Extracting..." indeterminate:NO]];
+            [[self alertCache] open];
+            BLArchiver *archiver = [[BLArchiver alloc] initWithArchiveAtPath:resultPath andProgressBar:[[self alertCache] progressbar]];
+            dispatch_async(dispatchQueue, ^{
+                [archiver startExtractingToPath:path];
+            });
+        }
+    }];
 }
 
 - (void)reSearchItem:(id)sender {
