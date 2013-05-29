@@ -316,6 +316,7 @@
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		94F6CB7C16DD727600CD48A4 /* OECheats.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F6CB7B16DD727600CD48A4 /* OECheats.m */; };
 		C117A943172688BA00143421 /* BLImportItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C117A942172688BA00143421 /* BLImportItem.m */; };
+		C15C68F01756546100969F6D /* BLArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = C15C68EF1756546100969F6D /* BLArchiver.m */; };
 		C176B63017551589003E65EB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C176B62F17551588003E65EB /* SystemConfiguration.framework */; };
 		C19A4EE4174B83710023E064 /* AC_Game.m in Sources */ = {isa = PBXBuildFile; fileRef = C19A4EE3174B83710023E064 /* AC_Game.m */; };
 		C1A030C8173111B900BF897F /* AppCakeAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = C1A030C7173111B900BF897F /* AppCakeAPI.m */; };
@@ -910,6 +911,8 @@
 		94F6CB7B16DD727600CD48A4 /* OECheats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OECheats.m; sourceTree = "<group>"; };
 		C117A941172688B900143421 /* BLImportItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLImportItem.h; sourceTree = "<group>"; };
 		C117A942172688BA00143421 /* BLImportItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLImportItem.m; sourceTree = "<group>"; };
+		C15C68EE1756546100969F6D /* BLArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLArchiver.h; sourceTree = "<group>"; };
+		C15C68EF1756546100969F6D /* BLArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLArchiver.m; sourceTree = "<group>"; };
 		C176B62F17551588003E65EB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C19A4EE3174B83710023E064 /* AC_Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AC_Game.m; sourceTree = "<group>"; };
 		C1A030C6173111B900BF897F /* AppCakeAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCakeAPI.h; sourceTree = "<group>"; };
@@ -1009,6 +1012,7 @@
 		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C176B62F17551588003E65EB /* SystemConfiguration.framework */,
 				83B867BD171D63C70038988C /* DiskArbitration.framework */,
 				14A9073916FAA0AE005E2635 /* FeedbackReporter.framework */,
 				8CCBC0C8169B323100141631 /* Cg.framework */,
@@ -1171,7 +1175,6 @@
 		2A37F4AAFDCFA73011CA2CEA /* OpenEmu */ = {
 			isa = PBXGroup;
 			children = (
-				C176B62F17551588003E65EB /* SystemConfiguration.framework */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
@@ -1772,8 +1775,6 @@
 			children = (
 				82C5EFAB1237E76C001262F7 /* AsyncUdpSocket.h */,
 				82C5EFAC1237E76C001262F7 /* AsyncUdpSocket.m */,
-				C1A2101E1755F7FD0061A438 /* BLFileDownloader.h */,
-				C1A2101F1755F7FD0061A438 /* BLFileDownloader.m */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -1781,6 +1782,10 @@
 		82DE498810263A09007184EB /* Downloader */ = {
 			isa = PBXGroup;
 			children = (
+				C15C68EE1756546100969F6D /* BLArchiver.h */,
+				C15C68EF1756546100969F6D /* BLArchiver.m */,
+				C1A2101E1755F7FD0061A438 /* BLFileDownloader.h */,
+				C1A2101F1755F7FD0061A438 /* BLFileDownloader.m */,
 				8375E14D1477FC0D0018DA1F /* OECoreUpdater.h */,
 				8375E14E1477FC0D0018DA1F /* OECoreUpdater.m */,
 				839310BA147802380020058E /* OECoreDownload.h */,
@@ -2603,6 +2608,7 @@
 				C1A030D717316E0A00BF897F /* AC_WineBuild.m in Sources */,
 				C19A4EE4174B83710023E064 /* AC_Game.m in Sources */,
 				C1A210201755F7FD0061A438 /* BLFileDownloader.m in Sources */,
+				C15C68F01756546100969F6D /* BLArchiver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
