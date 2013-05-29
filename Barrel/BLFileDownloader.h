@@ -34,8 +34,9 @@
 @property(readwrite) NSMutableData *receivedData;
 @property(readwrite) long long totalBytes;
 @property(readwrite) NSString *savePath;
+@property(nonatomic, copy) void (^completionBlock)(int, NSString *);
 
 - (id)initWithProgressBar:(OEHUDProgressbar *)progressBar saveToPath:(NSString *)path;
-- (void)downloadWithNSURLConnectionFromURL:(NSString *)currentURL;
+- (void)downloadWithNSURLConnectionFromURL:(NSString *)currentURL withCompletionBlock:(void (^)(int, NSString *))completionBlock;
 
 @end

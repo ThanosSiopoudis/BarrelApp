@@ -45,11 +45,14 @@
     return self;
 }
 
-- (void)downloadWithNSURLConnectionFromURL:(NSString *)currentURL {
+- (void)downloadWithNSURLConnectionFromURL:(NSString *)currentURL withCompletionBlock:(void (^)(int, NSString *))completionBlock {
     [self setCurrentURL:currentURL];
     NSURL *url = [NSURL URLWithString:currentURL];
     NSURLRequest *theRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:60];
+    
     [self setReceivedData:[[NSMutableData alloc] initWithLength:0]];
+    [self setCompletionBlock:[completionBlock copy]];
+    
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self startImmediately:NO];
     if (connection) {
         [connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
@@ -97,6 +100,7 @@
     NSString *pathWithFilename = [NSString stringWithFormat:@"%@/%@", [self savePath], [[self currentURL] lastPathComponent]];
     [[self receivedData] writeToFile:pathWithFilename atomically:YES];
     NSLog(@"File written to path: %@", pathWithFilename);
+    [self completionBlock](1, pathWithFilename);
 }
 
 @end
