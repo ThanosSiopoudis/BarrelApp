@@ -34,6 +34,8 @@
 #import "OEHUDAlert+DefaultAlertsAdditions.h"
 
 #import "AppCakeAPI.h"
+#import "AC_WineBuild.h"
+#import "BLFileDownloader.h"
 
 static const int MaxSimultaneousImports = 1; // imports can't really be simultaneous because access to queue is not ready for multithreadding right now
 
@@ -56,11 +58,13 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 @property(readwrite, nonatomic) NSInteger          totalNumberOfItems;
 @property(readwrite)            NSMutableArray    *queue;
 @property(weak)                 OELibraryDatabase *database;
-@property(readwrite)            OEHUDAlert        *progressWindow;
+@property(readwrite, atomic)    OEHUDAlert        *progressWindow;
 @property(readwrite)            NSString          *volumeName;
+@property(readwrite)            NSString          *gameName;
+@property(readwrite)            NSString          *downloadPath;
 @property(readwrite)            AppCakeAPI        *appCake;
 @property(readwrite)            BLImportItem      *currentItem;
-@property(readwrite)            OEHUDAlert        *alertCache;
+@property(readwrite, atomic)    OEHUDAlert        *alertCache;
 
 - (void)processNextItemIfNeeded;
 
@@ -294,7 +298,12 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)performImportStepDownloadBundle:(BLImportItem *)item {
-    FIXME("Stub");
+    OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading..." andTitle:@"Download" indeterminate:NO];
+    [self setAlertCache:downloadAlert];
+    [[self alertCache] open];
+    NSString *path = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
+    BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
+    [fileDownloader downloadWithNSURLConnectionFromURL:[self downloadPath]];
 }
 
 - (void)reSearchItem:(id)sender {
@@ -349,8 +358,20 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     OEHUDAlert *selectionAlert = [OEHUDAlert showManualImportAlertWithVolumeName:[self volumeName] andPopupItems:engines];
 
     [self setAlertCache:selectionAlert];
-    [[self alertCache] setAlternateButtonAction:@selector(closeCachedWindowAndStop:) andTarget:self];
     [[self alertCache] open];
+    [[self alertCache] setDefaultButtonAction:@selector(setBundleToDownloadWithGameName:) andTarget:self];
+    [[self alertCache] setAlternateButtonAction:@selector(closeCachedWindowAndStop:) andTarget:self];
+}
+
+- (void)setBundleToDownloadWithGameName:(id)sender {
+    [self setGameName:[[self alertCache] stringValue]];
+    AC_WineBuild *build = [[self alertCache] popupButtonSelectedItem];
+    [self setDownloadPath:[NSString stringWithFormat:@"http://api.appcake.co.uk%@", [build archivePath]]];
+    
+    // Close the alert and proceed
+    [[self alertCache] close];
+    [[self currentItem] setImportState:BLImportItemStatusActive];
+    [self scheduleItemForNextStep:[self currentItem]];
 }
 
 - (void)closeWindowAndStop:(id)sender {
@@ -482,7 +503,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     if ([self status] == BLImporterStatusPaused || [self status] == BLImporterStatusStopped)
     {
         // Show a progress window
-        self.progressWindow = [OEHUDAlert showProgressAlertWithMessage:@"Importing game, please wait..." andTitle:@"Importing Game"];
+        self.progressWindow = [OEHUDAlert showProgressAlertWithMessage:@"Importing game, please wait..." andTitle:@"Importing Game" indeterminate:YES];
         
         [[self progressWindow] open];
         
