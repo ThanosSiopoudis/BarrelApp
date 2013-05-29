@@ -795,7 +795,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     [[_window contentView] addSubview:[self otherInputLabelView]];
     
     // Setup Progressbar
-    [[self progressbar] setFrame:NSMakeRect(64, 57, 258, 16)];
+    [[self progressbar] setFrame:NSMakeRect(64, 47, 258, 16)];
     [[self progressbar] setHidden:YES];
     [[self boxView] addSubview:[self progressbar]];
     
