@@ -754,7 +754,6 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     [[self popupButton] setHidden:YES];
     [[self popupButton] setAutoresizingMask:NSViewWidthSizable | NSViewMaxYMargin];
     [[self popupButton] setFocusRingType:NSFocusRingTypeNone];
-    [[self popupButton] setWantsLayer:YES];
     [[self popupButton] setThemeKey:@"dark_popup_button"];
     [[self popupButton] setMenuStyle:1];
     [[_window contentView] addSubview:[self popupButton]];
@@ -779,7 +778,6 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     [[self otherInputField] setFocusRingType:NSFocusRingTypeNone];
     [[self otherInputField] setTarget:self andAction:@selector(buttonAction:)];
     [[self otherInputField] setEditable:YES];
-    [[self otherInputField] setWantsLayer:YES];
     [[self otherInputField] setThemeKey:@"hud_textfield"];
     [[_window contentView] addSubview:[self otherInputField]];
 
