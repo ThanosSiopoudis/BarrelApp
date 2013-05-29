@@ -271,10 +271,6 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             [[self progressWindow] close];
             
             OEHUDAlert *noResultsAlert = [OEHUDAlert alertWithMessageText:@"No results found on the server! You can either search using a different name, or proceed with a manual import." defaultButton:@"Manual Import" alternateButton:@"Manual Search" otherButton:@"Cancel"];
-            /*
-            [[noResultsAlert messageTextView] setFrame:NSMakeRect(self.progressWindow.messageTextView.frame.origin.x, 16.0, self.progressWindow.messageTextView.frame.size.width,
-                                                                         self.progressWindow.messageTextView.frame.size.height)];
-            */
             [noResultsAlert setDefaultButtonAction:@selector(startManualImport:) andTarget:self];
             [noResultsAlert setAlternateButtonAction:@selector(reSearchItem:) andTarget:self];
             [noResultsAlert setOtherButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
