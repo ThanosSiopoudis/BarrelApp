@@ -639,8 +639,10 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 - (void)setPopupButtonItems:(NSMutableArray *)items {
     NSMenu *filterMenu = [[NSMenu alloc] init];
     
-    for(AC_WineBuild *wineBuild in items)
-		[filterMenu addItemWithTitle:[wineBuild name] action:NULL keyEquivalent:@""];
+    for(id bundle in items) {
+		NSMenuItem *buildItem = [filterMenu addItemWithTitle:[bundle name] action:NULL keyEquivalent:@""];
+        [buildItem setRepresentedObject:bundle];
+    }
     
     [[self popupButton] setMenu:filterMenu];
     [[self popupButton] selectItemAtIndex:0];
@@ -650,6 +652,12 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     NSMutableArray *popupItems = [[NSMutableArray alloc] initWithArray:[[[self popupButton] menu] itemArray]];
     
     return popupItems;
+}
+
+- (id)popupButtonSelectedItem {
+    NSMenuItem *selectedItem = [[self popupButton] selectedItem];
+    id item = [selectedItem representedObject];
+    return item;
 }
 
 #pragma mark -

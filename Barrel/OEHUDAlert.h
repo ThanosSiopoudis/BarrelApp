@@ -96,6 +96,7 @@ typedef void (^OEAlertCompletionHandler)(OEHUDAlert *alert, NSUInteger result);
 #pragma mark PopupButtonItems
 - (void)setPopupButtonItems:(NSMutableArray *)items;
 - (NSMutableArray *)popupButtonItems;
+- (id)popupButtonSelectedItem;
 #pragma mark -
 #pragma mark Callbacks
 @property (weak) id target;
