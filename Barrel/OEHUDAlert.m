@@ -175,10 +175,13 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 
 - (void)open
 {
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
     [self OE_autosizeWindow];
     [self setDefaultButtonAction:@selector(close) andTarget:self];
     [_window makeKeyAndOrderFront:self];
     [_window center];
+    [CATransaction commit];
 }
 
 - (void)close
@@ -664,7 +667,9 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 #pragma mark Private Methods
 
 - (void)OE_setupWindow
-{    
+{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
     NSRect frame = [_window frame];
     frame.size = (NSSize){ _OEHUDAlertBoxSideMargin + _OEHUDAlertDefaultBoxWidth + _OEHUDAlertBoxSideMargin, 1 };
     [_window setFrame:frame display:NO];
@@ -778,6 +783,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     [[self otherInputField] setFocusRingType:NSFocusRingTypeNone];
     [[self otherInputField] setTarget:self andAction:@selector(buttonAction:)];
     [[self otherInputField] setEditable:YES];
+    [[self otherInputField] setWantsLayer:YES];
     [[self otherInputField] setThemeKey:@"hud_textfield"];
     [[_window contentView] addSubview:[self otherInputField]];
 
@@ -809,6 +815,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     [[self suppressionButton] setHidden:YES];
     [[self suppressionButton] setTarget:self andAction:@selector(suppressionButtonAction:)];
     [[_window contentView] addSubview:[self suppressionButton]];
+    [CATransaction commit];
 }
 
 - (void)OE_autosizeWindow

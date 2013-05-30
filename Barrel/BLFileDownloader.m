@@ -55,13 +55,16 @@
     
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self startImmediately:NO];
     if (connection) {
-        [connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
-        [connection start];
+        [self setConnection:connection];
     }
     else {
         OEHUDAlert *alert = [OEHUDAlert alertWithMessageText:@"Error connecting to server!" defaultButton:@"OK" alternateButton:@""];
         [alert runModal];
     }
+}
+
+- (void)startDownload {
+    [[self connection] start];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {

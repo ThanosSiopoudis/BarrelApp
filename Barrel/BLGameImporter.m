@@ -300,19 +300,24 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     [self setAlertCache:downloadAlert];
     [[self alertCache] open];
     NSString *path = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
-    BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
-    [fileDownloader downloadWithNSURLConnectionFromURL:[self downloadPath] withCompletionBlock:^(int result, NSString *resultPath) {
-        if (result) {
-            // The bundle has been downloaded, so proceed with extracting it and deleting the archive
-            [[self alertCache] close];
-            [self setAlertCache:[OEHUDAlert showProgressAlertWithMessage:@"Extracting archive..." andTitle:@"Extracting..." indeterminate:NO]];
-            [[self alertCache] open];
-            BLArchiver *archiver = [[BLArchiver alloc] initWithArchiveAtPath:resultPath andProgressBar:[[self alertCache] progressbar]];
-            dispatch_async(dispatchQueue, ^{
-                [archiver startExtractingToPath:path];
-            });
-        }
-    }];
+    
+    // Run the downloader in the main thread
+    dispatch_async(dispatch_get_main_queue(), ^{
+        BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
+        [fileDownloader downloadWithNSURLConnectionFromURL:[self downloadPath] withCompletionBlock:^(int result, NSString *resultPath) {
+            if (result) {
+                // The bundle has been downloaded, so proceed with extracting it and deleting the archive
+                [[self alertCache] close];
+                [self setAlertCache:[OEHUDAlert showProgressAlertWithMessage:@"Extracting archive..." andTitle:@"Extracting..." indeterminate:NO]];
+                [[self alertCache] open];
+                BLArchiver *archiver = [[BLArchiver alloc] initWithArchiveAtPath:resultPath andProgressBar:[[self alertCache] progressbar]];
+                dispatch_async(dispatchQueue, ^{
+                    [archiver startExtractingToPath:path];
+                });
+            }
+        }];
+        [fileDownloader startDownload];
+    });
 }
 
 - (void)reSearchItem:(id)sender {
