@@ -308,15 +308,30 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             if (result) {
                 // The bundle has been downloaded, so proceed with extracting it and deleting the archive
                 [[self alertCache] close];
-                [self setAlertCache:[OEHUDAlert showProgressAlertWithMessage:@"Extracting archive..." andTitle:@"Extracting..." indeterminate:NO]];
-                [[self alertCache] open];
-                BLArchiver *archiver = [[BLArchiver alloc] initWithArchiveAtPath:resultPath andProgressBar:[[self alertCache] progressbar]];
-                dispatch_async(dispatchQueue, ^{
-                    [archiver startExtractingToPath:path];
-                });
+                [self extractArchive:resultPath toPath:path];
             }
         }];
         [fileDownloader startDownload];
+    });
+}
+
+- (void)extractArchive:(NSString *)archivePath toPath:(NSString *)targetPath {
+    [self setAlertCache:[OEHUDAlert showProgressAlertWithMessage:@"Extracting archive..." andTitle:@"Extracting..." indeterminate:NO]];
+    [[self alertCache] open];
+    BLArchiver *archiver = [[BLArchiver alloc] initWithArchiveAtPath:archivePath andProgressBar:[[self alertCache] progressbar]];
+    dispatch_async(dispatchQueue, ^{
+        [archiver startExtractingToPath:targetPath callbackBlock:^(int result){
+            // Delete the archive if the extraction was successful
+            if (result) {
+                BOOL deleteSuccess = [[NSFileManager defaultManager] removeItemAtPath:archivePath error:nil];
+                [[self alertCache] close];
+                if (!deleteSuccess) {
+                    // Non-Fatal error
+                    OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error deleting downloaded archive! Please remove manually." defaultButton:@"OK" alternateButton:@""];
+                    [errorAlert runModal];
+                }
+            }
+        }];
     });
 }
 
