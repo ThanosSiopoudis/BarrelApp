@@ -35,9 +35,10 @@
 @property(readwrite) XADError *archiveError;
 @property(readwrite) OEHUDProgressbar *progress;
 @property(readwrite) long long archiveSize;
+@property(nonatomic, copy) void (^completionBlock)(int);
 
 - (id)initWithArchiveAtPath:(NSString *)archivePath andProgressBar:(OEHUDProgressbar *)progressBar;
-- (void)startExtractingToPath:(NSString *)extractPath;
+- (void)startExtractingToPath:(NSString *)extractPath callbackBlock:(void (^)(int))completionBlock;
 
 @end
 

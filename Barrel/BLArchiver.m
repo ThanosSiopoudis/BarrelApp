@@ -48,8 +48,14 @@
     [[self progress] setValue:bytes];
 }
 
-- (void)startExtractingToPath:(NSString *)extractPath {
+- (void)startExtractingToPath:(NSString *)extractPath callbackBlock:(void (^)(int))completionBlock {
+    [self setCompletionBlock:completionBlock];
     [[self archive] extractTo:extractPath];
+    [self didFinishExtracting];
+}
+
+- (void)didFinishExtracting {
+    [self completionBlock](1);
 }
 
 @end
