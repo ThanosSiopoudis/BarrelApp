@@ -13,7 +13,38 @@
 		C184BFCA1758980B00622EF1 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = C184BFC81758980B00622EF1 /* Credits.rtf */; };
 		C184BFCD1758980B00622EF1 /* BLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C184BFCC1758980B00622EF1 /* BLAppDelegate.m */; };
 		C184BFD01758980B00622EF1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C184BFCE1758980B00622EF1 /* MainMenu.xib */; };
+		C184C0471758A7FF00622EF1 /* BLWineLauncher in CopyFiles */ = {isa = PBXBuildFile; fileRef = C184C0441758A7D800622EF1 /* BLWineLauncher */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C184C0431758A7D800622EF1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C184C03F1758A7D700622EF1 /* BLWineLauncher.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C184C02E1758A7D700622EF1;
+			remoteInfo = BLWineLauncher;
+		};
+		C184C0451758A7FB00622EF1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C184C03F1758A7D700622EF1 /* BLWineLauncher.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C184C02D1758A7D700622EF1;
+			remoteInfo = BLWineLauncher;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C184C0231758A37C00622EF1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				C184C0471758A7FF00622EF1 /* BLWineLauncher in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C184BFB61758980B00622EF1 /* BarrelApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BarrelApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -29,6 +60,7 @@
 		C184BFCB1758980B00622EF1 /* BLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLAppDelegate.h; sourceTree = "<group>"; };
 		C184BFCC1758980B00622EF1 /* BLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLAppDelegate.m; sourceTree = "<group>"; };
 		C184BFCF1758980B00622EF1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		C184C03F1758A7D700622EF1 /* BLWineLauncher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BLWineLauncher.xcodeproj; path = BLWineLauncher/BLWineLauncher.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +81,7 @@
 				C184BFBF1758980B00622EF1 /* BarrelApp */,
 				C184BFB81758980B00622EF1 /* Frameworks */,
 				C184BFB71758980B00622EF1 /* Products */,
+				C184C03F1758A7D700622EF1 /* BLWineLauncher.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,6 +135,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		C184C0401758A7D700622EF1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C184C0441758A7D800622EF1 /* BLWineLauncher */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -112,10 +153,12 @@
 				C184BFB21758980B00622EF1 /* Sources */,
 				C184BFB31758980B00622EF1 /* Frameworks */,
 				C184BFB41758980B00622EF1 /* Resources */,
+				C184C0231758A37C00622EF1 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C184C0461758A7FB00622EF1 /* PBXTargetDependency */,
 			);
 			name = BarrelApp;
 			productName = BarrelApp;
@@ -142,12 +185,28 @@
 			mainGroup = C184BFAD1758980B00622EF1;
 			productRefGroup = C184BFB71758980B00622EF1 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = C184C0401758A7D700622EF1 /* Products */;
+					ProjectRef = C184C03F1758A7D700622EF1 /* BLWineLauncher.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				C184BFB51758980B00622EF1 /* BarrelApp */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		C184C0441758A7D800622EF1 /* BLWineLauncher */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = BLWineLauncher;
+			remoteRef = C184C0431758A7D800622EF1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C184BFB41758980B00622EF1 /* Resources */ = {
@@ -173,6 +232,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C184C0461758A7FB00622EF1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BLWineLauncher;
+			targetProxy = C184C0451758A7FB00622EF1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		C184BFC21758980B00622EF1 /* InfoPlist.strings */ = {
