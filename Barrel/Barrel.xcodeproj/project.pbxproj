@@ -318,6 +318,7 @@
 		C117A943172688BA00143421 /* BLImportItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C117A942172688BA00143421 /* BLImportItem.m */; };
 		C15C68F01756546100969F6D /* BLArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = C15C68EF1756546100969F6D /* BLArchiver.m */; };
 		C176B63017551589003E65EB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C176B62F17551588003E65EB /* SystemConfiguration.framework */; };
+		C184BFE017589B5200622EF1 /* BarrelApp.app in Copy Files (1 item) */ = {isa = PBXBuildFile; fileRef = C184BFDB1758980C00622EF1 /* BarrelApp.app */; };
 		C19A4EE4174B83710023E064 /* AC_Game.m in Sources */ = {isa = PBXBuildFile; fileRef = C19A4EE3174B83710023E064 /* AC_Game.m */; };
 		C1A030C8173111B900BF897F /* AppCakeAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = C1A030C7173111B900BF897F /* AppCakeAPI.m */; };
 		C1A030CE17312FF700BF897F /* RestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1A030CD17312FF700BF897F /* RestKit.framework */; };
@@ -386,6 +387,13 @@
 			remoteGlobalIDString = C184BFB61758980B00622EF1;
 			remoteInfo = BarrelApp;
 		};
+		C184BFDE17589B3300622EF1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C184BFD61758980B00622EF1 /* BarrelApp.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C184BFB51758980B00622EF1;
+			remoteInfo = BarrelApp;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -420,9 +428,10 @@
 		8309A77E166CE51E0013AD4A /* Copy Files (1 item) */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = Contents/Library/QuickLook;
-			dstSubfolderSpec = 1;
+			dstPath = "";
+			dstSubfolderSpec = 7;
 			files = (
+				C184BFE017589B5200622EF1 /* BarrelApp.app in Copy Files (1 item) */,
 			);
 			name = "Copy Files (1 item)";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2236,6 +2245,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C184BFDF17589B3300622EF1 /* PBXTargetDependency */,
 				143F299C164DE0EC00544CCF /* PBXTargetDependency */,
 			);
 			name = Barrel;
@@ -2647,6 +2657,11 @@
 			isa = PBXTargetDependency;
 			name = MagicKit;
 			targetProxy = 143F299B164DE0EC00544CCF /* PBXContainerItemProxy */;
+		};
+		C184BFDF17589B3300622EF1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BarrelApp;
+			targetProxy = C184BFDE17589B3300622EF1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
