@@ -379,6 +379,13 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = MagicKit;
 		};
+		C184BFDA1758980C00622EF1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C184BFD61758980B00622EF1 /* BarrelApp.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C184BFB61758980B00622EF1;
+			remoteInfo = BarrelApp;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -914,6 +921,7 @@
 		C15C68EE1756546100969F6D /* BLArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLArchiver.h; sourceTree = "<group>"; };
 		C15C68EF1756546100969F6D /* BLArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLArchiver.m; sourceTree = "<group>"; };
 		C176B62F17551588003E65EB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		C184BFD61758980B00622EF1 /* BarrelApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BarrelApp.xcodeproj; path = ../BarrelApp/BarrelApp.xcodeproj; sourceTree = "<group>"; };
 		C19A4EE3174B83710023E064 /* AC_Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AC_Game.m; sourceTree = "<group>"; };
 		C1A030C6173111B900BF897F /* AppCakeAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCakeAPI.h; sourceTree = "<group>"; };
 		C1A030C7173111B900BF897F /* AppCakeAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCakeAPI.m; sourceTree = "<group>"; };
@@ -1180,6 +1188,7 @@
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
 				19C28FB0FE9D524F11CA2CBB /* Products */,
+				C184BFD61758980B00622EF1 /* BarrelApp.xcodeproj */,
 				143F298A164DE0B300544CCF /* MagicKit.xcodeproj */,
 			);
 			name = OpenEmu;
@@ -2155,6 +2164,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C184BFD71758980B00622EF1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C184BFDB1758980C00622EF1 /* BarrelApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		C1A030C31731119200BF897F /* AppCake.api */ = {
 			isa = PBXGroup;
 			children = (
@@ -2251,6 +2268,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = C184BFD71758980B00622EF1 /* Products */;
+					ProjectRef = C184BFD61758980B00622EF1 /* BarrelApp.xcodeproj */;
+				},
+				{
 					ProductGroup = 143F298B164DE0B300544CCF /* Products */;
 					ProjectRef = 143F298A164DE0B300544CCF /* MagicKit.xcodeproj */;
 				},
@@ -2282,6 +2303,13 @@
 			fileType = "compiled.mach-o.executable";
 			path = MagicKitTest;
 			remoteRef = 143F2998164DE0B300544CCF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C184BFDB1758980C00622EF1 /* BarrelApp.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = BarrelApp.app;
+			remoteRef = C184BFDA1758980C00622EF1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
