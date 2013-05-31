@@ -315,6 +315,10 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     });
 }
 
+- (void)performImportStepBuildEngine:(BLImportItem *)item {
+    
+}
+
 - (void)extractArchive:(NSString *)archivePath toPath:(NSString *)targetPath {
     [self setAlertCache:[OEHUDAlert showProgressAlertWithMessage:@"Extracting archive..." andTitle:@"Extracting..." indeterminate:NO]];
     [[self alertCache] open];
@@ -330,6 +334,8 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
                     OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error deleting downloaded archive! Please remove manually." defaultButton:@"OK" alternateButton:@""];
                     [errorAlert runModal];
                 }
+                [[self currentItem] setImportState:BLImportItemStatusActive];
+                [self scheduleItemForNextStep:[self currentItem]];
             }
         }];
     });
