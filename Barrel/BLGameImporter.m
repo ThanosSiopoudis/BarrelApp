@@ -202,6 +202,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
                         [importer performImportStepDownloadBundle:item];
                         break;
                     case BLImportStepBuildEngine:
+                        [importer performImportStepBuildEngine:item];
                         break;
                     case BLImportStepCreateBundle:
                         break;
@@ -316,7 +317,44 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)performImportStepBuildEngine:(BLImportItem *)item {
+    [item setImportState:BLImportItemStatusWait];
+    OEHUDAlert *preparingAlert = [OEHUDAlert showProgressAlertWithMessage:@"Preparing bundle..." andTitle:@"Preparing" indeterminate:YES];
+    [self setAlertCache:preparingAlert];
+    [[self alertCache] open];
     
+    // Copy the empty .app bundle to the tmp directory
+    NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"BarrelApp" ofType:@"app"];
+    NSString *destinationPath = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
+    [[NSFileManager defaultManager] copyItemAtPath:sourcePath toPath:[NSString stringWithFormat:@"%@/BarrelApp.app", destinationPath] error:nil];
+    
+    // Copy the blwine.bundle inside the new application bundle
+    NSError *error = nil;
+    [[NSFileManager defaultManager] createDirectoryAtPath:[NSString stringWithFormat:@"%@/BarrelApp.app/Contents/Frameworks", destinationPath]
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:&error];
+    [[NSFileManager defaultManager] copyItemAtPath:[NSString stringWithFormat:@"%@/blwine.bundle", destinationPath] toPath:[NSString stringWithFormat:@"%@/BarrelApp.app/Contents/Frameworks/blwine.bundle", destinationPath] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/blwine.bundle", destinationPath] error:nil];
+    
+    // Finally, extract the libraries inside the frameworks folder
+    BLArchiver *archiver = [[BLArchiver alloc] initWithArchiveAtPath:[NSString stringWithFormat:@"%@/libraries.zip", destinationPath] andProgressBar:[[self alertCache] progressbar]];
+    [[self alertCache] setShowsIndeterminateProgressbar:NO];
+    [[self alertCache] setShowsProgressbar:YES];
+    [[self alertCache] setMessageText:@"Extracting libraries..."];
+    dispatch_async(dispatchQueue, ^{
+        [archiver startExtractingToPath:[NSString stringWithFormat:@"%@/BarrelApp.app/Contents/Frameworks", destinationPath] callbackBlock:^(int result) {
+            if (result) {
+                // Bundle is ready, remove the archive
+                BOOL deleteSuccess = [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/libraries.zip", destinationPath] error:nil];
+                [[self alertCache] close];
+                if (!deleteSuccess) {
+                    // Non-Fatal error
+                    OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error deleting downloaded archive! Please remove manually." defaultButton:@"OK" alternateButton:@""];
+                    [errorAlert runModal];
+                }
+            }
+        }];
+    });
 }
 
 - (void)extractArchive:(NSString *)archivePath toPath:(NSString *)targetPath {
