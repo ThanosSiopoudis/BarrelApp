@@ -1,7 +1,9 @@
 Barrel for Mac OS X
 =========
-Current Build Status:[![Build Status](https://travis-ci.org/ThanosSiopoudis/BarrelApp.png?branch=master)](https://travis-ci.org/ThanosSiopoudis/BarrelApp)
-=========
+Current Build Status:
+
+[![Build Status](https://travis-ci.org/ThanosSiopoudis/BarrelApp.png?branch=master)](https://travis-ci.org/ThanosSiopoudis/BarrelApp)
+
 A PC game library manager for Wine games on Mac with bundling abilities, based on the source code and amazing
 design of OpenEmu (https://github.com/OpenEmu/OpenEmu)
 
