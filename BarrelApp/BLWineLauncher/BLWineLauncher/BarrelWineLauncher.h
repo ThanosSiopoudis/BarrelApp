@@ -26,7 +26,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BarrelWineLauncher : NSObject
+@interface BarrelWineLauncher : NSObject{
+    dispatch_queue_t dispatchQueue;
+}
 
 @property (readwrite) NSString *scriptPath;
 @property (readwrite) NSArray  *arguments;
