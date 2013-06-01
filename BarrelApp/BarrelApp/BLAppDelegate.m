@@ -45,6 +45,7 @@
     if ([[self execParams] isEqualToString:@"initPrefix"]) {
         // Initialise the wine prefix (wineboot) [synchronous]
         [self initPrefix];
+        [[NSApplication sharedApplication] terminate:nil];
     }
     else {
         // Normal wine launch (wine) [asynchronous]
