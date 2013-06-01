@@ -35,6 +35,7 @@ int main(int argc, const char * argv[])
             [argsArray addObject:[NSString stringWithUTF8String:argv[i]]];
         }
         BarrelWineLauncher *wineLauncher = [[BarrelWineLauncher alloc] initWithArguments:argsArray];
+        [wineLauncher runWine];
     }
     return 0;
 }

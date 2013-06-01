@@ -30,6 +30,10 @@
 
 @property (readwrite) NSString *scriptPath;
 @property (readwrite) NSArray  *arguments;
+@property (readwrite) NSString *executablePath;
+@property (readwrite) NSString *frameworksPath;
+@property (readwrite) NSString *wineBundlePath;
+@property (readwrite) NSString *winePrefixPath;
 
 -(id) initWithArguments:(NSMutableArray *)arguments;
 -(void) runWine;

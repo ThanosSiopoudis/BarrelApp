@@ -29,25 +29,63 @@
 @implementation BarrelWineLauncher
 
 -(id) initWithArguments:(NSMutableArray *)arguments {
+    // [NSThread sleepForTimeInterval:10.0f];
     if (self = [super init]) {
         [self setArguments:arguments];
+        [self setExecutablePath:[[NSBundle mainBundle] executablePath]];
+        [self setFrameworksPath:[NSString stringWithFormat:@"%@/Contents/Frameworks", [[NSBundle mainBundle] bundlePath]]];
+        [self setWineBundlePath:[NSString stringWithFormat:@"%@/blwine.bundle", [self frameworksPath]]];
+        [self setWinePrefixPath:[[NSBundle mainBundle] resourcePath]];
     }
     
     return self;
 }
 
 -(void) runWine {
-    
+    if ([(NSString *)[[self arguments] objectAtIndex:1]isEqualToString:@"initPrefix"]) {
+        [self initWinePrefix];
+    }
 }
 
--(void) runScript:(NSString*)scriptName withArguments:(NSString *)arguments
+-(void) initWinePrefix {
+    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wineboot --init", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self frameworksPath]];
+    [self setScriptPath:@""];
+    // [self runScript:script withArguments:@"" withPath:NO];
+    [self systemCommand:script];
+}
+
+- (NSString *)systemCommand:(NSString *)command
+{
+	FILE *fp;
+	char buff[512];
+	NSMutableString *returnString = [[NSMutableString alloc] init];
+	fp = popen([command cStringUsingEncoding:NSUTF8StringEncoding], "r");
+	while (fgets( buff, sizeof buff, fp))
+    {
+        [returnString appendString:[NSString stringWithCString:buff encoding:NSUTF8StringEncoding]];
+    }
+	pclose(fp);
+	//cut out trailing new line
+	if ([returnString hasSuffix:@"\n"])
+    {
+        [returnString deleteCharactersInRange:NSMakeRange([returnString length]-1,1)];
+    }
+	return [NSString stringWithString:returnString];
+}
+
+-(void) runScript:(NSString*)scriptName withArguments:(NSString *)arguments withPath:(BOOL)hasPath
 {
     NSTask *task;
     task = [[NSTask alloc] init];
     
     NSArray *argumentsArray;
-    NSString* newpath = [NSString stringWithFormat:@"%@/%@",[self scriptPath], scriptName];
-    [task setLaunchPath: newpath];
+    if (hasPath) {
+        NSString* newpath = [NSString stringWithFormat:@"%@/%@",[self scriptPath], scriptName];
+        [task setLaunchPath: newpath];
+    }
+    else {
+        [task setLaunchPath: scriptName];
+    }
     argumentsArray = [NSArray arrayWithObjects:arguments, nil];
     [task setArguments: argumentsArray];
     
