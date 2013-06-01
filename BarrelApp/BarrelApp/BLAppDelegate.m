@@ -54,7 +54,7 @@
         dispatch_set_target_queue(dispatchQueue, priority);
         
         dispatch_async(dispatchQueue, ^{
-            [self runScript:@"BLWineLauncher" withArguments:@""];
+            [self runScript:@"BLWineLauncher" withArguments:@"" shouldWaitForProcess:NO];
         });
         
         [[NSApplication sharedApplication] terminate:nil];
@@ -62,12 +62,11 @@
 }
 
 - (void)initPrefix {
-    [self runScript:@"BLWineLauncher" withArguments:[self execParams]];
+    [self runScript:@"BLWineLauncher" withArguments:[self execParams] shouldWaitForProcess:YES];
     [[NSApplication sharedApplication] terminate:nil];
 }
 
-- (void)runScript:(NSString*)scriptName withArguments:(NSString *)arguments
-{
+- (void)runScript:(NSString*)scriptName withArguments:(NSString *)arguments shouldWaitForProcess:(BOOL)waitForProcess {
     NSTask *task;
     task = [[NSTask alloc] init];
     
@@ -85,6 +84,14 @@
     file = [pipe fileHandleForReading];
     
     [task launch];
+    
+    if (waitForProcess) {
+        NSData *data;
+        data = [file readDataToEndOfFile];
+        
+        NSString *string;
+        string = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+    }
 }
 
 @end
