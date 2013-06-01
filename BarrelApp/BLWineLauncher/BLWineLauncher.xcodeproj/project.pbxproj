@@ -11,6 +11,8 @@
 		C184C0351758A7D700622EF1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C184C0341758A7D700622EF1 /* main.m */; };
 		C184C0391758A7D700622EF1 /* BLWineLauncher.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C184C0381758A7D700622EF1 /* BLWineLauncher.1 */; };
 		C184C04B1758B34E00622EF1 /* BarrelWineLauncher.m in Sources */ = {isa = PBXBuildFile; fileRef = C184C04A1758B34E00622EF1 /* BarrelWineLauncher.m */; };
+		E282C776175A65F900DD4409 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E282C775175A65F900DD4409 /* ApplicationServices.framework */; };
+		E282C778175A786100DD4409 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E282C777175A786100DD4409 /* AppKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +36,8 @@
 		C184C0381758A7D700622EF1 /* BLWineLauncher.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = BLWineLauncher.1; sourceTree = "<group>"; };
 		C184C0491758B34E00622EF1 /* BarrelWineLauncher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarrelWineLauncher.h; sourceTree = "<group>"; };
 		C184C04A1758B34E00622EF1 /* BarrelWineLauncher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarrelWineLauncher.m; sourceTree = "<group>"; };
+		E282C775175A65F900DD4409 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		E282C777175A786100DD4409 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +45,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E282C778175A786100DD4409 /* AppKit.framework in Frameworks */,
+				E282C776175A65F900DD4409 /* ApplicationServices.framework in Frameworks */,
 				C184C0321758A7D700622EF1 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,6 +74,8 @@
 		C184C0301758A7D700622EF1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E282C777175A786100DD4409 /* AppKit.framework */,
+				E282C775175A65F900DD4409 /* ApplicationServices.framework */,
 				C184C0311758A7D700622EF1 /* Foundation.framework */,
 			);
 			name = Frameworks;
@@ -187,7 +195,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -214,7 +222,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -256,6 +264,7 @@
 				C184C03E1758A7D700622EF1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
