@@ -318,9 +318,11 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 
 - (void)performImportStepBuildEngine:(BLImportItem *)item {
     [item setImportState:BLImportItemStatusWait];
-    OEHUDAlert *preparingAlert = [OEHUDAlert showProgressAlertWithMessage:@"Preparing bundle..." andTitle:@"Preparing" indeterminate:YES];
-    [self setAlertCache:preparingAlert];
-    [[self alertCache] open];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        OEHUDAlert *preparingAlert = [OEHUDAlert showProgressAlertWithMessage:@"Preparing bundle..." andTitle:@"Preparing" indeterminate:YES];
+        [self setAlertCache:preparingAlert];
+        [[self alertCache] open];
+    });
     
     // Copy the empty .app bundle to the tmp directory
     NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"BarrelApp" ofType:@"app"];
