@@ -66,6 +66,7 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 @property(readwrite)            AppCakeAPI        *appCake;
 @property(readwrite)            BLImportItem      *currentItem;
 @property(readwrite, atomic)    OEHUDAlert        *alertCache;
+@property(readwrite)            NSString          *scriptPath;
 
 - (void)processNextItemIfNeeded;
 
@@ -348,15 +349,52 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             if (result) {
                 // Bundle is ready, remove the archive
                 BOOL deleteSuccess = [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/libraries.zip", destinationPath] error:nil];
-                [[self alertCache] close];
+                
                 if (!deleteSuccess) {
                     // Non-Fatal error
                     OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error deleting downloaded archive! Please remove manually." defaultButton:@"OK" alternateButton:@""];
                     [errorAlert runModal];
                 }
+                [[self alertCache] setShowsProgressbar: NO];
+                [[self alertCache] setShowsIndeterminateProgressbar:YES];
+                [[self alertCache] setMessageText:@"Initializing Wine Prefix..."];
+                [self runScript:[NSString stringWithFormat:@"%@/BarrelApp.app", destinationPath] withArguments:[NSArray arrayWithObjects:@"--exec", @"initPrefix", nil] shouldWaitForProcess:YES];
+                [[self alertCache] close];
+                [item setImportState:BLImportItemStatusActive];
+                [self scheduleItemForNextStep:item];
             }
         }];
     });
+}
+
+#pragma mark Perform Helper Methods
+- (void)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess
+{
+    NSTask *task;
+    task = [[NSTask alloc] init];
+    
+    NSBundle *barrelAppBundle = [NSBundle bundleWithPath:scriptName];
+    NSArray *argumentsArray;
+    [task setLaunchPath: [barrelAppBundle executablePath]];
+    argumentsArray = arguments;
+    [task setArguments: argumentsArray];
+    
+    NSPipe *pipe;
+    pipe = [NSPipe pipe];
+    [task setStandardOutput: pipe];
+    
+    NSFileHandle *file;
+    file = [pipe fileHandleForReading];
+    
+    [task launch];
+    
+    if (waitForProcess) {
+        NSData *data;
+        data = [file readDataToEndOfFile];
+        
+        NSString *string;
+        string = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+    }
 }
 
 - (void)extractArchive:(NSString *)archivePath toPath:(NSString *)targetPath {
