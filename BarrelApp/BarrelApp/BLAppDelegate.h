@@ -30,7 +30,8 @@
     dispatch_queue_t dispatchQueue;
 }
 
-@property (assign) IBOutlet NSWindow *window;
-@property (readwrite) NSString *scriptPath;
+@property(assign) IBOutlet NSWindow *window;
+@property(readwrite) NSString *scriptPath;
+@property(readwrite) NSString *execParams;
 
 @end

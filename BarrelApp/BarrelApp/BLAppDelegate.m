@@ -31,18 +31,40 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
     [self setScriptPath:[[[NSBundle mainBundle] executablePath] stringByDeletingLastPathComponent]];
     
-    dispatchQueue = dispatch_queue_create("com.appcake.barrelappqueue", DISPATCH_QUEUE_SERIAL);
-    dispatch_queue_t priority = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
-    dispatch_set_target_queue(dispatchQueue, priority);
+    // First of all, read the arguments passed to the app
+    NSMutableArray *args = [[NSMutableArray alloc] initWithArray:[[NSProcessInfo processInfo] arguments]];
+    // Get the first argument to decide what we need to do
+    for (int i=0; i<[args count]; i++) {
+        if ([(NSString *)[args objectAtIndex:i] isEqualToString:@"--exec"]) {
+            // This is our custom argument, so get the param from the next index
+            [self setExecParams:(NSString *)[args objectAtIndex:i+1]];
+        }
+    }
     
-    dispatch_async(dispatchQueue, ^{
-        [self runScript:@"BLWineLauncher" withArguments:@""];
-    });
-    
+    if ([[self execParams] isEqualToString:@"initPrefix"]) {
+        // Initialise the wine prefix (wineboot) [synchronous]
+        [self initPrefix];
+    }
+    else {
+        // Normal wine launch (wine) [asynchronous]
+        dispatchQueue = dispatch_queue_create("com.appcake.barrelappqueue", DISPATCH_QUEUE_SERIAL);
+        dispatch_queue_t priority = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+        dispatch_set_target_queue(dispatchQueue, priority);
+        
+        dispatch_async(dispatchQueue, ^{
+            [self runScript:@"BLWineLauncher" withArguments:@""];
+        });
+        
+        [[NSApplication sharedApplication] terminate:nil];
+    }
+}
+
+- (void)initPrefix {
+    [self runScript:@"BLWineLauncher" withArguments:[self execParams]];
     [[NSApplication sharedApplication] terminate:nil];
 }
 
--(void) runScript:(NSString*)scriptName withArguments:(NSString *)arguments
+- (void)runScript:(NSString*)scriptName withArguments:(NSString *)arguments
 {
     NSTask *task;
     task = [[NSTask alloc] init];
