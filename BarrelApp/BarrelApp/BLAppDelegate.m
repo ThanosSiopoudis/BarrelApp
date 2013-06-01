@@ -29,6 +29,7 @@
 @implementation BLAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
+    // [NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
     [self setScriptPath:[[[NSBundle mainBundle] executablePath] stringByDeletingLastPathComponent]];
     
     // First of all, read the arguments passed to the app
