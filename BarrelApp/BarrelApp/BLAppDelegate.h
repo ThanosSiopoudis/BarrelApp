@@ -32,6 +32,7 @@
 
 @property(assign) IBOutlet NSWindow *window;
 @property(readwrite) NSString *scriptPath;
+@property(readwrite) NSString *runParams;
 @property(readwrite) NSString *execParams;
 
 @end

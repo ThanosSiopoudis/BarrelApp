@@ -40,11 +40,18 @@
             // This is our custom argument, so get the param from the next index
             [self setExecParams:(NSString *)[args objectAtIndex:i+1]];
         }
+        else if ([(NSString *)[args objectAtIndex:i] isEqualToString:@"--run"]) {
+            [self setRunParams:(NSString *)[args objectAtIndex:i+1]];
+        }
     }
     
     if ([[self execParams] isEqualToString:@"initPrefix"]) {
         // Initialise the wine prefix (wineboot) [synchronous]
         [self initPrefix];
+        [[NSApplication sharedApplication] terminate:nil];
+    }
+    else if ([[self runParams] length] > 0) {
+        [self runWithParams];
         [[NSApplication sharedApplication] terminate:nil];
     }
     else {
@@ -59,6 +66,11 @@
         
         [[NSApplication sharedApplication] terminate:nil];
     }
+}
+
+- (void)runWithParams {
+    [self runScript:@"BLWineLauncher" withArguments:[self runParams] shouldWaitForProcess:YES];
+    [[NSApplication sharedApplication] terminate:nil];
 }
 
 - (void)initPrefix {

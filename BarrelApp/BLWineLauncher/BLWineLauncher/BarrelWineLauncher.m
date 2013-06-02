@@ -53,6 +53,15 @@
     if ([(NSString *)[[self arguments] objectAtIndex:1]isEqualToString:@"initPrefix"]) {
         [self initWinePrefix];
     }
+    else {
+        [self runWineWithWindowsBinary:(NSString *)[[self arguments] objectAtIndex:1]];
+    }
+}
+
+-(void) runWineWithWindowsBinary:(NSString *)binaryPath {
+    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine %@ > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self frameworksPath], binaryPath];
+    [self setScriptPath:@""];
+    [self systemCommand:script shouldWaitForProcess:YES];
 }
 
 -(void) initWinePrefix {
