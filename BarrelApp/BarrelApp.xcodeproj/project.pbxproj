@@ -14,6 +14,7 @@
 		C184BFCD1758980B00622EF1 /* BLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C184BFCC1758980B00622EF1 /* BLAppDelegate.m */; };
 		C184BFD01758980B00622EF1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C184BFCE1758980B00622EF1 /* MainMenu.xib */; };
 		C184C0471758A7FF00622EF1 /* BLWineLauncher in CopyFiles */ = {isa = PBXBuildFile; fileRef = C184C0441758A7D800622EF1 /* BLWineLauncher */; };
+		E2C88587175ADAEF0036F0A2 /* Barrel_Empty.icns in Resources */ = {isa = PBXBuildFile; fileRef = E2C88586175ADAEF0036F0A2 /* Barrel_Empty.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		C184BFCC1758980B00622EF1 /* BLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLAppDelegate.m; sourceTree = "<group>"; };
 		C184BFCF1758980B00622EF1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		C184C03F1758A7D700622EF1 /* BLWineLauncher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BLWineLauncher.xcodeproj; path = BLWineLauncher/BLWineLauncher.xcodeproj; sourceTree = "<group>"; };
+		E2C88586175ADAEF0036F0A2 /* Barrel_Empty.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Barrel_Empty.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 		C184BFAD1758980B00622EF1 = {
 			isa = PBXGroup;
 			children = (
+				E2C88586175ADAEF0036F0A2 /* Barrel_Empty.icns */,
 				C184BFBF1758980B00622EF1 /* BarrelApp */,
 				C184BFB81758980B00622EF1 /* Frameworks */,
 				C184BFB71758980B00622EF1 /* Products */,
@@ -216,6 +219,7 @@
 				C184BFC41758980B00622EF1 /* InfoPlist.strings in Resources */,
 				C184BFCA1758980B00622EF1 /* Credits.rtf in Resources */,
 				C184BFD01758980B00622EF1 /* MainMenu.xib in Resources */,
+				E2C88587175ADAEF0036F0A2 /* Barrel_Empty.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
