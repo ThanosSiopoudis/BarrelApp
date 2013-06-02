@@ -75,6 +75,8 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 - (void)performImportStepCheckDirectory:(BLImportItem *)item;
 - (void)performImportStepLookupEntry:(BLImportItem *)item;
 - (void)performImportStepDownloadBundle:(BLImportItem *)item;
+- (void)performImportStepBuildEngine:(BLImportItem *)item;
+- (void)performImportStepCreateBundle:(BLImportItem *)item;
 
 - (void)scheduleItemForNextStep:(BLImportItem *)item;
 - (void)stopImportForItem:(BLImportItem *)item withError:(NSError *)error;
@@ -206,6 +208,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
                         [importer performImportStepBuildEngine:item];
                         break;
                     case BLImportStepCreateBundle:
+                        [importer performImportStepCreateBundle:item];
                         break;
                     case BLImportStepOrganize:
                         break;
@@ -365,6 +368,26 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             }
         }];
     });
+}
+
+- (void)performImportStepCreateBundle:(BLImportItem *)item {
+    // [item setImportState:BLImportItemStatusWait];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        OEHUDAlert *installingAlert = [OEHUDAlert showProgressAlertWithMessage:@"Installing game..." andTitle:@"Installing" indeterminate:YES];
+        [self setAlertCache:installingAlert];
+        [[self alertCache] open];
+    });
+    
+    NSString *newBundlePath = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
+    NSString *newBarrelApp = [NSString stringWithFormat:@"%@/BarrelApp.app", newBundlePath];
+    
+    // Find the setup.exe
+    NSURL *url = [item URL];
+    NSString *setupEXE = [NSString stringWithFormat:@"%@/setup.exe", [url path]];
+    [self runScript:newBarrelApp withArguments:[NSArray arrayWithObjects:@"--run", setupEXE, nil] shouldWaitForProcess:YES];
+    [[self alertCache] close];
+    [item setImportState:BLImportItemStatusActive];
+    [self scheduleItemForNextStep:item];
 }
 
 #pragma mark Perform Helper Methods
