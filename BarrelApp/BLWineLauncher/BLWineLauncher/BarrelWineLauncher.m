@@ -84,7 +84,7 @@
      * so find the stuck process and terminate it to give the
      * wineboot command a chance to finish */
     NSLog(@"Monitoring Wine processes");
-    [NSThread sleepForTimeInterval:20.0f];
+    [NSThread sleepForTimeInterval:25.0f];
     
     // Look for wine and wineserver processes
     NSMutableArray *wineProcesses = [[NSMutableArray alloc] init];
@@ -92,7 +92,7 @@
     while (!GetNextProcess(&psn)) {
         NSDictionary *application = (__bridge NSDictionary *)ProcessInformationCopyDictionary(&psn, kProcessDictionaryIncludeAllInformationMask);
         NSString *bundleName = (NSString *)[application objectForKey:@"CFBundleName"];
-        if ([bundleName isEqualToString:@"wine"] || [bundleName isEqualToString:@"wineserver"]) {
+        if ([bundleName isEqualToString:@"wine"]) {
             [wineProcesses addObject:[NSNumber numberWithInt:[[application objectForKey:@"pid"] intValue]]];
         }
     }
