@@ -30,6 +30,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
     // [NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
+    
+    BOOL isSetup = NO;
     [self setScriptPath:[[[NSBundle mainBundle] executablePath] stringByDeletingLastPathComponent]];
     
     // First of all, read the arguments passed to the app
@@ -43,6 +45,10 @@
         else if ([(NSString *)[args objectAtIndex:i] isEqualToString:@"--run"]) {
             [self setRunParams:(NSString *)[args objectAtIndex:i+1]];
         }
+        else if ([(NSString *)[args objectAtIndex:i] isEqualToString:@"--runSetup"]) {
+            [self setRunParams:(NSString *)[args objectAtIndex:i+1]];
+            isSetup = YES;
+        }
     }
     
     if ([[self execParams] isEqualToString:@"initPrefix"]) {
@@ -51,7 +57,12 @@
         [[NSApplication sharedApplication] terminate:nil];
     }
     else if ([[self runParams] length] > 0) {
-        [self runWithParams];
+        if (isSetup) {
+            [self runSetup];
+        }
+        else {
+            [self runWithParams];
+        }
         [[NSApplication sharedApplication] terminate:nil];
     }
     else {
@@ -66,6 +77,13 @@
         
         [[NSApplication sharedApplication] terminate:nil];
     }
+}
+
+- (void)runSetup {
+    [self runScript:@"BLWineLauncher" withArguments:[self runParams] shouldWaitForProcess:YES];
+    FIXME("Search the files and folders in the prefix for any added .exe files");
+    
+    [[NSApplication sharedApplication] terminate:nil];
 }
 
 - (void)runWithParams {

@@ -384,7 +384,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     // Find the setup.exe
     NSURL *url = [item URL];
     NSString *setupEXE = [NSString stringWithFormat:@"%@/setup.exe", [url path]];
-    [self runScript:newBarrelApp withArguments:[NSArray arrayWithObjects:@"--run", setupEXE, nil] shouldWaitForProcess:YES];
+    [self runScript:newBarrelApp withArguments:[NSArray arrayWithObjects:@"--runSetup", setupEXE, nil] shouldWaitForProcess:YES];
     [[self alertCache] close];
     [item setImportState:BLImportItemStatusActive];
     [self scheduleItemForNextStep:item];
