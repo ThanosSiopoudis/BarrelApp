@@ -32,7 +32,7 @@
 
 -(id) initWithArguments:(NSMutableArray *)arguments {
     
-    // [NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
+    //[NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
     
     if (self = [super init]) {
         [self setArguments:arguments];
@@ -62,6 +62,7 @@
     NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine %@ > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self frameworksPath], binaryPath];
     [self setScriptPath:@""];
     [self systemCommand:script shouldWaitForProcess:YES];
+    [[NSApplication sharedApplication] terminate:nil];
 }
 
 -(void) initWinePrefix {
@@ -74,33 +75,34 @@
     });
     
     [self systemCommand:script shouldWaitForProcess:YES];
+    [[NSApplication sharedApplication] terminate:nil];
 }
 
 - (void)monitorWineProcessForPrefixBuild {
     // ----------- WINE BUG WORKAROUND ----------- //
-    /* Wait 10 seconds for normal wineprefix build operation.
-     * If we still have wine processes running after 10 seconds
+    /* Wait 5 seconds for normal wineprefix build operation.
+     * If we still have wine processes running after 5 seconds
      * this means that wine is stuck at 99% CPU
      * so find the stuck process and terminate it to give the
      * wineboot command a chance to finish */
     NSLog(@"Monitoring Wine processes");
-    [NSThread sleepForTimeInterval:25.0f];
-    
-    // Look for wine and wineserver processes
-    NSMutableArray *wineProcesses = [[NSMutableArray alloc] init];
-    ProcessSerialNumber psn = {0, kNoProcess};
-    while (!GetNextProcess(&psn)) {
-        NSDictionary *application = (__bridge NSDictionary *)ProcessInformationCopyDictionary(&psn, kProcessDictionaryIncludeAllInformationMask);
-        NSString *bundleName = (NSString *)[application objectForKey:@"CFBundleName"];
-        if ([bundleName isEqualToString:@"wine"]) {
-            [wineProcesses addObject:[NSNumber numberWithInt:[[application objectForKey:@"pid"] intValue]]];
-        }
-    }
-    
-    // Scan for a maximum of five times for the stuck process
+    [NSThread sleepForTimeInterval:5.0f];
     BOOL foundStuckProcess = NO;
     for (NSInteger i=0; i<5; i++) {
         if (!foundStuckProcess) {
+            // Look for wine and wineserver processes
+            NSMutableArray *wineProcesses = [[NSMutableArray alloc] init];
+            ProcessSerialNumber psn = {0, kNoProcess};
+            while (!GetNextProcess(&psn)) {
+                NSDictionary *application = (__bridge NSDictionary *)ProcessInformationCopyDictionary(&psn, kProcessDictionaryIncludeAllInformationMask);
+                NSString *bundleName = (NSString *)[application objectForKey:@"CFBundleName"];
+                if ([bundleName isEqualToString:@"wine"]) {
+                    [wineProcesses addObject:[NSNumber numberWithInt:[[application objectForKey:@"pid"] intValue]]];
+                }
+            }
+    
+            // Scan for a maximum of five times for the stuck process
+            [NSThread sleepForTimeInterval:5.0f];
             for (NSNumber *pid in wineProcesses) {
                 NSNumber *cpuUsage = [self get_process_cpu_usage:[pid intValue]];
                 if ([cpuUsage isGreaterThan:[NSNumber numberWithFloat:90.0f]]) {
