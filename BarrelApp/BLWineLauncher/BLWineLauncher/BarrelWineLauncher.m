@@ -40,6 +40,7 @@
         [self setFrameworksPath:[NSString stringWithFormat:@"%@/Contents/Frameworks", [[NSBundle mainBundle] bundlePath]]];
         [self setWineBundlePath:[NSString stringWithFormat:@"%@/blwine.bundle", [self frameworksPath]]];
         [self setWinePrefixPath:[[NSBundle mainBundle] resourcePath]];
+        [self setDyldFallbackPath:[NSString stringWithFormat:@"%@:%@/blwine.bundle/lib:/usr/lib:/usr/libexec:/usr/lib/system:/opt/X11/lib:/opt/local/lib:/usr/X11/lib:/usr/X11R6/lib",[self frameworksPath],[self frameworksPath]]];
         
         dispatchQueue = dispatch_queue_create("com.appcake.blwinelauncher", DISPATCH_QUEUE_SERIAL);
         dispatch_queue_t priority = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
@@ -59,14 +60,14 @@
 }
 
 -(void) runWineWithWindowsBinary:(NSString *)binaryPath {
-    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine %@ > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self frameworksPath], binaryPath];
+    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine %@ > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], binaryPath];
     [self setScriptPath:@""];
     [self systemCommand:script shouldWaitForProcess:YES];
     [[NSApplication sharedApplication] terminate:nil];
 }
 
 -(void) initWinePrefix {
-    NSString *script = [NSString stringWithFormat:@"export WINEDLLOVERRIDES=\"mscoree,mshtml=\";export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wineboot --init > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self frameworksPath]];
+    NSString *script = [NSString stringWithFormat:@"export WINEDLLOVERRIDES=\"mscoree,mshtml=\";export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wineboot --init > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath]];
     [self setScriptPath:@""];
     
     // Start a new thread with the wine monitor
