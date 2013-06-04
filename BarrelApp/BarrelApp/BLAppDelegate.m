@@ -29,7 +29,7 @@
 @implementation BLAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
-    // [NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
+    [NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
     
     BOOL isSetup = NO;
     [self setScriptPath:[[[NSBundle mainBundle] executablePath] stringByDeletingLastPathComponent]];
@@ -80,8 +80,23 @@
 }
 
 - (void)runSetup {
+    NSMutableArray *startingExecutables = [self searchFolderForExecutables:[NSString stringWithFormat:@"%@/drive_c", [[NSBundle mainBundle] resourcePath]]];
+    NSMutableArray *newExecutables = [[NSMutableArray alloc] init];
+    
+    
     [self runScript:@"BLWineLauncher" withArguments:[self runParams] shouldWaitForProcess:YES];
-    // TODO: Search the files and folders in the prefix for any added .exe files
+    
+    NSMutableArray *endExecutables = [self searchFolderForExecutables:[NSString stringWithFormat:@"%@/drive_c", [[NSBundle mainBundle] resourcePath]]];
+    
+    for (NSString *cPath in endExecutables) {
+        if (![startingExecutables containsObject:cPath]) {
+            [newExecutables addObject:cPath];
+        }
+    }
+    
+    for (NSString *result in newExecutables) {
+        NSLog(@"%@", result);
+    }
     
     [[NSApplication sharedApplication] terminate:nil];
 }
@@ -94,6 +109,29 @@
 - (void)initPrefix {
     [self runScript:@"BLWineLauncher" withArguments:[self execParams] shouldWaitForProcess:YES];
     [[NSApplication sharedApplication] terminate:nil];
+}
+
+- (NSMutableArray *)searchFolderForExecutables:(NSString *)folder {
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    
+    NSDirectoryEnumerator *direnum = [[NSFileManager defaultManager] enumeratorAtURL:[NSURL URLWithString:[folder stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]includingPropertiesForKeys:[NSArray arrayWithObjects:NSURLNameKey, NSURLIsDirectoryKey, nil] options:NSDirectoryEnumerationSkipsHiddenFiles errorHandler:nil];
+    
+    NSNumber *isDirectory = nil;
+    NSError *error;
+    
+    for (NSURL *url in direnum) {
+        if (![url getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:&error]) {
+            // ERROR
+        }
+        else if (![isDirectory boolValue]) {
+            // It's a file. Add it to the array if it's an .exe
+            if ([[url pathExtension] isEqualToString:@"exe"]) {
+                [results addObject:[url path]];
+            }
+        }
+    }
+    
+    return results;
 }
 
 - (void)runScript:(NSString*)scriptName withArguments:(NSString *)arguments shouldWaitForProcess:(BOOL)waitForProcess {
