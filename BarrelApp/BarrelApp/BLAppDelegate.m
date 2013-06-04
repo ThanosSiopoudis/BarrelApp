@@ -81,7 +81,7 @@
 
 - (void)runSetup {
     [self runScript:@"BLWineLauncher" withArguments:[self runParams] shouldWaitForProcess:YES];
-    FIXME("Search the files and folders in the prefix for any added .exe files");
+    // TODO: Search the files and folders in the prefix for any added .exe files
     
     [[NSApplication sharedApplication] terminate:nil];
 }
