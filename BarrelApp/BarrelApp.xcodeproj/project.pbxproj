@@ -407,7 +407,7 @@
 		C184BFCC1758980B00622EF1 /* BLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLAppDelegate.m; sourceTree = "<group>"; };
 		C184BFCF1758980B00622EF1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		C184C03F1758A7D700622EF1 /* BLWineLauncher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BLWineLauncher.xcodeproj; path = BLWineLauncher/BLWineLauncher.xcodeproj; sourceTree = "<group>"; };
-		E22471CC175FF24A005822C6 /* Theme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Theme.plist; path = "/Users/Tom/Projects/BarrelApp/Barrel/../Interface Graphics/Theme.plist"; sourceTree = "<absolute>"; };
+		E22471CC175FF24A005822C6 /* Theme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Theme.plist; path = "../Interface Graphics/Theme.plist"; sourceTree = SOURCE_ROOT; };
 		E2C88586175ADAEF0036F0A2 /* Barrel_Empty.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Barrel_Empty.icns; path = ../Barrel_Empty.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
