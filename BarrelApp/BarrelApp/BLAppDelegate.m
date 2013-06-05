@@ -25,11 +25,12 @@
  */
 
 #import "BLAppDelegate.h"
+#import "OEHUDAlert+DefaultAlertsAdditions.h"
 
 @implementation BLAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
-    [NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
+    //[NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
     
     BOOL isSetup = NO;
     [self setScriptPath:[[[NSBundle mainBundle] executablePath] stringByDeletingLastPathComponent]];
@@ -90,12 +91,18 @@
     
     for (NSString *cPath in endExecutables) {
         if (![startingExecutables containsObject:cPath]) {
-            [newExecutables addObject:cPath];
+            // Remove the path to the wrapper and start at drive_c
+            [newExecutables addObject:[cPath stringByReplacingOccurrencesOfString:[[NSBundle mainBundle] resourcePath] withString:@""]];
         }
     }
     
-    for (NSString *result in newExecutables) {
-        NSLog(@"%@", result);
+    if ([newExecutables count] > 0) {
+        OEHUDAlert *execsAlert = [OEHUDAlert alertWithMessageText:@"Please choose the game's main executable" defaultButton:@"OK" alternateButton:@"Cancel" otherButton:@"" popupItems:newExecutables popupButtonLabel:@"Executable"];
+        [execsAlert runModal];
+    }
+    else {
+        OEHUDAlert *noNewExecs = [OEHUDAlert alertWithMessageText:@"No new executables found in the bundle. The installer either failed or was cancelled." defaultButton:@"OK" alternateButton:@"" otherButton:@""];
+        [noNewExecs runModal];
     }
     
     [[NSApplication sharedApplication] terminate:nil];
