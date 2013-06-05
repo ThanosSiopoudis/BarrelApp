@@ -87,7 +87,7 @@
      * so find the stuck process and terminate it to give the
      * wineboot command a chance to finish */
     NSLog(@"Monitoring Wine processes");
-    [NSThread sleepForTimeInterval:5.0f];
+    [NSThread sleepForTimeInterval:10.0f];
     BOOL foundStuckProcess = NO;
     for (NSInteger i=0; i<5; i++) {
         if (!foundStuckProcess) {
