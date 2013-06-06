@@ -81,6 +81,8 @@
     [self waitForWineserverToExitForMaximumTime:60];
     // Wait for all wine processes to exit
     [NSThread sleepForTimeInterval:5.0f];
+    // Now terminate this and all other threads
+    [[NSApplication sharedApplication] terminate:nil];
 }
 
 - (void)makeCustomBundleIDs {
