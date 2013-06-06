@@ -84,7 +84,6 @@
     NSMutableArray *startingExecutables = [self searchFolderForExecutables:[NSString stringWithFormat:@"%@/drive_c", [[NSBundle mainBundle] resourcePath]]];
     NSMutableArray *newExecutables = [[NSMutableArray alloc] init];
     
-    
     [self runScript:@"BLWineLauncher" withArguments:[self runParams] shouldWaitForProcess:YES];
     
     NSMutableArray *endExecutables = [self searchFolderForExecutables:[NSString stringWithFormat:@"%@/drive_c", [[NSBundle mainBundle] resourcePath]]];
