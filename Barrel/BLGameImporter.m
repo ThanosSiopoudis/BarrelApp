@@ -331,15 +331,15 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     // Copy the empty .app bundle to the tmp directory
     NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"BarrelApp" ofType:@"app"];
     NSString *destinationPath = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
-    [[NSFileManager defaultManager] copyItemAtPath:sourcePath toPath:[NSString stringWithFormat:@"%@/BarrelApp.app", destinationPath] error:nil];
+    [[NSFileManager defaultManager] copyItemAtPath:sourcePath toPath:[NSString stringWithFormat:@"%@/%@.app", destinationPath, [self gameName]] error:nil];
     
     // Copy the blwine.bundle inside the new application bundle
     NSError *error = nil;
-    [[NSFileManager defaultManager] createDirectoryAtPath:[NSString stringWithFormat:@"%@/BarrelApp.app/Contents/Frameworks", destinationPath]
+    [[NSFileManager defaultManager] createDirectoryAtPath:[NSString stringWithFormat:@"%@/%@.app/Contents/Frameworks", destinationPath, [self gameName]]
                               withIntermediateDirectories:YES
                                                attributes:nil
                                                     error:&error];
-    [[NSFileManager defaultManager] copyItemAtPath:[NSString stringWithFormat:@"%@/blwine.bundle", destinationPath] toPath:[NSString stringWithFormat:@"%@/BarrelApp.app/Contents/Frameworks/blwine.bundle", destinationPath] error:nil];
+    [[NSFileManager defaultManager] copyItemAtPath:[NSString stringWithFormat:@"%@/blwine.bundle", destinationPath] toPath:[NSString stringWithFormat:@"%@/%@.app/Contents/Frameworks/blwine.bundle", destinationPath, [self gameName]] error:nil];
     [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/blwine.bundle", destinationPath] error:nil];
     
     // Finally, extract the libraries inside the frameworks folder
@@ -348,7 +348,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     [[self alertCache] setShowsProgressbar:YES];
     [[self alertCache] setMessageText:@"Extracting libraries..."];
     dispatch_async(dispatchQueue, ^{
-        [archiver startExtractingToPath:[NSString stringWithFormat:@"%@/BarrelApp.app/Contents/Frameworks", destinationPath] callbackBlock:^(int result) {
+        [archiver startExtractingToPath:[NSString stringWithFormat:@"%@/%@.app/Contents/Frameworks", destinationPath, [self gameName]] callbackBlock:^(int result) {
             if (result) {
                 // Bundle is ready, remove the archive
                 BOOL deleteSuccess = [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/libraries.zip", destinationPath] error:nil];
@@ -361,7 +361,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
                 [[self alertCache] setShowsProgressbar: NO];
                 [[self alertCache] setShowsIndeterminateProgressbar:YES];
                 [[self alertCache] setMessageText:@"Initializing Wine Prefix..."];
-                [self runScript:[NSString stringWithFormat:@"%@/BarrelApp.app", destinationPath] withArguments:[NSArray arrayWithObjects:@"--exec", @"initPrefix", nil] shouldWaitForProcess:YES];
+                [self runScript:[NSString stringWithFormat:@"%@/%@.app", destinationPath, [self gameName]] withArguments:[NSArray arrayWithObjects:@"--exec", @"initPrefix", nil] shouldWaitForProcess:YES];
                 [[self alertCache] close];
                 [item setImportState:BLImportItemStatusActive];
                 [self scheduleItemForNextStep:item];
@@ -379,7 +379,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     });
     
     NSString *newBundlePath = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
-    NSString *newBarrelApp = [NSString stringWithFormat:@"%@/BarrelApp.app", newBundlePath];
+    NSString *newBarrelApp = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];
     
     // Find the setup.exe
     NSURL *url = [item URL];
