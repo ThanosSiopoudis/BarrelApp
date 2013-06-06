@@ -56,9 +56,12 @@
     if ([(NSString *)[[self arguments] objectAtIndex:1]isEqualToString:@"initPrefix"]) {
         [self initWinePrefix];
     }
+    else if ([(NSString *)[[self arguments] objectAtIndex:1]isEqualToString:@"--runSetup"]) {
+        [self runWineWithWindowsBinary:(NSString *)[[self arguments] objectAtIndex:2]];
+        [self keepLauncherAliveUnitWineserverQuit];
+    }
     else {
         [self runWineWithWindowsBinary:(NSString *)[[self arguments] objectAtIndex:1]];
-        [self waitForWineserverToExitForMaximumTime:30];
     }
 }
 
@@ -135,12 +138,44 @@
     [self systemCommand:[NSString stringWithFormat:@"chmod -R 700 \"/tmp/.wine-%@\"",uid] shouldWaitForProcess:YES];
 }
 
+- (void)keepLauncherAliveUnitWineserverQuit {
+    [NSThread sleepForTimeInterval:10.0f];
+    for (;;) {
+        BOOL stillRunning = NO;
+        NSArray *resultArray = [[self systemCommand:[NSString stringWithFormat:@"ps -eo pcpu,pid,args | grep \"%@\"", [self wineserverBundleName]] shouldWaitForProcess:YES] componentsSeparatedByString:@" "];
+        NSMutableArray *cleanArray = [[NSMutableArray alloc] init];
+        // Go through the resultArray and clear out any empty items
+        for (NSString *item in resultArray) {
+            if ([item length] > 0) {
+                [cleanArray addObject:item];
+            }
+        }
+        
+        if ([cleanArray count] > 0 && ![(NSString *)[cleanArray objectAtIndex:8] isEqualToString:@"grep"]) {
+            stillRunning = YES;
+        }
+        if (!stillRunning) {
+            NSLog(@"Wineserver not running");
+            return;
+        }
+        [NSThread sleepForTimeInterval:1.0f];
+    }
+}
+
 - (void)waitForWineserverToExitForMaximumTime:(NSInteger)seconds {
-    [NSThread sleepForTimeInterval:5.0f];
+    [NSThread sleepForTimeInterval:10.0f];
     for (NSInteger i=0; i<seconds; i++) {
         BOOL stillRunning = NO;
         NSArray *resultArray = [[self systemCommand:[NSString stringWithFormat:@"ps -eo pcpu,pid,args | grep \"%@\"", [self wineserverBundleName]] shouldWaitForProcess:YES] componentsSeparatedByString:@" "];
-        if ([resultArray count] > 0 && ![(NSString *)[resultArray objectAtIndex:8] isEqualToString:@"grep"]) {
+        NSMutableArray *cleanArray = [[NSMutableArray alloc] init];
+        // Go through the resultArray and clear out any empty items
+        for (NSString *item in resultArray) {
+            if ([item length] > 0) {
+                [cleanArray addObject:item];
+            }
+        }
+        
+        if ([cleanArray count] > 0 && ![(NSString *)[cleanArray objectAtIndex:8] isEqualToString:@"grep"]) {
             stillRunning = YES;
         }
         if (!stillRunning) {
