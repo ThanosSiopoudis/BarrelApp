@@ -73,7 +73,7 @@
         dispatch_set_target_queue(dispatchQueue, priority);
         
         dispatch_async(dispatchQueue, ^{
-            [self runScript:@"BLWineLauncher" withArguments:@"" shouldWaitForProcess:NO];
+            [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:@"", nil] shouldWaitForProcess:NO];
         });
         
         [[NSApplication sharedApplication] terminate:nil];
@@ -84,7 +84,7 @@
     NSMutableArray *startingExecutables = [self searchFolderForExecutables:[NSString stringWithFormat:@"%@/drive_c", [[NSBundle mainBundle] resourcePath]]];
     NSMutableArray *newExecutables = [[NSMutableArray alloc] init];
     
-    [self runScript:@"BLWineLauncher" withArguments:[self runParams] shouldWaitForProcess:YES];
+    [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:@"--runSetup", [self runParams], nil] shouldWaitForProcess:YES];
     
     NSMutableArray *endExecutables = [self searchFolderForExecutables:[NSString stringWithFormat:@"%@/drive_c", [[NSBundle mainBundle] resourcePath]]];
     
@@ -108,12 +108,12 @@
 }
 
 - (void)runWithParams {
-    [self runScript:@"BLWineLauncher" withArguments:[self runParams] shouldWaitForProcess:YES];
+    [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:[self runParams], nil] shouldWaitForProcess:YES];
     [[NSApplication sharedApplication] terminate:nil];
 }
 
 - (void)initPrefix {
-    [self runScript:@"BLWineLauncher" withArguments:[self execParams] shouldWaitForProcess:YES];
+    [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:[self execParams], nil] shouldWaitForProcess:YES];
     [[NSApplication sharedApplication] terminate:nil];
 }
 
@@ -140,15 +140,13 @@
     return results;
 }
 
-- (void)runScript:(NSString*)scriptName withArguments:(NSString *)arguments shouldWaitForProcess:(BOOL)waitForProcess {
+- (void)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess {
     NSTask *task;
     task = [[NSTask alloc] init];
     
-    NSArray *argumentsArray;
     NSString* newpath = [NSString stringWithFormat:@"%@/%@",[self scriptPath], scriptName];
     [task setLaunchPath: newpath];
-    argumentsArray = [NSArray arrayWithObjects:arguments, nil];
-    [task setArguments: argumentsArray];
+    [task setArguments: arguments];
     
     NSPipe *pipe;
     pipe = [NSPipe pipe];
