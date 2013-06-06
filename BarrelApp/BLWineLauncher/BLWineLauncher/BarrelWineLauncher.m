@@ -166,16 +166,25 @@
      * this means that wine is stuck at 99% CPU
      * so find the stuck process and terminate it to give the
      * wineboot command a chance to finish */
-    [NSThread sleepForTimeInterval:5.0f];
+    [NSThread sleepForTimeInterval:10.0f];
     int loopCount = 30;
     int i;
     for (i=0; i < loopCount; ++i)
     {
-        NSArray *resultArray = [[self systemCommand:@"ps -eo pcpu,pid,args | grep \"wineboot.exe --init\"" shouldWaitForProcess:YES] componentsSeparatedByString:@" "];
-        if ([[resultArray objectAtIndex:0] floatValue] > 90.0)
+        NSArray *resultArray = [[self systemCommand:@"ps -eo pcpu,pid,args | sort -rk 1 | grep \"wine\"" shouldWaitForProcess:YES] componentsSeparatedByString:@" "];
+        NSMutableArray *cleanArray = [[NSMutableArray alloc] init];
+        // Go through the resultArray and clear out any empty items
+        for (NSString *item in resultArray) {
+            if ([item length] > 0) {
+                [cleanArray addObject:item];
+            }
+        }
+        
+        if ([[cleanArray objectAtIndex:0] floatValue] > 95.0)
         {
-            char *tmp;
-            kill((pid_t)(strtoimax([[resultArray objectAtIndex:1] UTF8String], &tmp, 10)), 9);
+            NSLog(@"Found stuck wine process with PID: %@, killing...", (NSString *)[cleanArray objectAtIndex:1]);
+            // Send the kill signal as a system command
+            [self systemCommand:[NSString stringWithFormat:@"kill -9 %@", (NSString *)[cleanArray objectAtIndex:1]] shouldWaitForProcess:YES];
             break;
         }
         [NSThread sleepForTimeInterval:1.0f];
