@@ -32,7 +32,7 @@
 
 -(id) initWithArguments:(NSMutableArray *)arguments {
     
-    //[NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
+    // [NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
     
     if (self = [super init]) {
         [self setArguments:arguments];
@@ -51,23 +51,25 @@
 }
 
 -(void) runWine {
+    [self makeCustomBundleIDs];
+    [self fixWineTempFolder];
     if ([(NSString *)[[self arguments] objectAtIndex:1]isEqualToString:@"initPrefix"]) {
         [self initWinePrefix];
     }
     else {
         [self runWineWithWindowsBinary:(NSString *)[[self arguments] objectAtIndex:1]];
+        [self waitForWineserverToExitForMaximumTime:30];
     }
 }
 
 -(void) runWineWithWindowsBinary:(NSString *)binaryPath {
-    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine %@ > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], binaryPath];
+    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine \"%@\" > \"%@/Wine.log\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], binaryPath, [self winePrefixPath]];
     [self setScriptPath:@""];
     [self systemCommand:script shouldWaitForProcess:YES];
-    [[NSApplication sharedApplication] terminate:nil];
 }
 
 -(void) initWinePrefix {
-    NSString *script = [NSString stringWithFormat:@"export WINEDLLOVERRIDES=\"mscoree,mshtml=\";export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wineboot --init > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath]];
+    NSString *script = [NSString stringWithFormat:@"export WINEDLLOVERRIDES=\"mscoree,mshtml=\";export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine wineboot > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath]];
     [self setScriptPath:@""];
     
     // Start a new thread with the wine monitor
@@ -76,7 +78,85 @@
     });
     
     [self systemCommand:script shouldWaitForProcess:YES];
-    [[NSApplication sharedApplication] terminate:nil];
+    [self waitForWineserverToExitForMaximumTime:60];
+    // Wait for all wine processes to exit
+    [NSThread sleepForTimeInterval:5.0f];
+}
+
+- (void)makeCustomBundleIDs {
+    BOOL makeCustomBundles = YES;
+    
+    NSInteger randomIntOne = (NSInteger)(arc4random_uniform(999999));
+    
+    [self setWineserverBundleName:[NSString stringWithFormat:@"Barrel%ldWineserver", (long)randomIntOne]];
+    [self setWineBundleName:[NSString stringWithFormat:@"Barrel%ldWine", (long)randomIntOne]];
+    
+    // Enumerate Wine's bin folder to look for wine executables
+    NSArray *engineBinFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString stringWithFormat:@"%@/bin", [self wineBundlePath]] error:nil];
+    for (NSString *filename in engineBinFiles) {
+        if ([filename hasPrefix:@"Barrel"]) {
+            makeCustomBundles = NO;
+            if ([filename hasSuffix:@"Wineserver"]) {
+                [self setWineserverBundleName:filename];
+            }
+            else if ([filename hasSuffix:@"Wine"]) {
+                [self setWineBundleName:filename];
+            }
+        }
+    }
+    
+    if (makeCustomBundles) {
+        [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/wine", [self wineBundlePath]] toPath:[NSString stringWithFormat:@"%@/bin/%@", [self wineBundlePath], [self wineBundleName]] error:nil];
+        [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/wineserver", [self wineBundlePath]] toPath:[NSString stringWithFormat:@"%@/bin/%@", [self wineBundlePath], [self wineserverBundleName]] error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/bin/wine", [self wineBundlePath]] error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/bin/wineserver", [self wineBundlePath]] error:nil];
+        NSString *wineBash = [NSString stringWithFormat:@"#!/bin/bash\n\"$(dirname \"$0\")/%@\" \"$@\" &",[self wineBundleName]];
+        NSString *wineServerBash = [NSString stringWithFormat:@"#!/bin/bash\n\"$(dirname \"$0\")/%@\" \"$@\" &",[self wineserverBundleName]];
+        [wineBash writeToFile:[NSString stringWithFormat:@"%@/bin/wine",[self wineBundlePath]] atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        [wineServerBash writeToFile:[NSString stringWithFormat:@"%@/bin/wineserver",[self wineBundlePath]] atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        [self systemCommand:[NSString stringWithFormat:@"chmod -R 777 \"%@/bin\"",[self wineBundlePath]] shouldWaitForProcess:YES];
+    }
+}
+
+- (void)fixWineTempFolder {
+    //make sure the /tmp/.wine-uid folder and lock file are correct since Wine is buggy about it
+    NSDictionary *info = [[NSFileManager defaultManager] attributesOfItemAtPath:[self winePrefixPath] error:nil];
+    NSString *uid = [NSString stringWithFormat: @"%d", getuid()];
+    NSString *inode = [NSString stringWithFormat:@"%lx", [[info objectForKey:NSFileSystemFileNumber] longValue]];
+    NSString *deviceId = [NSString stringWithFormat:@"%lx", [[info objectForKey:NSFileSystemNumber] longValue]];
+    NSString *pathToWineLockFolder = [NSString stringWithFormat:@"/tmp/.wine-%@/server-%@-%@",uid,deviceId,inode];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:pathToWineLockFolder])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:pathToWineLockFolder error:nil];
+    }
+    [[NSFileManager defaultManager] createDirectoryAtPath:pathToWineLockFolder withIntermediateDirectories:YES attributes:nil error:nil];
+    [self systemCommand:[NSString stringWithFormat:@"chmod -R 700 \"/tmp/.wine-%@\"",uid] shouldWaitForProcess:YES];
+}
+
+- (void)waitForWineserverToExitForMaximumTime:(NSInteger)seconds {
+    [NSThread sleepForTimeInterval:5.0f];
+    for (NSInteger i=0; i<seconds; i++) {
+        BOOL stillRunning = NO;
+        NSArray *resultArray = [[self systemCommand:[NSString stringWithFormat:@"ps -eo pcpu,pid,args | grep \"%@\"", [self wineserverBundleName]] shouldWaitForProcess:YES] componentsSeparatedByString:@" "];
+        if ([resultArray count] > 0 && ![(NSString *)[resultArray objectAtIndex:8] isEqualToString:@"grep"]) {
+            stillRunning = YES;
+        }
+        if (!stillRunning) {
+            NSLog(@"Wineserver not running");
+            return;
+        }
+        [NSThread sleepForTimeInterval:1.0f];
+    }
+    
+    // Looks like wine is still running, which is not normal.
+    // Kill all wine and wineserver processes
+    [self killAllWineProcesses];
+}
+
+- (void)killAllWineProcesses {
+    NSLog(@"Forcefully killing wine..");
+    [self systemCommand:[NSString stringWithFormat:@"killall -9 \"%@\" > /dev/null 2>&1", [self wineBundleName]] shouldWaitForProcess:YES];
+    [self systemCommand:[NSString stringWithFormat:@"killall -9 \"%@\" > /dev/null 2>&1", [self wineserverBundleName]] shouldWaitForProcess:YES];
 }
 
 - (void)monitorWineProcessForPrefixBuild {
@@ -86,64 +166,20 @@
      * this means that wine is stuck at 99% CPU
      * so find the stuck process and terminate it to give the
      * wineboot command a chance to finish */
-    NSLog(@"Monitoring Wine processes");
-    [NSThread sleepForTimeInterval:10.0f];
-    BOOL foundStuckProcess = NO;
-    for (NSInteger i=0; i<5; i++) {
-        if (!foundStuckProcess) {
-            // Look for wine and wineserver processes
-            NSMutableArray *wineProcesses = [[NSMutableArray alloc] init];
-            ProcessSerialNumber psn = {0, kNoProcess};
-            while (!GetNextProcess(&psn)) {
-                NSDictionary *application = (__bridge NSDictionary *)ProcessInformationCopyDictionary(&psn, kProcessDictionaryIncludeAllInformationMask);
-                NSString *bundleName = (NSString *)[application objectForKey:@"CFBundleName"];
-                if ([bundleName isEqualToString:@"wine"]) {
-                    [wineProcesses addObject:[NSNumber numberWithInt:[[application objectForKey:@"pid"] intValue]]];
-                }
-            }
-    
-            // Scan for a maximum of five times for the stuck process
-            [NSThread sleepForTimeInterval:5.0f];
-            for (NSNumber *pid in wineProcesses) {
-                NSNumber *cpuUsage = [self get_process_cpu_usage:[pid intValue]];
-                if ([cpuUsage isGreaterThan:[NSNumber numberWithFloat:90.0f]]) {
-                    NSLog(@"Found stuck process! It is %i, Cpu at %i", [pid intValue], [cpuUsage intValue]);
-                    foundStuckProcess = YES;
-                    [[NSRunningApplication runningApplicationWithProcessIdentifier:[pid intValue]] forceTerminate];
-                }
-            }
+    [NSThread sleepForTimeInterval:5.0f];
+    int loopCount = 30;
+    int i;
+    for (i=0; i < loopCount; ++i)
+    {
+        NSArray *resultArray = [[self systemCommand:@"ps -eo pcpu,pid,args | grep \"wineboot.exe --init\"" shouldWaitForProcess:YES] componentsSeparatedByString:@" "];
+        if ([[resultArray objectAtIndex:0] floatValue] > 90.0)
+        {
+            char *tmp;
+            kill((pid_t)(strtoimax([[resultArray objectAtIndex:1] UTF8String], &tmp, 10)), 9);
+            break;
         }
+        [NSThread sleepForTimeInterval:1.0f];
     }
-}
-
-- (NSNumber *)get_process_cpu_usage:(int)pid {
-    NSNumber *retval = [NSNumber numberWithInt:0];
-    char ps_cmd[256];
-    sprintf(ps_cmd, "ps -O %%cpu -p %d", pid); // see man page for ps
-    FILE *fp = popen(ps_cmd, "r");
-    if (fp) {
-        char line[4096];
-        while (line == fgets(line, 4096, fp)) {
-            if (atoi(line) == pid) {
-                char dummy[256];
-                char cpu[256];
-                char time[256];
-                
-                //   PID  %CPU   TT  STAT      TIME COMMAND
-                // 32324   0,0 s001  S+     0:00.00 bc
-                
-                sscanf(line, "%s %s %s %s %s", dummy, cpu, dummy, dummy, time);
-                
-                pclose(fp);
-                retval = [NSNumber numberWithFloat:[[NSString stringWithUTF8String:cpu] floatValue]];
-                
-                return retval;
-            }
-        }
-        pclose(fp);
-    }
-    
-    return retval;
 }
 
 - (NSString *)systemCommand:(NSString *)command shouldWaitForProcess:(BOOL)waitForProcess
@@ -158,11 +194,7 @@
             [returnString appendString:[NSString stringWithCString:buff encoding:NSUTF8StringEncoding]];
         }
         pclose(fp);
-        //cut out trailing new line
-        if ([returnString hasSuffix:@"\n"])
-        {
-            [returnString deleteCharactersInRange:NSMakeRange([returnString length]-1,1)];
-        }
+        returnString = [NSMutableString stringWithString:[returnString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
     }
 	return [NSString stringWithString:returnString];
 }

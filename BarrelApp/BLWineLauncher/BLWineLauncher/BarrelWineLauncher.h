@@ -37,6 +37,8 @@
 @property (readwrite) NSString *wineBundlePath;
 @property (readwrite) NSString *winePrefixPath;
 @property (readwrite) NSString *dyldFallbackPath;
+@property (readwrite) NSString *wineBundleName;
+@property (readwrite) NSString *wineserverBundleName;
 
 -(id) initWithArguments:(NSMutableArray *)arguments;
 -(void) runWine;
