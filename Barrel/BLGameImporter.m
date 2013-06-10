@@ -371,13 +371,9 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)performImportStepCreateBundle:(BLImportItem *)item {
-    // [item setImportState:BLImportItemStatusWait];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        OEHUDAlert *installingAlert = [OEHUDAlert showProgressAlertWithMessage:@"Installing game..." andTitle:@"Installing" indeterminate:YES];
-        [self setAlertCache:installingAlert];
-        [[self alertCache] open];
-    });
+    [item setImportState:BLImportItemStatusWait];
     
+    // Run the setup in BarrelApp and wait for the whole process to finish
     NSString *newBundlePath = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
     NSString *newBarrelApp = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];
     
@@ -385,7 +381,6 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     NSURL *url = [item URL];
     NSString *setupEXE = [NSString stringWithFormat:@"%@/setup.exe", [url path]];
     [self runScript:newBarrelApp withArguments:[NSArray arrayWithObjects:@"--runSetup", setupEXE, nil] shouldWaitForProcess:YES];
-    [[self alertCache] close];
     [item setImportState:BLImportItemStatusActive];
     [self scheduleItemForNextStep:item];
 }

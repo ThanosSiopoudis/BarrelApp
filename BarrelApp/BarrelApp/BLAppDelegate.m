@@ -30,7 +30,11 @@
 @implementation BLAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
-    //[NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
+    [NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
+    
+    dispatchQueue = dispatch_queue_create("com.appcake.barrelappqueue", DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_t priority = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+    dispatch_set_target_queue(dispatchQueue, priority);
     
     BOOL isSetup = NO;
     [self setScriptPath:[[[NSBundle mainBundle] executablePath] stringByDeletingLastPathComponent]];
@@ -64,56 +68,83 @@
         else {
             [self runWithParams];
         }
-        [[NSApplication sharedApplication] terminate:nil];
     }
     else {
         // Normal wine launch (wine) [asynchronous]
-        dispatchQueue = dispatch_queue_create("com.appcake.barrelappqueue", DISPATCH_QUEUE_SERIAL);
-        dispatch_queue_t priority = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
-        dispatch_set_target_queue(dispatchQueue, priority);
-        
         dispatch_async(dispatchQueue, ^{
-            [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:@"", nil] shouldWaitForProcess:NO];
+            [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:@"", nil] shouldWaitForProcess:NO callback:nil];
         });
-        
-        [[NSApplication sharedApplication] terminate:nil];
     }
 }
 
 - (void)runSetup {
-    NSMutableArray *startingExecutables = [self searchFolderForExecutables:[NSString stringWithFormat:@"%@/drive_c", [[NSBundle mainBundle] resourcePath]]];
-    NSMutableArray *newExecutables = [[NSMutableArray alloc] init];
+    // Open the progress window in its own thread
+    OEHUDAlert *installerAlert = [OEHUDAlert showProgressAlertWithMessage:@"Installing game..." andTitle:@"Installing..." indeterminate:YES];
+    [self setAlertCache:installerAlert];
+    [[self alertCache] open];
     
-    [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:@"--runSetup", [self runParams], nil] shouldWaitForProcess:YES];
+    [self setStartingExecutables:[self searchFolderForExecutables:[NSString stringWithFormat:@"%@/drive_c", [[NSBundle mainBundle] resourcePath]]]];
+    [self setTheNewExecutables:[[NSMutableArray alloc] init]];
     
+    dispatch_async(dispatchQueue, ^{
+        [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:@"--runSetup", [self runParams], nil] shouldWaitForProcess:YES callback:^(int result){
+            [[self alertCache] close];
+            [self setupFinished];
+            [[NSApplication sharedApplication] terminate:nil];
+        }];
+    });
+}
+
+- (void)setupFinished {
     NSMutableArray *endExecutables = [self searchFolderForExecutables:[NSString stringWithFormat:@"%@/drive_c", [[NSBundle mainBundle] resourcePath]]];
     
     for (NSString *cPath in endExecutables) {
-        if (![startingExecutables containsObject:cPath]) {
+        if (![[self startingExecutables] containsObject:cPath]) {
             // Remove the path to the wrapper and start at drive_c
-            [newExecutables addObject:[cPath stringByReplacingOccurrencesOfString:[[NSBundle mainBundle] resourcePath] withString:@""]];
+            [[self theNewExecutables] addObject:[cPath stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@/", [[NSBundle mainBundle] resourcePath]] withString:@""]];
         }
     }
     
-    if ([newExecutables count] > 0) {
-        OEHUDAlert *execsAlert = [OEHUDAlert alertWithMessageText:@"Please choose the game's main executable" defaultButton:@"OK" alternateButton:@"Cancel" otherButton:@"" popupItems:newExecutables popupButtonLabel:@"Executable"];
+    if ([[self theNewExecutables] count] > 0) {
+        OEHUDAlert *execsAlert = [OEHUDAlert alertWithMessageText:@"Please choose the game's main executable" defaultButton:@"OK" alternateButton:@"Cancel" otherButton:@"" popupItems:[self theNewExecutables] popupButtonLabel:@".exe"];
         [execsAlert runModal];
     }
     else {
         OEHUDAlert *noNewExecs = [OEHUDAlert alertWithMessageText:@"No new executables found in the bundle. The installer either failed or was cancelled." defaultButton:@"OK" alternateButton:@"" otherButton:@""];
         [noNewExecs runModal];
     }
-    
-    [[NSApplication sharedApplication] terminate:nil];
+}
+
+- (void)waitForWineLauncherToFinish {
+    for (;;) {
+        BOOL stillRunning = NO;
+        NSArray *resultArray = [[self systemCommand:@"ps -eo pcpu,pid,args | grep \"BLWineLauncher\"" callback:nil] componentsSeparatedByString:@" "];
+        NSMutableArray *cleanArray = [[NSMutableArray alloc] init];
+        // Go through the resultArray and clear out any empty items
+        for (NSString *item in resultArray) {
+            if ([item length] > 0) {
+                [cleanArray addObject:item];
+            }
+        }
+        
+        if ([cleanArray count] > 10) {
+            stillRunning = YES;
+        }
+        if (!stillRunning) {
+            NSLog(@"WineLauncher not running");
+            return;
+        }
+        [NSThread sleepForTimeInterval:1.0f];
+    }
 }
 
 - (void)runWithParams {
-    [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:[self runParams], nil] shouldWaitForProcess:YES];
+    [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:[self runParams], nil] shouldWaitForProcess:YES callback:nil];
     [[NSApplication sharedApplication] terminate:nil];
 }
 
 - (void)initPrefix {
-    [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:[self execParams], nil] shouldWaitForProcess:YES];
+    [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:[self execParams], nil] shouldWaitForProcess:YES callback:nil];
     [[NSApplication sharedApplication] terminate:nil];
 }
 
@@ -140,7 +171,25 @@
     return results;
 }
 
-- (void)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess {
+- (NSString *)systemCommand:(NSString *)command callback:(void (^)(int))completionBlock
+{
+	FILE *fp;
+	char buff[512];
+	NSMutableString *returnString = [[NSMutableString alloc] init];
+	fp = popen([command cStringUsingEncoding:NSUTF8StringEncoding], "r");
+    while (fgets( buff, sizeof buff, fp))
+    {
+        [returnString appendString:[NSString stringWithCString:buff encoding:NSUTF8StringEncoding]];
+    }
+    pclose(fp);
+    returnString = [NSMutableString stringWithString:[returnString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+    if (completionBlock) {
+        completionBlock(1);
+    }
+	return [NSString stringWithString:returnString];
+}
+
+- (void)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess callback:(void (^)(int))completionBlock  {
     NSTask *task;
     task = [[NSTask alloc] init];
     
@@ -163,6 +212,9 @@
         
         NSString *string;
         string = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+        if (completionBlock) {
+            completionBlock(1);
+        }
     }
 }
 

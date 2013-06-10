@@ -25,6 +25,7 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import "OEHUDAlert.h"
 
 @interface BLAppDelegate : NSObject <NSApplicationDelegate> {
     dispatch_queue_t dispatchQueue;
@@ -34,5 +35,9 @@
 @property(readwrite) NSString *scriptPath;
 @property(readwrite) NSString *runParams;
 @property(readwrite) NSString *execParams;
+@property(readwrite) OEHUDAlert *alertCache;
+@property(readwrite) BOOL scriptDone;
+@property(readwrite) NSMutableArray *startingExecutables;
+@property(readwrite) NSMutableArray *theNewExecutables;
 
 @end
