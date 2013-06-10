@@ -32,5 +32,9 @@
 	<string>NSApplication</string>
 	<key>Windows Executable</key>
 	<string>none.exe</string>
+	<key>BLWineBin</key>
+	<string>none</string>
+	<key>BLWineserverBin</key>
+	<string>none</string>
 </dict>
 </plist>
