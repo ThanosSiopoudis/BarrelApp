@@ -39,5 +39,7 @@
 @property(readwrite) BOOL scriptDone;
 @property(readwrite) NSMutableArray *startingExecutables;
 @property(readwrite) NSMutableArray *theNewExecutables;
+@property(readwrite) NSString *infoPlistPath;
+@property(readwrite) NSMutableDictionary *infoPlistDict;
 
 @end

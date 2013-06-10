@@ -30,7 +30,9 @@
 @implementation BLAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
-    [NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
+    // [NSThread sleepForTimeInterval:10.0f]; // Wait for debugger
+    [self setInfoPlistPath:[NSString stringWithFormat:@"%@/Contents/Info.plist", [[NSBundle mainBundle] bundlePath]]];
+    [self setInfoPlistDict:[[NSMutableDictionary alloc] initWithContentsOfFile:[self infoPlistPath]]];
     
     dispatchQueue = dispatch_queue_create("com.appcake.barrelappqueue", DISPATCH_QUEUE_SERIAL);
     dispatch_queue_t priority = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
@@ -80,6 +82,8 @@
 - (void)runSetup {
     // Open the progress window in its own thread
     OEHUDAlert *installerAlert = [OEHUDAlert showProgressAlertWithMessage:@"Installing game..." andTitle:@"Installing..." indeterminate:YES];
+    [installerAlert setOtherButtonTitle:@"Kill Wine"];
+    [installerAlert setOtherButtonAction:@selector(killAllWineProcesses) andTarget:self];
     [self setAlertCache:installerAlert];
     [[self alertCache] open];
     
@@ -171,6 +175,15 @@
     return results;
 }
 
+- (void)saveBundleExecutablePath {
+     NSString *execPath = [[self alertCache] popupButtonSelectedItem];
+    if ([execPath length] > 0) {
+        // TODO: Fix this (not currently working
+        [[self infoPlistDict] setValue:execPath forKey:@"Windows Executable"];
+        [[self infoPlistDict] writeToFile:[self infoPlistPath] atomically:YES];
+    }
+}
+
 - (NSString *)systemCommand:(NSString *)command callback:(void (^)(int))completionBlock
 {
 	FILE *fp;
@@ -216,6 +229,15 @@
             completionBlock(1);
         }
     }
+}
+
+- (void)killAllWineProcesses {
+    NSLog(@"Forcefully killing wine..");
+    // Get the wine and wineserver bundle names from the plist file
+    NSString *wineBundleName = [[self infoPlistDict] valueForKey:@"BLWineBin"];
+    NSString *wineserverBundleName = [[self infoPlistDict] valueForKey:@"BLWineserverBin"];
+    [self systemCommand:[NSString stringWithFormat:@"killall -9 \"%@\" > /dev/null 2>&1", wineBundleName] callback:nil];
+    [self systemCommand:[NSString stringWithFormat:@"killall -9 \"%@\" > /dev/null 2>&1", wineserverBundleName] callback:nil];
 }
 
 @end
