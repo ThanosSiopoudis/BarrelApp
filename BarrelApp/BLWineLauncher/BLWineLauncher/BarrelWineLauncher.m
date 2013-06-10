@@ -120,6 +120,13 @@
         [wineBash writeToFile:[NSString stringWithFormat:@"%@/bin/wine",[self wineBundlePath]] atomically:YES encoding:NSUTF8StringEncoding error:nil];
         [wineServerBash writeToFile:[NSString stringWithFormat:@"%@/bin/wineserver",[self wineBundlePath]] atomically:YES encoding:NSUTF8StringEncoding error:nil];
         [self systemCommand:[NSString stringWithFormat:@"chmod -R 777 \"%@/bin\"",[self wineBundlePath]] shouldWaitForProcess:YES];
+        
+        // Save the wine and wineserver names in the Info.plist for external access
+        NSString *bundleInfoPlistPath = [NSString stringWithFormat:@"%@/Contents/Info.plist", [[NSBundle mainBundle] bundlePath]];
+        NSMutableDictionary *infoPlist = [[NSMutableDictionary alloc] initWithContentsOfFile:bundleInfoPlistPath];
+        [infoPlist setValue:[self wineBundleName] forKey:@"BLWineBin"];
+        [infoPlist setValue:[self wineserverBundleName] forKey:@"BLWineserverBin"];
+        [infoPlist writeToFile:bundleInfoPlistPath atomically:YES];
     }
 }
 
