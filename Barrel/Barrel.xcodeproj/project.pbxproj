@@ -1013,8 +1013,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C1C83B7517674DC600697964 /* RestKit.framework in Frameworks */,
-				C1C83B6417674A2200697964 /* MagicKit.framework in Frameworks */,
 				C176B63017551589003E65EB /* SystemConfiguration.framework in Frameworks */,
 				83B867BE171D63C70038988C /* DiskArbitration.framework in Frameworks */,
 				3D1D8D821650C22900DBC37D /* Accelerate.framework in Frameworks */,
@@ -1038,6 +1036,8 @@
 				1B42C66D1429510A004691D7 /* Syphon.framework in Frameworks */,
 				82DE4B63102655DA007184EB /* UniversalDetector.framework in Frameworks */,
 				82DE4B62102655D5007184EB /* XADMaster.framework in Frameworks */,
+				C1C83B6417674A2200697964 /* MagicKit.framework in Frameworks */,
+				C1C83B7517674DC600697964 /* RestKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2750,6 +2750,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks /Library/Frameworks ~/Library/Frameworks";
 				OTHER_CFLAGS = "-DUSE_SCALE_RANDOMWRITE";
 				PRODUCT_NAME = Barrel;
+				SDKROOT = macosx10.8;
 				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
@@ -2774,6 +2775,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks /Library/Frameworks ~/Library/Frameworks";
 				OTHER_CFLAGS = "-DUSE_SCALE_RANDOMWRITE";
 				PRODUCT_NAME = Barrel;
+				SDKROOT = macosx10.8;
 				VALID_ARCHS = x86_64;
 			};
 			name = Release;
@@ -2809,7 +2811,7 @@
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Debug;
 		};
@@ -2838,7 +2840,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Release;
 		};
