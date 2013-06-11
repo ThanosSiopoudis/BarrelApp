@@ -609,10 +609,10 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     if(inputLimit == 0 && limitFormatterSet)
         [[self inputField] setFormatter:nil];
     else if(limitFormatterSet)
-        [formatter setLimit:inputLimit];
+        [formatter setLimit:(int)inputLimit ];
     else 
     {
-        formatter = [[OEInputLimitFormatter alloc] initWithLimit:inputLimit];
+        formatter = [[OEInputLimitFormatter alloc] initWithLimit:(int)inputLimit];
         [[self inputField] setFormatter:formatter];
     }
 }
