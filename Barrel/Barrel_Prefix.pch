@@ -30,6 +30,8 @@
 
 #ifdef __OBJC__
 #import <Cocoa/Cocoa.h>
+#import <SystemConfiguration/SystemConfiguration.h>
+#import <CoreServices/CoreServices.h>
 #import "OEUtilities.h"
 
 #if __has_feature(objc_bool)

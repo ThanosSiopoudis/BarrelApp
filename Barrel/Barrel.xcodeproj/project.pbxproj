@@ -326,6 +326,8 @@
 		C1C83B7617674DDC00697964 /* RestKit.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = C1C83B7217674D3F00697964 /* RestKit.framework */; };
 		C1DE8FA0172EC1300081FEC7 /* BLHUDProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = C1DE8F9F172EC12F0081FEC7 /* BLHUDProgressIndicator.m */; };
 		C1E4FB47171E9A020081FE1D /* Barrel_Empty.icns in Resources */ = {isa = PBXBuildFile; fileRef = C1E4FB46171E99FE0081FE1D /* Barrel_Empty.icns */; };
+		C1F24A6E1767629E00A244F3 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6711814136368330034379A /* CoreData.framework */; };
+		C1F24A70176762B000A244F3 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F24A6F176762B000A244F3 /* CoreServices.framework */; };
 		C6289C32135B215B00EEE97C /* OESystemPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = C6289C31135B215B00EEE97C /* OESystemPlugin.m */; };
 		C62D53050FFB51D6007C2649 /* OECompositionPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = C62D53040FFB51D6007C2649 /* OECompositionPlugin.m */; };
 		C62F54710FE6ADC500DF15BA /* OEPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = C62F54700FE6ADC500DF15BA /* OEPlugin.m */; };
@@ -413,6 +415,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = 25160E78145651060060A5C5;
 			remoteInfo = RestKitFrameworkTests;
+		};
+		C1F24A6A1767626800A244F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C1C83B6617674D3E00697964 /* RestKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 25160E61145651060060A5C5;
+			remoteInfo = RestKitFramework;
+		};
+		C1F24A6C1767626D00A244F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C1C83B58176749D700697964 /* MagicKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = MagicKit;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -961,6 +977,7 @@
 		C1DE8F9E172EC12F0081FEC7 /* BLHUDProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLHUDProgressIndicator.h; sourceTree = "<group>"; };
 		C1DE8F9F172EC12F0081FEC7 /* BLHUDProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLHUDProgressIndicator.m; sourceTree = "<group>"; };
 		C1E4FB46171E99FE0081FE1D /* Barrel_Empty.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Barrel_Empty.icns; sourceTree = "<group>"; };
+		C1F24A6F176762B000A244F3 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		C6289C30135B215B00EEE97C /* OESystemPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OESystemPlugin.h; sourceTree = "<group>"; };
 		C6289C31135B215B00EEE97C /* OESystemPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OESystemPlugin.m; sourceTree = "<group>"; };
 		C62D53030FFB51D6007C2649 /* OECompositionPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OECompositionPlugin.h; sourceTree = "<group>"; };
@@ -1023,6 +1040,8 @@
 				8CCBC0C9169B323100141631 /* Cg.framework in Frameworks */,
 				53D32E4813B95F2700A6ACE0 /* Cocoa.framework in Frameworks */,
 				14AE945116FDEE57009DD56D /* CoreAudio.framework in Frameworks */,
+				C1F24A6E1767629E00A244F3 /* CoreData.framework in Frameworks */,
+				C1F24A70176762B000A244F3 /* CoreServices.framework in Frameworks */,
 				14A9073C16FAA0EF005E2635 /* FeedbackReporter.framework in Frameworks */,
 				53439B8713B934DB005C0CC8 /* ImageKit.framework in Frameworks */,
 				839213F4164338D60006CEE0 /* IOKit.framework in Frameworks */,
@@ -1257,6 +1276,7 @@
 		2A37F4C3FDCFA73011CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C1F24A6F176762B000A244F3 /* CoreServices.framework */,
 				C6711810136368330034379A /* Cocoa.framework */,
 				1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */,
 				C6711812136368330034379A /* Other Frameworks */,
@@ -2256,6 +2276,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				C1F24A6D1767626D00A244F3 /* PBXTargetDependency */,
+				C1F24A6B1767626800A244F3 /* PBXTargetDependency */,
 				C184BFDF17589B3300622EF1 /* PBXTargetDependency */,
 			);
 			name = Barrel;
@@ -2699,6 +2721,16 @@
 			name = BarrelApp;
 			targetProxy = C184BFDE17589B3300622EF1 /* PBXContainerItemProxy */;
 		};
+		C1F24A6B1767626800A244F3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RestKitFramework;
+			targetProxy = C1F24A6A1767626800A244F3 /* PBXContainerItemProxy */;
+		};
+		C1F24A6D1767626D00A244F3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MagicKit;
+			targetProxy = C1F24A6C1767626D00A244F3 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -2749,6 +2781,10 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks /Library/Frameworks ~/Library/Frameworks";
 				OTHER_CFLAGS = "-DUSE_SCALE_RANDOMWRITE";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = Barrel;
 				SDKROOT = macosx10.8;
 				VALID_ARCHS = x86_64;
@@ -2774,6 +2810,10 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks /Library/Frameworks ~/Library/Frameworks";
 				OTHER_CFLAGS = "-DUSE_SCALE_RANDOMWRITE";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = Barrel;
 				SDKROOT = macosx10.8;
 				VALID_ARCHS = x86_64;
