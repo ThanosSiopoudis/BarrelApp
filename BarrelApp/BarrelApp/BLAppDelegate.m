@@ -111,6 +111,7 @@
     
     if ([[self theNewExecutables] count] > 0) {
         OEHUDAlert *execsAlert = [OEHUDAlert alertWithMessageText:@"Please choose the game's main executable" defaultButton:@"OK" alternateButton:@"Cancel" otherButton:@"" popupItems:[self theNewExecutables] popupButtonLabel:@".exe"];
+        [execsAlert setDefaultButtonAction:@selector(saveBundleExecutablePath) andTarget:self];
         [execsAlert runModal];
     }
     else {

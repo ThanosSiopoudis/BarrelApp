@@ -99,7 +99,6 @@ static inline id OEKeyForState(OEThemeState state)
             NSMutableDictionary *rootDefinition = [definition mutableCopy];
             [rootDefinition removeObjectForKey:OEThemeObjectStatesAttributeName];
             [self OE_setValue:[isa parseWithDefinition:rootDefinition] forState:OEThemeStateDefault];
-
             // Iterate through each of the state descriptions and create a state table
             NSDictionary *states = [definition valueForKey:OEThemeObjectStatesAttributeName];
             if([states isKindOfClass:[NSDictionary class]])
