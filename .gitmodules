@@ -1,3 +1,6 @@
 [submodule "MagicKit"]
 	path = MagicKit
 	url = https://github.com/aidansteele/MagicKit.git
+[submodule "RestKit"]
+	path = RestKit
+	url = git://github.com/RestKit/RestKit.git
