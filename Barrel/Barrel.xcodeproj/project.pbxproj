@@ -2764,6 +2764,7 @@
 		C05733C808A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_EXPERIMENTAL = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2780,6 +2781,7 @@
 				INFOPLIST_FILE = "Barrel-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks /Library/Frameworks ~/Library/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DUSE_SCALE_RANDOMWRITE";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2794,6 +2796,7 @@
 		C05733C908A9546B00998B17 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_EXPERIMENTAL = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2809,6 +2812,7 @@
 				INFOPLIST_FILE = "Barrel-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks /Library/Frameworks ~/Library/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DUSE_SCALE_RANDOMWRITE";
 				OTHER_LDFLAGS = (
 					"-ObjC",

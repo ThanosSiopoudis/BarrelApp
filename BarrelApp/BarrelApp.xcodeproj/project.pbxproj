@@ -1284,6 +1284,7 @@
 				GCC_PREFIX_HEADER = "BarrelApp/BarrelApp-Prefix.pch";
 				INFOPLIST_FILE = "BarrelApp/BarrelApp-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1298,6 +1299,7 @@
 				GCC_PREFIX_HEADER = "BarrelApp/BarrelApp-Prefix.pch";
 				INFOPLIST_FILE = "BarrelApp/BarrelApp-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
