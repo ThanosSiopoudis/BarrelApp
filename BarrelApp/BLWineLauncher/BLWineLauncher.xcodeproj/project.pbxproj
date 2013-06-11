@@ -230,7 +230,7 @@
 		C184C03D1758A7D700622EF1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BLWineLauncher/BLWineLauncher-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -240,7 +240,7 @@
 		C184C03E1758A7D700622EF1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BLWineLauncher/BLWineLauncher-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
