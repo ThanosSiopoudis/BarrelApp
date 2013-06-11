@@ -1,0 +1,3 @@
+[submodule "MagicKit"]
+	path = MagicKit
+	url = https://github.com/aidansteele/MagicKit.git
