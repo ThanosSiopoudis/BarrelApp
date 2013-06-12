@@ -1237,7 +1237,7 @@
 				C1A030C31731119200BF897F /* AppCake.api */,
 				8314A9B8155422E800DF13B5 /* Archive.VG */,
 				3887A8011024D29D000FC4CF /* OpenEmuQLGenerator */,
-				828E64D00E84656900B1860B /* OpenEmuCore */,
+				828E64D00E84656900B1860B /* BarrelCore */,
 				1BEF34751168F88A0090F72B /* Additions to standard classes */,
 			);
 			name = Classes;
@@ -1782,7 +1782,7 @@
 			name = "Utility Windows";
 			sourceTree = "<group>";
 		};
-		828E64D00E84656900B1860B /* OpenEmuCore */ = {
+		828E64D00E84656900B1860B /* BarrelCore */ = {
 			isa = PBXGroup;
 			children = (
 				831C2AE2144F41E4009533C0 /* OEApplicationDelegate.h */,
@@ -1805,7 +1805,7 @@
 				C69DCCFF0FE994A5009AE5A6 /* OEPluginDocument.h */,
 				C69DCD000FE994A5009AE5A6 /* OEPluginDocument.m */,
 			);
-			name = OpenEmuCore;
+			name = BarrelCore;
 			sourceTree = "<group>";
 		};
 		82C5EC781236EEA3001262F7 /* Network */ = {
