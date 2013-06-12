@@ -24,6 +24,10 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ Modified by the Barrel Team in 2013
+ */
+
 #import <Foundation/Foundation.h>
 #import "OEROMImporter.h"
 #import "BLGameImporter.h"
@@ -79,6 +83,7 @@ extern NSString *const OESaveStateFolderURLKey;
 #pragma mark - Database Folders
 - (NSURL *)databaseFolderURL;
 - (NSURL *)romsFolderURL;
+- (NSURL *)gamesFolderURL;
 - (NSURL *)unsortedRomsFolderURL;
 - (NSURL *)romsFolderURLForSystem:(OEDBSystem *)system;
 - (NSURL *)stateFolderURL;

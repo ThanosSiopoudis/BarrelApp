@@ -24,6 +24,10 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ Modified by the Barrel Team in 2013
+ */
+
 #import "OELibraryDatabase.h"
 
 #import "OESystemPlugin.h"
@@ -788,6 +792,16 @@ static OELibraryDatabase *defaultDatabase = nil;
     NSString *libraryFolderPath = [standardDefaults stringForKey:OEDatabasePathKey];
 
     return [NSURL fileURLWithPath:libraryFolderPath isDirectory:YES];
+}
+
+- (NSURL *)gamesFolderURL
+{
+    NSString *gamesFolderName = NSLocalizedString(@"games", @"Games Folder Name");
+    
+    NSURL *result = [[self databaseFolderURL] URLByAppendingPathComponent:gamesFolderName isDirectory:YES];
+    [[NSFileManager defaultManager] createDirectoryAtURL:result withIntermediateDirectories:YES attributes:nil error:nil];
+    
+    return result;
 }
 
 - (NSURL *)romsFolderURL
