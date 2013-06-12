@@ -670,7 +670,7 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     NSMenuItem *selectedItem = [[self popupButton] selectedItem];
     id item = [selectedItem representedObject];
     if (!item) {
-        item = [[self popupButton] stringValue];
+        item = [[[self popupButton] selectedItem] title];
     }
     return item;
 }
