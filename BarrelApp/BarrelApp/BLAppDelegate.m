@@ -112,7 +112,8 @@
     if ([[self theNewExecutables] count] > 0) {
         OEHUDAlert *execsAlert = [OEHUDAlert alertWithMessageText:@"Please choose the game's main executable" defaultButton:@"OK" alternateButton:@"Cancel" otherButton:@"" popupItems:[self theNewExecutables] popupButtonLabel:@".exe"];
         [execsAlert setDefaultButtonAction:@selector(saveBundleExecutablePath) andTarget:self];
-        [execsAlert runModal];
+        [self setAlertCache:execsAlert];
+        [[self alertCache] runModal];
     }
     else {
         OEHUDAlert *noNewExecs = [OEHUDAlert alertWithMessageText:@"No new executables found in the bundle. The installer either failed or was cancelled." defaultButton:@"OK" alternateButton:@"" otherButton:@""];
@@ -183,6 +184,7 @@
         [[self infoPlistDict] setValue:execPath forKey:@"Windows Executable"];
         [[self infoPlistDict] writeToFile:[self infoPlistPath] atomically:YES];
     }
+    [NSApp stopModal];
 }
 
 - (NSString *)systemCommand:(NSString *)command callback:(void (^)(int))completionBlock
