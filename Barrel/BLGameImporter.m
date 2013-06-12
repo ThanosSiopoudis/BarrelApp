@@ -27,6 +27,7 @@
 #import "BLGameImporter.h"
 #import "BLImportItem.h"
 
+#import "OELibraryDatabase.h"
 #import "NSArray+OEAdditions.h"
 #import "NSURL+OELibraryAdditions.h"
 
@@ -77,6 +78,8 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 - (void)performImportStepDownloadBundle:(BLImportItem *)item;
 - (void)performImportStepBuildEngine:(BLImportItem *)item;
 - (void)performImportStepCreateBundle:(BLImportItem *)item;
+- (void)performImportStepOrganize:(BLImportItem *)item;
+- (void)performImportStepCreateGame:(BLImportItem *)item;
 
 - (void)scheduleItemForNextStep:(BLImportItem *)item;
 - (void)stopImportForItem:(BLImportItem *)item withError:(NSError *)error;
@@ -211,8 +214,10 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
                         [importer performImportStepCreateBundle:item];
                         break;
                     case BLImportStepOrganize:
+                        [importer performImportStepOrganize:item];
                         break;
                     case BLImportStepCreateGame:
+                        [importer performImportStepCreateGame:item];
                         break;
                     default:
                         return;
@@ -383,6 +388,38 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     [self runScript:newBarrelApp withArguments:[NSArray arrayWithObjects:@"--runSetup", setupEXE, nil] shouldWaitForProcess:YES];
     [item setImportState:BLImportItemStatusActive];
     [self scheduleItemForNextStep:item];
+}
+
+- (void)performImportStepOrganize:(BLImportItem *)item {
+    NSError     *error          = nil;
+    NSString    *newBundlePath  = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
+    NSString    *newBarrelApp   = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];
+    NSURL       *url            = [NSURL URLWithString:newBarrelApp];
+    NSURL       *newUrl         = [[self database] gamesFolderURL]; // FIXME: Organize the games in their own genre's folder instead of the generic games folder.
+    
+    // Copy the finished bundle to the library folder
+    if (![url isSubpathOfURL:[[self database] gamesFolderURL]]) {
+        [[NSFileManager defaultManager] moveItemAtURL:url toURL:newUrl error:&error];
+    }
+    
+    if (error != nil) {
+        [self stopImportForItem:item withError:error];
+        return;
+    }
+    
+    [item setURL:url];
+}
+
+- (void)performImportStepCreateGame:(BLImportItem *)item {
+    NSError *error = nil;
+    OEDBGame *game = nil;
+    
+    NSURL *url = [item URL];
+    game = [OEDBGame createGameWithName:[self gameName] andGenre:@"barrel.genre.strategy" inDatabase:[self database]];
+    
+    if (game != nil) {
+        [self stopImportForItem:item withError:nil];
+    }
 }
 
 #pragma mark Perform Helper Methods
