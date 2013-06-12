@@ -652,7 +652,7 @@ static void importBlock(OEROMImporter *importer, OEImportItem *item)
             NSURL *url = [rom URL];
             NSString *gameTitleWithSuffix = [url lastPathComponent];
             NSString *gameTitleWithoutSuffix = [gameTitleWithSuffix stringByDeletingPathExtension];
-            game = [OEDBGame createGameWithName:gameTitleWithoutSuffix andSystem:system inDatabase:[self database]];
+            // game = [OEDBGame createGameWithName:gameTitleWithoutSuffix andSystem:system inDatabase:[self database]];
         }
     }
     
