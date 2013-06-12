@@ -24,6 +24,10 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ Modified by the Barrel Team in 2013
+ */
+
 #import "OEDBGame.h"
 #import "OEDBImage.h"
 
@@ -52,7 +56,7 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
 }
 #pragma mark -
 #pragma mark Creating and Obtaining OEDBGames
-+ (id)createGameWithName:(NSString*)name andSystem:(OEDBSystem*)system inDatabase:(OELibraryDatabase *)database
++ (id)createGameWithName:(NSString*)name andGenre:(NSString *)genre inDatabase:(OELibraryDatabase *)database
 {
     NSManagedObjectContext *context = [database managedObjectContext];
     NSEntityDescription *description = [NSEntityDescription entityForName:@"Game" inManagedObjectContext:context];
@@ -61,7 +65,7 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
     
     [game setName:name];
     [game setImportDate:[NSDate date]];
-    [game setSystem:system];
+    [game setGenre:genre];
     
     return game;
 }
@@ -570,7 +574,7 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
 @dynamic name, gameTitle, rating, gameDescription, importDate, lastArchiveSync, archiveID, status, displayName;
 #pragma mark -
 #pragma mark Data Model Relationships
-@dynamic boxImage, system, roms, genres, collections, credits;
+@dynamic boxImage, system, genre, roms, genres, collections, credits;
 - (NSMutableSet*)mutableRoms
 {
     return [self mutableSetValueForKey:@"roms"];
