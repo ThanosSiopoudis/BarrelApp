@@ -376,8 +376,6 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)performImportStepCreateBundle:(BLImportItem *)item {
-    [item setImportState:BLImportItemStatusWait];
-    
     // Run the setup in BarrelApp and wait for the whole process to finish
     NSString *newBundlePath = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
     NSString *newBarrelApp = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];
@@ -386,16 +384,16 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     NSURL *url = [item URL];
     NSString *setupEXE = [NSString stringWithFormat:@"%@/setup.exe", [url path]];
     [self runScript:newBarrelApp withArguments:[NSArray arrayWithObjects:@"--runSetup", setupEXE, nil] shouldWaitForProcess:YES];
-    [item setImportState:BLImportItemStatusActive];
-    [self scheduleItemForNextStep:item];
+    
+    // FIXME: Check here if the installer failed
 }
 
 - (void)performImportStepOrganize:(BLImportItem *)item {
     NSError     *error          = nil;
     NSString    *newBundlePath  = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
     NSString    *newBarrelApp   = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];
-    NSURL       *url            = [NSURL URLWithString:newBarrelApp];
-    NSURL       *newUrl         = [[self database] gamesFolderURL]; // FIXME: Organize the games in their own genre's folder instead of the generic games folder.
+    NSURL       *url            = [NSURL fileURLWithPath:newBarrelApp];
+    NSURL       *newUrl         = [[[self database] gamesFolderURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.app", [self gameName]]]; // FIXME: Organize the games in their own genre's folder instead of the generic games folder.
     
     // Copy the finished bundle to the library folder
     if (![url isSubpathOfURL:[[self database] gamesFolderURL]]) {
