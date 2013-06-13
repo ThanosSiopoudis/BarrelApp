@@ -333,7 +333,7 @@ static OELibraryDatabase *defaultDatabase = nil;
 {
     if(__managedObjectModel != nil) return __managedObjectModel;
 
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"OEDatabase" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"BLDatabase" withExtension:@"momd"];
     __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 
     return __managedObjectModel;
