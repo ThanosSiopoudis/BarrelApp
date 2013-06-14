@@ -405,7 +405,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         return;
     }
     
-    [item setURL:url];
+    [item setURL:newUrl];
 }
 
 - (void)performImportStepCreateGame:(BLImportItem *)item {
