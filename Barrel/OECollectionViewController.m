@@ -669,7 +669,7 @@ static NSArray *OE_defaultSortDescriptors;
     OEDBCollection *collection = [[self representedObject] isKindOfClass:[OEDBCollection class]] ? [self representedObject] : nil;
     OEDBSystem *intoSystem = [[self representedObject] isKindOfClass:[OEDBSystem class]] ? [self representedObject] : nil;
     
-    [gameImporter importItemAtPath:[files objectAtIndex:0] intoCollectionWithID:(collection != nil ? [[collection objectID] URIRepresentation] : [NSURL URLWithString: [intoSystem systemIdentifier]])];
+    [gameImporter importItemAtPath:[files objectAtIndex:0] intoCollectionWithID:(collection != nil ? [[collection objectID] URIRepresentation] : [NSURL URLWithString: [intoSystem systemIdentifier]]) withSystem:[intoSystem systemIdentifier]];
 
     return YES;
 }
