@@ -413,7 +413,10 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     OEDBGame *game = nil;
     
     NSURL *url = [item URL];
-    game = [OEDBGame createGameWithName:[self gameName] andGenre:@"barrel.genre.strategy" inDatabase:[self database]];
+    // Determine the "System" (Should be renamed to Genre in the future)
+    OEDBSystem *system = [OEDBSystem systemForPluginIdentifier:[[item importInfo] valueForKey:OEImportInfoSystemID] inDatabase:[self database]];
+    
+    game = [OEDBGame createGameWithName:[self gameName] andGenre:@"barrel.genre.strategy" andSystem:system inDatabase:[self database]];
     
     if (game != nil) {
         [self stopImportForItem:item withError:nil];
@@ -655,6 +658,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         if (item)
         {
             if (collectionID) [[item importInfo] setObject:collectionID forKey:BLImportInfoCollectionID];
+            if (systemID) [[item importInfo] setObject:systemID forKey:BLImportInfoSystemID];
             [[self queue] addObject:item];
             self.totalNumberOfItems++;
             [self setCurrentItem:item];
