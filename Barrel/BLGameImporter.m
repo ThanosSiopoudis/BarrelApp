@@ -628,17 +628,21 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 #pragma mark - Importing games into collections
 - (BOOL)importItemAtPath:(NSString *)path intoCollectionWithID:(NSURL *)collectionID
 {
-    return [self importItemAtPath:path intoCollectionWithID:collectionID withCompletionHandler:nil];
+    return [self importItemAtPath:path intoCollectionWithID:collectionID withSystem:nil withCompletionHandler:nil];
+}
+
+- (BOOL)importItemAtPath:(NSString *)path intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID {
+    return [self importItemAtPath:path intoCollectionWithID:collectionID withSystem:systemID withCompletionHandler:nil];
 }
 
 #pragma mark - Importing games into collections with completion handler
-- (BOOL)importItemAtPath:(NSString *)path intoCollectionWithID:(NSURL *)collectionID withCompletionHandler:(BLImportItemCompletionBlock)handler
+- (BOOL)importItemAtPath:(NSString *)path intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler
 {
     NSURL *url = [NSURL fileURLWithPath:path];
-    return [self importItemAtURL:url intoCollectionWithID:collectionID withCompletionHandler:handler];
+    return [self importItemAtURL:url intoCollectionWithID:collectionID withSystem:systemID withCompletionHandler:handler];
 }
 
-- (BOOL)importItemAtURL:(NSURL *)url intoCollectionWithID:(NSURL *)collectionID withCompletionHandler:(BLImportItemCompletionBlock)handler
+- (BOOL)importItemAtURL:(NSURL *)url intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler
 {
     id item = [[self queue] firstObjectMatchingBlock:
                ^ BOOL (id item)
