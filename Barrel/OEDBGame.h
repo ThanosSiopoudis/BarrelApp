@@ -47,7 +47,7 @@ extern NSString *const OEDisplayGameTitle;
 
 #pragma mark -
 #pragma mark Creating and Obtaining OEDBGames
-+ (id)createGameWithName:(NSString*)name andGenre:(NSString *)genre inDatabase:(OELibraryDatabase *)database;
++ (id)createGameWithName:(NSString*)name andGenre:(NSString *)genre andSystem:(OEDBSystem *)system inDatabase:(OELibraryDatabase *)database;
 
 // returns the game with objID in the default database
 + (id)gameWithID:(NSManagedObjectID *)objID;
@@ -128,7 +128,7 @@ extern NSString *const OEDisplayGameTitle;
 @property(nonatomic, retain) NSString      *genre;
 
 // deprecated in Barrel
-@property(nonatomic, retain) OEDBSystem    *system __attribute__((deprecated));
+@property(nonatomic, retain) OEDBSystem    *system;
 
 @property(nonatomic, retain)   NSSet         *roms;
 @property(nonatomic, readonly) NSMutableSet  *mutableRoms;

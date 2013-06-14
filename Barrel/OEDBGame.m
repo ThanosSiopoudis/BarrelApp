@@ -56,7 +56,7 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
 }
 #pragma mark -
 #pragma mark Creating and Obtaining OEDBGames
-+ (id)createGameWithName:(NSString*)name andGenre:(NSString *)genre inDatabase:(OELibraryDatabase *)database
++ (id)createGameWithName:(NSString*)name andGenre:(NSString *)genre andSystem:(OEDBSystem *)system inDatabase:(OELibraryDatabase *)database
 {
     NSManagedObjectContext *context = [database managedObjectContext];
     NSEntityDescription *description = [NSEntityDescription entityForName:@"Game" inManagedObjectContext:context];
@@ -65,6 +65,7 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
     
     [game setName:name];
     [game setImportDate:[NSDate date]];
+    [game setSystem:system];
     [game setGenre:genre];
     
     return game;
