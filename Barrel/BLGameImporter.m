@@ -409,10 +409,8 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)performImportStepCreateGame:(BLImportItem *)item {
-    NSError *error = nil;
     OEDBGame *game = nil;
     
-    NSURL *url = [item URL];
     // Determine the "System" (Should be renamed to Genre in the future)
     OEDBSystem *system = [OEDBSystem systemForPluginIdentifier:[[item importInfo] valueForKey:OEImportInfoSystemID] inDatabase:[self database]];
     
