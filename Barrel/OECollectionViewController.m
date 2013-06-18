@@ -101,7 +101,6 @@ static NSArray *OE_defaultSortDescriptors;
 - (void)OE_reloadData;
 
 - (NSMenu *)OE_menuForItemsAtIndexes:(NSIndexSet *)indexes;
-- (NSMenu *)OE_saveStateMenuForGame:(OEDBGame *)game;
 - (NSMenu *)OE_ratingMenuForGames:(NSArray *)games;
 - (NSMenu *)OE_collectionsMenuForGames:(NSArray *)games;
 
@@ -727,41 +726,29 @@ static NSArray *OE_defaultSortDescriptors;
     
     if([indexes count] == 1)
     {
-        NSInteger index = [indexes lastIndex];
-        [menu addItemWithTitle:NSLocalizedString(@"Play Game", @"") action:@selector(startGame:) keyEquivalent:@""];
-        OEDBGame  *game = [[gamesController arrangedObjects] objectAtIndex:index];
-        
-        // Create Save Game Menu
-        menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Play Save Games", @"") action:NULL keyEquivalent:@""];
-        [menuItem setSubmenu:[self OE_saveStateMenuForGame:game]];
-        [menu addItem:menuItem];
+        [menu addItemWithTitle:NSLocalizedString(@"Start Game", @"") action:@selector(startGame:) keyEquivalent:@""];
+        [menu addItemWithTitle:NSLocalizedString(@"Show In Finder", @"") action:@selector(showSelectedGamesInFinder:) keyEquivalent:@""];
         
         [menu addItem:[NSMenuItem separatorItem]];
         
         // Create Rating Item
         menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Rating", @"") action:NULL keyEquivalent:@""];
         [menuItem setSubmenu:[self OE_ratingMenuForGames:games]];
-        [menu addItem:menuItem];    
-        [menu addItemWithTitle:NSLocalizedString(@"Show In Finder", @"") action:@selector(showSelectedGamesInFinder:) keyEquivalent:@""];
-        [menu addItem:[NSMenuItem separatorItem]];
-
-        // Temporarily disable Get Game Info from Archive.vg per issue #322. This should be eventually enabled in a later version.
-        // See the corresponding menu item a few lines below.
-
-        menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Show Game At Archive.vg", @"")
-                                              action:@selector(showGamesAtArchive:)
-                                       keyEquivalent:@""];
-        if([[game archiveID] integerValue] == 0)
-            [menuItem setEnabled:NO];
         [menu addItem:menuItem];
-        
-        [menu addItemWithTitle:NSLocalizedString(@"Match To Archive.vg URL…", @"") action:@selector(matchToArchive:) keyEquivalent:@""];
-        [menu addItemWithTitle:NSLocalizedString(@"Get Cover Art From Archive.vg", @"") action:@selector(getCoverFromArchive:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Add Cover Art From File…", @"") action:@selector(addCoverArtFromFile:) keyEquivalent:@""];
-        [menu addItemWithTitle:NSLocalizedString(@"Consolidate Files…", @"") action:@selector(consolidateFiles:) keyEquivalent:@""];
-
-        //[menu addItemWithTitle:@"Add Save File To Game…" action:@selector(addSaveStateFromFile:) keyEquivalent:@""];
+        
         [menu addItem:[NSMenuItem separatorItem]];
+        
+        // Wine commands
+        [menu addItemWithTitle:NSLocalizedString(@"Wine Config", @"") action:@selector(startWineConfig:) keyEquivalent:@""];
+        [menu addItemWithTitle:NSLocalizedString(@"Registry Editor", @"") action:@selector(startGame:) keyEquivalent:@""];
+        [menu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(startGame:) keyEquivalent:@""];
+        [menu addItemWithTitle:NSLocalizedString(@"Leave a Review", @"") action:@selector(startGame:) keyEquivalent:@""];
+        
+        [menu addItem:[NSMenuItem separatorItem]];
+        [menu addItemWithTitle:NSLocalizedString(@"Upload Bundle", @"") action:@selector(startGame:) keyEquivalent:@""];
+        [menu addItem:[NSMenuItem separatorItem]];
+        
         // Create Add to collection menu
         NSMenuItem *collectionMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Add To Collection", @"") action:NULL keyEquivalent:@""];
         [collectionMenuItem setSubmenu:[self OE_collectionsMenuForGames:games]];
@@ -784,28 +771,7 @@ static NSArray *OE_defaultSortDescriptors;
         [menu addItemWithTitle:NSLocalizedString(@"Show In Finder", @"") action:@selector(showSelectedGamesInFinder:) keyEquivalent:@""];
         [menu addItem:[NSMenuItem separatorItem]];
 
-        // Temporarily disable Get Game Info from Archive.vg per issue #322. This should be eventually enabled in a later version.
-        // See the corresponding menu item a few lines above.
-
-        // Check if any selected games have an archiveID attached to them, if so enable menu item
-        menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Show Games At Archive.vg", @"")
-                                              action:@selector(showGamesAtArchive:)
-                                       keyEquivalent:@""];
-        [menuItem setEnabled:NO];
-        for(OEDBGame *game in games)
-        {
-            if([[game archiveID] integerValue] != 0)
-            {
-                [menuItem setEnabled:YES];
-                break;
-            }
-        }
-        [menu addItem:menuItem];
-
-
-        [menu addItemWithTitle:NSLocalizedString(@"Get Cover Art From Archive.vg", @"") action:@selector(getCoverFromArchive:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Add Cover Art From File…", @"") action:@selector(addCoverArtFromFile:) keyEquivalent:@""];
-        [menu addItemWithTitle:NSLocalizedString(@"Consolidate Files…", @"") action:@selector(consolidateFiles:) keyEquivalent:@""];
 
         [menu addItem:[NSMenuItem separatorItem]];
         // Create Add to collection menu
@@ -819,37 +785,6 @@ static NSArray *OE_defaultSortDescriptors;
     
     [menu setAutoenablesItems:YES];
     return menu;
-}
-
-- (NSMenu *)OE_saveStateMenuForGame:(OEDBGame *)game
-{
-    NSMenu    *saveGamesMenu = [[NSMenu alloc] init];
-    NSSet     *roms = [game roms];
-    
-    [roms enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-        [obj removeMissingStates];
-        
-        NSMenuItem  *item;
-        NSArray     *saveStates = [obj normalSaveStatesByTimestampAscending:NO];
-        for(OEDBSaveState *saveState in saveStates)
-        {
-            NSString *itemTitle = [saveState name];
-            if(!itemTitle || [itemTitle isEqualToString:@""])
-                itemTitle = [NSString stringWithFormat:@"%@", [saveState timestamp]];
-            
-            item = [[NSMenuItem alloc] initWithTitle:itemTitle action:@selector(startSelectedGameWithSaveState:) keyEquivalent:@""];
-            [item setRepresentedObject:saveState];
-            [saveGamesMenu addItem:item];
-        }
-    }];
-    
-    if([[saveGamesMenu itemArray] count] == 0)
-    {
-        [saveGamesMenu addItemWithTitle:NSLocalizedString(@"No Save States available", @"") action:NULL keyEquivalent:@""];
-        [(NSMenuItem*)[[saveGamesMenu itemArray] lastObject] setEnabled:NO];
-    }
-    
-    return saveGamesMenu;
 }
 
 - (NSMenu*)OE_ratingMenuForGames:(NSArray*)games
@@ -1048,57 +983,6 @@ static NSArray *OE_defaultSortDescriptors;
     [[collection mutableGames] addObjectsFromArray:selectedGames];
 }
 
-- (void)matchToArchive:(id)sender
-{
-    OEHUDAlert *alert = [[OEHUDAlert alloc] init];
-    [alert setInputLabelText:NSLocalizedString(@"URL:", @"")];
-    [alert setShowsInputField:YES];
-    [alert setDefaultButtonTitle:NSLocalizedString(@"OK", @"")];
-    [alert setStringValue:@""];
-    [alert setAlternateButtonTitle:NSLocalizedString(@"Cancel", @"")];
-    
-    NSArray *selectedGames = [self selectedGames];
-    if([selectedGames count] == 1)
-    {
-        NSURL *url = [ArchiveVG browserURLForArchiveID:[[selectedGames lastObject] archiveID]];
-        if(url)
-            [alert setStringValue:[url absoluteString]];
-    }
-    
-    if ([alert runModal] == NSOKButton)
-    {
-        NSString *stringURL = [alert stringValue];
-        if (![stringURL length])
-            return;
-        
-        NSURL    *url = [NSURL URLWithString:stringURL];
-        NSNumber *archiveID = [ArchiveVG archiveIDFromBrowserURL:url];
-        if(archiveID != nil && [archiveID intValue]  != 0)
-        {
-            [selectedGames enumerateObjectsUsingBlock:^(OEDBGame *obj, NSUInteger idx, BOOL *stop) {
-                [obj setArchiveID:archiveID];
-                [obj setNeedsArchiveSync];
-            }];
-        }
-    }
-    
-}
-
-- (IBAction)showGamesAtArchive:(id)sender
-{
-    NSArray *selectedGames = [self selectedGames];
-    for(OEDBGame *game in selectedGames)
-    {
-        NSURL *url = [ArchiveVG browserURLForArchiveID:[game archiveID]];
-        if(url != nil) [[NSWorkspace sharedWorkspace] openURL:url];
-    }
-}
-
-- (void)getCoverFromArchive:(id)sender
-{
-    [[self selectedGames] makeObjectsPerformSelector:@selector(setNeedsArchiveSync)];
-}
-
 - (void)addCoverArtFromFile:(id)sender
 {
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
@@ -1116,84 +1000,6 @@ static NSArray *OE_defaultSortDescriptors;
     [self reloadDataIndexes:[self selectedIndexes]];
 }
 
-- (void)addSaveStateFromFile:(id)sender
-{
-    NSLog(@"addCoverArtFromFile: Not implemented yet.");
-}
-
-- (void)consolidateFiles:(id)sender
-{
-    NSArray *games = [self selectedGames];
-    if([games count] == 0) return;
-
-    OEHUDAlert  *alert = [[OEHUDAlert alloc] init];
-    [alert setHeadlineText:@""];
-    [alert setMessageText:NSLocalizedString(@"Consolidating will copy all of the selected games into the OpenEmu Library folder.\n\nThis cannot be undone.", @"")];
-    [alert setDefaultButtonTitle:NSLocalizedString(@"Consolidate", @"")];
-    [alert setAlternateButtonTitle:NSLocalizedString(@"Cancel", @"")];
-    if([alert runModal] != NSAlertDefaultReturn) return;
-    
-    alert = [[OEHUDAlert alloc] init];
-    [alert setShowsProgressbar:YES];
-    [alert setProgress:0.0];
-    [alert setHeadlineText:NSLocalizedString(@"Copying Game Files…", @"")];
-    [alert setTitle:NSLocalizedString(@"", @"")];
-    [alert setShowsProgressbar:YES];
-    [alert setDefaultButtonTitle:nil];
-    [alert setMessageText:nil];
-    
-    __block NSInteger alertResult = -1;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_after(popTime, queue, ^{
-        for (NSUInteger i=0; i<[games count]; i++) {
-            if(alertResult != -1) break;
-            
-            OEDBGame *aGame = [games objectAtIndex:i];
-            NSSet *roms = [aGame roms];
-            for(OEDBRom *rom in roms)
-            {
-                if(alertResult != -1) break;
-                
-                NSURL *url = [rom URL];
-                if([url checkResourceIsReachableAndReturnError:nil] && ![url isSubpathOfURL:[[rom libraryDatabase] romsFolderURL]])
-                {
-                    BOOL romFileLocked = NO;
-                    if([[[[NSFileManager defaultManager] attributesOfItemAtPath:[url path] error:nil] objectForKey:NSFileImmutable] boolValue])
-                    {
-                        romFileLocked = YES;
-                        [[NSFileManager defaultManager] setAttributes:@{ NSFileImmutable: @(FALSE) } ofItemAtPath:[url path] error:nil];
-                    }
-
-                    NSString *fullName  = [url lastPathComponent];
-                    NSString *extension = [fullName pathExtension];
-                    NSString *baseName  = [fullName stringByDeletingPathExtension];
-                    
-                    NSURL *unsortedFolder = [[rom libraryDatabase] romsFolderURLForSystem:[aGame system]];
-                    NSURL *romURL         = [unsortedFolder URLByAppendingPathComponent:fullName];
-                    romURL = [romURL uniqueURLUsingBlock:^NSURL *(NSInteger triesCount) {
-                        NSString *newName = [NSString stringWithFormat:@"%@ %ld.%@", baseName, triesCount, extension];
-                        return [unsortedFolder URLByAppendingPathComponent:newName];
-                    }];
-                    
-                    if([[NSFileManager defaultManager] copyItemAtURL:url toURL:romURL error:nil] && (alertResult == -1))
-                        [rom setURL:romURL];
-                    
-                    if(romFileLocked)
-                        [[NSFileManager defaultManager] setAttributes:@{ NSFileImmutable: @(YES) } ofItemAtPath:[url path] error:nil];
-                }
-            }
-            [[aGame libraryDatabase] save:nil];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [alert setProgress:(float)(i+1)/[games count]];
-            });
-        }
-        [alert closeWithResult:NSAlertDefaultReturn];
-    });
-    [alert setDefaultButtonTitle:@"Stop"];
-    alertResult = [alert runModal];
-}
 #pragma mark -
 #pragma mark NSTableView DataSource
 

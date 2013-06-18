@@ -62,6 +62,7 @@
 - (IBAction)editSmartCollection:(id)sender;
 - (IBAction)addToLibrary:(id)sender;
 - (IBAction)startGame:(id)sender;
+- (IBAction)startWineConfig:(id)sender;
 
 #pragma mark -
 #pragma mark Menu Items

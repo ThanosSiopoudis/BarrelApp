@@ -287,7 +287,7 @@ static const CGFloat _OEToolbarHeight = 44;
     if([sender isKindOfClass:[OEDBGame class]]) [gamesToStart addObject:sender];
     else
     {
-        NSAssert([(id)[self currentViewController] respondsToSelector:@selector(selectedGames)], @"Attempt to start a game from a view controller that doesn't announc selectedGames");
+        NSAssert([(id)[self currentViewController] respondsToSelector:@selector(selectedGames)], @"Attempt to start a game from a view controller that doesn't announce selectedGames");
 
         [gamesToStart addObjectsFromArray:[(id <OELibrarySubviewController>)[self currentViewController] selectedGames]];
     }
@@ -298,6 +298,10 @@ static const CGFloat _OEToolbarHeight = 44;
     {
         for(OEDBGame *game in gamesToStart) [[self delegate] libraryController:self didSelectGame:game];
     }
+}
+
+- (IBAction)startWineConfig:(id)sender {
+    
 }
 
 - (void)startSelectedGameWithSaveState:(id)stateItem
