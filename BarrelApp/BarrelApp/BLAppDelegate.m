@@ -56,12 +56,18 @@
             [self setRunParams:(NSString *)[args objectAtIndex:i+1]];
             isSetup = YES;
         }
+        else if ([(NSString *)[args objectAtIndex:i] isEqualToString:@"--runWineCfg"]) {
+            [self setExecParams:(NSString *)[args objectAtIndex:i]];
+        }
     }
     
     if ([[self execParams] isEqualToString:@"initPrefix"]) {
         // Initialise the wine prefix (wineboot) [synchronous]
         [self initPrefix];
         [[NSApplication sharedApplication] terminate:nil];
+    }
+    else if ([[self execParams] isEqualToString:@"--runWineCfg"]) {
+        
     }
     else if ([[self runParams] length] > 0) {
         if (isSetup) {
@@ -77,6 +83,14 @@
             [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:@"", nil] shouldWaitForProcess:NO callback:nil];
         });
     }
+}
+
+- (void)runWineConfig {
+    dispatch_async(dispatchQueue, ^{
+        [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:@"--runWineCfg", nil] shouldWaitForProcess:YES callback:^(int result){
+            [[NSApplication sharedApplication] terminate:nil];
+        }];
+    });
 }
 
 - (void)runSetup {
