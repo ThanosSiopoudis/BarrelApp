@@ -61,7 +61,7 @@
         [self keepLauncherAliveUnitWineserverQuit];
     }
     else if ([(NSString *)[[self arguments] objectAtIndex:1]isEqualToString:@"--runWineCfg"]) {
-        
+        [self runWineConfig];
     }
     else {
         [self runWineWithWindowsBinary:(NSString *)[[self arguments] objectAtIndex:1]];
@@ -78,6 +78,7 @@
     NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" winecfg > \"%@/Wine.log\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], [self winePrefixPath]];
     [self setScriptPath:@""];
     [self systemCommand:script shouldWaitForProcess:YES];
+    [self keepLauncherAliveUnitWineserverQuit];
 }
 
 -(void) initWinePrefix {
