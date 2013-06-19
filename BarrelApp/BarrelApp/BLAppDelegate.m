@@ -67,7 +67,7 @@
         [[NSApplication sharedApplication] terminate:nil];
     }
     else if ([[self execParams] isEqualToString:@"--runWineCfg"]) {
-        
+        [self runWineConfig];
     }
     else if ([[self runParams] length] > 0) {
         if (isSetup) {
@@ -86,8 +86,15 @@
 }
 
 - (void)runWineConfig {
+    OEHUDAlert *configAlert = [OEHUDAlert showProgressAlertWithMessage:@"Running Wine Config..." andTitle:@"Wine Config" indeterminate:YES];
+    [configAlert setOtherButtonTitle:@"Kill Wine"];
+    [configAlert setOtherButtonAction:@selector(killAllWineProcesses) andTarget:self];
+    [self setAlertCache:configAlert];
+    [[self alertCache] open];
+    
     dispatch_async(dispatchQueue, ^{
         [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:@"--runWineCfg", nil] shouldWaitForProcess:YES callback:^(int result){
+            [[self alertCache] close];
             [[NSApplication sharedApplication] terminate:nil];
         }];
     });
