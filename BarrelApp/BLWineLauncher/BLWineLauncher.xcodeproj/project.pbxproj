@@ -258,7 +258,7 @@
 				C184C03B1758A7D700622EF1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		C184C03C1758A7D700622EF1 /* Build configuration list for PBXNativeTarget "BLWineLauncher" */ = {
 			isa = XCConfigurationList;
@@ -267,7 +267,7 @@
 				C184C03E1758A7D700622EF1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1315,7 +1315,7 @@
 				C184BFD21758980B00622EF1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		C184BFD31758980B00622EF1 /* Build configuration list for PBXNativeTarget "BarrelApp" */ = {
 			isa = XCConfigurationList;
@@ -1324,7 +1324,7 @@
 				C184BFD51758980B00622EF1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
