@@ -324,6 +324,7 @@
 		C1C83B6517674A3100697964 /* MagicKit.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = C1C83B5F176749D700697964 /* MagicKit.framework */; };
 		C1C83B7517674DC600697964 /* RestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1C83B7217674D3F00697964 /* RestKit.framework */; };
 		C1C83B7617674DDC00697964 /* RestKit.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = C1C83B7217674D3F00697964 /* RestKit.framework */; };
+		C1D97D771771A633005472DB /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D97D761771A633005472DB /* NSString+UUID.m */; };
 		C1DE8FA0172EC1300081FEC7 /* BLHUDProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = C1DE8F9F172EC12F0081FEC7 /* BLHUDProgressIndicator.m */; };
 		C1E4FB47171E9A020081FE1D /* Barrel_Empty.icns in Resources */ = {isa = PBXBuildFile; fileRef = C1E4FB46171E99FE0081FE1D /* Barrel_Empty.icns */; };
 		C1F24A6E1767629E00A244F3 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6711814136368330034379A /* CoreData.framework */; };
@@ -970,6 +971,9 @@
 		C1A2101F1755F7FD0061A438 /* BLFileDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLFileDownloader.m; sourceTree = "<group>"; };
 		C1C83B58176749D700697964 /* MagicKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MagicKit.xcodeproj; path = ../MagicKit/MagicKit.xcodeproj; sourceTree = "<group>"; };
 		C1C83B6617674D3E00697964 /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = ../RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
+		C1D97D701771A60F005472DB /* NSString+UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UUID.h"; sourceTree = "<group>"; };
+		C1D97D761771A633005472DB /* NSString+UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UUID.m"; sourceTree = "<group>"; };
+		C1D97D781771B1A2005472DB /* BLDatabase 0.9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BLDatabase 0.9.xcdatamodel"; sourceTree = "<group>"; };
 		C1DE8F9E172EC12F0081FEC7 /* BLHUDProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLHUDProgressIndicator.h; sourceTree = "<group>"; };
 		C1DE8F9F172EC12F0081FEC7 /* BLHUDProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLHUDProgressIndicator.m; sourceTree = "<group>"; };
 		C1E4FB46171E99FE0081FE1D /* Barrel_Empty.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Barrel_Empty.icns; sourceTree = "<group>"; };
@@ -1188,6 +1192,8 @@
 				14E4A7F91616EF8B00082311 /* NSWindow+OEFullScreenAdditions.m */,
 				1486195E166076A400BDB800 /* NSDate+OESortAdditions.h */,
 				1486195F166076A400BDB800 /* NSDate+OESortAdditions.m */,
+				C1D97D701771A60F005472DB /* NSString+UUID.h */,
+				C1D97D761771A633005472DB /* NSString+UUID.m */,
 			);
 			name = "Additions to standard classes";
 			sourceTree = "<group>";
@@ -2666,6 +2672,7 @@
 				C1F4E081176A0C2F00C6FC96 /* BLDatabase.xcdatamodeld in Sources */,
 				831C9ABB160095F800038D0D /* OEThemeImage.m in Sources */,
 				831C9ABC160095F800038D0D /* OEThemeTextAttributes.m in Sources */,
+				C1D97D771771A633005472DB /* NSString+UUID.m in Sources */,
 				831C9AC51600967E00038D0D /* OEMenuDocumentView.m in Sources */,
 				831C9AC61600967E00038D0D /* OEMenuView.m in Sources */,
 				831C9ACC160096A900038D0D /* OEMenuItemExtraData.m in Sources */,
@@ -2894,7 +2901,7 @@
 				C05733C908A9546B00998B17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		C05733CB08A9546B00998B17 /* Build configuration list for PBXProject "Barrel" */ = {
 			isa = XCConfigurationList;
@@ -2903,7 +2910,7 @@
 				C05733CD08A9546B00998B17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 
@@ -2911,8 +2918,10 @@
 		C1F4E07F176A0C2F00C6FC96 /* BLDatabase.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C1D97D781771B1A2005472DB /* BLDatabase 0.9.xcdatamodel */,
 				C1F4E080176A0C2F00C6FC96 /* OEDatabase.xcdatamodel */,
 			);
+			currentVersion = C1D97D781771B1A2005472DB /* BLDatabase 0.9.xcdatamodel */;
 			path = BLDatabase.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
