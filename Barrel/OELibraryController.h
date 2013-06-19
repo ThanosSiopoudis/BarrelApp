@@ -63,6 +63,7 @@
 - (IBAction)addToLibrary:(id)sender;
 - (IBAction)startGame:(id)sender;
 - (IBAction)startWineConfig:(id)sender;
+- (IBAction)startRegedit:(id)sender;
 
 #pragma mark -
 #pragma mark Menu Items
@@ -98,6 +99,8 @@
 @protocol OELibraryControllerDelegate <NSObject>
 @optional
 - (void)libraryController:(OELibraryController *)sender didSelectGame:(OEDBGame *)aGame;
+- (void)libraryController:(OELibraryController *)sender didSelectGameWineCfg:(OEDBGame *)aGame;
+- (void)libraryController:(OELibraryController *)sender didSelectGameRegedit:(OEDBGame *)aGame;
 - (void)libraryController:(OELibraryController *)sender didSelectRom:(OEDBRom *)aGame;
 - (void)libraryController:(OELibraryController *)sender didSelectSaveState:(OEDBSaveState *)aSaveState;
 @end

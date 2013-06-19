@@ -741,7 +741,7 @@ static NSArray *OE_defaultSortDescriptors;
         
         // Wine commands
         [menu addItemWithTitle:NSLocalizedString(@"Wine Config", @"") action:@selector(startWineConfig:) keyEquivalent:@""];
-        [menu addItemWithTitle:NSLocalizedString(@"Registry Editor", @"") action:@selector(startGame:) keyEquivalent:@""];
+        [menu addItemWithTitle:NSLocalizedString(@"Registry Editor", @"") action:@selector(startRegedit:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(startGame:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Leave a Review", @"") action:@selector(startGame:) keyEquivalent:@""];
         

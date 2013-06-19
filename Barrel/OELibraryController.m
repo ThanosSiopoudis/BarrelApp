@@ -301,7 +301,41 @@ static const CGFloat _OEToolbarHeight = 44;
 }
 
 - (IBAction)startWineConfig:(id)sender {
+    NSMutableArray *gamesToStart = [NSMutableArray new];
     
+    if([sender isKindOfClass:[OEDBGame class]]) [gamesToStart addObject:sender];
+    else
+    {
+        NSAssert([(id)[self currentViewController] respondsToSelector:@selector(selectedGames)], @"Attempt to start a game from a view controller that doesn't announce selectedGames");
+        
+        [gamesToStart addObjectsFromArray:[(id <OELibrarySubviewController>)[self currentViewController] selectedGames]];
+    }
+    
+    NSAssert([gamesToStart count] > 0, @"Attempt to start a game while the selection is empty");
+    
+    if([[self delegate] respondsToSelector:@selector(libraryController:didSelectGameWineCfg:)])
+    {
+        for(OEDBGame *game in gamesToStart) [[self delegate] libraryController:self didSelectGameWineCfg:game];
+    }
+}
+
+- (IBAction)startRegedit:(id)sender {
+    NSMutableArray *gamesToStart = [NSMutableArray new];
+    
+    if([sender isKindOfClass:[OEDBGame class]]) [gamesToStart addObject:sender];
+    else
+    {
+        NSAssert([(id)[self currentViewController] respondsToSelector:@selector(selectedGames)], @"Attempt to start a game from a view controller that doesn't announce selectedGames");
+        
+        [gamesToStart addObjectsFromArray:[(id <OELibrarySubviewController>)[self currentViewController] selectedGames]];
+    }
+    
+    NSAssert([gamesToStart count] > 0, @"Attempt to start a game while the selection is empty");
+    
+    if([[self delegate] respondsToSelector:@selector(libraryController:didSelectGameRegedit:)])
+    {
+        for(OEDBGame *game in gamesToStart) [[self delegate] libraryController:self didSelectGameRegedit:game];
+    }
 }
 
 - (void)startSelectedGameWithSaveState:(id)stateItem

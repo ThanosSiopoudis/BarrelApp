@@ -289,21 +289,74 @@ NSString *const OEMainWindowFullscreenKey  = @"mainWindowFullScreen";
 #pragma mark OELibraryControllerDelegate protocol conformance
 - (void)libraryController:(OELibraryController *)sender didSelectGame:(OEDBGame *)aGame
 {
-    NSError         *error = nil;
-    OEGameDocument  *gameDocument = nil;
-    
-    if(gameDocument == nil)
-    {
-        if(error!=nil)
-        {
-            
-            [NSApp presentError:error];
+    // Get the game's path from the managed object
+    NSString *bundlePath = [aGame bundlePath];
+    if ([bundlePath length] > 0) {
+        // Check if the file still exists in that path
+        if ([[NSFileManager defaultManager] fileExistsAtPath:bundlePath]) {
+            // Launch the game
+            [self runScript:bundlePath withArguments:nil shouldWaitForProcess:NO];
         }
-        return;
     }
-    [self openGameDocument:gameDocument];
 }
 
+- (void)libraryController:(OELibraryController *)sender didSelectGameWineCfg:(OEDBGame *)aGame
+{
+    // Get the game's path from the managed object
+    NSString *bundlePath = [aGame bundlePath];
+    if ([bundlePath length] > 0) {
+        // Check if the file still exists in that path
+        if ([[NSFileManager defaultManager] fileExistsAtPath:bundlePath]) {
+            // Launch the game
+            [self runScript:bundlePath withArguments:[NSArray arrayWithObjects:@"--runWineCfg", nil] shouldWaitForProcess:NO];
+        }
+    }
+}
+
+- (void)libraryController:(OELibraryController *)sender didSelectGameRegedit:(OEDBGame *)aGame {
+    // Get the game's path from the managed object
+    NSString *bundlePath = [aGame bundlePath];
+    if ([bundlePath length] > 0) {
+        // Check if the file still exists in that path
+        if ([[NSFileManager defaultManager] fileExistsAtPath:bundlePath]) {
+            // Launch the game
+            [self runScript:bundlePath withArguments:[NSArray arrayWithObjects:@"--run", [NSString stringWithFormat:@"%@/Contents/Resources/drive_c/windows/regedit.exe", bundlePath], nil] shouldWaitForProcess:NO];
+        }
+    }
+}
+
+- (void)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess
+{
+    NSTask *task;
+    task = [[NSTask alloc] init];
+    
+    NSBundle *barrelAppBundle = [NSBundle bundleWithPath:scriptName];
+    NSArray *argumentsArray;
+    [task setLaunchPath: [barrelAppBundle executablePath]];
+    
+    if (arguments) {
+        argumentsArray = arguments;
+        [task setArguments: argumentsArray];
+    }
+    
+    NSPipe *pipe;
+    pipe = [NSPipe pipe];
+    [task setStandardOutput: pipe];
+    
+    NSFileHandle *file;
+    file = [pipe fileHandleForReading];
+    
+    [[NSApplication sharedApplication] deactivate]; // Send Barrel to the back
+    [task launch];
+    
+    if (waitForProcess) {
+        NSData *data;
+        data = [file readDataToEndOfFile];
+        
+        NSString *string;
+        string = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+    }
+}
 
 - (void)libraryController:(OELibraryController *)sender didSelectSaveState:(OEDBSaveState *)aSaveState
 {
