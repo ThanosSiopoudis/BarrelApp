@@ -27,6 +27,7 @@
 #import "OEDBImageThumbnail.h"
 #import "OEDBImage.h"
 #import "OELibraryDatabase.h"
+#import "NSString+UUID.h"
 
 @implementation OEDBImageThumbnail
 
@@ -39,11 +40,12 @@
     
     BOOL     resize      = !NSEqualSizes(size, NSZeroSize);
     NSString *version    = !resize ? @"original" : [NSString stringWithFormat:@"%d", (int)size.width];
+    NSString *uuid       = [NSString stringWithUUID];
     
     NSURL    *coverFolderURL = [library coverFolderURL];
     coverFolderURL = [coverFolderURL URLByAppendingPathComponent:version isDirectory:YES];
     
-    NSURL *url          = coverFolderURL;
+    NSURL *url          = [coverFolderURL URLByAppendingPathComponent:uuid];
     
     NSBitmapImageRep    *bitmapRep   = nil;
     NSSize              imageSize;
@@ -93,7 +95,7 @@
         }
     }
     
-    [self setRelativePath:[NSString stringWithFormat:@"%@/%@", version]];
+    [self setRelativePath:[NSString stringWithFormat:@"%@/%@", version, uuid]];
     [self setWidth:[NSNumber numberWithFloat:thumbnailSize.width]];
     [self setHeight:[NSNumber numberWithFloat:thumbnailSize.height]];
     
