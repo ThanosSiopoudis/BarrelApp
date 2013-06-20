@@ -739,6 +739,11 @@ static NSArray *OE_defaultSortDescriptors;
         [menu addItemWithTitle:NSLocalizedString(@"Leave a Review", @"") action:@selector(startGame:) keyEquivalent:@""];
         
         [menu addItem:[NSMenuItem separatorItem]];
+        // Create Rating Item
+        menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Rating", @"") action:NULL keyEquivalent:@""];
+        [menuItem setSubmenu:[self OE_ratingMenuForGames:games]];
+        [menu addItem:menuItem];
+        [menu addItemWithTitle:NSLocalizedString(@"Add Cover Art From File…", @"") action:@selector(addCoverArtFromFile:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Upload Bundle", @"") action:@selector(startGame:) keyEquivalent:@""];
         [menu addItem:[NSMenuItem separatorItem]];
         
