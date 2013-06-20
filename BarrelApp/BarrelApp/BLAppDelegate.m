@@ -79,8 +79,15 @@
     }
     else {
         // Normal wine launch (wine) [asynchronous]
+        NSString *winBinaryPath = [NSString stringWithFormat:@"%@/Contents/Resources/%@", [[NSBundle mainBundle] bundlePath], [[self infoPlistDict] valueForKey:@"Windows Executable"]];
+        OEHUDAlert *launchAlert = [OEHUDAlert showProgressAlertWithMessage:@"Launching Game..." andTitle:@"Launching Game" indeterminate:YES];
+        [self setAlertCache:launchAlert];
+        [[self alertCache] open];
         dispatch_async(dispatchQueue, ^{
-            [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:@"", nil] shouldWaitForProcess:NO callback:nil];
+            [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:winBinaryPath, nil] shouldWaitForProcess:YES callback:^(int result){
+                [[self alertCache] close];
+                [[NSApplication sharedApplication] terminate:nil];
+            }];
         });
     }
 }
