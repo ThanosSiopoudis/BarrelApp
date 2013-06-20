@@ -414,7 +414,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     // Determine the "System" (Should be renamed to Genre in the future)
     OEDBSystem *system = [OEDBSystem systemForPluginIdentifier:[[item importInfo] valueForKey:OEImportInfoSystemID] inDatabase:[self database]];
     
-    game = [OEDBGame createGameWithName:[self gameName] andGenre:@"barrel.genre.strategy" andSystem:system inDatabase:[self database]];
+    game = [OEDBGame createGameWithName:[self gameName] andGenre:@"barrel.genre.strategy" andSystem:system andBundlePath:[[item URL] path] inDatabase:[self database]];
     
     if (game != nil) {
         [self stopImportForItem:item withError:nil];
