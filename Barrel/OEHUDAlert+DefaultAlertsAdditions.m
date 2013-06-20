@@ -142,7 +142,7 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
 + (id)deleteStateAlertWithStateName:(NSString*)stateName
 {
     OEHUDAlert *alert = [[OEHUDAlert alloc] init];
-    NSString *messageText = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to delete the save game called '%@' from your OpenEmu library?", @""), stateName];
+    NSString *messageText = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to delete the save game called '%@' from your Barrel library?", @""), stateName];
     [alert setMessageText:messageText];
     [alert setDefaultButtonTitle:NSLocalizedString(@"Delete Save", @"")];
     [alert setAlternateButtonTitle:NSLocalizedString(@"Cancel", @"")];
@@ -169,8 +169,8 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
 + (id)removeGamesFromLibraryAlert:(BOOL)multipleGames
 {
     OEHUDAlert *alert = [[OEHUDAlert alloc] init];
-    NSString *messageText = multipleGames ? [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to delete the selected games from your OpenEmu library?", @"")]
-                                          : [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to delete the selected game from your OpenEmu library?", @"")];
+    NSString *messageText = multipleGames ? [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to delete the selected games from your Barrel library?", @"")]
+                                          : [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to delete the selected game from your Barrel library?", @"")];
     [alert setMessageText:messageText];
     [alert setDefaultButtonTitle:multipleGames?NSLocalizedString(@"Delete Games", @""):NSLocalizedString(@"Delete Game", @"")];
     [alert setAlternateButtonTitle:NSLocalizedString(@"Cancel", @"")];
@@ -185,7 +185,7 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
     OEHUDAlert *alert = [[OEHUDAlert alloc] init];
     NSString *headlineText = multipleGames ? [NSString stringWithFormat:NSLocalizedString(@"Move selected games to Trash, or keep them in the Library folder?", @"")] : [NSString stringWithFormat:NSLocalizedString(@"Move selected game to Trash, or keep it in the Library folder?", @"")];
     [alert setHeadlineText:headlineText];
-    NSString *messageText = NSLocalizedString(@"Only files in the OpenEmu Library folder will be moved to the Trash.", @"");
+    NSString *messageText = NSLocalizedString(@"Only files in the Barrel Library folder will be moved to the Trash.", @"");
     [alert setMessageText:messageText];
     [alert setDefaultButtonTitle:NSLocalizedString(@"Move to Trash", @"")];
     [alert setAlternateButtonTitle:NSLocalizedString(@"Keep Files", @"")];
