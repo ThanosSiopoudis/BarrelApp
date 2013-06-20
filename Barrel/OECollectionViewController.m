@@ -593,9 +593,9 @@ static NSArray *OE_defaultSortDescriptors;
     BLGameImporter *gameImporter = [[[self libraryController] database] importer];
     
     OEDBCollection *collection = [[self representedObject] isKindOfClass:[OEDBCollection class]] ? [self representedObject] : nil;
-   
-    FIXME("Add importItemsAtPaths method");
-    //[gameImporter importItemsAtPaths:files intoCollectionWithID:[[collection objectID] URIRepresentation]];
+    OEDBSystem *intoSystem = [[self representedObject] isKindOfClass:[OEDBSystem class]] ? [self representedObject] : nil;
+    
+    [gameImporter importItemAtPath:[files objectAtIndex:0] intoCollectionWithID:(collection != nil ? [[collection objectID] URIRepresentation] : [NSURL URLWithString: [intoSystem systemIdentifier]]) withSystem:[intoSystem systemIdentifier]];
     
     return YES;
 }
