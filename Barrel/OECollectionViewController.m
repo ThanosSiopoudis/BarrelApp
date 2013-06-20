@@ -924,32 +924,10 @@ static NSArray *OE_defaultSortDescriptors;
     }
     else if([[OEHUDAlert removeGamesFromLibraryAlert:multipleGames] runModal])
     {
-        NSURL* romsFolderURL             = [[[self libraryController] database] romsFolderURL];
-        __block BOOL romsAreInRomsFolder = NO; 
-        [selectedGames enumerateObjectsUsingBlock:^(OEDBGame *game, NSUInteger idx, BOOL *stopGames) {
-            [[game roms] enumerateObjectsUsingBlock:^(OEDBRom *rom, BOOL *stopRoms) {
-                NSURL *romURL = [rom URL];
-                if(romURL != nil && [romURL isSubpathOfURL:romsFolderURL])
-                {
-                    romsAreInRomsFolder = YES;
-                    
-                    *stopGames = YES;
-                    *stopRoms = YES;
-                }
-            }];
-        }];
         
-        BOOL deleteFiles = NO;
-        if(romsAreInRomsFolder)
-        {
-            NSUInteger alertReturn = [[OEHUDAlert removeGameFilesFromLibraryAlert:multipleGames] runModal];
-            deleteFiles = (alertReturn == NSAlertDefaultReturn);
-        }
-        
-        DLog(@"deleteFiles: %d", deleteFiles);
         NSManagedObjectContext *moc = [[selectedGames lastObject] managedObjectContext];
         [selectedGames enumerateObjectsUsingBlock:^(OEDBGame *game, NSUInteger idx, BOOL *stopGames) {
-            [game deleteByMovingFile:deleteFiles keepSaveStates:YES];
+            [game deleteByMovingFile:YES];
         }];
         [moc save:nil];
         

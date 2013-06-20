@@ -56,7 +56,7 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
 }
 #pragma mark -
 #pragma mark Creating and Obtaining OEDBGames
-+ (id)createGameWithName:(NSString*)name andGenre:(NSString *)genre andSystem:(OEDBSystem *)system inDatabase:(OELibraryDatabase *)database
++ (id)createGameWithName:(NSString*)name andGenre:(NSString *)genre andSystem:(OEDBSystem *)system andBundlePath:(NSString *)bundlePath inDatabase:(OELibraryDatabase *)database
 {
     NSManagedObjectContext *context = [database managedObjectContext];
     NSEntityDescription *description = [NSEntityDescription entityForName:@"Game" inManagedObjectContext:context];
@@ -67,6 +67,7 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
     [game setImportDate:[NSDate date]];
     [game setSystem:system];
     [game setGenre:genre];
+    [game setBundlePath:bundlePath];
     
     return game;
 }
@@ -415,13 +416,12 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
 }
 #pragma mark -
 #pragma mark Core Data utilities
-- (void)deleteByMovingFile:(BOOL)moveToTrash keepSaveStates:(BOOL)statesFlag
+- (void)deleteByMovingFile:(BOOL)moveToTrash
 {
-    NSMutableSet *mutableRoms = [self mutableRoms];
-    while ([mutableRoms count]) {
-        OEDBRom *aRom = [mutableRoms anyObject];
-        [aRom deleteByMovingFile:moveToTrash keepSaveStates:statesFlag];
-        [mutableRoms removeObject:aRom];
+    if(moveToTrash)
+    {
+        NSString *path = [self bundlePath];
+        [[NSWorkspace sharedWorkspace] performFileOperation:NSWorkspaceRecycleOperation source:[path stringByDeletingLastPathComponent] destination:nil files:[NSArray arrayWithObject:[path lastPathComponent]] tag:NULL];
     }
     
     [[self managedObjectContext] deleteObject:self];

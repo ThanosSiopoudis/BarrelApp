@@ -47,7 +47,7 @@ extern NSString *const OEDisplayGameTitle;
 
 #pragma mark -
 #pragma mark Creating and Obtaining OEDBGames
-+ (id)createGameWithName:(NSString*)name andGenre:(NSString *)genre andSystem:(OEDBSystem *)system inDatabase:(OELibraryDatabase *)database;
++ (id)createGameWithName:(NSString*)name andGenre:(NSString *)genre andSystem:(OEDBSystem *)system andBundlePath:(NSString *)bundlePath inDatabase:(OELibraryDatabase *)database;
 
 // returns the game with objID in the default database
 + (id)gameWithID:(NSManagedObjectID *)objID;
@@ -103,7 +103,7 @@ extern NSString *const OEDisplayGameTitle;
 
 - (void)mergeWithGameInfo:(NSDictionary *)archiveGameDict;
 
-- (void)deleteByMovingFile:(BOOL)moveToTrash keepSaveStates:(BOOL)statesFlag;
+- (void)deleteByMovingFile:(BOOL)moveToTrash;
 #pragma mark -
 #pragma mark Core Data utilities
 + (NSString *)entityName;
