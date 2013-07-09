@@ -309,7 +309,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading..." andTitle:@"Download" indeterminate:NO];
     [self setAlertCache:downloadAlert];
     [[self alertCache] open];
-    NSString *path = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
+    NSString *path = [[[[self database] gamesFolderURL] URLByAppendingPathComponent:@"Barrel/tmp"] path];
     
     // Run the downloader in the main thread
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -335,7 +335,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     
     // Copy the empty .app bundle to the tmp directory
     NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"BarrelApp" ofType:@"app"];
-    NSString *destinationPath = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
+    NSString *destinationPath = [[[[self database] gamesFolderURL] URLByAppendingPathComponent:@"Barrel/tmp"] path];
     [[NSFileManager defaultManager] copyItemAtPath:sourcePath toPath:[NSString stringWithFormat:@"%@/%@.app", destinationPath, [self gameName]] error:nil];
     
     // Copy the blwine.bundle inside the new application bundle
@@ -377,7 +377,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 
 - (void)performImportStepCreateBundle:(BLImportItem *)item {
     // Run the setup in BarrelApp and wait for the whole process to finish
-    NSString *newBundlePath = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
+    NSString *newBundlePath = [[[[self database] gamesFolderURL] URLByAppendingPathComponent:@"Barrel/tmp"] path];
     NSString *newBarrelApp = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];
     
     // Find the setup.exe
@@ -390,7 +390,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 
 - (void)performImportStepOrganize:(BLImportItem *)item {
     NSError     *error          = nil;
-    NSString    *newBundlePath  = [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"Barrel/tmp"] path];
+    NSString    *newBundlePath  = [[[[self database] gamesFolderURL] URLByAppendingPathComponent:@"Barrel/tmp"] path];
     NSString    *newBarrelApp   = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];
     NSURL       *url            = [NSURL fileURLWithPath:newBarrelApp];
     NSURL       *newUrl         = [[[self database] gamesFolderURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.app", [self gameName]]]; // FIXME: Organize the games in their own genre's folder instead of the generic games folder.
