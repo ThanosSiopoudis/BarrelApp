@@ -619,8 +619,11 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     
     if ([item importState] == BLImportItemStatusFinished)
     {
-        // TODO: Set item properties, add it in the collection and
-        // save it in the database.
+        // Cleanup temporary directory
+        NSArray *tmpContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[NSString stringWithFormat:@"%@/tmp", [[[self database] databaseFolderURL] path]] error:nil];
+        for (NSString *tmpitem in tmpContents) {
+            [[NSFileManager defaultManager] removeItemAtPath:tmpitem error:nil];
+        }
     }
     
     [[self queue] removeObjectIdenticalTo:item];
