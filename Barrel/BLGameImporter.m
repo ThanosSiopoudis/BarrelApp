@@ -389,15 +389,24 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)performImportStepOrganize:(BLImportItem *)item {
-    NSError     *error          = nil;
-    NSString    *newBarrelApp   = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];
-    NSURL       *url            = [NSURL fileURLWithPath:newBarrelApp];
-    NSURL       *newUrl         = [[[self database] gamesFolderURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.app", [self gameName]]]; // FIXME: Organize the games in their own genre's folder instead of the generic games folder.
+    NSError     *error              = nil;
+    NSArray     *genreComponents    = [[[item importInfo] valueForKey:OEImportInfoSystemID] componentsSeparatedByString:@"."];
+    NSString    *genre              = [genreComponents lastObject];
     NSString    *newBundlePath      = [[[[self database] databaseFolderURL] URLByAppendingPathComponent:@"tmp"] path];
+    NSString    *newBarrelApp       = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];
+    NSURL       *url                = [NSURL fileURLWithPath:newBarrelApp];
+    NSURL       *newUrl             = [[[self database] gamesFolderURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@.app", genre, [self gameName]]];
+    
+    [[NSFileManager defaultManager] createDirectoryAtURL:[[[self database] gamesFolderURL] URLByAppendingPathComponent:genre] withIntermediateDirectories:YES attributes:nil error:&error];
     
     // Copy the finished bundle to the library folder
-    if (![url isSubpathOfURL:[[self database] gamesFolderURL]]) {
+    if (![url isSubpathOfURL:[[[self database] gamesFolderURL] URLByAppendingPathComponent:genre]]) {
         [[NSFileManager defaultManager] moveItemAtURL:url toURL:newUrl error:&error];
+    }
+    else {
+        error = [NSError errorWithDomain:@"BLImportFatalDomain" code:2000 userInfo:nil];
+        OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"The game already exists in your Database! Import has been halted." defaultButton:@"OK" alternateButton:@""];
+        [errorAlert runModal];
     }
     
     if (error != nil) {
