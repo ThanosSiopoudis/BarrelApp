@@ -249,6 +249,12 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             [self stopImportForItem:item withError:[NSError errorWithDomain:@"BLImportFatalDomain" code:1000 userInfo:nil]];
         }
     }
+    else { // Only accept exetuables
+        if (![[[url lastPathComponent] pathExtension] isEqualToString:@"exe"]) {
+            // Throw the error here
+            [self stopImportForItem:item withError:[NSError errorWithDomain:@"BLImportFatalDomain" code:1000 userInfo:nil]];
+        }
+    }
 }
 
 - (void)performImportStepCheckDirectory:(BLImportItem *)item
@@ -256,15 +262,29 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     // Try to identify the game name that will be used to lookup for an entry
     // in the online db
     IMPORTDLog(@"Volume URL: %@", [item sourceURL]);
-    
-    [[self progressWindow] setMessageText:@"Checking Directory..."];
-    
     NSURL *url = [item URL];
     NSString *cvolumeName;
     NSError *error;
     
-    [url getResourceValue:&cvolumeName forKey:NSURLVolumeNameKey error:&error];
-    [self setVolumeName:cvolumeName];
+    if ([url isDirectory]) {
+        [[self progressWindow] setMessageText:@"Checking Volume..."];
+        [url getResourceValue:&cvolumeName forKey:NSURLVolumeNameKey error:&error];
+        
+        if (error) {
+            // Throw the error here
+            [self stopImportForItem:item withError:error];
+        }
+        
+        [self setVolumeName:cvolumeName];
+    }
+    else {
+        [[self progressWindow] setMessageText:@"Checking File..."];
+        NSString *filename = [url lastPathComponent];
+        NSArray *fileParts = [filename componentsSeparatedByString:@"."];
+        filename = [fileParts objectAtIndex:0];
+        
+        [self setVolumeName:filename];
+    }
 }
 
 - (void)performImportStepLookupEntry:(BLImportItem *)item
@@ -380,9 +400,16 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     NSString *newBundlePath = [[[[self database] databaseFolderURL] URLByAppendingPathComponent:@"tmp"] path];
     NSString *newBarrelApp = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];
     
-    // Find the setup.exe
+    // Find the setup.exe or run the file
     NSURL *url = [item URL];
-    NSString *setupEXE = [NSString stringWithFormat:@"%@/setup.exe", [url path]];
+    NSString *setupEXE;
+    
+    if ([url isDirectory]) {
+        setupEXE = [NSString stringWithFormat:@"%@/setup.exe", [url path]];
+    }
+    else {
+        setupEXE = [url path];
+    }
     [self runScript:newBarrelApp withArguments:[NSArray arrayWithObjects:@"--runSetup", setupEXE, nil] shouldWaitForProcess:YES];
     
     // FIXME: Check here if the installer failed
