@@ -43,8 +43,8 @@
 - (void)OE_calculateHeight;
 @end
 
-#define baseViewHeight 479.0
-#define librariesContainerHeight 110.0
+#define baseViewHeight 321.0
+#define librariesContainerHeight 0.0
 @implementation OEPrefLibraryController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -224,86 +224,11 @@
     CGFloat iWidth = 163, iHeight = 18;
     
     // calculate complete view height
-    height = baseViewHeight-librariesContainerHeight + (iHeight * rows + (rows - 1) * vSpace);
+    height = baseViewHeight;
     
     if([self librariesView] == nil) return;
     
     [[self librariesView] setFrameSize:(NSSize){ [[self librariesView] frame].size.width, (iHeight * rows + (rows - 1) * vSpace)}];
-    
-    __block CGFloat x = 0;
-    __block CGFloat y = [[self librariesView] frame].size.height - iHeight -1;
-    
-    // enumerate plugins and add buttons for them
-    [systems enumerateObjectsUsingBlock:
-     ^(OEDBSystem *system, NSUInteger idx, BOOL *stop)
-     {
-         // if we're still in the first column an we should be in the second
-         if(x == 0 && idx >= rows)
-         {
-             // we reset x and y
-             x += iWidth+hSpace;
-             y = [[self librariesView] frame].size.height-iHeight -1;
-         }
-         
-         // creating the button
-         NSRect rect = (NSRect){ { x, y }, { iWidth, iHeight } };
-         NSString *systemIdentifier = [system systemIdentifier];
-         OEButton *button = [[OEButton alloc] initWithFrame:rect];
-         [button setThemeKey:@"dark_checkbox"];
-         [button setButtonType:NSSwitchButton];
-         [button setTarget:self];
-         [button setAction:@selector(toggleSystem:)];
-         [button setTitle:[system name]];
-         [button setState:[[system enabled] intValue]];
-         [[button cell] setRepresentedObject:systemIdentifier];
-         
-         
-         // Check if a core is installed that is capable of running this system
-         BOOL foundCore = NO;
-         NSArray *allPlugins = [OECorePlugin allPlugins];
-         for(OECorePlugin *obj in allPlugins)
-         {
-             if([[obj systemIdentifiers] containsObject:systemIdentifier])
-             {
-                 foundCore = YES;
-                 break;
-             }
-         }
-         
-         // TODO: warnings should also give advice on how to solve them
-         // e.g. Go to Cores preferences and download Core x
-         // or we could add a "Fix This" button that automatically launches the "No core for system ... " - Dialog
-         NSMutableArray *warnings = [NSMutableArray arrayWithCapacity:2];
-         if([system plugin] == nil)
-         {
-             [warnings addObject:NSLocalizedString(@"The System plugin could not be found!", @"")];
-             
-             // disabling ui element here so no system without a plugin can be enabled
-             [button setEnabled:NO];
-         }
-         
-         if(!foundCore)
-             [warnings addObject:NSLocalizedString(@"This System has no corresponding core installed.", @"")];
-         
-         if([warnings count] != 0)
-         {
-             // Show a warning badge next to the checkbox
-             // this is currently misusing the beta_icon image
-             
-             NSPoint badgePosition = [button badgePosition];
-             NSImageView *imageView = [[NSImageView alloc] initWithFrame:(NSRect){ badgePosition, { 16, 17 } }];
-             [imageView setImage:[NSImage imageNamed:@"beta_icon"]];
-             
-             // TODO: Use a custom tooltip that fits our style better
-             [imageView setToolTip:[warnings componentsJoinedByString:@"\n"]];
-             [[self librariesView] addSubview:imageView];
-         }
-         
-         [[self librariesView] addSubview:button];
-         
-         // decreasing y
-         y -= iHeight + vSpace;
-     }];
 }
 
 @end

@@ -30,27 +30,6 @@
 #import "OEDBSystem.h"
 
 @implementation OEPrefGameplayController
-@synthesize filterSelection;
-
-- (void)awakeFromNib 
-{
-    // Setup plugins menu
-    NSMutableSet   *filterSet     = [NSMutableSet set];
-    NSMutableArray *filterPlugins = [NSMutableArray array];
-    [filterSet addObjectsFromArray:[OECompositionPlugin allPluginNames]];
-    [filterSet filterUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF beginswith '_'"]];
-    [filterPlugins addObjectsFromArray:[filterSet allObjects]];
-    [filterPlugins sortUsingSelector:@selector(caseInsensitiveCompare:)];
-
-	NSMenu *filterMenu = [[NSMenu alloc] init];
-
-    for(NSString *aName in filterPlugins)
-		[filterMenu addItemWithTitle:aName action:NULL keyEquivalent:@""];
-
-	[[self filterSelection] setMenu:filterMenu];
-
-    [[self filterSelection] selectItemAtIndex:0];
-}
 
 #pragma mark ViewController Overrides
 
@@ -78,15 +57,10 @@
 
 - (NSSize)viewSize
 {
-	return NSMakeSize(423, 254);
+	return NSMakeSize(423, 158);
 }
 
 #pragma mark -
 #pragma mark UI Actions
-
-- (IBAction)changeFilter:(id)sender
-{
-	
-}
 
 @end

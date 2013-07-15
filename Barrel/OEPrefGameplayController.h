@@ -34,11 +34,4 @@
 
 - (NSSize)viewSize;
 
-#pragma mark -
-#pragma mark UI Actions
-
-- (IBAction)changeFilter:(id)sender;
-
-@property(weak, readonly) IBOutlet NSPopUpButton *filterSelection;
-
 @end
