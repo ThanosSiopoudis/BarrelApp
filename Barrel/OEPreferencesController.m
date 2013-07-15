@@ -39,7 +39,6 @@
 
 #import "OEPrefLibraryController.h"
 #import "OEPrefGameplayController.h"
-#import "OEPrefCoresController.h"
 #import "OEPrefDebugController.h"
 
 
@@ -175,9 +174,6 @@ NSString *const OEPreferencesUserInfoSystemIdentifierKey = @"systemIdentifier";
     [array addObject:controller];
     
     controller = [[OEPrefGameplayController alloc] init];
-    [array addObject:controller];
-    
-    controller = [[OEPrefCoresController alloc] init];
     [array addObject:controller];
     
     if([[NSUserDefaults standardUserDefaults] boolForKey:OEDebugModeKey])
