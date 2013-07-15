@@ -259,7 +259,7 @@ static OELibraryDatabase *defaultDatabase = nil;
     for(OEDBSystem *aSystem in allSystems)
     {
         if([aSystem plugin]) continue;
-        [aSystem setEnabled:[NSNumber numberWithBool:NO]];
+        [aSystem setEnabled:[NSNumber numberWithBool:YES]];
     }
 }
 
