@@ -67,6 +67,8 @@
 #import "OECollectionDebugWindowController.h"
 #import "BLFileDownloader.h"
 
+#import "BLWinetricksWindowController.h"
+
 #pragma mark - Public variables
 
 NSString * const OELastGridSizeKey       = @"lastGridSize";
@@ -105,6 +107,8 @@ static NSArray *OE_defaultSortDescriptors;
 - (NSMenu *)OE_menuForItemsAtIndexes:(NSIndexSet *)indexes;
 - (NSMenu *)OE_ratingMenuForGames:(NSArray *)games;
 - (NSMenu *)OE_collectionsMenuForGames:(NSArray *)games;
+
+@property(strong) BLWinetricksWindowController *winetricksController;
 
 @end
 
@@ -971,6 +975,9 @@ static NSArray *OE_defaultSortDescriptors;
                 });
             }
             else {
+                [self setWinetricksController:[[BLWinetricksWindowController alloc] init]];
+                [[[self winetricksController] window] center];
+                [[[self winetricksController] window] makeKeyAndOrderFront:self];
             }
         }
     }];
