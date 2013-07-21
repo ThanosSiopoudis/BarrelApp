@@ -82,10 +82,8 @@ extern NSString *const OESaveStateFolderURLKey;
 - (id)addNewCollectionFolder:(NSString*)name;
 #pragma mark - Database Folders
 - (NSURL *)databaseFolderURL;
-- (NSURL *)romsFolderURL;
+- (NSURL *)cacheFolderURL;
 - (NSURL *)gamesFolderURL;
-- (NSURL *)unsortedRomsFolderURL;
-- (NSURL *)romsFolderURLForSystem:(OEDBSystem *)system;
 - (NSURL *)stateFolderURL;
 - (NSURL *)stateFolderURLForSystem:(OEDBSystem *)system;
 - (NSURL *)stateFolderURLForROM:(OEDBRom *)rom;

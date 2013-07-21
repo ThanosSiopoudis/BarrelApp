@@ -804,31 +804,11 @@ static OELibraryDatabase *defaultDatabase = nil;
     return result;
 }
 
-- (NSURL *)romsFolderURL
+- (NSURL *)cacheFolderURL
 {
-    NSString *romsFolderName = NSLocalizedString(@"roms", @"Roms Folder Name");
+    NSString *cacheFolderName = NSLocalizedString(@"cache", @"Cache Folder Name");
 
-    NSURL *result = [[self databaseFolderURL] URLByAppendingPathComponent:romsFolderName isDirectory:YES];
-    [[NSFileManager defaultManager] createDirectoryAtURL:result withIntermediateDirectories:YES attributes:nil error:nil];
-
-    return result;
-}
-
-- (NSURL *)unsortedRomsFolderURL
-{
-    NSString *unsortedFolderName = NSLocalizedString(@"unsorted", @"Unsorted Folder Name");
-
-    NSURL *result = [[self romsFolderURL] URLByAppendingPathComponent:unsortedFolderName isDirectory:YES];
-    [[NSFileManager defaultManager] createDirectoryAtURL:result withIntermediateDirectories:YES attributes:nil error:nil];
-
-    return result;
-}
-
-- (NSURL *)romsFolderURLForSystem:(OEDBSystem *)system
-{
-    if([system name] == nil) return [self unsortedRomsFolderURL];
-
-    NSURL *result = [[self romsFolderURL] URLByAppendingPathComponent:[system name] isDirectory:YES];
+    NSURL *result = [[self databaseFolderURL] URLByAppendingPathComponent:cacheFolderName isDirectory:YES];
     [[NSFileManager defaultManager] createDirectoryAtURL:result withIntermediateDirectories:YES attributes:nil error:nil];
 
     return result;
