@@ -192,24 +192,12 @@
 - (NSURL *)URL
 {
     NSString *location = [self location];
-    if([location isAbsolutePath])
-        return [NSURL URLWithString:location];
-    else
-        return [NSURL URLWithString:location relativeToURL:[[self libraryDatabase] romsFolderURL]];
+    return [NSURL URLWithString:location];
 }
 
 - (void)setURL:(NSURL *)url
 {
-    if([url isSubpathOfURL:[[self libraryDatabase] romsFolderURL]])
-    {
-        NSString *romsFolderURLString = [[[self libraryDatabase] romsFolderURL] absoluteString];
-        NSString *relativeURLString   = [[url absoluteString] substringFromIndex:[romsFolderURLString length]];
-        
-        url = [NSURL URLWithString:relativeURLString relativeToURL:[[self libraryDatabase] romsFolderURL]];
-        [self setLocation:[url relativeString]];
-    }
-    else
-        [self setLocation:[url absoluteString]];
+    [self setLocation:[url absoluteString]];
 }
 
 - (NSString *)md5Hash
@@ -384,20 +372,7 @@
 #pragma mark -
 #pragma mark Core Data utilities
 - (void)deleteByMovingFile:(BOOL)moveToTrash keepSaveStates:(BOOL)statesFlag
-{
-    NSURL *url = [self URL];
-    
-    if(moveToTrash && [url isSubpathOfURL:[[self libraryDatabase] romsFolderURL]])
-    {
-        NSString *path = [url path];
-        [[NSWorkspace sharedWorkspace] performFileOperation:NSWorkspaceRecycleOperation source:[path stringByDeletingLastPathComponent] destination:nil files:[NSArray arrayWithObject:[path lastPathComponent]] tag:NULL];
-    }
-    
-    if(!statesFlag)
-    {
-        // TODO: remove states
-    }
-    
+{   
     [[self managedObjectContext] deleteObject:self];
 }
 
