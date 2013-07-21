@@ -65,6 +65,8 @@
 #import "OETableView.h"
 
 #import "OECollectionDebugWindowController.h"
+#import "BLFileDownloader.h"
+
 #pragma mark - Public variables
 
 NSString * const OELastGridSizeKey       = @"lastGridSize";
@@ -735,7 +737,7 @@ static NSArray *OE_defaultSortDescriptors;
         // Wine commands
         [menu addItemWithTitle:NSLocalizedString(@"Wine Config", @"") action:@selector(startWineConfig:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Registry Editor", @"") action:@selector(startRegedit:) keyEquivalent:@""];
-        [menu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(startGame:) keyEquivalent:@""];
+        [menu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(showWinetricksMenu:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Leave a Review", @"") action:@selector(startGame:) keyEquivalent:@""];
         
         [menu addItem:[NSMenuItem separatorItem]];
@@ -875,6 +877,103 @@ static NSArray *OE_defaultSortDescriptors;
     }];
 
     [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:urls];
+}
+
+- (IBAction)showWinetricksMenu:(id)sender
+{
+    NSArray *selectedGames = [self selectedGames];
+    
+    [selectedGames enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[OEDBGame class]]) {
+            // Check if we have a cached version of the winetricks list. We'll auto-update this daily
+            // Save the wine and wineserver names in the Info.plist for external access
+            NSString *winetricksPlistPath = [NSString stringWithFormat:@"%@/Winetricks.plist", [[[[self libraryController] database] cacheFolderURL] path]];
+            if (![[NSFileManager defaultManager] fileExistsAtPath:winetricksPlistPath]) {
+                // Fetch and parse the latest winetricks executable
+                NSString *winetricksSrc = @"http://winetricks.googlecode.com/svn/trunk/src/winetricks";
+                OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading..." andTitle:@"Download" indeterminate:NO];
+                [downloadAlert open];
+                NSString *path = [[[[self libraryController] database] cacheFolderURL] path];
+                
+                // Run the downloader in the main thread
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[downloadAlert progressbar] saveToPath:path];
+                    [fileDownloader downloadWithNSURLConnectionFromURL:winetricksSrc withCompletionBlock:^(int result, NSString *resultPath) {
+                        if (result) {
+                            NSMutableArray *winetricksForPlist = [[NSMutableArray alloc] init];
+                            
+                            // Winetricks has been downloaded, so proceed with parsing it
+                            [downloadAlert close];
+                            
+                            //create file handle and load the contents in the memory
+                            NSFileHandle *file;
+                            file = [NSFileHandle fileHandleForReadingAtPath:resultPath];
+                            
+                            //read data into file in NSData format
+                            NSData *filedata;
+                            filedata = [file readDataToEndOfFile];
+                            
+                            //convert NSData to NSString
+                            NSString *string;
+                            string = [[NSString alloc] initWithData:filedata encoding:NSASCIIStringEncoding];
+                            
+                            // Look for the word "w_metadata " in the cached file in memory
+                            NSUInteger length = [string length];
+                            NSRange range = NSMakeRange(0, length);
+                            while(range.location != NSNotFound) {
+                                range = [string rangeOfString: @"w_metadata " options:0 range:range];
+                                if(range.location != NSNotFound)
+                                {
+                                    NSRange outerRange = NSMakeRange(range.location + range.length, length - (range.location + range.length));
+                                    // Found an occurence. Make sure it's an entry
+                                    // 1st: Get the two characters before the entry
+                                    // to make sure they are both newlines
+                                    NSString *m2 = [string substringWithRange:NSMakeRange(range.location - 2, 1)];
+                                    NSString *m1 = [string substringWithRange:NSMakeRange(range.location - 1, 1)];
+                                    if (([m2 isEqualToString:@"\n"] || [m2 isEqualToString:@"\""]) && [m1 isEqualToString:@"\n"]) {
+                                        // 2: It's an entry. Parse it
+                                        // 2.1: Get the whole line
+                                        NSRange lineRange = [string rangeOfString:@"\n" options:0 range:outerRange];
+                                        
+                                        // 2.2: Calculate the line range
+                                        lineRange = NSMakeRange(range.location, lineRange.location - range.location);
+                                        
+                                        // 2.3: Split the space seperated string in an array
+                                        NSArray *winetricksComponents = [[string substringWithRange:lineRange] componentsSeparatedByString:@" "];
+                                        // Malformatted file workaround:
+                                        // There seems to be an extra space so detect it and ignore it
+                                        if ([winetricksComponents count] > 0) {
+                                            NSMutableDictionary *entry = [[NSMutableDictionary alloc] init];
+                                            
+                                            if ([(NSString *)[winetricksComponents objectAtIndex:1] length] == 0) {
+                                                [entry setObject:[winetricksComponents objectAtIndex:2] forKey:@"winetrick"];
+                                                [entry setObject:[winetricksComponents objectAtIndex:3] forKey:@"category"];
+                                            }
+                                            else {
+                                                [entry setObject:[winetricksComponents objectAtIndex:1] forKey:@"winetrick"];
+                                                [entry setObject:[winetricksComponents objectAtIndex:2] forKey:@"category"];
+                                            }
+                                            
+                                            [winetricksForPlist addObject:entry];
+                                        }
+                                    }
+                                    NSLog(@"%lu", (unsigned long)range.location);
+                                    // Advance the range
+                                    range = NSMakeRange(range.location + range.length, length - (range.location + range.length));
+                                }
+                            }
+                            
+                            // Write the array to the plist file
+                            [winetricksForPlist writeToFile:winetricksPlistPath atomically:YES];
+                        }
+                    }];
+                    [fileDownloader startDownload];
+                });
+            }
+            else {
+            }
+        }
+    }];
 }
 
 - (void)deleteSaveState:(id)stateItem
