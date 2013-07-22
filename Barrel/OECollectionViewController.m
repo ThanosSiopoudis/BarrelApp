@@ -961,21 +961,22 @@ static NSArray *OE_defaultSortDescriptors;
                                             [winetricksForPlist addObject:entry];
                                         }
                                     }
-                                    NSLog(@"%lu", (unsigned long)range.location);
                                     // Advance the range
                                     range = NSMakeRange(range.location + range.length, length - (range.location + range.length));
                                 }
                             }
                             
                             // Write the array to the plist file
-                            [winetricksForPlist writeToFile:winetricksPlistPath atomically:YES];
+                            NSMutableDictionary *newDict = [[NSMutableDictionary alloc] init];
+                            [newDict setObject:winetricksForPlist forKey:@"winetricks"];
+                            [newDict writeToFile:winetricksPlistPath atomically:YES];
                         }
                     }];
                     [fileDownloader startDownload];
                 });
             }
             else {
-                [self setWinetricksController:[[BLWinetricksWindowController alloc] init]];
+                [self setWinetricksController:[[BLWinetricksWindowController alloc] initWithPlistPath:winetricksPlistPath]];
                 [[[self winetricksController] window] center];
                 [[[self winetricksController] window] makeKeyAndOrderFront:self];
             }

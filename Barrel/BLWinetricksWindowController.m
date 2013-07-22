@@ -28,17 +28,51 @@
 
 @interface BLWinetricksWindowController () {
     IBOutlet NSView *winetricksView;
+    IBOutlet NSOutlineView *winetricksOutline;
+    NSString *winetricksPlistPath;
+    NSMutableDictionary *winetricksDatasource;
 }
+
+@property (nonatomic, readwrite) NSString *winetricksPlistPath;
+@property (nonatomic, readwrite) NSMutableDictionary *winetricksDatasource;
 
 @end
 
 @implementation BLWinetricksWindowController
+@synthesize winetricksPlistPath, winetricksDatasource;
 
 - (id)init
 {
     self = [super initWithWindowNibName:@"Winetricks"];
     if (self) {
-        [[[self window] contentView] addSubview:winetricksView];
+        // Read the winetricks .plist file
+        
+    }
+    
+    return self;
+}
+
+- (id)initWithPlistPath:(NSString *)plistPath
+{
+    self = [super initWithWindowNibName:@"Winetricks"];
+    if (self) {
+        [self setWinetricksPlistPath:plistPath];
+        [self setWinetricksDatasource:[[NSMutableDictionary alloc] init] ];
+        
+        // Read the plist file and render the items in the outline view
+        NSMutableDictionary *infoPlist = [[NSMutableDictionary alloc] initWithContentsOfFile:[self winetricksPlistPath]];
+        
+        // Create a compatible array
+        NSArray *items = [infoPlist objectForKey:@"winetricks"];
+        for (NSMutableDictionary *item in items) {
+            if ([[self winetricksDatasource] objectForKey:[item objectForKey:@"category"]] == nil) {
+                [[self winetricksDatasource] setObject:[NSMutableArray arrayWithObject:[NSMutableDictionary dictionaryWithObject:[item objectForKey:@"winetrick"] forKey:@"winetrick"]] forKey:[item objectForKey:@"category"]];
+            }
+            else {
+                NSMutableArray *inArray = [[self winetricksDatasource] objectForKey:[item objectForKey:@"category"]];
+                [inArray addObject:[NSMutableDictionary dictionaryWithObject:[item objectForKey:@"winetrick"] forKey:@"winetrick"]];
+            }
+        }
     }
     
     return self;
@@ -47,8 +81,51 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+    [[[winetricksOutline tableColumns] objectAtIndex:0] setTitle:@"Name"];
+    [[[winetricksOutline tableColumns] objectAtIndex:1] setTitle:@"Description"];
+}
+
+// Method returns count of children for given tree node item
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
+    NSInteger cnt = 0;
+    if (item == nil) { // root
+        cnt = [[winetricksDatasource allKeys] count];
+    }
+    else {
+        cnt = [[[self winetricksDatasource] objectForKey:item] count];
+    }
+    return cnt;
+}
+
+// Method returns flag, whether we can expand given tree node item or not
+// (here is the simple rule, we can expand only nodes having one and more children)
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
+    NSInteger children = [[[self winetricksDatasource] objectForKey:item] count];
+    return children > 1 ? YES : NO;
+}
+
+// Method returns value to be shown for given column of the tree node item
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
+    if ([[[self winetricksDatasource] objectForKey:item] isKindOfClass:[NSArray class]]) {
+        return [item capitalizedString];
+    }
+    else {
+        return [item objectForKey:@"winetrick"];
+    }
+}
+
+// Method returns children item for given tree node item by given index
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
+    if (item == nil) {
+        // Get the key by index
+        NSArray *keys = [[self winetricksDatasource] allKeys];
+        NSString *theKey = [keys objectAtIndex:index];
+        return theKey;
+    }
+    else {
+        NSArray *items = [[self winetricksDatasource] objectForKey:item];
+        return [items objectAtIndex:index];
+    }
 }
 
 @end
