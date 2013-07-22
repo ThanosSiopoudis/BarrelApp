@@ -946,9 +946,8 @@ static NSArray *OE_defaultSortDescriptors;
                                         NSArray *winetricksComponents = [[string substringWithRange:lineRange] componentsSeparatedByString:@" "];
                                         // Malformatted file workaround:
                                         // There seems to be an extra space so detect it and ignore it
+                                        NSMutableDictionary *entry = [[NSMutableDictionary alloc] init];
                                         if ([winetricksComponents count] > 0) {
-                                            NSMutableDictionary *entry = [[NSMutableDictionary alloc] init];
-                                            
                                             if ([(NSString *)[winetricksComponents objectAtIndex:1] length] == 0) {
                                                 [entry setObject:[winetricksComponents objectAtIndex:2] forKey:@"winetrick"];
                                                 [entry setObject:[winetricksComponents objectAtIndex:3] forKey:@"category"];
@@ -960,6 +959,13 @@ static NSArray *OE_defaultSortDescriptors;
                                             
                                             [winetricksForPlist addObject:entry];
                                         }
+                                        
+                                        // 2.4: Find and parse the winetrick title
+                                        NSRange titleRange = [string rangeOfString:@"title=\"" options:0 range:outerRange];
+                                        NSRange endTitleRange = [string rangeOfString:@"\"" options:0 range:NSMakeRange(titleRange.location + 7, length - (titleRange.location + 7))];
+                                        // Now read the title in the range
+                                        NSString *title = [string substringWithRange:NSMakeRange(titleRange.location + 7, (endTitleRange.location - (titleRange.location + 7)))];
+                                        [entry setObject:title forKey:@"title"];
                                     }
                                     // Advance the range
                                     range = NSMakeRange(range.location + range.length, length - (range.location + range.length));
