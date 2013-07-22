@@ -66,11 +66,11 @@
         NSArray *items = [infoPlist objectForKey:@"winetricks"];
         for (NSMutableDictionary *item in items) {
             if ([[self winetricksDatasource] objectForKey:[item objectForKey:@"category"]] == nil) {
-                [[self winetricksDatasource] setObject:[NSMutableArray arrayWithObject:[NSMutableDictionary dictionaryWithObject:[item objectForKey:@"winetrick"] forKey:@"winetrick"]] forKey:[item objectForKey:@"category"]];
+                [[self winetricksDatasource] setObject:[NSMutableArray arrayWithObject:item] forKey:[item objectForKey:@"category"]];
             }
             else {
                 NSMutableArray *inArray = [[self winetricksDatasource] objectForKey:[item objectForKey:@"category"]];
-                [inArray addObject:[NSMutableDictionary dictionaryWithObject:[item objectForKey:@"winetrick"] forKey:@"winetrick"]];
+                [inArray addObject:item];
             }
         }
     }
@@ -81,9 +81,15 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    [[[winetricksOutline tableColumns] objectAtIndex:0] setTitle:@"Name"];
-    [[[winetricksOutline tableColumns] objectAtIndex:1] setTitle:@"Description"];
+    
+    [[[[winetricksOutline tableColumns] objectAtIndex:0] headerCell] setStringValue:@"Winetrick"];
+    [[[winetricksOutline tableColumns] objectAtIndex:0] setIdentifier:@"winetrick"];
+    
+    [[[[winetricksOutline tableColumns] objectAtIndex:1] headerCell] setStringValue:@"Description"];
+    [[[winetricksOutline tableColumns] objectAtIndex:1] setIdentifier:@"description"];
 }
+
+// Set the column title
 
 // Method returns count of children for given tree node item
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
@@ -107,10 +113,20 @@
 // Method returns value to be shown for given column of the tree node item
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
     if ([[[self winetricksDatasource] objectForKey:item] isKindOfClass:[NSArray class]]) {
-        return [item capitalizedString];
+        if ([[[tableColumn headerCell] stringValue] isEqualToString:@"Winetrick"]) {
+            return [item capitalizedString];
+        }
+        else {
+            return @"";
+        }
     }
     else {
-        return [item objectForKey:@"winetrick"];
+        if ([[tableColumn identifier] isEqualToString:@"winetrick"]) {
+            return [item objectForKey:@"winetrick"];
+        }
+        else {
+            return [item objectForKey:@"title"];
+        }
     }
 }
 
