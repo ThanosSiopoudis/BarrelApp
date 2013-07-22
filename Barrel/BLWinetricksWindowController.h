@@ -26,7 +26,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BLWinetricksWindowController : NSWindowController<NSOutlineViewDataSource>
+@interface BLWinetricksWindowController : NSWindowController<NSOutlineViewDataSource, NSOutlineViewDelegate>
 
 - (id)initWithPlistPath:(NSString *)plistPath;
 

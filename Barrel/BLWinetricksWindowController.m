@@ -82,11 +82,9 @@
 {
     [super windowDidLoad];
     
-    [[[[winetricksOutline tableColumns] objectAtIndex:0] headerCell] setStringValue:@"Winetrick"];
-    [[[winetricksOutline tableColumns] objectAtIndex:0] setIdentifier:@"winetrick"];
-    
-    [[[[winetricksOutline tableColumns] objectAtIndex:1] headerCell] setStringValue:@"Description"];
-    [[[winetricksOutline tableColumns] objectAtIndex:1] setIdentifier:@"description"];
+    [[[winetricksOutline tableColumns] objectAtIndex:0] setIdentifier:@"install"];
+    [[[winetricksOutline tableColumns] objectAtIndex:1] setIdentifier:@"winetrick"];
+    [[[winetricksOutline tableColumns] objectAtIndex:2] setIdentifier:@"description"];
 }
 
 // Set the column title
@@ -116,6 +114,9 @@
         if ([[[tableColumn headerCell] stringValue] isEqualToString:@"Winetrick"]) {
             return [item capitalizedString];
         }
+        else if ([[[tableColumn headerCell] stringValue] isEqualToString:@"Install"]) {
+            return nil;
+        }
         else {
             return @"";
         }
@@ -124,10 +125,23 @@
         if ([[tableColumn identifier] isEqualToString:@"winetrick"]) {
             return [item objectForKey:@"winetrick"];
         }
-        else {
+        else if ([[tableColumn identifier] isEqualToString:@"description"]) {
             return [item objectForKey:@"title"];
         }
+        else {
+            return @"";
+        }
     }
+}
+
+- (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item {
+    NSCell *returnCell = [tableColumn dataCell];
+    
+    if ([[[tableColumn headerCell] stringValue] isEqualToString:@"Install"] && [item isKindOfClass:[NSString class]]) {
+        returnCell = [[NSCell alloc] initTextCell:@""];
+    }
+    
+    return returnCell;
 }
 
 // Method returns children item for given tree node item by given index
