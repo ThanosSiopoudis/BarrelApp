@@ -24,6 +24,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import "OEButtonCell.h"
 #import "OEButton.h"
 #import "BLWinetricksWindowController.h"
 
@@ -75,6 +76,7 @@
             }
             else {
                 NSMutableArray *inArray = [[self winetricksDatasource] objectForKey:[item objectForKey:@"category"]];
+                [item setObject:[NSNumber numberWithBool:NO] forKey:@"selected"];
                 [inArray addObject:item];
             }
         }
@@ -119,6 +121,8 @@
 
 // Method returns value to be shown for given column of the tree node item
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
+    NSCell *cell = [tableColumn dataCell];
+    
     if ([[[self winetricksDatasource] objectForKey:item] isKindOfClass:[NSArray class]]) {
         if ([[[tableColumn headerCell] stringValue] isEqualToString:@"Winetrick"]) {
             return [item capitalizedString];
@@ -138,7 +142,8 @@
             return [item objectForKey:@"title"];
         }
         else {
-            return @"";
+            [cell setState:[[item objectForKey:@"selected"] integerValue]];
+            return cell;
         }
     }
 }
@@ -166,6 +171,13 @@
         return [items objectAtIndex:index];
     }
 }
+
+- (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
+    if ([[tableColumn identifier] isEqualToString:@"install"]) {
+        [item setObject:object forKey:@"selected"];
+    }
+}
+
 #pragma mark ---
 #pragma mark Interface Actions
 - (IBAction)executeWinetricks:(id)sender {
