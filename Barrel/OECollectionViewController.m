@@ -986,21 +986,21 @@ static NSArray *OE_defaultSortDescriptors;
                             NSError *fsError = nil;
                             [[NSFileManager defaultManager] moveItemAtPath:resultPath toPath:[NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/winetricks", [obj bundlePath]] error:&fsError];
                             
-                            [self showWinetricksManagerWithPlistPath:winetricksPlistPath];
+                            [self showWinetricksManagerWithPlistPath:winetricksPlistPath andBundlePath:[obj bundlePath]];
                         }
                     }];
                     [fileDownloader startDownload];
                 });
             }
             else {
-                [self showWinetricksManagerWithPlistPath:winetricksPlistPath];
+                [self showWinetricksManagerWithPlistPath:winetricksPlistPath andBundlePath:[obj bundlePath]];
             }
         }
     }];
 }
 
-- (void)showWinetricksManagerWithPlistPath:(NSString *)plistPath {
-    [self setWinetricksController:[[BLWinetricksWindowController alloc] initWithPlistPath:plistPath]];
+- (void)showWinetricksManagerWithPlistPath:(NSString *)plistPath andBundlePath:(NSString *)bundlePath{
+    [self setWinetricksController:[[BLWinetricksWindowController alloc] initWithPlistPath:plistPath andBundlePath:bundlePath]];
     [[[self winetricksController] window] center];
     [[[self winetricksController] window] makeKeyAndOrderFront:self];
 }

@@ -29,6 +29,8 @@
 @interface BLWinetricksWindowController : NSWindowController<NSOutlineViewDataSource, NSOutlineViewDelegate>
 
 - (id)initWithPlistPath:(NSString *)plistPath;
+- (id)initWithPlistPath:(NSString *)plistPath andBundlePath:(NSString *)bPath;
+
 - (IBAction)executeWinetricks:(id)sender;
 
 @end

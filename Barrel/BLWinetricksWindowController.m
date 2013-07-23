@@ -34,16 +34,17 @@
     IBOutlet OEButton       *cancelWindowBtn;
     
     NSString                *winetricksPlistPath;
+    NSString                *bundlePath;
     NSMutableDictionary     *winetricksDatasource;
 }
 
-@property (nonatomic, readwrite) NSString *winetricksPlistPath;
+@property (nonatomic, readwrite) NSString *winetricksPlistPath, *bundlePath;
 @property (nonatomic, readwrite) NSMutableDictionary *winetricksDatasource;
 
 @end
 
 @implementation BLWinetricksWindowController
-@synthesize winetricksPlistPath, winetricksDatasource;
+@synthesize winetricksPlistPath, winetricksDatasource, bundlePath;
 
 - (id)init
 {
@@ -80,6 +81,11 @@
     }
     
     return self;
+}
+
+- (id)initWithPlistPath:(NSString *)plistPath andBundlePath:(NSString *)bPath {
+    [self setBundlePath:bPath];
+    return [self initWithPlistPath:plistPath];
 }
 
 - (void)windowDidLoad
