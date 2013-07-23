@@ -426,7 +426,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     
     [[NSFileManager defaultManager] createDirectoryAtURL:[[[self database] gamesFolderURL] URLByAppendingPathComponent:genre] withIntermediateDirectories:YES attributes:nil error:&error];
     
-    // Copy the finished bundle to the library folder
+    // Move the finished bundle to the library folder
     if (![url isSubpathOfURL:[[[self database] gamesFolderURL] URLByAppendingPathComponent:genre]]) {
         [[NSFileManager defaultManager] moveItemAtURL:url toURL:newUrl error:&error];
     }
