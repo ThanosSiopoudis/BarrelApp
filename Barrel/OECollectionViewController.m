@@ -68,6 +68,7 @@
 #import "BLFileDownloader.h"
 
 #import "BLWinetricksWindowController.h"
+#import "BLSystemCommand.h"
 
 #pragma mark - Public variables
 
@@ -892,7 +893,8 @@ static NSArray *OE_defaultSortDescriptors;
             // Check if we have a cached version of the winetricks list. We'll auto-update this daily
             // Save the wine and wineserver names in the Info.plist for external access
             NSString *winetricksPlistPath = [NSString stringWithFormat:@"%@/Winetricks.plist", [[[[self libraryController] database] cacheFolderURL] path]];
-            if (![[NSFileManager defaultManager] fileExistsAtPath:winetricksPlistPath]) {
+            NSString *gameWinetricksBinaryPath = [NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/winetricks", [obj bundlePath]];
+            if (![[NSFileManager defaultManager] fileExistsAtPath:winetricksPlistPath] || ![[NSFileManager defaultManager] fileExistsAtPath:gameWinetricksBinaryPath]) {
                 // Fetch and parse the latest winetricks executable
                 NSString *winetricksSrc = @"http://winetricks.googlecode.com/svn/trunk/src/winetricks";
                 OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading..." andTitle:@"Download" indeterminate:NO];
@@ -976,18 +978,31 @@ static NSArray *OE_defaultSortDescriptors;
                             NSMutableDictionary *newDict = [[NSMutableDictionary alloc] init];
                             [newDict setObject:winetricksForPlist forKey:@"winetricks"];
                             [newDict writeToFile:winetricksPlistPath atomically:YES];
+                            
+                            // Finally, change the binary rights and move it inside the wrappers binaries folder
+                            NSString *command = [NSString stringWithFormat:@"chmod 755 %@", resultPath];
+                            [BLSystemCommand systemCommand:command shouldWaitForProcess:YES];
+
+                            NSError *fsError = nil;
+                            [[NSFileManager defaultManager] moveItemAtPath:resultPath toPath:[NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/winetricks", [obj bundlePath]] error:&fsError];
+                            
+                            [self showWinetricksManagerWithPlistPath:winetricksPlistPath];
                         }
                     }];
                     [fileDownloader startDownload];
                 });
             }
             else {
-                [self setWinetricksController:[[BLWinetricksWindowController alloc] initWithPlistPath:winetricksPlistPath]];
-                [[[self winetricksController] window] center];
-                [[[self winetricksController] window] makeKeyAndOrderFront:self];
+                [self showWinetricksManagerWithPlistPath:winetricksPlistPath];
             }
         }
     }];
+}
+
+- (void)showWinetricksManagerWithPlistPath:(NSString *)plistPath {
+    [self setWinetricksController:[[BLWinetricksWindowController alloc] initWithPlistPath:plistPath]];
+    [[[self winetricksController] window] center];
+    [[[self winetricksController] window] makeKeyAndOrderFront:self];
 }
 
 - (void)deleteSaveState:(id)stateItem
