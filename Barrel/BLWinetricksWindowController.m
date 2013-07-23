@@ -24,13 +24,17 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import "OEButton.h"
 #import "BLWinetricksWindowController.h"
 
 @interface BLWinetricksWindowController () {
-    IBOutlet NSView *winetricksView;
-    IBOutlet NSOutlineView *winetricksOutline;
-    NSString *winetricksPlistPath;
-    NSMutableDictionary *winetricksDatasource;
+    IBOutlet NSView         *winetricksView;
+    IBOutlet NSOutlineView  *winetricksOutline;
+    IBOutlet OEButton       *executeWinetricksBtn;
+    IBOutlet OEButton       *cancelWindowBtn;
+    
+    NSString                *winetricksPlistPath;
+    NSMutableDictionary     *winetricksDatasource;
 }
 
 @property (nonatomic, readwrite) NSString *winetricksPlistPath;
@@ -87,8 +91,7 @@
     [[[winetricksOutline tableColumns] objectAtIndex:2] setIdentifier:@"description"];
 }
 
-// Set the column title
-
+#pragma mark Datasource and Delegate methods
 // Method returns count of children for given tree node item
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
     NSInteger cnt = 0;
@@ -157,5 +160,10 @@
         return [items objectAtIndex:index];
     }
 }
-
+#pragma mark ---
+#pragma mark Interface Actions
+- (IBAction)executeWinetricks:(id)sender {
+    
+}
+#pragma mark ---
 @end

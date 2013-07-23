@@ -313,6 +313,7 @@
 		C117A943172688BA00143421 /* BLImportItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C117A942172688BA00143421 /* BLImportItem.m */; };
 		C15C68F01756546100969F6D /* BLArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = C15C68EF1756546100969F6D /* BLArchiver.m */; };
 		C176B63017551589003E65EB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C176B62F17551588003E65EB /* SystemConfiguration.framework */; };
+		C17C8CF0179E86330089D9BA /* BLSystemCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C17C8CEF179E86330089D9BA /* BLSystemCommand.m */; };
 		C184BFE017589B5200622EF1 /* BarrelApp.app in Copy Files (1 item) */ = {isa = PBXBuildFile; fileRef = C184BFDB1758980C00622EF1 /* BarrelApp.app */; };
 		C19A4EE4174B83710023E064 /* AC_Game.m in Sources */ = {isa = PBXBuildFile; fileRef = C19A4EE3174B83710023E064 /* AC_Game.m */; };
 		C1A030C8173111B900BF897F /* AppCakeAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = C1A030C7173111B900BF897F /* AppCakeAPI.m */; };
@@ -957,6 +958,8 @@
 		C15C68EE1756546100969F6D /* BLArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLArchiver.h; sourceTree = "<group>"; };
 		C15C68EF1756546100969F6D /* BLArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLArchiver.m; sourceTree = "<group>"; };
 		C176B62F17551588003E65EB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		C17C8CEE179E86330089D9BA /* BLSystemCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSystemCommand.h; sourceTree = "<group>"; };
+		C17C8CEF179E86330089D9BA /* BLSystemCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSystemCommand.m; sourceTree = "<group>"; };
 		C184BFD61758980B00622EF1 /* BarrelApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BarrelApp.xcodeproj; path = ../BarrelApp/BarrelApp.xcodeproj; sourceTree = "<group>"; };
 		C189AEAB17968A0F005F607E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		C19A4EE3174B83710023E064 /* AC_Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AC_Game.m; sourceTree = "<group>"; };
@@ -2112,6 +2115,8 @@
 			children = (
 				836291FC1515F30700192116 /* OEFSWatcher.h */,
 				836291FD1515F30700192116 /* OEFSWatcher.m */,
+				C17C8CEE179E86330089D9BA /* BLSystemCommand.h */,
+				C17C8CEF179E86330089D9BA /* BLSystemCommand.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -2658,6 +2663,7 @@
 				836291FE1515F30700192116 /* OEFSWatcher.m in Sources */,
 				83BC345E1516456000F05A2B /* OEHUDAlert+DefaultAlertsAdditions.m in Sources */,
 				8343CD011553E2C30080A6BE /* OEDBImageThumbnail.m in Sources */,
+				C17C8CF0179E86330089D9BA /* BLSystemCommand.m in Sources */,
 				8314A98C155410EF00DF13B5 /* OEDBItem.m in Sources */,
 				8304D0AE155C28FC000E3B1B /* ArchiveVG.m in Sources */,
 				8304D0B4155C3D63000E3B1B /* ArchiveVGXMLParser.m in Sources */,
