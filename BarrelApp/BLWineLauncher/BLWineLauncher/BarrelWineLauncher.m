@@ -36,10 +36,15 @@
     
     if (self = [super init]) {
         [self setArguments:arguments];
-        [self setExecutablePath:[[NSBundle mainBundle] executablePath]];
-        [self setFrameworksPath:[NSString stringWithFormat:@"%@/Contents/Frameworks", [[NSBundle mainBundle] bundlePath]]];
+        NSBundle *appBundle = [NSBundle bundleWithPath:[[[NSBundle mainBundle] executablePath] stringByReplacingOccurrencesOfString:@"/Contents/MacOs/BLWineLauncher" withString:@""]];
+        if (appBundle == nil) {
+            appBundle = [NSBundle bundleWithPath:[[[NSBundle mainBundle] executablePath] stringByReplacingOccurrencesOfString:@"/Contents/MacOS/BLWineLauncher" withString:@""]];
+        }
+        [self setBundlePath:[appBundle bundlePath]];
+        [self setExecutablePath:[appBundle executablePath]];
+        [self setFrameworksPath:[NSString stringWithFormat:@"%@/Contents/Frameworks", [appBundle bundlePath]]];
         [self setWineBundlePath:[NSString stringWithFormat:@"%@/blwine.bundle", [self frameworksPath]]];
-        [self setWinePrefixPath:[[NSBundle mainBundle] resourcePath]];
+        [self setWinePrefixPath:[appBundle resourcePath]];
         [self setDyldFallbackPath:[NSString stringWithFormat:@"%@:%@/blwine.bundle/lib:/usr/lib:/usr/libexec:/usr/lib/system:/opt/X11/lib:/opt/local/lib:/usr/X11/lib:/usr/X11R6/lib",[self frameworksPath],[self frameworksPath]]];
         
         dispatchQueue = dispatch_queue_create("com.appcake.blwinelauncher", DISPATCH_QUEUE_SERIAL);
@@ -63,21 +68,34 @@
     else if ([(NSString *)[[self arguments] objectAtIndex:1]isEqualToString:@"--runWineCfg"]) {
         [self runWineConfig];
     }
+    else if ([(NSString *)[[self arguments] objectAtIndex:1] isEqualToString:@"--runWinetricks"]) {
+        NSString *argsStr = @"";
+        for (int i=2; i<[[self arguments] count]; i++) {
+            argsStr = [argsStr stringByAppendingString:[NSString stringWithFormat:@" %@",(NSString *)[[self arguments] objectAtIndex: i]]];
+        }
+        [self runWinetricksWithArgs:argsStr];
+    }
     else {
         [self runWineWithWindowsBinary:(NSString *)[[self arguments] objectAtIndex:1]];
     }
 }
 
+-(void) runWinetricksWithArgs: (NSString *)args {
+    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";export WINEDEBUG=\"err+all,fixme+all\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" winetricks --no-isolate%@", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], args];
+    [self setScriptPath:@""];
+    [self systemCommand:script shouldWaitForProcess:YES redirectOutput:YES];
+}
+
 -(void) runWineWithWindowsBinary:(NSString *)binaryPath {
     NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";export WINEDEBUG=\"err+all,fixme+all\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine \"%@\" > \"%@/Wine.log\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], binaryPath, [self winePrefixPath]];
     [self setScriptPath:@""];
-    [self systemCommand:script shouldWaitForProcess:YES];
+    [self systemCommand:script shouldWaitForProcess:YES redirectOutput:NO];
 }
 
 -(void) runWineConfig {
     NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" winecfg > \"%@/Wine.log\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], [self winePrefixPath]];
     [self setScriptPath:@""];
-    [self systemCommand:script shouldWaitForProcess:YES];
+    [self systemCommand:script shouldWaitForProcess:YES redirectOutput:NO];
     [self keepLauncherAliveUntilWineserverQuit];
 }
 
@@ -90,7 +108,7 @@
         [self monitorWineProcessForPrefixBuild];
     });
     
-    [self systemCommand:script shouldWaitForProcess:YES];
+    [self systemCommand:script shouldWaitForProcess:YES redirectOutput:NO];
     [self waitForWineserverToExitForMaximumTime:60];
     // Wait for all wine processes to exit
     [NSThread sleepForTimeInterval:5.0f];
@@ -129,10 +147,10 @@
         NSString *wineServerBash = [NSString stringWithFormat:@"#!/bin/bash\n\"$(dirname \"$0\")/%@\" \"$@\" &",[self wineserverBundleName]];
         [wineBash writeToFile:[NSString stringWithFormat:@"%@/bin/wine",[self wineBundlePath]] atomically:YES encoding:NSUTF8StringEncoding error:nil];
         [wineServerBash writeToFile:[NSString stringWithFormat:@"%@/bin/wineserver",[self wineBundlePath]] atomically:YES encoding:NSUTF8StringEncoding error:nil];
-        [self systemCommand:[NSString stringWithFormat:@"chmod -R 777 \"%@/bin\"",[self wineBundlePath]] shouldWaitForProcess:YES];
+        [self systemCommand:[NSString stringWithFormat:@"chmod -R 777 \"%@/bin\"",[self wineBundlePath]] shouldWaitForProcess:YES redirectOutput:NO];
         
         // Save the wine and wineserver names in the Info.plist for external access
-        NSString *bundleInfoPlistPath = [NSString stringWithFormat:@"%@/Contents/Info.plist", [[NSBundle mainBundle] bundlePath]];
+        NSString *bundleInfoPlistPath = [NSString stringWithFormat:@"%@/Contents/Info.plist", [self bundlePath]];
         NSMutableDictionary *infoPlist = [[NSMutableDictionary alloc] initWithContentsOfFile:bundleInfoPlistPath];
         [infoPlist setValue:[self wineBundleName] forKey:@"BLWineBin"];
         [infoPlist setValue:[self wineserverBundleName] forKey:@"BLWineserverBin"];
@@ -152,14 +170,14 @@
         [[NSFileManager defaultManager] removeItemAtPath:pathToWineLockFolder error:nil];
     }
     [[NSFileManager defaultManager] createDirectoryAtPath:pathToWineLockFolder withIntermediateDirectories:YES attributes:nil error:nil];
-    [self systemCommand:[NSString stringWithFormat:@"chmod -R 700 \"/tmp/.wine-%@\"",uid] shouldWaitForProcess:YES];
+    [self systemCommand:[NSString stringWithFormat:@"chmod -R 700 \"/tmp/.wine-%@\"",uid] shouldWaitForProcess:YES redirectOutput:NO];
 }
 
 - (void)keepLauncherAliveUntilWineserverQuit {
     [NSThread sleepForTimeInterval:10.0f];
     for (;;) {
         BOOL stillRunning = NO;
-        NSArray *resultArray = [[self systemCommand:[NSString stringWithFormat:@"ps -eo pcpu,pid,args | grep \"%@\"", [self wineserverBundleName]] shouldWaitForProcess:YES] componentsSeparatedByString:@" "];
+        NSArray *resultArray = [[self systemCommand:[NSString stringWithFormat:@"ps -eo pcpu,pid,args | grep \"%@\"", [self wineserverBundleName]] shouldWaitForProcess:YES redirectOutput:NO] componentsSeparatedByString:@" "];
         NSMutableArray *cleanArray = [[NSMutableArray alloc] init];
         // Go through the resultArray and clear out any empty items
         for (NSString *item in resultArray) {
@@ -183,7 +201,7 @@
     [NSThread sleepForTimeInterval:10.0f];
     for (NSInteger i=0; i<seconds; i++) {
         BOOL stillRunning = NO;
-        NSArray *resultArray = [[self systemCommand:[NSString stringWithFormat:@"ps -eo pcpu,pid,args | grep \"%@\"", [self wineserverBundleName]] shouldWaitForProcess:YES] componentsSeparatedByString:@" "];
+        NSArray *resultArray = [[self systemCommand:[NSString stringWithFormat:@"ps -eo pcpu,pid,args | grep \"%@\"", [self wineserverBundleName]] shouldWaitForProcess:YES redirectOutput:NO] componentsSeparatedByString:@" "];
         NSMutableArray *cleanArray = [[NSMutableArray alloc] init];
         // Go through the resultArray and clear out any empty items
         for (NSString *item in resultArray) {
@@ -209,8 +227,8 @@
 
 - (void)killAllWineProcesses {
     NSLog(@"Forcefully killing wine..");
-    [self systemCommand:[NSString stringWithFormat:@"killall -9 \"%@\" > /dev/null 2>&1", [self wineBundleName]] shouldWaitForProcess:YES];
-    [self systemCommand:[NSString stringWithFormat:@"killall -9 \"%@\" > /dev/null 2>&1", [self wineserverBundleName]] shouldWaitForProcess:YES];
+    [self systemCommand:[NSString stringWithFormat:@"killall -9 \"%@\" > /dev/null 2>&1", [self wineBundleName]] shouldWaitForProcess:YES redirectOutput:NO];
+    [self systemCommand:[NSString stringWithFormat:@"killall -9 \"%@\" > /dev/null 2>&1", [self wineserverBundleName]] shouldWaitForProcess:YES redirectOutput:NO];
 }
 
 - (void)monitorWineProcessForPrefixBuild {
@@ -225,7 +243,7 @@
     int i;
     for (i=0; i < loopCount; ++i)
     {
-        NSArray *resultArray = [[self systemCommand:@"ps -eo pcpu,pid,args | sort -rk 1 | grep \"wine\"" shouldWaitForProcess:YES] componentsSeparatedByString:@" "];
+        NSArray *resultArray = [[self systemCommand:@"ps -eo pcpu,pid,args | sort -rk 1 | grep \"wine\"" shouldWaitForProcess:YES redirectOutput:NO] componentsSeparatedByString:@" "];
         NSMutableArray *cleanArray = [[NSMutableArray alloc] init];
         // Go through the resultArray and clear out any empty items
         for (NSString *item in resultArray) {
@@ -238,14 +256,14 @@
         {
             NSLog(@"Found stuck wine process with PID: %@, killing...", (NSString *)[cleanArray objectAtIndex:1]);
             // Send the kill signal as a system command
-            [self systemCommand:[NSString stringWithFormat:@"kill -9 %@", (NSString *)[cleanArray objectAtIndex:1]] shouldWaitForProcess:YES];
+            [self systemCommand:[NSString stringWithFormat:@"kill -9 %@", (NSString *)[cleanArray objectAtIndex:1]] shouldWaitForProcess:YES redirectOutput:NO];
             break;
         }
         [NSThread sleepForTimeInterval:1.0f];
     }
 }
 
-- (NSString *)systemCommand:(NSString *)command shouldWaitForProcess:(BOOL)waitForProcess
+- (NSString *)systemCommand:(NSString *)command shouldWaitForProcess:(BOOL)waitForProcess redirectOutput:(BOOL)redirect
 {
 	FILE *fp;
 	char buff[512];
@@ -255,6 +273,9 @@
         while (fgets( buff, sizeof buff, fp))
         {
             [returnString appendString:[NSString stringWithCString:buff encoding:NSUTF8StringEncoding]];
+            if (redirect) {
+                NSLog(@"%@", [NSString stringWithCString:buff encoding:NSUTF8StringEncoding]);
+            }
         }
         pclose(fp);
         returnString = [NSMutableString stringWithString:[returnString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];

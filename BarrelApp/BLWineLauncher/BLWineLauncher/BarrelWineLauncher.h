@@ -32,6 +32,7 @@
 
 @property (readwrite) NSString *scriptPath;
 @property (readwrite) NSArray  *arguments;
+@property (readwrite) NSString *bundlePath;
 @property (readwrite) NSString *executablePath;
 @property (readwrite) NSString *frameworksPath;
 @property (readwrite) NSString *wineBundlePath;
