@@ -27,25 +27,37 @@
 #import "OEButtonCell.h"
 #import "OEButton.h"
 #import "BLWinetricksWindowController.h"
+#import "BLSystemCommand.h"
+
+#import "OEHUDAlert+DefaultAlertsAdditions.h"
 
 @interface BLWinetricksWindowController () {
     IBOutlet NSView         *winetricksView;
     IBOutlet NSOutlineView  *winetricksOutline;
     IBOutlet OEButton       *executeWinetricksBtn;
     IBOutlet OEButton       *cancelWindowBtn;
+    IBOutlet NSTextView     *winetricksOutput;
+    
+    BOOL                    wineIsRunning;
     
     NSString                *winetricksPlistPath;
+    NSString                *winetricksFinalCommand;
     NSString                *bundlePath;
+    
+    NSMutableArray          *winetricksArgs;
     NSMutableDictionary     *winetricksDatasource;
+    OEHUDAlert              *warning;
 }
 
-@property (nonatomic, readwrite) NSString *winetricksPlistPath, *bundlePath;
+@property (nonatomic, readwrite) NSString *winetricksPlistPath, *bundlePath, *winetricksFinalCommand;
 @property (nonatomic, readwrite) NSMutableDictionary *winetricksDatasource;
+@property (nonatomic, readwrite) NSMutableArray *winetricksArgs;
+@property (readwrite)            BOOL wineIsRunning;
 
 @end
 
 @implementation BLWinetricksWindowController
-@synthesize winetricksPlistPath, winetricksDatasource, bundlePath;
+@synthesize winetricksPlistPath, winetricksDatasource, bundlePath, winetricksFinalCommand, winetricksArgs, wineIsRunning;
 
 - (id)init
 {
@@ -80,6 +92,10 @@
                 [inArray addObject:item];
             }
         }
+        
+        // Initialise variables
+        [self setWinetricksArgs:[[NSMutableArray alloc] init]];
+        [self setWineIsRunning:NO];
     }
     
     return self;
@@ -178,10 +194,103 @@
     }
 }
 
+- (void)receivedData:(NSNotification *)notif {
+    NSFileHandle *fh = [notif object];
+    NSData *data = [fh availableData];
+    NSString *str = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+    
+    NSString *strOut = [NSString stringWithFormat:@"%@%@", [winetricksOutput string], str];
+    [winetricksOutput setString:strOut];
+    
+    // Scroll to bottom
+    [winetricksOutput scrollRangeToVisible:NSMakeRange([[winetricksOutput string] length], 0)];
+    
+    NSLog(@"%@",str);
+    if ([self wineIsRunning]) {
+        [fh waitForDataInBackgroundAndNotify];
+    }
+    else {
+        [winetricksOutline setEnabled:YES];
+        [executeWinetricksBtn setEnabled:YES];
+    }
+}
+
 #pragma mark ---
 #pragma mark Interface Actions
 - (IBAction)executeWinetricks:(id)sender {
+    // Clean up the output
+    [winetricksOutput setString:@""];
+    [self setWinetricksArgs:[[NSMutableArray alloc] init]];
     
+    // Get the selected winetricks
+    NSString *winetricksVerbs = @"winetricks";
+    [[self winetricksArgs] addObject:@"--runWinetricks"];
+    
+    NSArray *categories = [winetricksDatasource allKeys];
+    for (NSString *category in categories) {
+        NSMutableArray *categoryItems = [winetricksDatasource objectForKey:category];
+        for (NSMutableDictionary *item in categoryItems) {
+            if ([item objectForKey:@"selected"] && [(NSNumber *)[item objectForKey:@"selected"] integerValue] == 1) {
+                winetricksVerbs = [winetricksVerbs stringByAppendingFormat:@" %@", (NSString *)[item objectForKey:@"winetrick"]];
+                [[self winetricksArgs] addObject:(NSString *)[item objectForKey:@"winetrick"]];
+            }
+        }
+    }
+    
+    if (![winetricksVerbs isEqualToString:@"winetricks"]) {
+        [self setWinetricksFinalCommand:[NSString stringWithFormat:@"%@/Contents/MacOs/BLWineLauncher", [self bundlePath]]];
+        
+        // Show a confirmation dialog
+        warning = [OEHUDAlert alertWithMessageText:[NSString stringWithFormat:@"The following command will be executed:\n%@\nAre you sure you want to proceed?", winetricksVerbs] defaultButton:@"Yes" alternateButton:@"No"];
+        [warning setDefaultButtonAction:@selector(runWinetricksCommand:) andTarget:self];
+        [warning runModal];
+    }
+}
+
+- (IBAction)runWinetricksCommand:(id)sender {
+    [warning closeWithResult:0];
+    
+    // Disable the buttons and the tableview
+    [winetricksOutline setEnabled:NO];
+    [executeWinetricksBtn setEnabled:NO];
+    
+    [self startTaskAndMonitor:[self winetricksFinalCommand] arguments:[self winetricksArgs]];
+    NSLog(@"Winetricks Finished");
+}
+
+- (void)startTaskAndMonitor:(NSString *)command arguments:(NSArray *)args {
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath: command];
+    [task setArguments: args];
+    
+    NSPipe *standardOut = [NSPipe pipe];
+    NSPipe *standardErr = [NSPipe pipe];
+    
+    [task setStandardOutput:standardOut];
+    [task setStandardError:standardErr];
+    
+    NSFileHandle *fhStdOut = [standardOut fileHandleForReading];
+    [fhStdOut waitForDataInBackgroundAndNotify];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:fhStdOut];
+    
+    NSFileHandle *fhStdErr = [standardErr fileHandleForReading];
+    [fhStdErr waitForDataInBackgroundAndNotify];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:fhStdErr];
+    
+    [task launch];
+    [self setWineIsRunning:YES];
+    
+    dispatch_queue_t diQueue = dispatch_queue_create("com.appcake.wineserverMonitor", DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_t priority = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+    dispatch_set_target_queue(diQueue, priority);
+    
+    dispatch_async(diQueue, ^{
+        [BLSystemCommand waitForWineserverToExitWithBinaryName:@"BLWineLauncher" andCallback:^(BOOL result) {
+            if (result == YES) {
+                [self setWineIsRunning:NO];
+            }
+        }];
+    });
 }
 #pragma mark ---
 @end
