@@ -29,5 +29,6 @@
 @interface BLSystemCommand : NSObject
 
 + (NSString *)systemCommand:(NSString *)command shouldWaitForProcess:(BOOL)waitForProcess;
++ (void)waitForWineserverToExitWithBinaryName:(NSString *)binaryName andCallback:(void (^)(BOOL))callbackBlock;
 
 @end

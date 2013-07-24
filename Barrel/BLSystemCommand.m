@@ -45,4 +45,29 @@
 	return [NSString stringWithString:returnString];
 }
 
++ (void)waitForWineserverToExitWithBinaryName:(NSString *)binaryName andCallback:(void (^)(BOOL))callbackBlock {
+    [NSThread sleepForTimeInterval:10.0f];
+    for (;;) {
+        BOOL stillRunning = NO;
+        NSArray *resultArray = [[self systemCommand:[NSString stringWithFormat:@"ps -eo pcpu,pid,args | grep \"%@\"", binaryName] shouldWaitForProcess:YES] componentsSeparatedByString:@" "];
+        NSMutableArray *cleanArray = [[NSMutableArray alloc] init];
+        // Go through the resultArray and clear out any empty items
+        for (NSString *item in resultArray) {
+            if ([item length] > 0) {
+                [cleanArray addObject:item];
+            }
+        }
+        
+        if ([cleanArray count] > 0 && ![(NSString *)[cleanArray objectAtIndex:12] isEqualToString:@"grep"]) {
+            stillRunning = YES;
+        }
+        if (!stillRunning) {
+            NSLog(@"Wineserver not running");
+            callbackBlock(YES);
+            return;
+        }
+        [NSThread sleepForTimeInterval:1.0f];
+    }
+}
+
 @end
