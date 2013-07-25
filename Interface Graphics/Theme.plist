@@ -1167,6 +1167,18 @@
 				<string>{{0,0},{10,10}}</string>
 			</dict>
 		</dict>
+		<key>game_scanner_progress_blue_candy</key>
+		<dict>
+			<key>Resource</key>
+			<string>game_scanner_progress_blue_candy</string>
+			<key>States</key>
+			<dict>
+				<key>Toggle Off</key>
+				<string>{{0,10},{10,10}}</string>
+				<key>Toggle On</key>
+				<string>{{0,0},{10,10}}</string>
+			</dict>
+		</dict>
 		<key>game_scanner_progress_bar</key>
 		<dict>
 			<key>Resource</key>
@@ -1193,7 +1205,50 @@
 				</dict>
 			</dict>
 		</dict>
+		<key>game_scanner_progress_blue_bar</key>
+		<dict>
+			<key>Resource</key>
+			<string>game_scanner_progress_bar</string>
+			<key>States</key>
+			<dict>
+				<key>Toggle On</key>
+				<dict>
+					<key>Parts</key>
+					<array>
+						<string>{{0,0},{2,12}}</string>
+						<string>{{2,0},{1,12}}</string>
+						<string>{{3,0},{2,12}}</string>
+					</array>
+				</dict>
+				<key>Toggle Off</key>
+				<dict>
+					<key>Parts</key>
+					<array>
+						<string>{{0,12},{2,12}}</string>
+						<string>{{2,12},{1,12}}</string>
+						<string>{{3,12},{2,12}}</string>
+					</array>
+				</dict>
+			</dict>
+		</dict>
 		<key>game_scanner_progress_track_background</key>
+		<dict>
+			<key>Resource</key>
+			<string>game_scanner_progress_track</string>
+			<key>States</key>
+			<dict>
+				<key>Default</key>
+				<dict>
+					<key>Parts</key>
+					<array>
+						<string>{{0,0},{5,13}}</string>
+						<string>{{5,0},{1,13}}</string>
+						<string>{{6,0},{5,13}}</string>
+					</array>
+				</dict>
+			</dict>
+		</dict>
+		<key>game_scanner_progress_track_blue_background</key>
 		<dict>
 			<key>Resource</key>
 			<string>game_scanner_progress_track</string>

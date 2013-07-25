@@ -312,6 +312,8 @@
 		94F6CB7C16DD727600CD48A4 /* OECheats.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F6CB7B16DD727600CD48A4 /* OECheats.m */; };
 		C117A943172688BA00143421 /* BLImportItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C117A942172688BA00143421 /* BLImportItem.m */; };
 		C15C68F01756546100969F6D /* BLArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = C15C68EF1756546100969F6D /* BLArchiver.m */; };
+		C16D643917A14364002BA615 /* BLOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = C16D643817A14364002BA615 /* BLOutlineView.m */; };
+		C16D643B17A16D77002BA615 /* game_scanner_progress_blue_candy.png in Resources */ = {isa = PBXBuildFile; fileRef = C16D643A17A16D77002BA615 /* game_scanner_progress_blue_candy.png */; };
 		C176B63017551589003E65EB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C176B62F17551588003E65EB /* SystemConfiguration.framework */; };
 		C17C8CF0179E86330089D9BA /* BLSystemCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C17C8CEF179E86330089D9BA /* BLSystemCommand.m */; };
 		C184BFE017589B5200622EF1 /* BarrelApp.app in Copy Files (1 item) */ = {isa = PBXBuildFile; fileRef = C184BFDB1758980C00622EF1 /* BarrelApp.app */; };
@@ -957,6 +959,9 @@
 		C117A942172688BA00143421 /* BLImportItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLImportItem.m; sourceTree = "<group>"; };
 		C15C68EE1756546100969F6D /* BLArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLArchiver.h; sourceTree = "<group>"; };
 		C15C68EF1756546100969F6D /* BLArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLArchiver.m; sourceTree = "<group>"; };
+		C16D643717A14364002BA615 /* BLOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLOutlineView.h; sourceTree = "<group>"; };
+		C16D643817A14364002BA615 /* BLOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLOutlineView.m; sourceTree = "<group>"; };
+		C16D643A17A16D77002BA615 /* game_scanner_progress_blue_candy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = game_scanner_progress_blue_candy.png; sourceTree = "<group>"; };
 		C176B62F17551588003E65EB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C17C8CEE179E86330089D9BA /* BLSystemCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSystemCommand.h; sourceTree = "<group>"; };
 		C17C8CEF179E86330089D9BA /* BLSystemCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSystemCommand.m; sourceTree = "<group>"; };
@@ -1660,6 +1665,7 @@
 		53439B9D13B93920005C0CC8 /* Interface Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				C16D643A17A16D77002BA615 /* game_scanner_progress_blue_candy.png */,
 				83B867B8171D63510038988C /* retrode.png */,
 				83DEE499162D62B2005D8AD7 /* game_scanner_buttons.png */,
 				83DEE49A162D62B2005D8AD7 /* game_scanner_progress_bar.png */,
@@ -2191,6 +2197,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C16D643117A14144002BA615 /* Outline View */ = {
+			isa = PBXGroup;
+			children = (
+				C16D643717A14364002BA615 /* BLOutlineView.h */,
+				C16D643817A14364002BA615 /* BLOutlineView.m */,
+			);
+			name = "Outline View";
+			sourceTree = "<group>";
+		};
 		C184BFD71758980B00622EF1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2269,6 +2284,7 @@
 		E2DB7D74179C60E800FECA54 /* Winetricks Window */ = {
 			isa = PBXGroup;
 			children = (
+				C16D643117A14144002BA615 /* Outline View */,
 				E2DB7D75179C615F00FECA54 /* BLWinetricksWindowController.h */,
 				E2DB7D76179C615F00FECA54 /* BLWinetricksWindowController.m */,
 			);
@@ -2461,6 +2477,7 @@
 				53439C1A13B93920005C0CC8 /* controls_background.jpg in Resources */,
 				53439C1B13B93920005C0CC8 /* controls_tab_icon.png in Resources */,
 				53439C1C13B93920005C0CC8 /* core_triangle.png in Resources */,
+				C16D643B17A16D77002BA615 /* game_scanner_progress_blue_candy.png in Resources */,
 				53439C1D13B93920005C0CC8 /* cores_tab_icon.png in Resources */,
 				53439C1E13B93920005C0CC8 /* dark_box.png in Resources */,
 				53439C1F13B93920005C0CC8 /* dark_button.png in Resources */,
@@ -2629,6 +2646,7 @@
 				E2DB7D77179C615F00FECA54 /* BLWinetricksWindowController.m in Sources */,
 				83F688C013C6433600AA0F83 /* OEGridScrollView.m in Sources */,
 				8328D9E513C75CAE0026D2A7 /* OEDBImage.m in Sources */,
+				C16D643917A14364002BA615 /* BLOutlineView.m in Sources */,
 				83199722142741790068C865 /* OEROMImporter.m in Sources */,
 				83507247142F6029005D9033 /* OEControllerImageView.m in Sources */,
 				83CD082D143DEF9A00B6A2E8 /* OEDBSaveState.m in Sources */,
