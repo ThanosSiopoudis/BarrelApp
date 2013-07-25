@@ -75,9 +75,20 @@
         }
         [self runWinetricksWithArgs:argsStr];
     }
+    else if ([(NSString *)[[self arguments] objectAtIndex:1] isEqualToString:@"--runTest"]) {
+        [self runWithWindowsBinary:(NSString *)[[self arguments] objectAtIndex:2] andTestSwitches:(NSString *)[[self arguments] objectAtIndex:3]];
+    }
     else {
         [self runWineWithWindowsBinary:(NSString *)[[self arguments] objectAtIndex:1]];
     }
+}
+
+-(void) runWithWindowsBinary: (NSString *)binaryPath andTestSwitches:(NSString *)switches {
+    NSString *pathContainingBinary = [binaryPath stringByDeletingLastPathComponent];
+    NSString *binaryName = [binaryPath lastPathComponent];
+    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";export WINEDEBUG=\"%@\";cd \"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine \"%@\" > \"%@/Wine.log\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], switches, pathContainingBinary, [self dyldFallbackPath], binaryName, [self winePrefixPath]];
+    [self setScriptPath:@""];
+    [self systemCommand:script shouldWaitForProcess:NO redirectOutput:NO];
 }
 
 -(void) runWinetricksWithArgs: (NSString *)args {
@@ -87,7 +98,9 @@
 }
 
 -(void) runWineWithWindowsBinary:(NSString *)binaryPath {
-    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";export WINEDEBUG=\"err+all,fixme+all\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine \"%@\" > \"%@/Wine.log\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], binaryPath, [self winePrefixPath]];
+    NSString *pathContainingBinary = [binaryPath stringByDeletingLastPathComponent];
+    NSString *binaryName = [binaryPath lastPathComponent];
+    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";cd \"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine \"%@\" > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], pathContainingBinary, [self dyldFallbackPath], binaryName];
     [self setScriptPath:@""];
     [self systemCommand:script shouldWaitForProcess:YES redirectOutput:NO];
 }
@@ -263,7 +276,11 @@
     }
 }
 
-- (NSString *)systemCommand:(NSString *)command shouldWaitForProcess:(BOOL)waitForProcess redirectOutput:(BOOL)redirect
+- (NSString *)systemCommand:(NSString *)command shouldWaitForProcess:(BOOL)waitForProcess redirectOutput:(BOOL)redirect {
+    return [self systemCommand:command shouldWaitForProcess:waitForProcess redirectOutput:redirect logOutputToFilePath:@""];
+}
+
+- (NSString *)systemCommand:(NSString *)command shouldWaitForProcess:(BOOL)waitForProcess redirectOutput:(BOOL)redirect logOutputToFilePath:(NSString *)logFilePath
 {
 	FILE *fp;
 	char buff[512];
@@ -275,6 +292,15 @@
             [returnString appendString:[NSString stringWithCString:buff encoding:NSUTF8StringEncoding]];
             if (redirect) {
                 NSLog(@"%@", [NSString stringWithCString:buff encoding:NSUTF8StringEncoding]);
+            }
+            else if ([logFilePath length] > 0) {
+                NSFileHandle *aFileHandle;
+                NSString *aFile;
+                
+                aFile = [NSString stringWithString:logFilePath];
+                aFileHandle = [NSFileHandle fileHandleForWritingAtPath:aFile];
+                [aFileHandle truncateFileAtOffset:[aFileHandle seekToEndOfFile]];
+                [aFileHandle writeData: [[NSString stringWithCString:buff encoding:NSUTF8StringEncoding] dataUsingEncoding:NSUTF8StringEncoding]];
             }
         }
         pclose(fp);
