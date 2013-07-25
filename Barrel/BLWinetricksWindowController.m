@@ -25,28 +25,32 @@
  */
 
 #import "OEButtonCell.h"
+#import "OETableTextFieldCell.h"
 #import "OEButton.h"
+#import "OEProgressIndicator.h"
+
 #import "BLWinetricksWindowController.h"
 #import "BLSystemCommand.h"
 
 #import "OEHUDAlert+DefaultAlertsAdditions.h"
 
 @interface BLWinetricksWindowController () {
-    IBOutlet NSView         *winetricksView;
-    IBOutlet NSOutlineView  *winetricksOutline;
-    IBOutlet OEButton       *executeWinetricksBtn;
-    IBOutlet OEButton       *cancelWindowBtn;
-    IBOutlet NSTextView     *winetricksOutput;
+    IBOutlet NSView                 *winetricksView;
+    IBOutlet NSOutlineView          *winetricksOutline;
+    IBOutlet OEButton               *executeWinetricksBtn;
+    IBOutlet OEButton               *cancelWindowBtn;
+    IBOutlet NSTextView             *winetricksOutput;
+    IBOutlet OEProgressIndicator    *winetricksBusyIndicator;
     
-    BOOL                    wineIsRunning;
+    BOOL                            wineIsRunning;
     
-    NSString                *winetricksPlistPath;
-    NSString                *winetricksFinalCommand;
-    NSString                *bundlePath;
+    NSString                        *winetricksPlistPath;
+    NSString                        *winetricksFinalCommand;
+    NSString                        *bundlePath;
     
-    NSMutableArray          *winetricksArgs;
-    NSMutableDictionary     *winetricksDatasource;
-    OEHUDAlert              *warning;
+    NSMutableArray                  *winetricksArgs;
+    NSMutableDictionary             *winetricksDatasource;
+    OEHUDAlert                      *warning;
 }
 
 @property (nonatomic, readwrite) NSString *winetricksPlistPath, *bundlePath, *winetricksFinalCommand;
@@ -113,6 +117,8 @@
     [[[winetricksOutline tableColumns] objectAtIndex:0] setIdentifier:@"install"];
     [[[winetricksOutline tableColumns] objectAtIndex:1] setIdentifier:@"winetrick"];
     [[[winetricksOutline tableColumns] objectAtIndex:2] setIdentifier:@"description"];
+    [winetricksOutput setFont:[NSFont fontWithName:@"Monaco" size:10]];
+    [winetricksOutput setTextColor:[NSColor whiteColor]];
 }
 
 #pragma mark Datasource and Delegate methods
@@ -137,7 +143,7 @@
 
 // Method returns value to be shown for given column of the tree node item
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
-    NSCell *cell = [tableColumn dataCell];
+    OETableTextFieldCell *cell = [tableColumn dataCell];
     
     if ([[[self winetricksDatasource] objectForKey:item] isKindOfClass:[NSArray class]]) {
         if ([[[tableColumn headerCell] stringValue] isEqualToString:@"Winetrick"]) {
@@ -164,11 +170,11 @@
     }
 }
 
-- (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item {
-    NSCell *returnCell = [tableColumn dataCell];
+- (OETableTextFieldCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item {
+    OETableTextFieldCell *returnCell = [tableColumn dataCell];
     
     if ([[[tableColumn headerCell] stringValue] isEqualToString:@"Install"] && [item isKindOfClass:[NSString class]]) {
-        returnCell = [[NSCell alloc] initTextCell:@""];
+        returnCell = [[OETableTextFieldCell alloc] initTextCell:@""];
     }
     
     return returnCell;
@@ -212,6 +218,12 @@
     else {
         [winetricksOutline setEnabled:YES];
         [executeWinetricksBtn setEnabled:YES];
+        [winetricksBusyIndicator setHidden:YES];
+        [winetricksBusyIndicator stopAnimation:self];
+        [executeWinetricksBtn setTitle:@"Execute Winetricks"];
+        [executeWinetricksBtn setThemeKey:@"hud_button_blue"];
+        [cancelWindowBtn setHidden:NO];
+        NSLog(@"Winetricks Finished");
     }
 }
 
@@ -254,8 +266,13 @@
     [winetricksOutline setEnabled:NO];
     [executeWinetricksBtn setEnabled:NO];
     
+    [winetricksBusyIndicator setIndeterminate:YES];
+    [winetricksBusyIndicator startAnimation:self];
+    [winetricksBusyIndicator setHidden:NO];
+    [executeWinetricksBtn setTitle:@"Stop!"];
+    [executeWinetricksBtn setThemeKey:@"hud_button_red"];
+    [cancelWindowBtn setHidden:YES];
     [self startTaskAndMonitor:[self winetricksFinalCommand] arguments:[self winetricksArgs]];
-    NSLog(@"Winetricks Finished");
 }
 
 - (void)startTaskAndMonitor:(NSString *)command arguments:(NSArray *)args {
