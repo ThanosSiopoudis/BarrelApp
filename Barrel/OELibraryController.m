@@ -43,6 +43,9 @@
 #import "NSWindow+OEFullScreenAdditions.h"
 
 #import "OEPreferencesController.h"
+#import "OEHUDAlert+DefaultAlertsAdditions.h"
+#import "BLSystemCommand.h"
+
 #pragma mark - Exported variables
 NSString * const OELastCollectionSelectedKey = @"lastCollectionSelected";
 
@@ -284,20 +287,66 @@ static const CGFloat _OEToolbarHeight = 44;
 {
     NSMutableArray *gamesToStart = [NSMutableArray new];
 
-    if([sender isKindOfClass:[OEDBGame class]]) [gamesToStart addObject:sender];
-    else
-    {
+    if([sender isKindOfClass:[OEDBGame class]]) {
+        [gamesToStart addObject:sender];
+    }
+    else {
         NSAssert([(id)[self currentViewController] respondsToSelector:@selector(selectedGames)], @"Attempt to start a game from a view controller that doesn't announce selectedGames");
-
         [gamesToStart addObjectsFromArray:[(id <OELibrarySubviewController>)[self currentViewController] selectedGames]];
     }
 
     NSAssert([gamesToStart count] > 0, @"Attempt to start a game while the selection is empty");
-
-    if([[self delegate] respondsToSelector:@selector(libraryController:didSelectGame:)])
-    {
+    if([[self delegate] respondsToSelector:@selector(libraryController:didSelectGame:)]) {
         for(OEDBGame *game in gamesToStart) [[self delegate] libraryController:self didSelectGame:game];
     }
+}
+
+- (IBAction)startDebugRun:(id)sender {
+    NSMutableArray *gamesToStart = [NSMutableArray new];
+    
+    if([sender isKindOfClass:[OEDBGame class]]) {
+        [gamesToStart addObject:sender];
+    }
+    else {
+        NSAssert([(id)[self currentViewController] respondsToSelector:@selector(selectedGames)], @"Attempt to start a game from a view controller that doesn't announce selectedGames");
+        [gamesToStart addObjectsFromArray:[(id <OELibrarySubviewController>)[self currentViewController] selectedGames]];
+    }
+    
+    for(OEDBGame *game in gamesToStart) [self setCurrentGame:game];
+    
+    // Show the Alert for the debug run
+    [self setDebugAlert:[OEHUDAlert alertWithMessageAndInputbox:@"Please enter the debug channels that you want to log"]];
+    [[self debugAlert] setDefaultButtonAction:@selector(runGameWithDebug:) andTarget:self];
+    [[self debugAlert] runModal];
+}
+
+- (IBAction)runGameWithDebug:(id)sender {
+    [[self debugAlert] closeWithResult:0];
+    NSString *bundlePath = [[self currentGame] bundlePath];
+    NSMutableDictionary *plistEntries = [[NSMutableDictionary alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", bundlePath]];
+    NSString *wineserverName = [plistEntries valueForKey:@"BLWineserverBin"];
+    
+    [BLSystemCommand runScript:bundlePath withArguments:[NSArray arrayWithObjects:@"--runTest", [[self debugAlert] stringValue], nil] shouldWaitForProcess:NO];
+    
+    dispatch_queue_t diQueue = dispatch_queue_create("com.appcake.wineserverMonitor", DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_t priority = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+    dispatch_set_target_queue(diQueue, priority);
+    
+    dispatch_async(diQueue, ^{
+        [BLSystemCommand waitForWineserverToExitWithBinaryName:wineserverName andCallback:^(BOOL result) {
+            if (result) {
+                [self setDebugAlert:[OEHUDAlert alertWithMessageText:@"Test run finished. Do you want to see the log?" defaultButton:@"Yes" alternateButton:@"No"]];
+                [[self debugAlert] setDefaultButtonAction:@selector(showLogFile:) andTarget:self];
+                [[self debugAlert] runModal];
+            }
+        } waitFor:3];
+    });
+}
+
+- (IBAction)showLogFile:(id)sender {
+    [[self debugAlert] closeWithResult:0];
+    NSString *logFilePath = [NSString stringWithFormat:@"%@/Wine.log", [[NSBundle bundleWithPath:[[self currentGame] bundlePath]] resourcePath]];
+    [[NSWorkspace sharedWorkspace] openFile:logFilePath withApplication:@"TextEdit"];
 }
 
 - (IBAction)startWineConfig:(id)sender {

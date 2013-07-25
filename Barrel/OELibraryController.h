@@ -31,6 +31,7 @@
 #import "OELibraryDatabase.h"
 #import "OELibrarySplitView.h"
 #import "OEButton.h"
+#import "OEHUDAlert.h"
 
 @class OELibraryDatabase;
 @class OESidebarController;
@@ -61,6 +62,7 @@
 
 - (IBAction)editSmartCollection:(id)sender;
 - (IBAction)addToLibrary:(id)sender;
+- (IBAction)startDebugRun:(id)sender;
 - (IBAction)startGame:(id)sender;
 - (IBAction)startWineConfig:(id)sender;
 - (IBAction)startRegedit:(id)sender;
@@ -90,6 +92,9 @@
 @property (strong) IBOutlet NSSlider      *toolbarSlider;
 
 @property (strong) NSBitmapImageRep *cachedSnapshot;
+
+@property (readwrite) OEHUDAlert *debugAlert;
+@property (readwrite) OEDBGame *currentGame;
 
 
 - (void)showViewController:(NSViewController <OELibrarySubviewController>*)nextViewController;
