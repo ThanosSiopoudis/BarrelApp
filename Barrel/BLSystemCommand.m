@@ -46,7 +46,11 @@
 }
 
 + (void)waitForWineserverToExitWithBinaryName:(NSString *)binaryName andCallback:(void (^)(BOOL))callbackBlock {
-    [NSThread sleepForTimeInterval:10.0f];
+    [self waitForWineserverToExitWithBinaryName:binaryName andCallback:callbackBlock waitFor:10];
+}
+
++ (void)waitForWineserverToExitWithBinaryName:(NSString *)binaryName andCallback:(void (^)(BOOL))callbackBlock waitFor:(NSInteger)waitTime {
+    [NSThread sleepForTimeInterval:waitTime];
     for (;;) {
         BOOL stillRunning = NO;
         NSArray *resultArray = [[self systemCommand:[NSString stringWithFormat:@"ps -eo pcpu,pid,args | grep \"%@\"", binaryName] shouldWaitForProcess:YES] componentsSeparatedByString:@" "];
@@ -59,6 +63,7 @@
         }
         
         if ([cleanArray count] > 0 && ![(NSString *)[cleanArray objectAtIndex:12] isEqualToString:@"grep"]) {
+            // FIXME: Optimise this check
             stillRunning = YES;
         }
         if (!stillRunning) {
@@ -67,6 +72,39 @@
             return;
         }
         [NSThread sleepForTimeInterval:1.0f];
+    }
+}
+
++ (void)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess
+{
+    NSTask *task;
+    task = [[NSTask alloc] init];
+    
+    NSBundle *barrelAppBundle = [NSBundle bundleWithPath:scriptName];
+    NSArray *argumentsArray;
+    [task setLaunchPath: [barrelAppBundle executablePath]];
+    
+    if (arguments) {
+        argumentsArray = arguments;
+        [task setArguments: argumentsArray];
+    }
+    
+    NSPipe *pipe;
+    pipe = [NSPipe pipe];
+    [task setStandardOutput: pipe];
+    
+    NSFileHandle *file;
+    file = [pipe fileHandleForReading];
+    
+    [[NSApplication sharedApplication] deactivate]; // Send Barrel to the back
+    [task launch];
+    
+    if (waitForProcess) {
+        NSData *data;
+        data = [file readDataToEndOfFile];
+        
+        NSString *string;
+        string = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
     }
 }
 
