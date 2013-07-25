@@ -740,25 +740,30 @@ static NSArray *OE_defaultSortDescriptors;
         [menu addItem:[NSMenuItem separatorItem]];
         
         // Wine commands
+        [menu addItemWithTitle:NSLocalizedString(@"Debug Run", @"") action:@selector(startDebugRun:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Wine Config", @"") action:@selector(startWineConfig:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Registry Editor", @"") action:@selector(startRegedit:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(showWinetricksMenu:) keyEquivalent:@""];
-        [menu addItemWithTitle:NSLocalizedString(@"Leave a Review", @"") action:@selector(startGame:) keyEquivalent:@""];
         
         [menu addItem:[NSMenuItem separatorItem]];
+        
         // Create Rating Item
+        [menu addItemWithTitle:NSLocalizedString(@"Leave a Review", @"") action:@selector(startGame:) keyEquivalent:@""];
         menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Rating", @"") action:NULL keyEquivalent:@""];
         [menuItem setSubmenu:[self OE_ratingMenuForGames:games]];
         [menu addItem:menuItem];
         [menu addItemWithTitle:NSLocalizedString(@"Add Cover Art From File…", @"") action:@selector(addCoverArtFromFile:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Upload Bundle", @"") action:@selector(startGame:) keyEquivalent:@""];
+        
         [menu addItem:[NSMenuItem separatorItem]];
         
         // Create Add to collection menu
         NSMenuItem *collectionMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Add To Collection", @"") action:NULL keyEquivalent:@""];
         [collectionMenuItem setSubmenu:[self OE_collectionsMenuForGames:games]];
         [menu addItem:collectionMenuItem];
+        
         [menu addItem:[NSMenuItem separatorItem]];
+        
         [menu addItemWithTitle:NSLocalizedString(@"Rename Game", @"") action:@selector(renameSelectedGame:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Delete Game", @"") action:@selector(deleteSelectedGames:) keyEquivalent:@""];
     }
@@ -980,7 +985,7 @@ static NSArray *OE_defaultSortDescriptors;
                             [newDict writeToFile:winetricksPlistPath atomically:YES];
                             
                             // Finally, change the binary rights and move it inside the wrappers binaries folder
-                            NSString *command = [NSString stringWithFormat:@"chmod 755 %@", resultPath];
+                            NSString *command = [NSString stringWithFormat:@"chmod 755 \"%@\"", resultPath];
                             [BLSystemCommand systemCommand:command shouldWaitForProcess:YES];
 
                             NSError *fsError = nil;
