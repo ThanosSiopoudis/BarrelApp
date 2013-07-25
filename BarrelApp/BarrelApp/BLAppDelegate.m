@@ -39,6 +39,7 @@
     dispatch_set_target_queue(dispatchQueue, priority);
     
     BOOL isSetup = NO;
+    BOOL isTestRun = NO;
     [self setScriptPath:[[[NSBundle mainBundle] executablePath] stringByDeletingLastPathComponent]];
     
     // First of all, read the arguments passed to the app
@@ -59,6 +60,10 @@
         else if ([(NSString *)[args objectAtIndex:i] isEqualToString:@"--runWineCfg"]) {
             [self setExecParams:(NSString *)[args objectAtIndex:i]];
         }
+        else if ([(NSString *)[args objectAtIndex:i] isEqualToString:@"--runTest"]) {
+            [self setRunParams:(NSString *)[args objectAtIndex:i+1]];
+            isTestRun = YES;
+        }
     }
     
     if ([[self execParams] isEqualToString:@"initPrefix"]) {
@@ -72,6 +77,9 @@
     else if ([[self runParams] length] > 0) {
         if (isSetup) {
             [self runSetup];
+        }
+        else if (isTestRun) {
+            [self runTestRun];
         }
         else {
             [self runWithParams];
@@ -90,6 +98,15 @@
             }];
         });
     }
+}
+
+- (void)runTestRun {
+    NSString *winBinaryPath = [NSString stringWithFormat:@"%@/Contents/Resources/%@", [[NSBundle mainBundle] bundlePath], [[self infoPlistDict] valueForKey:@"Windows Executable"]];
+    dispatch_async(dispatchQueue, ^{
+        [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:@"--runTest", winBinaryPath, [self runParams], nil] shouldWaitForProcess:YES callback:^(int result){
+            [[NSApplication sharedApplication] terminate:nil];
+        }];
+    });
 }
 
 - (void)runWineConfig {
