@@ -47,5 +47,6 @@ extern NSString *const OEMaxSaveGameNameLengthKey;
 + (id)showManualImportAlertWithVolumeName:(NSString *)volumeName andPopupItems:(NSMutableArray *)items;
 + (id)alertWithMessageText:(NSString *)msgText defaultButton:(NSString *)defaultButtonLabel alternateButton:(NSString *)alternateButtonLabel otherButton:(NSString *)otherButton;
 + (id)manualGameSearchWithVolumeName:(NSString *)gameName;
++ (id)alertWithMessageAndInputbox:(NSString *)message;
 
 @end
