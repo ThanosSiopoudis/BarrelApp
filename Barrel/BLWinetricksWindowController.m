@@ -119,6 +119,12 @@
     [[[winetricksOutline tableColumns] objectAtIndex:2] setIdentifier:@"description"];
     [winetricksOutput setFont:[NSFont fontWithName:@"Monaco" size:10]];
     [winetricksOutput setTextColor:[NSColor whiteColor]];
+    
+    [cancelWindowBtn setAction:@selector(closeWinetricksWindow:)];
+}
+
+- (IBAction)closeWinetricksWindow:(id)sender {
+    [self close];
 }
 
 #pragma mark Datasource and Delegate methods
@@ -221,6 +227,7 @@
         [winetricksBusyIndicator setHidden:YES];
         [winetricksBusyIndicator stopAnimation:self];
         [executeWinetricksBtn setTitle:@"Execute Winetricks"];
+        [executeWinetricksBtn setAction:@selector(executeWinetricks:)];
         [executeWinetricksBtn setThemeKey:@"hud_button_blue"];
         [cancelWindowBtn setHidden:NO];
         NSLog(@"Winetricks Finished");
@@ -264,14 +271,15 @@
     
     // Disable the buttons and the tableview
     [winetricksOutline setEnabled:NO];
-    [executeWinetricksBtn setEnabled:NO];
     
     [winetricksBusyIndicator setIndeterminate:YES];
     [winetricksBusyIndicator startAnimation:self];
     [winetricksBusyIndicator setHidden:NO];
     [executeWinetricksBtn setTitle:@"Stop!"];
+    [executeWinetricksBtn setAction:@selector(forceTerminateWinetrick:)];
     [executeWinetricksBtn setThemeKey:@"hud_button_red"];
     [cancelWindowBtn setHidden:YES];
+
     [self startTaskAndMonitor:[self winetricksFinalCommand] arguments:[self winetricksArgs]];
 }
 
@@ -308,6 +316,30 @@
             }
         }];
     });
+}
+
+- (IBAction)forceTerminateWinetrick:(id)sender {
+    warning = [OEHUDAlert alertWithMessageText:@"Are you sure you want to forcefully terminate Winetricks?" defaultButton:@"Yes" alternateButton:@"No"];
+    [warning setDefaultButtonAction:@selector(stopWineAndLauncher:) andTarget:self];
+    [warning runModal];
+}
+
+- (IBAction)stopWineAndLauncher:(id)sender {
+    // First find and terminate all running Wine and Wineserver processes
+    [warning closeWithResult:0];
+    
+    NSMutableDictionary *bundleDict = [NSMutableDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", bundlePath]];
+    NSString *wineProcess = [bundleDict valueForKey:@"BLWineBin"];
+    NSString *wineserverProcess = [bundleDict valueForKey:@"BLWineserverBin"];
+    
+    NSString *killWineCommand = [NSString stringWithFormat:@"killall -9 \"%@\" > /dev/null 2>&1", wineProcess];
+    NSString *killWineserverCommand = [NSString stringWithFormat:@"killall -9 \"%@\" > /dev/null 2>&1", wineserverProcess];
+    NSString *killLauncherCommand = @"killall -9 \"BLWineLauncher\" > /dev/null 2>&1";
+    
+    // Leave no trace!
+    [BLSystemCommand systemCommand:killWineCommand shouldWaitForProcess:YES];
+    [BLSystemCommand systemCommand:killWineserverCommand shouldWaitForProcess:YES];
+    [BLSystemCommand systemCommand:killLauncherCommand shouldWaitForProcess:YES];
 }
 #pragma mark ---
 @end
