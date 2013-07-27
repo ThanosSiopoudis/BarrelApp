@@ -62,9 +62,14 @@
             }
         }
         
-        if ([cleanArray count] > 0 && ![(NSString *)[cleanArray objectAtIndex:12] isEqualToString:@"grep"]) {
-            // FIXME: Optimise this check
-            stillRunning = YES;
+        if ([cleanArray count] > 0) {
+            for (int i=0; i<[cleanArray count]; i++) {
+                NSString *test = [cleanArray objectAtIndex:i];
+                NSRange strRange = [test rangeOfString:binaryName];
+                if (strRange.location != NSNotFound && ![(NSString *)[cleanArray objectAtIndex:(i-1)] isEqualToString:@"grep"]) {
+                    stillRunning = YES;
+                }
+            }
         }
         if (!stillRunning) {
             NSLog(@"Wineserver not running");
