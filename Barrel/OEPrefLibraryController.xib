@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
 		<string key="IBDocument.SystemVersion">12E55</string>
-		<string key="IBDocument.InterfaceBuilderVersion">4457.6</string>
+		<string key="IBDocument.InterfaceBuilderVersion">4471.1</string>
 		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">4457.6</string>
+			<string key="NS.object.0">4471.1</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSButton</string>
@@ -240,7 +240,7 @@
 					<object class="NSButton" id="54998610">
 						<reference key="NSNextResponder" ref="260910718"/>
 						<int key="NSvFlags">284</int>
-						<string key="NSFrame">{{214, 193}, {78, 22.999999999999986}}</string>
+						<string key="NSFrame">{{214, 193}, {78, 22.999999999999996}}</string>
 						<reference key="NSSuperview" ref="260910718"/>
 						<reference key="NSNextKeyView" ref="399148658"/>
 						<bool key="NSEnabled">YES</bool>
@@ -262,7 +262,7 @@
 					<object class="NSButton" id="399148658">
 						<reference key="NSNextResponder" ref="260910718"/>
 						<int key="NSvFlags">284</int>
-						<string key="NSFrame">{{303, 193}, {78, 23}}</string>
+						<string key="NSFrame">{{303, 193}, {78, 22.999999999999986}}</string>
 						<reference key="NSSuperview" ref="260910718"/>
 						<reference key="NSNextKeyView" ref="525206165"/>
 						<bool key="NSEnabled">YES</bool>
