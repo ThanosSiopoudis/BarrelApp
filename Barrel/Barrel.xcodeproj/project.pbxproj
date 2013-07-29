@@ -347,6 +347,7 @@
 		E250406717A3FEC0004CDA8B /* user_tab_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E250406617A3FEC0004CDA8B /* user_tab_icon.png */; };
 		E250407017A41362004CDA8B /* BLPreferencesInputBox.m in Sources */ = {isa = PBXBuildFile; fileRef = E250406F17A41362004CDA8B /* BLPreferencesInputBox.m */; };
 		E250407417A416DB004CDA8B /* preferences_input_box.png in Resources */ = {isa = PBXBuildFile; fileRef = E250407317A416DB004CDA8B /* preferences_input_box.png */; };
+		E28F7EA117A468D2000DB2AC /* AC_User.m in Sources */ = {isa = PBXBuildFile; fileRef = E28F7EA017A468D2000DB2AC /* AC_User.m */; };
 		E2B1B77B1725E1850054D800 /* BLGameImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B1B77A1725E1850054D800 /* BLGameImporter.m */; };
 		E2B2CA59171F2DE600B0F14F /* Library.storedata in Resources */ = {isa = PBXBuildFile; fileRef = E2B2CA58171F2DE600B0F14F /* Library.storedata */; };
 		E2DB7D6E179C579D00FECA54 /* Winetricks.xib in Resources */ = {isa = PBXBuildFile; fileRef = E2DB7D6D179C579D00FECA54 /* Winetricks.xib */; };
@@ -1020,6 +1021,8 @@
 		E250406E17A41362004CDA8B /* BLPreferencesInputBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPreferencesInputBox.h; sourceTree = "<group>"; };
 		E250406F17A41362004CDA8B /* BLPreferencesInputBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPreferencesInputBox.m; sourceTree = "<group>"; };
 		E250407317A416DB004CDA8B /* preferences_input_box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preferences_input_box.png; sourceTree = "<group>"; };
+		E28F7E9F17A468D2000DB2AC /* AC_User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AC_User.h; sourceTree = "<group>"; };
+		E28F7EA017A468D2000DB2AC /* AC_User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AC_User.m; sourceTree = "<group>"; };
 		E2B1B7791725E1850054D800 /* BLGameImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLGameImporter.h; sourceTree = "<group>"; };
 		E2B1B77A1725E1850054D800 /* BLGameImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLGameImporter.m; sourceTree = "<group>"; };
 		E2B2CA58171F2DE600B0F14F /* Library.storedata */ = {isa = PBXFileReference; lastKnownFileType = file; path = Library.storedata; sourceTree = "<group>"; };
@@ -2250,6 +2253,8 @@
 				C19A4EE3174B83710023E064 /* AC_Game.m */,
 				C1A030D517316E0A00BF897F /* AC_WineBuild.h */,
 				C1A030D617316E0A00BF897F /* AC_WineBuild.m */,
+				E28F7E9F17A468D2000DB2AC /* AC_User.h */,
+				E28F7EA017A468D2000DB2AC /* AC_User.m */,
 			);
 			name = APIClasses;
 			sourceTree = "<group>";
@@ -2720,6 +2725,7 @@
 				8337393815BFD87900D83D2F /* OELibraryToolbarView.m in Sources */,
 				8356AEF215DA703100AA6B44 /* OEImportItem.m in Sources */,
 				83B65F5715F0DEA100C742D2 /* NSArray+OEAdditions.m in Sources */,
+				E28F7EA117A468D2000DB2AC /* AC_User.m in Sources */,
 				8353EB2015FF5CB10026E326 /* OEDBRomMigrationPolicy.m in Sources */,
 				8353EB2315FF609F0026E326 /* OEDBSaveStateMigrationPolicy.m in Sources */,
 				8353EB7D15FF695D0026E326 /* 1.0 Beta to 0.2.xcmappingmodel in Sources */,
