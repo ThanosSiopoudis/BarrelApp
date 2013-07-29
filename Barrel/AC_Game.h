@@ -31,10 +31,11 @@
 }
 
 @property(nonatomic, readwrite) NSInteger id;
-@property(nonatomic, copy) NSString *identifier;
+@property(nonatomic, copy) NSString *identifiers;
 @property(nonatomic, copy) NSString *name;
 @property(nonatomic, readwrite) NSInteger wineBuildID;
-@property(nonatomic, copy) NSNumber *rating;
 @property(nonatomic, copy) NSString *description;
+@property(nonatomic, readwrite) NSInteger *userID;
+@property(nonatomic, copy) NSString *coverArtURL;
 
 @end
