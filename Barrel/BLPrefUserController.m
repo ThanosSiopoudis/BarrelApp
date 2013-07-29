@@ -32,6 +32,9 @@
     IBOutlet NSSecureTextField *pwdField;
 }
 
+- (IBAction)didSelectLoginButton:(id)sender;
+- (IBAction)didSelectRegisterButton:(id)sender;
+
 @end
 
 @implementation BLPrefUserController
@@ -66,5 +69,14 @@
     return NSMakeSize(423, 227);
 }
 
+#pragma mark -
+#pragma mark Interface Actions
+- (IBAction)didSelectLoginButton:(id)sender {
+    
+}
+
+- (IBAction)didSelectRegisterButton:(id)sender {
+    
+}
 
 @end
