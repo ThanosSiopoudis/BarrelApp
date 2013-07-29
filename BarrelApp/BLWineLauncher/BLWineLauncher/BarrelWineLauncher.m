@@ -92,7 +92,7 @@
 }
 
 -(void) runWinetricksWithArgs: (NSString *)args {
-    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";export WINEDEBUG=\"err+all,fixme+all\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" winetricks --no-isolate%@", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], args];
+    NSString *script = [NSString stringWithFormat:@"cd \"%@/bin\";export PATH=\"$PWD:%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";export WINEDEBUG=\"err+all,fixme+all\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" winetricks --no-isolate%@", [self wineBundlePath], [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], args];
     [self setScriptPath:@""];
     [self systemCommand:script shouldWaitForProcess:YES redirectOutput:YES];
 }
