@@ -33,5 +33,6 @@
 failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
 - (void)searchDBForGameWithName:(NSString *)gameName toBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
 - (void)registerUserWithUsername:(NSString *)username password:(NSString *)password email:(NSString *)email toBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
+- (void)loginUserWithUsername: (NSString *)username toBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
 
 @end

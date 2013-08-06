@@ -28,6 +28,7 @@
 #import "AC_Game.h"
 #import "AC_WineBuild.h"
 #import "AC_User.h"
+#import "BL_GenericAPIResponse.h"
 
 @interface AppCakeAPI()
 
@@ -90,7 +91,78 @@
 
 - (void)registerUserWithUsername:(NSString *)username password:(NSString *)password email:(NSString *)email toBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock
 {
+    /*  We need to look if the user exists in the database before adding him
+     *  so, request the user data and only proceed when the result set is empty 
+     */
     RKObjectMapping *userMap = [RKObjectMapping mappingForClass:[AC_User class]];
+    [userMap addAttributeMappingsFromDictionary:@{
+        @"User.id":          @"userID",
+        @"User.username":    @"username",
+        @"User.password":    @"password",
+        @"User.email":       @"email"
+    }];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:userMap method:RKRequestMethodGET pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.appcake.co.uk/Users/searchForUser.json?username=%@", username]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
+    [objectRequestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *inOp, RKMappingResult *inMapResult){
+        if ([inMapResult count] > 0) {
+            // Create a custom error and throw it
+            NSMutableDictionary *errorDetails = [NSMutableDictionary dictionary];
+            [errorDetails setValue:@"User already exists. Please choose a different username and try again." forKey:NSLocalizedDescriptionKey];
+            NSError *throwableError = [NSError errorWithDomain:@"Barrel.API" code:200 userInfo:errorDetails];
+            errorBlock(inOp, throwableError);
+        }
+        else {
+            // We found no user, so create the user
+            RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[BL_GenericAPIResponse class]];
+            [responseMapping addAttributeMappingsFromDictionary:@{
+                @"responseCode": @"responseCode",
+                @"responseDescription": @"responseDescription"
+            }];
+            
+            RKObjectMapping *requestMapping = [RKObjectMapping requestMapping];
+            [requestMapping addAttributeMappingsFromArray:@[@"username", @"password", @"email"]];
+            
+            RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:requestMapping objectClass:[AC_User class] rootKeyPath:nil method:RKRequestMethodPOST];
+            RKResponseDescriptor *innerResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:RKRequestMethodPOST pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+            
+            NSURL *registerURL = [NSURL URLWithString:@"http://api.appcake.co.uk/Users/"];
+            RKObjectManager *manager = [RKObjectManager managerWithBaseURL:registerURL];
+            [manager addRequestDescriptor:requestDescriptor];
+            [manager addResponseDescriptor:innerResponseDescriptor];
+            
+            AC_User *user = [AC_User new];
+            user.username = username;
+            user.password = password;
+            user.email = email;
+            
+            [manager postObject:user path:@"registerNewUser.json" parameters:nil success:completionBlock failure:errorBlock];
+        }
+    } failure:errorBlock];
+    
+    [objectRequestOperation start];
 }
 
+- (void)loginUserWithUsername: (NSString *)username toBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock {
+    
+    RKObjectMapping *userMap = [RKObjectMapping mappingForClass:[AC_User class]];
+    [userMap addAttributeMappingsFromDictionary:@{
+        @"User.id":          @"userID",
+        @"User.username":    @"username",
+        @"User.password":    @"password",
+        @"User.email":       @"email"
+    }];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:userMap method:RKRequestMethodGET pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.appcake.co.uk/Users/searchForUser.json?username=%@", username]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
+    [objectRequestOperation setCompletionBlockWithSuccess:completionBlock failure:errorBlock];
+    
+    [objectRequestOperation start];
+}
 @end
