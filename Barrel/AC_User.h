@@ -28,10 +28,9 @@
 
 @interface AC_User : NSObject
 
-@property (nonatomic, readwrite) NSInteger *resultCode;
-@property (nonatomic, readwrite) NSInteger   id;
-@property (nonatomic, copy) NSString *username;
-@property (nonatomic, copy) NSString *password;
-@property (nonatomic, copy) NSString *email;
+@property (nonatomic, readwrite)    NSInteger   userID;
+@property (nonatomic, copy)         NSString    *username;
+@property (nonatomic, copy)         NSString    *password;
+@property (nonatomic, copy)         NSString    *email;
 
 @end
