@@ -23,13 +23,27 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <CommonCrypto/CommonDigest.h>
 
+#import "AppCakeAPI.h"
 #import "BLPrefUserController.h"
 #import "OETextField.h"
+#import "OEButton.h"
+
+#import "OEHUDAlert+DefaultAlertsAdditions.h"
+#import "AC_User.h"
+
+NSString *const BLUserID        = @"userID";
+NSString *const BLUserStatus    = @"userStatus";
+NSString *const BLUsername      = @"username";
+NSString *const BLPassword      = @"password";
+NSString *const BLEmail         = @"email";
 
 @interface BLPrefUserController () {
     IBOutlet OETextField *usernameField, *emailField;
     IBOutlet NSSecureTextField *pwdField;
+    IBOutlet OEButton *registrationButton;
+    IBOutlet OEButton *loginButton;
 }
 
 - (IBAction)didSelectLoginButton:(id)sender;
@@ -44,6 +58,13 @@
     [usernameField setFocusRingType:NSFocusRingTypeNone];
     [pwdField setFocusRingType:NSFocusRingTypeNone];
     [emailField setFocusRingType:NSFocusRingTypeNone];
+    
+    // Check if we're logged in, and set the buttons accordingly if we are
+    if ([[[NSUserDefaults standardUserDefaults] valueForKey:BLUserID] boolValue]) {
+        // Hide the registration button
+        [registrationButton setHidden:YES];
+        [loginButton setTitle:@"Log out"];
+    }
 }
 
 #pragma mark -
@@ -72,11 +93,62 @@
 #pragma mark -
 #pragma mark Interface Actions
 - (IBAction)didSelectLoginButton:(id)sender {
+    AppCakeAPI *apiConnection = [[AppCakeAPI alloc] init];
     
+    // Generate an SHA-1 Digest for the password
+    // It's OK that we don't take endianess into account, as this is a x86_64 only application
+    // ARM and PowerPC are not (and should not be) supported
+    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
+    NSData *pwdBytes = [[pwdField stringValue] dataUsingEncoding:NSUTF8StringEncoding];
+    CC_SHA1([pwdBytes bytes], [pwdBytes length], digest);
+    NSString *pwdDigest = [NSString stringWithFormat:@"%s", digest];
+    
+    [apiConnection loginUserWithUsername:[usernameField stringValue] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResults) {
+        if ([mappingResults count] > 0) {
+            AC_User *user = [mappingResults firstObject];
+            if ([[user password] isEqualToString:pwdDigest]) {
+                // Success! Store the user ID and set a flag to indicate the user is logged in until we quit the app
+                // The app should then automatically try to log in next time it is required
+                [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:[user userID]] forKey:BLUserID];
+                [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:BLUserStatus];
+                
+                // Save the form data
+                [[NSUserDefaults standardUserDefaults] setValue:[usernameField stringValue] forKey:BLUsername];
+                [[NSUserDefaults standardUserDefaults] setValue:[pwdField stringValue] forKey:BLPassword];
+                [[NSUserDefaults standardUserDefaults] setValue:[emailField stringValue] forKey:BLEmail];
+                
+                // Hide the registration button
+                [registrationButton setHidden:YES];
+                [loginButton setTitle:@"Log out"];
+            }
+        }
+    } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
+        OEHUDAlert *alert = [OEHUDAlert alertWithError:error];
+        [alert runModal];
+    }];
 }
 
 - (IBAction)didSelectRegisterButton:(id)sender {
+    AppCakeAPI *apiConnection = [[AppCakeAPI alloc] init];
     
+    // Generate an SHA-1 Digest for the password
+    // It's OK that we don't take endianess into account, as this is a x86_64 only application
+    // ARM and PowerPC are not (and should not be) supported
+    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
+    NSData *pwdBytes = [[pwdField stringValue] dataUsingEncoding:NSUTF8StringEncoding];
+    CC_SHA1([pwdBytes bytes], [pwdBytes length], digest);
+    
+    [apiConnection registerUserWithUsername:[usernameField stringValue] password:[NSString stringWithFormat:@"%s", digest] email:[emailField stringValue] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [[NSUserDefaults standardUserDefaults] setValue:[usernameField stringValue] forKey:BLUsername];
+        [[NSUserDefaults standardUserDefaults] setValue:[pwdField stringValue] forKey:BLPassword];
+        [[NSUserDefaults standardUserDefaults] setValue:[emailField stringValue] forKey:BLEmail];
+        
+        OEHUDAlert *alert = [OEHUDAlert alertWithMessageText:@"Registration was successful. Please log in now." defaultButton:@"OK" alternateButton:@""];
+        [alert runModal];
+    } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
+        OEHUDAlert *alert = [OEHUDAlert alertWithError:error];
+        [alert runModal];
+    }];
 }
 
 @end

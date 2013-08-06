@@ -46,7 +46,7 @@
 						<reference key="NSNextResponder" ref="1039157112"/>
 						<int key="NSvFlags">1820</int>
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
-						<string key="NSFrame">{{195, 20}, {78, 22.999999999999996}}</string>
+						<string key="NSFrame">{{195, 20}, {78, 23}}</string>
 						<reference key="NSSuperview" ref="1039157112"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="701111814"/>
@@ -79,7 +79,7 @@
 						<reference key="NSNextResponder" ref="1039157112"/>
 						<int key="NSvFlags">1820</int>
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
-						<string key="NSFrame">{{283, 19.999999999999996}, {78, 23}}</string>
+						<string key="NSFrame">{{283, 20}, {78, 23}}</string>
 						<reference key="NSSuperview" ref="1039157112"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -108,7 +108,7 @@
 								<reference key="NSNextResponder" ref="616578756"/>
 								<int key="NSvFlags">1804</int>
 								<object class="NSPSMatrix" key="NSFrameMatrix"/>
-								<string key="NSFrame">{{-2, 0}, {219, 23}}</string>
+								<string key="NSFrame">{{8, 0}, {209, 23}}</string>
 								<reference key="NSSuperview" ref="616578756"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="501604982"/>
@@ -304,6 +304,9 @@
 			<object class="NSUserDefaultsController" id="13528071">
 				<bool key="NSAppliesImmediately">YES</bool>
 			</object>
+			<object class="NSUserDefaultsController" id="347338020">
+				<bool key="NSSharedInstance">YES</bool>
+			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<bool key="usesAutoincrementingIDs">NO</bool>
@@ -342,19 +345,83 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">didSelectLoginButton:</string>
-						<reference key="source" ref="476618594"/>
-						<reference key="destination" ref="701111814"/>
-					</object>
-					<string key="id">dFH-Ub-HnZ</string>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">didSelectRegisterButton:</string>
 						<reference key="source" ref="476618594"/>
 						<reference key="destination" ref="844624449"/>
 					</object>
 					<string key="id">Ap6-qv-zcc</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">didSelectLoginButton:</string>
+						<reference key="source" ref="476618594"/>
+						<reference key="destination" ref="701111814"/>
+					</object>
+					<string key="id">zKh-pY-ahL</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">registrationButton</string>
+						<reference key="source" ref="476618594"/>
+						<reference key="destination" ref="844624449"/>
+					</object>
+					<string key="id">n1J-2Y-MhY</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">loginButton</string>
+						<reference key="source" ref="476618594"/>
+						<reference key="destination" ref="701111814"/>
+					</object>
+					<string key="id">lZF-kj-CMK</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.email</string>
+						<reference key="source" ref="346377573"/>
+						<reference key="destination" ref="347338020"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="346377573"/>
+							<reference key="NSDestination" ref="347338020"/>
+							<string key="NSLabel">value: values.email</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.email</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<string key="id">U2E-ID-9vg</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.username</string>
+						<reference key="source" ref="181327677"/>
+						<reference key="destination" ref="347338020"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="181327677"/>
+							<reference key="NSDestination" ref="347338020"/>
+							<string key="NSLabel">value: values.username</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.username</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<string key="id">kQW-HZ-86i</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.password</string>
+						<reference key="source" ref="628652172"/>
+						<reference key="destination" ref="347338020"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="628652172"/>
+							<reference key="NSDestination" ref="347338020"/>
+							<string key="NSLabel">value: values.password</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.password</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<string key="id">Kvb-Og-0A6</string>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -529,6 +596,11 @@
 						<reference key="object" ref="13528071"/>
 						<reference key="parent" ref="0"/>
 					</object>
+					<object class="IBObjectRecord">
+						<string key="id">i6g-7Y-Qrw</string>
+						<reference key="object" ref="347338020"/>
+						<reference key="parent" ref="0"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -659,6 +731,7 @@
 				<string key="i5R-Xo-IUd.CustomClassName">OELabelCell</string>
 				<string key="i5R-Xo-IUd.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="NO" key="i5R-Xo-IUd.showNotes"/>
+				<string key="i6g-7Y-Qrw.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="lnY-xl-df1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<reference key="lnY-xl-df1.IBUserGuides" ref="0"/>
 				<boolean value="NO" key="lnY-xl-df1.showNotes"/>
