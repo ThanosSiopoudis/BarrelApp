@@ -311,6 +311,7 @@
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		94F6CB7C16DD727600CD48A4 /* OECheats.m in Sources */ = {isa = PBXBuildFile; fileRef = 94F6CB7B16DD727600CD48A4 /* OECheats.m */; };
 		C117A943172688BA00143421 /* BLImportItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C117A942172688BA00143421 /* BLImportItem.m */; };
+		C130F70017B1285500B707A8 /* BL_GenericAPIResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C130F6FF17B1285500B707A8 /* BL_GenericAPIResponse.m */; };
 		C15C68F01756546100969F6D /* BLArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = C15C68EF1756546100969F6D /* BLArchiver.m */; };
 		C16D643917A14364002BA615 /* BLOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = C16D643817A14364002BA615 /* BLOutlineView.m */; };
 		C16D643B17A16D77002BA615 /* game_scanner_progress_blue_candy.png in Resources */ = {isa = PBXBuildFile; fileRef = C16D643A17A16D77002BA615 /* game_scanner_progress_blue_candy.png */; };
@@ -963,6 +964,8 @@
 		94F6CB7B16DD727600CD48A4 /* OECheats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OECheats.m; sourceTree = "<group>"; };
 		C117A941172688B900143421 /* BLImportItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLImportItem.h; sourceTree = "<group>"; };
 		C117A942172688BA00143421 /* BLImportItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLImportItem.m; sourceTree = "<group>"; };
+		C130F6FE17B1285500B707A8 /* BL_GenericAPIResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL_GenericAPIResponse.h; sourceTree = "<group>"; };
+		C130F6FF17B1285500B707A8 /* BL_GenericAPIResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL_GenericAPIResponse.m; sourceTree = "<group>"; };
 		C15C68EE1756546100969F6D /* BLArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLArchiver.h; sourceTree = "<group>"; };
 		C15C68EF1756546100969F6D /* BLArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLArchiver.m; sourceTree = "<group>"; };
 		C16D643717A14364002BA615 /* BLOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLOutlineView.h; sourceTree = "<group>"; };
@@ -2255,6 +2258,8 @@
 				C1A030D617316E0A00BF897F /* AC_WineBuild.m */,
 				E28F7E9F17A468D2000DB2AC /* AC_User.h */,
 				E28F7EA017A468D2000DB2AC /* AC_User.m */,
+				C130F6FE17B1285500B707A8 /* BL_GenericAPIResponse.h */,
+				C130F6FF17B1285500B707A8 /* BL_GenericAPIResponse.m */,
 			);
 			name = APIClasses;
 			sourceTree = "<group>";
@@ -2742,6 +2747,7 @@
 				831C9ACC160096A900038D0D /* OEMenuItemExtraData.m in Sources */,
 				831C9AD0160096E000038D0D /* OEMatrix.m in Sources */,
 				831C9AD61600971600038D0D /* OEButton.m in Sources */,
+				C130F70017B1285500B707A8 /* BL_GenericAPIResponse.m in Sources */,
 				831C9AD71600971600038D0D /* OEButtonCell.m in Sources */,
 				831C9ADC1600973B00038D0D /* OEPopUpButton.m in Sources */,
 				831C9ADD1600973B00038D0D /* OEPopUpButtonCell.m in Sources */,
