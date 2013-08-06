@@ -104,7 +104,11 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 
 + (id)alertWithError:(NSError *)error
 {
-    return nil;
+    OEHUDAlert *alert = [[OEHUDAlert alloc] init];
+    alert.defaultButtonTitle = @"OK";
+    [alert setMessageText:[error localizedDescription]];
+    
+    return alert;
 }
 
 + (id)alertWithMessageText:(NSString *)msgText defaultButton:(NSString *)defaultButtonLabel alternateButton:(NSString *)alternateButtonLabel
