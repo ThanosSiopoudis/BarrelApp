@@ -92,9 +92,32 @@
 }
 
 -(void) runWinetricksWithArgs: (NSString *)args {
+    // We're about to do winetricks. Rename the wine and wineserver binaries back to what they were
+    // before we do that.
+    // 1st get the names
+    NSString *infoPlistPath = [NSString stringWithFormat:@"%@/Contents/Info.plist", [self bundlePath]];
+    NSMutableDictionary *infoPlistDict = [[NSMutableDictionary alloc] initWithContentsOfFile: infoPlistPath];
+    NSString *oldWineBin = [infoPlistDict valueForKey:@"BLWineBin"];
+    NSString *oldWineserverBin = [infoPlistDict valueForKey:@"BLWineserverBin"];
+    
+    // 2nd rename the fake ones
+    [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/wine", [self wineBundlePath]] toPath:[NSString stringWithFormat:@"%@/bin/wine_OLD", [self wineBundlePath]] error:nil];
+    [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/wineserver", [self wineBundlePath]] toPath:[NSString stringWithFormat:@"%@/bin/wineserver_OLD", [self wineBundlePath]] error:nil];
+    
+    // 3rd rename the proper ones to their proper names
+    [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/%@", [self wineBundlePath], oldWineBin] toPath:[NSString stringWithFormat:@"%@/bin/wine", [self wineBundlePath]] error:nil];
+    [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/%@", [self wineBundlePath], oldWineserverBin] toPath:[NSString stringWithFormat:@"%@/bin/wineserver", [self wineBundlePath]] error:nil];
+    
     NSString *script = [NSString stringWithFormat:@"cd \"%@/bin\";export PATH=\"$PWD:%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";export WINEDEBUG=\"err+all,fixme+all\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" winetricks --no-isolate%@", [self wineBundlePath], [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], args];
     [self setScriptPath:@""];
     [self systemCommand:script shouldWaitForProcess:YES redirectOutput:YES];
+    
+    // Rename the wine binaries back to what they where before exiting
+    [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/wine", [self wineBundlePath]] toPath:[NSString stringWithFormat:@"%@/bin/%@", [self wineBundlePath], oldWineBin] error:nil];
+    [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/wineserver", [self wineBundlePath]] toPath:[NSString stringWithFormat:@"%@/bin/%@", [self wineBundlePath], oldWineserverBin] error:nil];
+    
+    [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/wine_OLD", [self wineBundlePath]] toPath:[NSString stringWithFormat:@"%@/bin/wine", [self wineBundlePath]] error:nil];
+    [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/wineserver_OLD", [self wineBundlePath]] toPath:[NSString stringWithFormat:@"%@/bin/wineserver", [self wineBundlePath]] error:nil];
 }
 
 -(void) runWineWithWindowsBinary:(NSString *)binaryPath {

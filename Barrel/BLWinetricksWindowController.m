@@ -332,14 +332,22 @@
     NSString *wineProcess = [bundleDict valueForKey:@"BLWineBin"];
     NSString *wineserverProcess = [bundleDict valueForKey:@"BLWineserverBin"];
     
-    NSString *killWineCommand = [NSString stringWithFormat:@"killall -9 \"%@\" > /dev/null 2>&1", wineProcess];
-    NSString *killWineserverCommand = [NSString stringWithFormat:@"killall -9 \"%@\" > /dev/null 2>&1", wineserverProcess];
+    NSString *killWineCommand = @"killall -9 \"wine\" > /dev/null 2>&1";
+    NSString *killWineserverCommand = @"killall -9 \"wineserver\" > /dev/null 2>&1";
     NSString *killLauncherCommand = @"killall -9 \"BLWineLauncher\" > /dev/null 2>&1";
     
     // Leave no trace!
     [BLSystemCommand systemCommand:killWineCommand shouldWaitForProcess:YES];
     [BLSystemCommand systemCommand:killWineserverCommand shouldWaitForProcess:YES];
     [BLSystemCommand systemCommand:killLauncherCommand shouldWaitForProcess:YES];
+    
+    // Rename the binaries back
+    // Rename the wine binaries back to what they where before exiting
+    [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/wine", bundlePath] toPath:[NSString stringWithFormat:@"%@/bin/%@", bundlePath, wineProcess] error:nil];
+    [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/wineserver", bundlePath] toPath:[NSString stringWithFormat:@"%@/bin/%@", bundlePath, wineserverProcess] error:nil];
+    
+    [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/wine_OLD", bundlePath] toPath:[NSString stringWithFormat:@"%@/bin/wine", bundlePath] error:nil];
+    [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/wineserver_OLD", bundlePath] toPath:[NSString stringWithFormat:@"%@/bin/wineserver", bundlePath] error:nil];
 }
 #pragma mark ---
 @end
