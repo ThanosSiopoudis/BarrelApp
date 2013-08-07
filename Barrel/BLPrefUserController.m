@@ -23,7 +23,6 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import <CommonCrypto/CommonDigest.h>
 
 #import "AppCakeAPI.h"
 #import "BLPrefUserController.h"
@@ -32,6 +31,8 @@
 
 #import "OEHUDAlert+DefaultAlertsAdditions.h"
 #import "AC_User.h"
+
+#import "BLUserAccount.h"
 
 NSString *const BLUserID        = @"userID";
 NSString *const BLUserStatus    = @"userStatus";
@@ -60,10 +61,11 @@ NSString *const BLEmail         = @"email";
     [emailField setFocusRingType:NSFocusRingTypeNone];
     
     // Check if we're logged in, and set the buttons accordingly if we are
-    if ([[[NSUserDefaults standardUserDefaults] valueForKey:BLUserID] boolValue]) {
+    if ([[[NSUserDefaults standardUserDefaults] valueForKey:BLUserStatus] boolValue]) {
         // Hide the registration button
         [registrationButton setHidden:YES];
         [loginButton setTitle:@"Log out"];
+        [loginButton setAction:@selector(didSelectLogoutButton:)];
     }
 }
 
@@ -98,11 +100,8 @@ NSString *const BLEmail         = @"email";
     // Generate an SHA-1 Digest for the password
     // It's OK that we don't take endianess into account, as this is a x86_64 only application
     // ARM and PowerPC are not (and should not be) supported
-    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
-    NSData *pwdBytes = [[pwdField stringValue] dataUsingEncoding:NSUTF8StringEncoding];
-    CC_SHA1([pwdBytes bytes], [pwdBytes length], digest);
-    NSString *pwdDigest = [NSString stringWithFormat:@"%s", digest];
-    
+    NSString *pwdDigest = [BLUserAccount calculateSHA1FromString:[pwdField stringValue]];
+
     [apiConnection loginUserWithUsername:[usernameField stringValue] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResults) {
         if ([mappingResults count] > 0) {
             AC_User *user = [mappingResults firstObject];
@@ -120,7 +119,16 @@ NSString *const BLEmail         = @"email";
                 // Hide the registration button
                 [registrationButton setHidden:YES];
                 [loginButton setTitle:@"Log out"];
+                [loginButton setAction:@selector(didSelectLogoutButton:)];
             }
+            else {
+                OEHUDAlert *alert = [OEHUDAlert alertWithMessageText:@"Invalid username and/or password. Please try again." defaultButton:@"OK" alternateButton:@""];
+                [alert runModal];
+            }
+        }
+        else {
+            OEHUDAlert *alert = [OEHUDAlert alertWithMessageText:@"Invalid username and/or password. Please try again." defaultButton:@"OK" alternateButton:@""];
+            [alert runModal];
         }
     } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
         OEHUDAlert *alert = [OEHUDAlert alertWithError:error];
@@ -134,11 +142,9 @@ NSString *const BLEmail         = @"email";
     // Generate an SHA-1 Digest for the password
     // It's OK that we don't take endianess into account, as this is a x86_64 only application
     // ARM and PowerPC are not (and should not be) supported
-    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
-    NSData *pwdBytes = [[pwdField stringValue] dataUsingEncoding:NSUTF8StringEncoding];
-    CC_SHA1([pwdBytes bytes], [pwdBytes length], digest);
+    NSString *pwdDigest = [BLUserAccount calculateSHA1FromString:[pwdField stringValue]];
     
-    [apiConnection registerUserWithUsername:[usernameField stringValue] password:[NSString stringWithFormat:@"%s", digest] email:[emailField stringValue] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [apiConnection registerUserWithUsername:[usernameField stringValue] password:pwdDigest email:[emailField stringValue] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [[NSUserDefaults standardUserDefaults] setValue:[usernameField stringValue] forKey:BLUsername];
         [[NSUserDefaults standardUserDefaults] setValue:[pwdField stringValue] forKey:BLPassword];
         [[NSUserDefaults standardUserDefaults] setValue:[emailField stringValue] forKey:BLEmail];
@@ -149,6 +155,17 @@ NSString *const BLEmail         = @"email";
         OEHUDAlert *alert = [OEHUDAlert alertWithError:error];
         [alert runModal];
     }];
+}
+
+- (IBAction)didSelectLogoutButton:(id)sender {
+    // Destroy the session
+    [[NSUserDefaults standardUserDefaults] setValue:nil forKey:BLUserID];
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:BLUserStatus];
+    
+    // Show the login and register buttons again
+    [registrationButton setHidden:NO];
+    [loginButton setTitle:@"Log in"];
+    [loginButton setAction:@selector(didSelectLoginButton:)];
 }
 
 @end

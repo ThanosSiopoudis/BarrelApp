@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
 		<string key="IBDocument.SystemVersion">12E55</string>
-		<string key="IBDocument.InterfaceBuilderVersion">4488.1</string>
+		<string key="IBDocument.InterfaceBuilderVersion">4488.2</string>
 		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">4488.1</string>
+			<string key="NS.object.0">4488.2</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSButton</string>
@@ -46,7 +46,7 @@
 						<reference key="NSNextResponder" ref="1039157112"/>
 						<int key="NSvFlags">1820</int>
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
-						<string key="NSFrame">{{195, 20}, {78, 23}}</string>
+						<string key="NSFrame">{{195, 19.999999999999996}, {78, 23}}</string>
 						<reference key="NSSuperview" ref="1039157112"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="701111814"/>
@@ -79,7 +79,7 @@
 						<reference key="NSNextResponder" ref="1039157112"/>
 						<int key="NSvFlags">1820</int>
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
-						<string key="NSFrame">{{283, 20}, {78, 23}}</string>
+						<string key="NSFrame">{{283, 20}, {78, 22.999999999999996}}</string>
 						<reference key="NSSuperview" ref="1039157112"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -87,7 +87,7 @@
 						<object class="NSButtonCell" key="NSCell" id="103598929">
 							<int key="NSCellFlags">67108864</int>
 							<int key="NSCellFlags2">134217728</int>
-							<string key="NSContents">Login</string>
+							<string key="NSContents">Log in</string>
 							<reference key="NSSupport" ref="567216864"/>
 							<reference key="NSControlView" ref="701111814"/>
 							<int key="NSButtonFlags">-2038284288</int>
