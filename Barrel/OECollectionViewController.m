@@ -900,108 +900,125 @@ static NSArray *OE_defaultSortDescriptors;
             NSString *winetricksPlistPath = [NSString stringWithFormat:@"%@/Winetricks.plist", [[[[self libraryController] database] cacheFolderURL] path]];
             NSString *gameWinetricksBinaryPath = [NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/winetricks", [obj bundlePath]];
             if (![[NSFileManager defaultManager] fileExistsAtPath:winetricksPlistPath] || ![[NSFileManager defaultManager] fileExistsAtPath:gameWinetricksBinaryPath]) {
-                // Fetch and parse the latest winetricks executable
-                NSString *winetricksSrc = @"http://winetricks.googlecode.com/svn/trunk/src/winetricks";
-                OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading..." andTitle:@"Download" indeterminate:NO];
-                [downloadAlert open];
-                NSString *path = [[[[self libraryController] database] cacheFolderURL] path];
-                
-                // Run the downloader in the main thread
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[downloadAlert progressbar] saveToPath:path];
-                    [fileDownloader downloadWithNSURLConnectionFromURL:winetricksSrc withCompletionBlock:^(int result, NSString *resultPath) {
-                        if (result) {
-                            NSMutableArray *winetricksForPlist = [[NSMutableArray alloc] init];
-                            
-                            // Winetricks has been downloaded, so proceed with parsing it
-                            [downloadAlert close];
-                            
-                            //create file handle and load the contents in the memory
-                            NSFileHandle *file;
-                            file = [NSFileHandle fileHandleForReadingAtPath:resultPath];
-                            
-                            //read data into file in NSData format
-                            NSData *filedata;
-                            filedata = [file readDataToEndOfFile];
-                            
-                            //convert NSData to NSString
-                            NSString *string;
-                            string = [[NSString alloc] initWithData:filedata encoding:NSASCIIStringEncoding];
-                            
-                            // Look for the word "w_metadata " in the cached file in memory
-                            NSUInteger length = [string length];
-                            NSRange range = NSMakeRange(0, length);
-                            while(range.location != NSNotFound) {
-                                range = [string rangeOfString: @"w_metadata " options:0 range:range];
-                                if(range.location != NSNotFound)
-                                {
-                                    NSRange outerRange = NSMakeRange(range.location + range.length, length - (range.location + range.length));
-                                    // Found an occurence. Make sure it's an entry
-                                    // 1st: Get the two characters before the entry
-                                    // to make sure they are both newlines
-                                    NSString *m2 = [string substringWithRange:NSMakeRange(range.location - 2, 1)];
-                                    NSString *m1 = [string substringWithRange:NSMakeRange(range.location - 1, 1)];
-                                    if (([m2 isEqualToString:@"\n"] || [m2 isEqualToString:@"\""]) && [m1 isEqualToString:@"\n"]) {
-                                        // 2: It's an entry. Parse it
-                                        // 2.1: Get the whole line
-                                        NSRange lineRange = [string rangeOfString:@"\n" options:0 range:outerRange];
-                                        
-                                        // 2.2: Calculate the line range
-                                        lineRange = NSMakeRange(range.location, lineRange.location - range.location);
-                                        
-                                        // 2.3: Split the space seperated string in an array
-                                        NSArray *winetricksComponents = [[string substringWithRange:lineRange] componentsSeparatedByString:@" "];
-                                        // Malformatted file workaround:
-                                        // There seems to be an extra space so detect it and ignore it
-                                        NSMutableDictionary *entry = [[NSMutableDictionary alloc] init];
-                                        if ([winetricksComponents count] > 0) {
-                                            if ([(NSString *)[winetricksComponents objectAtIndex:1] length] == 0) {
-                                                [entry setObject:[winetricksComponents objectAtIndex:2] forKey:@"winetrick"];
-                                                [entry setObject:[winetricksComponents objectAtIndex:3] forKey:@"category"];
-                                            }
-                                            else {
-                                                [entry setObject:[winetricksComponents objectAtIndex:1] forKey:@"winetrick"];
-                                                [entry setObject:[winetricksComponents objectAtIndex:2] forKey:@"category"];
-                                            }
-                                            
-                                            [winetricksForPlist addObject:entry];
-                                        }
-                                        
-                                        // 2.4: Find and parse the winetrick title
-                                        NSRange titleRange = [string rangeOfString:@"title=\"" options:0 range:outerRange];
-                                        NSRange endTitleRange = [string rangeOfString:@"\"" options:0 range:NSMakeRange(titleRange.location + 7, length - (titleRange.location + 7))];
-                                        // Now read the title in the range
-                                        NSString *title = [string substringWithRange:NSMakeRange(titleRange.location + 7, (endTitleRange.location - (titleRange.location + 7)))];
-                                        [entry setObject:title forKey:@"title"];
-                                    }
-                                    // Advance the range
-                                    range = NSMakeRange(range.location + range.length, length - (range.location + range.length));
-                                }
-                            }
-                            
-                            // Write the array to the plist file
-                            NSMutableDictionary *newDict = [[NSMutableDictionary alloc] init];
-                            [newDict setObject:winetricksForPlist forKey:@"winetricks"];
-                            [newDict writeToFile:winetricksPlistPath atomically:YES];
-                            
-                            // Finally, change the binary rights and move it inside the wrappers binaries folder
-                            NSString *command = [NSString stringWithFormat:@"chmod 755 \"%@\"", resultPath];
-                            [BLSystemCommand systemCommand:command shouldWaitForProcess:YES];
-
-                            NSError *fsError = nil;
-                            [[NSFileManager defaultManager] moveItemAtPath:resultPath toPath:[NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/winetricks", [obj bundlePath]] error:&fsError];
-                            
-                            [self showWinetricksManagerWithPlistPath:winetricksPlistPath andBundlePath:[obj bundlePath]];
-                        }
-                    }];
-                    [fileDownloader startDownload];
-                });
+                [self doWinetricksUpdateAndParseWithPlist:winetricksPlistPath andObject:obj];
             }
             else {
-                [self showWinetricksManagerWithPlistPath:winetricksPlistPath andBundlePath:[obj bundlePath]];
+                // Check if the winetricks binary is more than one week old, if it is, update it
+                NSURL *fileURL = [NSURL URLWithString:gameWinetricksBinaryPath];
+                NSDate *fileDate;
+                NSError *error;
+                
+                [fileURL getResourceValue:&fileDate forKey:NSURLContentModificationDateKey error:&error];
+                if (!error) {
+                    if ([fileDate timeIntervalSinceNow] <= -(3600 * 24 * 7)) {
+                        [self doWinetricksUpdateAndParseWithPlist:winetricksPlistPath andObject:obj];
+                    }
+                    else {
+                        [self showWinetricksManagerWithPlistPath:winetricksPlistPath andBundlePath:[obj bundlePath]];
+                    }
+                }
             }
         }
     }];
+}
+
+- (void) doWinetricksUpdateAndParseWithPlist: (NSString *)winetricksPlistPath andObject:(id)obj {
+    // Fetch and parse the latest winetricks executable
+    NSString *winetricksSrc = @"http://winetricks.googlecode.com/svn/trunk/src/winetricks";
+    OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading..." andTitle:@"Download" indeterminate:NO];
+    [downloadAlert open];
+    NSString *path = [[[[self libraryController] database] cacheFolderURL] path];
+    
+    // Run the downloader in the main thread
+    dispatch_async(dispatch_get_main_queue(), ^{
+        BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[downloadAlert progressbar] saveToPath:path];
+        [fileDownloader downloadWithNSURLConnectionFromURL:winetricksSrc withCompletionBlock:^(int result, NSString *resultPath) {
+            if (result) {
+                NSMutableArray *winetricksForPlist = [[NSMutableArray alloc] init];
+                
+                // Winetricks has been downloaded, so proceed with parsing it
+                [downloadAlert close];
+                
+                //create file handle and load the contents in the memory
+                NSFileHandle *file;
+                file = [NSFileHandle fileHandleForReadingAtPath:resultPath];
+                
+                //read data into file in NSData format
+                NSData *filedata;
+                filedata = [file readDataToEndOfFile];
+                
+                //convert NSData to NSString
+                NSString *string;
+                string = [[NSString alloc] initWithData:filedata encoding:NSASCIIStringEncoding];
+                
+                // Look for the word "w_metadata " in the cached file in memory
+                NSUInteger length = [string length];
+                NSRange range = NSMakeRange(0, length);
+                while(range.location != NSNotFound) {
+                    range = [string rangeOfString: @"w_metadata " options:0 range:range];
+                    if(range.location != NSNotFound)
+                    {
+                        NSRange outerRange = NSMakeRange(range.location + range.length, length - (range.location + range.length));
+                        // Found an occurence. Make sure it's an entry
+                        // 1st: Get the two characters before the entry
+                        // to make sure they are both newlines
+                        NSString *m2 = [string substringWithRange:NSMakeRange(range.location - 2, 1)];
+                        NSString *m1 = [string substringWithRange:NSMakeRange(range.location - 1, 1)];
+                        if (([m2 isEqualToString:@"\n"] || [m2 isEqualToString:@"\""]) && [m1 isEqualToString:@"\n"]) {
+                            // 2: It's an entry. Parse it
+                            // 2.1: Get the whole line
+                            NSRange lineRange = [string rangeOfString:@"\n" options:0 range:outerRange];
+                            
+                            // 2.2: Calculate the line range
+                            lineRange = NSMakeRange(range.location, lineRange.location - range.location);
+                            
+                            // 2.3: Split the space seperated string in an array
+                            NSArray *winetricksComponents = [[string substringWithRange:lineRange] componentsSeparatedByString:@" "];
+                            // Malformatted file workaround:
+                            // There seems to be an extra space so detect it and ignore it
+                            NSMutableDictionary *entry = [[NSMutableDictionary alloc] init];
+                            if ([winetricksComponents count] > 0) {
+                                if ([(NSString *)[winetricksComponents objectAtIndex:1] length] == 0) {
+                                    [entry setObject:[winetricksComponents objectAtIndex:2] forKey:@"winetrick"];
+                                    [entry setObject:[winetricksComponents objectAtIndex:3] forKey:@"category"];
+                                }
+                                else {
+                                    [entry setObject:[winetricksComponents objectAtIndex:1] forKey:@"winetrick"];
+                                    [entry setObject:[winetricksComponents objectAtIndex:2] forKey:@"category"];
+                                }
+                                
+                                [winetricksForPlist addObject:entry];
+                            }
+                            
+                            // 2.4: Find and parse the winetrick title
+                            NSRange titleRange = [string rangeOfString:@"title=\"" options:0 range:outerRange];
+                            NSRange endTitleRange = [string rangeOfString:@"\"" options:0 range:NSMakeRange(titleRange.location + 7, length - (titleRange.location + 7))];
+                            // Now read the title in the range
+                            NSString *title = [string substringWithRange:NSMakeRange(titleRange.location + 7, (endTitleRange.location - (titleRange.location + 7)))];
+                            [entry setObject:title forKey:@"title"];
+                        }
+                        // Advance the range
+                        range = NSMakeRange(range.location + range.length, length - (range.location + range.length));
+                    }
+                }
+                
+                // Write the array to the plist file
+                NSMutableDictionary *newDict = [[NSMutableDictionary alloc] init];
+                [newDict setObject:winetricksForPlist forKey:@"winetricks"];
+                [newDict writeToFile:winetricksPlistPath atomically:YES];
+                
+                // Finally, change the binary rights and move it inside the wrappers binaries folder
+                NSString *command = [NSString stringWithFormat:@"chmod 755 \"%@\"", resultPath];
+                [BLSystemCommand systemCommand:command shouldWaitForProcess:YES];
+                
+                NSError *fsError = nil;
+                [[NSFileManager defaultManager] moveItemAtPath:resultPath toPath:[NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/winetricks", [obj bundlePath]] error:&fsError];
+                
+                [self showWinetricksManagerWithPlistPath:winetricksPlistPath andBundlePath:[obj bundlePath]];
+            }
+        }];
+        [fileDownloader startDownload];
+    });
 }
 
 - (void)showWinetricksManagerWithPlistPath:(NSString *)plistPath andBundlePath:(NSString *)bundlePath{
