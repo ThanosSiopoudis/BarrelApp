@@ -904,17 +904,19 @@ static NSArray *OE_defaultSortDescriptors;
             }
             else {
                 // Check if the winetricks binary is more than one week old, if it is, update it
-                NSURL *fileURL = [NSURL URLWithString:gameWinetricksBinaryPath];
+                NSURL *fileURL = [NSURL fileURLWithPath:gameWinetricksBinaryPath];
                 NSDate *fileDate;
                 NSError *error;
                 
                 [fileURL getResourceValue:&fileDate forKey:NSURLContentModificationDateKey error:&error];
                 if (!error) {
                     if ([fileDate timeIntervalSinceNow] <= -(3600 * 24 * 7)) {
+                        // Delete the old winetricks and create a new one
+                        [[NSFileManager defaultManager] removeItemAtPath:gameWinetricksBinaryPath error:nil];
                         [self doWinetricksUpdateAndParseWithPlist:winetricksPlistPath andObject:obj];
                     }
                     else {
-                        [self showWinetricksManagerWithPlistPath:winetricksPlistPath andBundlePath:[obj bundlePath]];
+                        [self showWinetricksManagerWithPlistPath:[NSString stringWithFormat:@"%@/Contents/Resources/Winetricks.plist", [obj bundlePath]] andBundlePath:[obj bundlePath]];
                     }
                 }
             }
@@ -1006,6 +1008,7 @@ static NSArray *OE_defaultSortDescriptors;
                 NSMutableDictionary *newDict = [[NSMutableDictionary alloc] init];
                 [newDict setObject:winetricksForPlist forKey:@"winetricks"];
                 [newDict writeToFile:winetricksPlistPath atomically:YES];
+                [[NSFileManager defaultManager] moveItemAtPath:winetricksPlistPath toPath:[NSString stringWithFormat:@"%@/Contents/Resources/Winetricks.plist", [obj bundlePath]] error:nil];
                 
                 // Finally, change the binary rights and move it inside the wrappers binaries folder
                 NSString *command = [NSString stringWithFormat:@"chmod 755 \"%@\"", resultPath];
@@ -1014,7 +1017,7 @@ static NSArray *OE_defaultSortDescriptors;
                 NSError *fsError = nil;
                 [[NSFileManager defaultManager] moveItemAtPath:resultPath toPath:[NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/winetricks", [obj bundlePath]] error:&fsError];
                 
-                [self showWinetricksManagerWithPlistPath:winetricksPlistPath andBundlePath:[obj bundlePath]];
+                [self showWinetricksManagerWithPlistPath:[NSString stringWithFormat:@"%@/Contents/Resources/Winetricks.plist", [obj bundlePath]] andBundlePath:[obj bundlePath]];
             }
         }];
         [fileDownloader startDownload];
