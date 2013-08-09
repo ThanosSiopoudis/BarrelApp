@@ -735,7 +735,7 @@ static NSArray *OE_defaultSortDescriptors;
     {
         [menu addItemWithTitle:NSLocalizedString(@"Start Game", @"") action:@selector(startGame:) keyEquivalent:@""];
         [menu addItemWithTitle:NSLocalizedString(@"Show In Finder", @"") action:@selector(showSelectedGamesInFinder:) keyEquivalent:@""];
-        [menu addItemWithTitle:NSLocalizedString(@"Show Info", @"") action:@selector(startGame:) keyEquivalent:@""];
+        // [menu addItemWithTitle:NSLocalizedString(@"Show Info", @"") action:@selector(startGame:) keyEquivalent:@""];
         
         [menu addItem:[NSMenuItem separatorItem]];
         
@@ -748,7 +748,7 @@ static NSArray *OE_defaultSortDescriptors;
         [menu addItem:[NSMenuItem separatorItem]];
         
         // Create Rating Item
-        [menu addItemWithTitle:NSLocalizedString(@"Leave a Review", @"") action:@selector(startGame:) keyEquivalent:@""];
+        // [menu addItemWithTitle:NSLocalizedString(@"Leave a Review", @"") action:@selector(startGame:) keyEquivalent:@""];
         menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Rating", @"") action:NULL keyEquivalent:@""];
         [menuItem setSubmenu:[self OE_ratingMenuForGames:games]];
         [menu addItem:menuItem];
@@ -769,11 +769,6 @@ static NSArray *OE_defaultSortDescriptors;
     }
     else
     {
-        if([[NSUserDefaults standardUserDefaults] boolForKey:OEForcePopoutGameWindowKey])
-        {
-            [menu addItemWithTitle:NSLocalizedString(@"Play Games (Caution)", @"") action:@selector(startGame:) keyEquivalent:@""];
-        }
-        
         // Create Rating Item
         menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Rating", @"") action:NULL keyEquivalent:@""];
         [menuItem setSubmenu:[self OE_ratingMenuForGames:games]];
