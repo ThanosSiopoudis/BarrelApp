@@ -343,6 +343,22 @@ static const CGFloat _OEToolbarHeight = 44;
     });
 }
 
+- (IBAction)makeGameRecipeAndUpload:(id)sender {
+    NSMutableArray *gamesToUpload = [NSMutableArray new];
+    
+    if ([sender isKindOfClass:[OEDBGame class]]) {
+        [gamesToUpload addObject:sender];
+    }
+    else {
+        NSAssert([(id)[self currentViewController] respondsToSelector:@selector(selectedGames)], @"Attempt to upload a game from a view controller that doesn't announce selectedGames");
+        [gamesToUpload addObjectsFromArray:[(id <OELibrarySubviewController>)[self currentViewController] selectedGames]];
+    }
+    
+    for (OEDBGame *game in gamesToUpload) [self setCurrentGame:game];
+    
+    [self makeGameRecipeAndPushToServer];
+}
+
 - (IBAction)showLogFile:(id)sender {
     [[self debugAlert] closeWithResult:0];
     NSString *logFilePath = [NSString stringWithFormat:@"%@/Wine.log", [[NSBundle bundleWithPath:[[self currentGame] bundlePath]] resourcePath]];
@@ -395,6 +411,21 @@ static const CGFloat _OEToolbarHeight = 44;
 
     if([[self delegate] respondsToSelector:@selector(libraryController:didSelectSaveState:)])
         [[self delegate] libraryController:self didSelectSaveState:saveState];
+}
+
+- (void)makeGameRecipeAndPushToServer {
+    /* --------------- GAME RECIPE INSTRUCTIONS: -------------------
+     * To create a game recipe we need the following ingredients:
+     * 1. Game genre
+     * 2. Game Name and any other known names (like volume name)
+     * 3. BLWine.bundle version
+     * 4. Winetricks verbs that were used
+     * 5. The game Artwork file (biggest possible resolution)
+     * 6. Once we have all information, we'll create a .plist file
+     *    and push it to the server, along with basic identifying
+     *    info.
+     * ----------------------------------------------------------- */
+    
 }
 
 #pragma mark -
