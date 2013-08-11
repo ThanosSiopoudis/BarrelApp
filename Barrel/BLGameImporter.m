@@ -68,6 +68,7 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 @property(readwrite)            BLImportItem      *currentItem;
 @property(readwrite, atomic)    OEHUDAlert        *alertCache;
 @property(readwrite)            NSString          *scriptPath;
+@property(readwrite)            NSString          *engineID;
 
 - (void)processNextItemIfNeeded;
 
@@ -383,6 +384,13 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
                     OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error deleting downloaded archive! Please remove manually." defaultButton:@"OK" alternateButton:@""];
                     [errorAlert runModal];
                 }
+                
+                // Add some info in the newly created bundle's plist
+                NSMutableDictionary *plist = [NSMutableDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/Info.plist", destinationPath]];
+                [plist setValue:[self volumeName] forKey:@"BLVolumeName"];
+                [plist setValue:[self engineID] forKey:@"BLEngineID"];
+                [plist writeToFile:[NSString stringWithFormat:@"%@/Info.plist", destinationPath] atomically:YES];
+                
                 [[self alertCache] setShowsProgressbar: NO];
                 [[self alertCache] setShowsIndeterminateProgressbar:YES];
                 [[self alertCache] setMessageText:@"Initializing Wine Prefix..."];
@@ -570,6 +578,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     [self setGameName:[[self alertCache] stringValue]];
     AC_WineBuild *build = [[self alertCache] popupButtonSelectedItem];
     [self setDownloadPath:[NSString stringWithFormat:@"http://api.appcake.co.uk%@", [build archivePath]]];
+    [self setEngineID:[NSString stringWithFormat:@"%li", (long)[build id]]];
     
     // Close the alert and proceed
     [[self alertCache] close];
