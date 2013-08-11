@@ -28,6 +28,7 @@
 
 @interface BL_GenericAPIResponse : NSObject
 
+@property (nonatomic, readwrite) NSInteger responseID;
 @property (nonatomic, readwrite) NSInteger responseCode;
 @property (nonatomic, copy) NSString *responseDescription;
 
