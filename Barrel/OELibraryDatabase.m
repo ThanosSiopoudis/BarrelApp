@@ -794,6 +794,16 @@ static OELibraryDatabase *defaultDatabase = nil;
     return [NSURL fileURLWithPath:libraryFolderPath isDirectory:YES];
 }
 
+- (NSURL *)tempFolderURL
+{
+    NSString *tempFolderName = NSLocalizedString(@"tmp", @"Temp Folder Name");
+    
+    NSURL *result = [[self databaseFolderURL] URLByAppendingPathComponent:tempFolderName isDirectory:YES];
+    [[NSFileManager defaultManager] createDirectoryAtURL:result withIntermediateDirectories:YES attributes:nil error:nil];
+    
+    return result;
+}
+
 - (NSURL *)gamesFolderURL
 {
     NSString *gamesFolderName = NSLocalizedString(@"games", @"Games Folder Name");
