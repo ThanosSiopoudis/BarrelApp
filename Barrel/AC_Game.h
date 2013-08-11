@@ -35,7 +35,9 @@
 @property(nonatomic, copy) NSString *name;
 @property(nonatomic, readwrite) NSInteger wineBuildID;
 @property(nonatomic, copy) NSString *description;
-@property(nonatomic, readwrite) NSInteger *userID;
+@property(nonatomic, readwrite) NSInteger userID;
 @property(nonatomic, copy) NSString *coverArtURL;
+@property(nonatomic, copy) NSString *recipeURL;
+@property(nonatomic, copy) NSData *game;
 
 @end
