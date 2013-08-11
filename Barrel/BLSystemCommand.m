@@ -66,7 +66,8 @@
             for (int i=0; i<[cleanArray count]; i++) {
                 NSString *test = [cleanArray objectAtIndex:i];
                 NSRange strRange = [test rangeOfString:binaryName];
-                if (strRange.location != NSNotFound && ![(NSString *)[cleanArray objectAtIndex:(i-1)] isEqualToString:@"grep"]) {
+                NSRange stuckRange = [test rangeOfString:@")"];
+                if ((strRange.location != NSNotFound && stuckRange.location == NSNotFound) && ![(NSString *)[cleanArray objectAtIndex:(i-1)] isEqualToString:@"grep"]) {
                     stillRunning = YES;
                 }
             }
@@ -80,14 +81,21 @@
     }
 }
 
-+ (void)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess
++ (NSString *)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess {
+    return [self runScript:scriptName withArguments:arguments shouldWaitForProcess:waitForProcess runForMain:YES];
+}
+
++ (NSString *)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess runForMain:(BOOL)runMain
 {
+    NSString *result = @"";
     NSTask *task;
     task = [[NSTask alloc] init];
     
     NSBundle *barrelAppBundle = [NSBundle bundleWithPath:scriptName];
+    NSString *execPath = runMain ? [barrelAppBundle executablePath] : scriptName;
+    
     NSArray *argumentsArray;
-    [task setLaunchPath: [barrelAppBundle executablePath]];
+    [task setLaunchPath: execPath];
     
     if (arguments) {
         argumentsArray = arguments;
@@ -108,9 +116,10 @@
         NSData *data;
         data = [file readDataToEndOfFile];
         
-        NSString *string;
-        string = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+        result = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
     }
+    
+    return result;
 }
 
 @end

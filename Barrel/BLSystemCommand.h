@@ -30,7 +30,8 @@
 
 + (NSString *)systemCommand:(NSString *)command shouldWaitForProcess:(BOOL)waitForProcess;
 + (void)waitForWineserverToExitWithBinaryName:(NSString *)binaryName andCallback:(void (^)(BOOL))callbackBlock;
-+ (void)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess;
++ (NSString *)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess;
++ (NSString *)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess runForMain:(BOOL)runMain;
 + (void)waitForWineserverToExitWithBinaryName:(NSString *)binaryName andCallback:(void (^)(BOOL))callbackBlock waitFor:(NSInteger)waitTime;
 
 @end
