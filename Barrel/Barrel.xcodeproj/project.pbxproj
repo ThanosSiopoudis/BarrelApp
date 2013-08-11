@@ -1020,6 +1020,7 @@
 		C6D6FA7D14E2264C0083C75D /* NSViewController+OEAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSViewController+OEAdditions.m"; sourceTree = "<group>"; };
 		C6F6480415F4BA7000BA9D9B /* OEUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEUtilities.h; sourceTree = "<group>"; };
 		C6F738FB1617FF2B00BB2519 /* OEUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEUtilities.m; sourceTree = "<group>"; };
+		E23F365117B72006003401E5 /* BLDatabase 0.9.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BLDatabase 0.9.1.xcdatamodel"; sourceTree = "<group>"; };
 		E250405C17A3FAD2004CDA8B /* BLPrefUserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPrefUserController.h; sourceTree = "<group>"; };
 		E250405D17A3FAD2004CDA8B /* BLPrefUserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPrefUserController.m; sourceTree = "<group>"; };
 		E250405E17A3FAD2004CDA8B /* BLPrefUserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLPrefUserController.xib; sourceTree = "<group>"; };
@@ -2994,10 +2995,11 @@
 		C1F4E07F176A0C2F00C6FC96 /* BLDatabase.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				E23F365117B72006003401E5 /* BLDatabase 0.9.1.xcdatamodel */,
 				C1D97D781771B1A2005472DB /* BLDatabase 0.9.xcdatamodel */,
 				C1F4E080176A0C2F00C6FC96 /* OEDatabase.xcdatamodel */,
 			);
-			currentVersion = C1D97D781771B1A2005472DB /* BLDatabase 0.9.xcdatamodel */;
+			currentVersion = E23F365117B72006003401E5 /* BLDatabase 0.9.1.xcdatamodel */;
 			path = BLDatabase.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

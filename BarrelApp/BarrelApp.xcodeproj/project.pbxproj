@@ -126,23 +126,6 @@
 		C100D64F1765CA360081E3D8 /* track_horizontal_spacer.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5C61765CA360081E3D8 /* track_horizontal_spacer.png */; };
 		C100D6501765CA360081E3D8 /* track_vertical.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5C71765CA360081E3D8 /* track_vertical.png */; };
 		C100D6511765CA360081E3D8 /* track_vertical_spacer.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5C81765CA360081E3D8 /* track_vertical_spacer.png */; };
-		C100D6521765CA360081E3D8 /* 32x_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5CA1765CA360081E3D8 /* 32x_library.png */; };
-		C100D6531765CA360081E3D8 /* arcade_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5CB1765CA360081E3D8 /* arcade_library.png */; };
-		C100D6541765CA360081E3D8 /* atari2600_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5CC1765CA360081E3D8 /* atari2600_library.png */; };
-		C100D6551765CA360081E3D8 /* atari5200_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5CD1765CA360081E3D8 /* atari5200_library.png */; };
-		C100D6561765CA360081E3D8 /* atari8bit_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5CE1765CA360081E3D8 /* atari8bit_library.png */; };
-		C100D6571765CA360081E3D8 /* gamecube_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5CF1765CA360081E3D8 /* gamecube_library.png */; };
-		C100D6581765CA360081E3D8 /* lynx_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5D01765CA360081E3D8 /* lynx_library.png */; };
-		C100D6591765CA360081E3D8 /* nintendods_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5D11765CA360081E3D8 /* nintendods_library.png */; };
-		C100D65A1765CA360081E3D8 /* pcengine_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5D21765CA360081E3D8 /* pcengine_library.png */; };
-		C100D65B1765CA360081E3D8 /* pcfx_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5D31765CA360081E3D8 /* pcfx_library.png */; };
-		C100D65C1765CA360081E3D8 /* segacd_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5D41765CA360081E3D8 /* segacd_library.png */; };
-		C100D65D1765CA360081E3D8 /* sg1000_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5D51765CA360081E3D8 /* sg1000_library.png */; };
-		C100D65E1765CA360081E3D8 /* supergrafx_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5D61765CA360081E3D8 /* supergrafx_library.png */; };
-		C100D65F1765CA360081E3D8 /* tg16_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5D71765CA360081E3D8 /* tg16_library.png */; };
-		C100D6601765CA360081E3D8 /* vb_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5D81765CA360081E3D8 /* vb_library.png */; };
-		C100D6611765CA360081E3D8 /* wii_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5D91765CA360081E3D8 /* wii_library.png */; };
-		C100D6621765CA360081E3D8 /* wonderswan_library.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D5DA1765CA360081E3D8 /* wonderswan_library.png */; };
 		C1417E1C176222FC00CE8D88 /* Barrel_Empty.icns in Resources */ = {isa = PBXBuildFile; fileRef = C1417E1B176222FC00CE8D88 /* Barrel_Empty.icns */; };
 		C172126C175F49CF00786474 /* OEHUDAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = C1721269175F49CF00786474 /* OEHUDAlert.m */; };
 		C172126D175F49CF00786474 /* OEHUDAlert+DefaultAlertsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C172126B175F49CF00786474 /* OEHUDAlert+DefaultAlertsAdditions.m */; };
@@ -337,23 +320,6 @@
 		C100D5C61765CA360081E3D8 /* track_horizontal_spacer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track_horizontal_spacer.png; sourceTree = "<group>"; };
 		C100D5C71765CA360081E3D8 /* track_vertical.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track_vertical.png; sourceTree = "<group>"; };
 		C100D5C81765CA360081E3D8 /* track_vertical_spacer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track_vertical_spacer.png; sourceTree = "<group>"; };
-		C100D5CA1765CA360081E3D8 /* 32x_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 32x_library.png; sourceTree = "<group>"; };
-		C100D5CB1765CA360081E3D8 /* arcade_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arcade_library.png; sourceTree = "<group>"; };
-		C100D5CC1765CA360081E3D8 /* atari2600_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atari2600_library.png; sourceTree = "<group>"; };
-		C100D5CD1765CA360081E3D8 /* atari5200_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atari5200_library.png; sourceTree = "<group>"; };
-		C100D5CE1765CA360081E3D8 /* atari8bit_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atari8bit_library.png; sourceTree = "<group>"; };
-		C100D5CF1765CA360081E3D8 /* gamecube_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gamecube_library.png; sourceTree = "<group>"; };
-		C100D5D01765CA360081E3D8 /* lynx_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lynx_library.png; sourceTree = "<group>"; };
-		C100D5D11765CA360081E3D8 /* nintendods_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nintendods_library.png; sourceTree = "<group>"; };
-		C100D5D21765CA360081E3D8 /* pcengine_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pcengine_library.png; sourceTree = "<group>"; };
-		C100D5D31765CA360081E3D8 /* pcfx_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pcfx_library.png; sourceTree = "<group>"; };
-		C100D5D41765CA360081E3D8 /* segacd_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = segacd_library.png; sourceTree = "<group>"; };
-		C100D5D51765CA360081E3D8 /* sg1000_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sg1000_library.png; sourceTree = "<group>"; };
-		C100D5D61765CA360081E3D8 /* supergrafx_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = supergrafx_library.png; sourceTree = "<group>"; };
-		C100D5D71765CA360081E3D8 /* tg16_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tg16_library.png; sourceTree = "<group>"; };
-		C100D5D81765CA360081E3D8 /* vb_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vb_library.png; sourceTree = "<group>"; };
-		C100D5D91765CA360081E3D8 /* wii_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wii_library.png; sourceTree = "<group>"; };
-		C100D5DA1765CA360081E3D8 /* wonderswan_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wonderswan_library.png; sourceTree = "<group>"; };
 		C1417E1B176222FC00CE8D88 /* Barrel_Empty.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Barrel_Empty.icns; sourceTree = "<group>"; };
 		C1721268175F49CF00786474 /* OEHUDAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEHUDAlert.h; sourceTree = "<group>"; };
 		C1721269175F49CF00786474 /* OEHUDAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEHUDAlert.m; sourceTree = "<group>"; };
@@ -515,7 +481,6 @@
 				C100D5C61765CA360081E3D8 /* track_horizontal_spacer.png */,
 				C100D5C71765CA360081E3D8 /* track_vertical.png */,
 				C100D5C81765CA360081E3D8 /* track_vertical_spacer.png */,
-				C100D5C91765CA360081E3D8 /* Unused console icons */,
 			);
 			name = "Interface Graphics";
 			path = "../../Interface Graphics";
@@ -624,30 +589,6 @@
 				C100D5BC1765CA360081E3D8 /* installer_scrollview_box.png */,
 			);
 			path = "Setup Assistant";
-			sourceTree = "<group>";
-		};
-		C100D5C91765CA360081E3D8 /* Unused console icons */ = {
-			isa = PBXGroup;
-			children = (
-				C100D5CA1765CA360081E3D8 /* 32x_library.png */,
-				C100D5CB1765CA360081E3D8 /* arcade_library.png */,
-				C100D5CC1765CA360081E3D8 /* atari2600_library.png */,
-				C100D5CD1765CA360081E3D8 /* atari5200_library.png */,
-				C100D5CE1765CA360081E3D8 /* atari8bit_library.png */,
-				C100D5CF1765CA360081E3D8 /* gamecube_library.png */,
-				C100D5D01765CA360081E3D8 /* lynx_library.png */,
-				C100D5D11765CA360081E3D8 /* nintendods_library.png */,
-				C100D5D21765CA360081E3D8 /* pcengine_library.png */,
-				C100D5D31765CA360081E3D8 /* pcfx_library.png */,
-				C100D5D41765CA360081E3D8 /* segacd_library.png */,
-				C100D5D51765CA360081E3D8 /* sg1000_library.png */,
-				C100D5D61765CA360081E3D8 /* supergrafx_library.png */,
-				C100D5D71765CA360081E3D8 /* tg16_library.png */,
-				C100D5D81765CA360081E3D8 /* vb_library.png */,
-				C100D5D91765CA360081E3D8 /* wii_library.png */,
-				C100D5DA1765CA360081E3D8 /* wonderswan_library.png */,
-			);
-			path = "Unused console icons";
 			sourceTree = "<group>";
 		};
 		C1721267175F49B900786474 /* HUD */ = {
@@ -1115,23 +1056,6 @@
 				C100D64F1765CA360081E3D8 /* track_horizontal_spacer.png in Resources */,
 				C100D6501765CA360081E3D8 /* track_vertical.png in Resources */,
 				C100D6511765CA360081E3D8 /* track_vertical_spacer.png in Resources */,
-				C100D6521765CA360081E3D8 /* 32x_library.png in Resources */,
-				C100D6531765CA360081E3D8 /* arcade_library.png in Resources */,
-				C100D6541765CA360081E3D8 /* atari2600_library.png in Resources */,
-				C100D6551765CA360081E3D8 /* atari5200_library.png in Resources */,
-				C100D6561765CA360081E3D8 /* atari8bit_library.png in Resources */,
-				C100D6571765CA360081E3D8 /* gamecube_library.png in Resources */,
-				C100D6581765CA360081E3D8 /* lynx_library.png in Resources */,
-				C100D6591765CA360081E3D8 /* nintendods_library.png in Resources */,
-				C100D65A1765CA360081E3D8 /* pcengine_library.png in Resources */,
-				C100D65B1765CA360081E3D8 /* pcfx_library.png in Resources */,
-				C100D65C1765CA360081E3D8 /* segacd_library.png in Resources */,
-				C100D65D1765CA360081E3D8 /* sg1000_library.png in Resources */,
-				C100D65E1765CA360081E3D8 /* supergrafx_library.png in Resources */,
-				C100D65F1765CA360081E3D8 /* tg16_library.png in Resources */,
-				C100D6601765CA360081E3D8 /* vb_library.png in Resources */,
-				C100D6611765CA360081E3D8 /* wii_library.png in Resources */,
-				C100D6621765CA360081E3D8 /* wonderswan_library.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

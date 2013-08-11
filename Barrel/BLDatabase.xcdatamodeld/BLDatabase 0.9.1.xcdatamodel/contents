@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="0.9 Beta 2" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3389" systemVersion="12E55" minimumToolsVersion="Xcode 4.1" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="0.9 Beta 3" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3389" systemVersion="12E55" minimumToolsVersion="Xcode 4.1" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractCollection" representedClassName="NSManagedObject" isAbstract="YES" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="folder" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CollectionFolder" inverseName="subcollections" inverseEntity="CollectionFolder" indexed="YES" syncable="YES"/>
@@ -21,7 +21,9 @@
         <relationship name="project" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="credits" inverseEntity="Game" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="Game" representedClassName="OEDBGame" syncable="YES">
+        <attribute name="apiID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="archiveID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="authorID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="bundlePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="gameDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="gameTitle" optional="YES" attributeType="String" syncable="YES"/>
