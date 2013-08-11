@@ -572,7 +572,7 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
 }
 #pragma mark -
 #pragma mark Data Model Properties
-@dynamic name, bundlePath, gameTitle, rating, gameDescription, importDate, lastArchiveSync, archiveID, status, displayName;
+@dynamic name, bundlePath, gameTitle, rating, gameDescription, importDate, lastArchiveSync, archiveID, apiID, authorID, status, displayName;
 #pragma mark -
 #pragma mark Data Model Relationships
 @dynamic boxImage, system, genre, roms, genres, collections, credits;

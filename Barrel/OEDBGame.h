@@ -119,6 +119,8 @@ extern NSString *const OEDisplayGameTitle;
 @property(nonatomic, retain)   NSDate    *importDate;
 @property(nonatomic, retain)   NSDate    *lastArchiveSync;
 @property(nonatomic, retain)   NSNumber  *archiveID;
+@property(nonatomic, retain)   NSNumber  *apiID;
+@property(nonatomic, retain)   NSNumber  *authorID;
 @property(nonatomic, retain)   NSNumber  *status;
 @property(nonatomic, retain)   NSString  *displayName;
 @property(nonatomic, readonly) NSString  *cleanDisplayName;
