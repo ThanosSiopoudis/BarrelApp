@@ -39,5 +39,6 @@
 @property(nonatomic, copy) NSString *coverArtURL;
 @property(nonatomic, copy) NSString *recipeURL;
 @property(nonatomic, copy) NSData *game;
+@property(nonatomic, copy) NSString *engineURL;
 
 @end
