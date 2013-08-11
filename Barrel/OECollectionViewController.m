@@ -753,7 +753,14 @@ static NSArray *OE_defaultSortDescriptors;
         [menuItem setSubmenu:[self OE_ratingMenuForGames:games]];
         [menu addItem:menuItem];
         [menu addItemWithTitle:NSLocalizedString(@"Add Cover Art From File…", @"") action:@selector(addCoverArtFromFile:) keyEquivalent:@""];
-        [menu addItemWithTitle:NSLocalizedString(@"Upload Bundle", @"") action:@selector(startGame:) keyEquivalent:@""];
+        
+        // Show upload option only if the bundle has no author
+        if ([[games objectAtIndex:0] authorID] == nil) {
+            [menu addItemWithTitle:NSLocalizedString(@"Upload Bundle", @"") action:@selector(makeGameRecipeAndUpload:) keyEquivalent:@""];
+        }
+        else if ([[[games objectAtIndex:0] authorID] integerValue] == [[[NSUserDefaults standardUserDefaults] valueForKey:@"userID"] integerValue]) {
+            [menu addItemWithTitle:NSLocalizedString(@"Push Update", @"") action:@selector(makeGameRecipeAndUpload:) keyEquivalent:@""];
+        }
         
         [menu addItem:[NSMenuItem separatorItem]];
         
