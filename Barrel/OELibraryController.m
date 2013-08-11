@@ -45,6 +45,10 @@
 #import "OEPreferencesController.h"
 #import "OEHUDAlert+DefaultAlertsAdditions.h"
 #import "BLSystemCommand.h"
+#import "OEDBImage.h"
+
+#import "AppCakeAPI.h"
+#import "BL_GenericAPIResponse.h"
 
 #pragma mark - Exported variables
 NSString * const OELastCollectionSelectedKey = @"lastCollectionSelected";
@@ -414,18 +418,76 @@ static const CGFloat _OEToolbarHeight = 44;
 }
 
 - (void)makeGameRecipeAndPushToServer {
-    /* --------------- GAME RECIPE INSTRUCTIONS: -------------------
-     * To create a game recipe we need the following ingredients:
-     * 1. Game genre
-     * 2. Game Name and any other known names (like volume name)
-     * 3. BLWine.bundle version
-     * 4. Winetricks verbs that were used
-     * 5. The game Artwork file (biggest possible resolution)
-     * 6. Once we have all information, we'll create a .plist file
-     *    and push it to the server, along with basic identifying
-     *    info.
-     * ----------------------------------------------------------- */
+    // Create Game recipe file as per Issue #12
+    // Link: https://github.com/ThanosSiopoudis/BarrelApp/issues/12
+    NSString *recipePlistFilename = [NSString stringWithFormat:@"%@_recipe.plist", [[[self currentGame] name] stringByReplacingOccurrencesOfString:@" " withString:@"_"]];
     
+    // Get some of the saved info from the Info.plist of the game
+    NSBundle *gameBundle = [NSBundle bundleWithPath:[[self currentGame] bundlePath]];
+    NSMutableDictionary *bundleDict = [NSMutableDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", [[self currentGame] bundlePath]]];
+
+    NSMutableDictionary *gameRecipe = [[NSMutableDictionary alloc] init];
+    [gameRecipe setValue:[[self currentGame] name] forKey:@"BLGameName"];
+    [gameRecipe setValue:[[self currentGame] genre] forKey:@"BLGameGenre"];
+    [gameRecipe setValue:@"1" forKey:@"BLBuildNumber"]; // This is the initial build
+    [gameRecipe setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"userID"] forKey:@"BLAuthorID"];
+    [gameRecipe setValue:[bundleDict valueForKey:@"BLEngineID"] forKey:@"BLWineVersionID"];
+    [gameRecipe setValue:[bundleDict valueForKey:@"BLVolumeName"] forKey:@"BLImportedVolName"];
+    
+    // Run winetricks list to get a list of the installed winetricks but notify the user
+    OEHUDAlert *uploadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Getting list of winetricks. This may take a while..." andTitle:@"Getting Winetricks" indeterminate:YES];
+    [uploadAlert open];
+    
+    dispatch_queue_t dispatchQueue = dispatch_queue_create("com.appcake.blwinetricslister", DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_t priority = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+    dispatch_set_target_queue(dispatchQueue, priority);
+    
+    dispatch_async(dispatchQueue, ^{
+        NSString *winetricksResults = [BLSystemCommand runScript:[NSString stringWithFormat:@"%@/BLWineLauncher", [[gameBundle executablePath] stringByDeletingLastPathComponent]] withArguments:@[@"--winetricksList"] shouldWaitForProcess:YES runForMain:NO];
+        [uploadAlert setMessageText:@"Uploading data to server... Please wait..."];
+        
+        // Make a comma seperated list
+        winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@"\n" withString:@", "];
+        winetricksResults = [winetricksResults substringWithRange:NSMakeRange(0, [winetricksResults length] - 2)];
+        [gameRecipe setValue:winetricksResults forKey:@"BLWinetricksVerbs"];
+        
+        [gameRecipe writeToURL:[[[self database] tempFolderURL] URLByAppendingPathComponent:recipePlistFilename] atomically:YES];
+        
+        // Prepare the Artwork
+        NSImage *originalImage = [[[self currentGame] boxImage] originalImage];
+        [originalImage lockFocus];
+        NSBitmapImageRep *bitmapRep = [[NSBitmapImageRep alloc] initWithFocusedViewRect:NSMakeRect(0, 0, originalImage.size.width, originalImage.size.height)];
+        [originalImage unlockFocus];
+        NSData *imageData = [bitmapRep representationUsingType:NSPNGFileType properties:Nil];
+        [imageData writeToFile:[NSString stringWithFormat:@"%@/%@_artwork.png", [[[self database] tempFolderURL] path], [[[self currentGame] name] stringByReplacingOccurrencesOfString:@" " withString:@"_"]] atomically:NO];
+        
+        // Now upload the plist, artwork and create the entry in the API's database
+        AppCakeAPI *apiConection = [[AppCakeAPI alloc] init];
+        [apiConection uploadGame:[[self currentGame] name] fromVolName:[bundleDict valueForKey:@"BLVolumeName"] wineBuildID:[bundleDict valueForKey:@"BLEngineID"] fromAuthor:[[NSUserDefaults standardUserDefaults] valueForKey:@"userID"] recipePath:[[[[self database] tempFolderURL] URLByAppendingPathComponent:recipePlistFilename] path] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *result) {
+            
+            [uploadAlert close];
+            
+            BL_GenericAPIResponse *response = [result firstObject];
+            
+            if ([response responseCode] != 200) {
+                // Upload failed for some reason. Show why
+                NSError *resultError = [[NSError alloc] initWithDomain:@"barrel.error" code:[response responseCode] userInfo:nil];
+                [resultError setValue:[response responseDescription] forKey:NSLocalizedDescriptionKey];
+                OEHUDAlert *errorAlert = [OEHUDAlert alertWithError:resultError];
+                [errorAlert runModal];
+            }
+            else {
+                // Successful upload
+                [[self currentGame] setApiID:[NSNumber numberWithInteger:[response responseID]]];
+                [[self currentGame] setAuthorID:[[NSUserDefaults standardUserDefaults] valueForKey:@"userID"]]; // Set to self
+            }
+            
+        } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
+            [uploadAlert close];
+            OEHUDAlert *errorAlert = [OEHUDAlert alertWithError:error];
+            [errorAlert runModal];
+        }];
+    });
 }
 
 #pragma mark -
