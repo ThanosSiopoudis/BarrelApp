@@ -37,18 +37,19 @@
 
 @implementation AppCakeAPI
 
-- (void)searchDBForGameWithName:(NSString *)gameName toBlock:(void (^)(RKObjectRequestOperation *, RKMappingResult *))completionBlock failBlock:(void (^)(RKObjectRequestOperation *, NSError *))errorBlock
+- (void)searchDBForGameWithName:(NSString *)gameName orIdentifier:(NSString *)identifier toBlock:(void (^)(RKObjectRequestOperation *, RKMappingResult *))completionBlock failBlock:(void (^)(RKObjectRequestOperation *, NSError *))errorBlock
 {
     RKObjectMapping *gameMapping = [RKObjectMapping mappingForClass:[AC_Game class]];
     [gameMapping addAttributeMappingsFromDictionary:@{
-        @"id"           : @"id",
-        @"identifiers"  : @"identifiers",
-        @"name"         : @"name",
-        @"wineBuildID"  : @"wineBuildID",
-        @"description"  : @"description",
-        @"userID"       : @"userID",
-        @"coverArtURL"  : @"coverArtURL",
-        @"recipeURL"    : @"recipeURL"
+        @"Game.id"           : @"id",
+        @"Game.identifiers"  : @"identifiers",
+        @"Game.name"         : @"name",
+        @"Game.wineBuildID"  : @"wineBuildID",
+        @"Game.description"  : @"description",
+        @"Game.userID"       : @"userID",
+        @"Game.coverArtURL"  : @"coverArtURL",
+        @"Game.recipeURL"    : @"recipeURL",
+        @"Game.engineURL"    : @"engineURL"
      }];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:gameMapping method:RKRequestMethodGET pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
@@ -61,8 +62,14 @@
                                                                                                     NULL,
                                                                                                     CFSTR("!*'();:@&=+$,/?%#[]"),
                                                                                                     kCFStringEncodingUTF8));
+    NSString *escapedIdentifier = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
+                                                                                                    NULL,
+                                                                                                    (__bridge CFStringRef) identifier,
+                                                                                                    NULL,
+                                                                                                    CFSTR("!*'();:@&=+$,/?%#[]"),
+                                                                                                    kCFStringEncodingUTF8));
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?gameName=%@", @"http://api.appcake.co.uk/Games/searchForGame.json", escapedString]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?gameName=%@&identifier=%@", @"http://api.appcake.co.uk/Games/searchForGame.json", escapedString, escapedIdentifier]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
     [objectRequestOperation setCompletionBlockWithSuccess:completionBlock failure:errorBlock];
@@ -175,7 +182,6 @@
         toBlock:        (void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock
         failBlock:      (void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock
 {
-    RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
     AC_Game *game = [AC_Game new];
     game.name = gameName;
     game.identifiers = volName;
@@ -203,6 +209,38 @@
     
     NSMutableURLRequest *request = [manager multipartFormRequestWithObject:game method:RKRequestMethodPOST path:@"/Games/addNewGame.json" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileData:[NSData dataWithContentsOfFile:recipePath] name:@"game" fileName:[recipePath lastPathComponent] mimeType:@"application/xml"];
+    }];
+    
+    RKObjectRequestOperation *operation = [manager objectRequestOperationWithRequest:request success:completionBlock failure:errorBlock];
+    [manager enqueueObjectRequestOperation:operation]; // NOTE: Must be enqueued rather than started
+}
+
+- (void) uploadArtwork:(NSString *)artworkPath forGameID:(NSInteger)gameID toBlock: (void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)) completionBlock failBlock: (void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock
+{
+    RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
+    AC_Game *game = [AC_Game new];
+    game.id = gameID;
+    
+    RKObjectMapping *requestMapping = [RKObjectMapping requestMapping];
+    [requestMapping addAttributeMappingsFromArray:@[@"id"]];
+    
+    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[BL_GenericAPIResponse class]];
+    [responseMapping addAttributeMappingsFromDictionary:@{
+        @"responseCode": @"responseCode",
+        @"responseDescription": @"responseDescription"
+    }];
+    
+    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:requestMapping objectClass:[AC_Game class] rootKeyPath:nil method:RKRequestMethodPOST];
+    RKResponseDescriptor *innerResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:RKRequestMethodPOST pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    
+    // Serialize the Article attributes then attach a file
+    RKObjectManager *manager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:@"http://api.appcake.co.uk"]];
+    
+    [manager addResponseDescriptor:innerResponseDescriptor];
+    [manager addRequestDescriptor:requestDescriptor];
+    
+    NSMutableURLRequest *request = [manager multipartFormRequestWithObject:game method:RKRequestMethodPOST path:@"/Games/updateGameArtwork.json" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileData:[NSData dataWithContentsOfFile:artworkPath] name:@"coverArtURL" fileName:[artworkPath lastPathComponent] mimeType:@"image/png"];
     }];
     
     RKObjectRequestOperation *operation = [manager objectRequestOperationWithRequest:request success:completionBlock failure:errorBlock];

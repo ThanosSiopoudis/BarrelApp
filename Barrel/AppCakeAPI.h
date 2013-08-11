@@ -31,10 +31,11 @@
 
 - (void)listOfAllWineBuildsToBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock
 failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
-- (void)searchDBForGameWithName:(NSString *)gameName toBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
+- (void)searchDBForGameWithName:(NSString *)gameName orIdentifier:(NSString *)identifier toBlock:(void (^)(RKObjectRequestOperation *, RKMappingResult *))completionBlock failBlock:(void (^)(RKObjectRequestOperation *, NSError *))errorBlock;
 - (void)registerUserWithUsername:(NSString *)username password:(NSString *)password email:(NSString *)email toBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
 - (void)loginUserWithUsername: (NSString *)username toBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
 - (void)uploadGame: (NSString *)gameName fromVolName: (NSString *)volName wineBuildID: (NSString *)wineBuildID fromAuthor: (NSString *)authorID recipePath: (NSString *)recipePath toBlock: (void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock failBlock: (void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
+- (void) uploadArtwork:(NSString *)artworkPath forGameID:(NSInteger)gameID toBlock: (void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)) completionBlock failBlock: (void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock;
 
 
 @end
