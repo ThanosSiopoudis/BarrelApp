@@ -78,9 +78,22 @@
     else if ([(NSString *)[[self arguments] objectAtIndex:1] isEqualToString:@"--runTest"]) {
         [self runWithWindowsBinary:(NSString *)[[self arguments] objectAtIndex:2] andTestSwitches:(NSString *)[[self arguments] objectAtIndex:3]];
     }
+    else if ([(NSString *)[[self arguments] objectAtIndex:1] isEqualToString:@"--winetricksList"]) {
+        [self getWinetricksList];
+    }
     else {
         [self runWineWithWindowsBinary:(NSString *)[[self arguments] objectAtIndex:1]];
     }
+}
+
+-(void) getWinetricksList {
+    [self prepareBinariesForWinetricks];
+    
+    NSString *script = [NSString stringWithFormat:@"cd \"%@/bin\";export PATH=\"$PWD:%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";export WINEDEBUG=\"err+all,fixme+all\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" winetricks --no-isolate list-installed", [self wineBundlePath], [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath]];
+    [self setScriptPath:@""];
+    [self systemCommand:script shouldWaitForProcess:YES redirectOutput:YES];
+    
+    [self restoreBinaryNames];
 }
 
 -(void) runWithWindowsBinary: (NSString *)binaryPath andTestSwitches:(NSString *)switches {
@@ -91,7 +104,7 @@
     [self systemCommand:script shouldWaitForProcess:NO redirectOutput:NO];
 }
 
--(void) runWinetricksWithArgs: (NSString *)args {
+- (void) prepareBinariesForWinetricks {
     // We're about to do winetricks. Rename the wine and wineserver binaries back to what they were
     // before we do that.
     // 1st get the names
@@ -107,10 +120,13 @@
     // 3rd rename the proper ones to their proper names
     [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/%@", [self wineBundlePath], oldWineBin] toPath:[NSString stringWithFormat:@"%@/bin/wine", [self wineBundlePath]] error:nil];
     [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/%@", [self wineBundlePath], oldWineserverBin] toPath:[NSString stringWithFormat:@"%@/bin/wineserver", [self wineBundlePath]] error:nil];
-    
-    NSString *script = [NSString stringWithFormat:@"cd \"%@/bin\";export PATH=\"$PWD:%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";export WINEDEBUG=\"err+all,fixme+all\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" winetricks --no-isolate%@", [self wineBundlePath], [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], args];
-    [self setScriptPath:@""];
-    [self systemCommand:script shouldWaitForProcess:YES redirectOutput:YES];
+}
+
+- (void) restoreBinaryNames {
+    NSString *infoPlistPath = [NSString stringWithFormat:@"%@/Contents/Info.plist", [self bundlePath]];
+    NSMutableDictionary *infoPlistDict = [[NSMutableDictionary alloc] initWithContentsOfFile: infoPlistPath];
+    NSString *oldWineBin = [infoPlistDict valueForKey:@"BLWineBin"];
+    NSString *oldWineserverBin = [infoPlistDict valueForKey:@"BLWineserverBin"];
     
     // Rename the wine binaries back to what they where before exiting
     [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/wine", [self wineBundlePath]] toPath:[NSString stringWithFormat:@"%@/bin/%@", [self wineBundlePath], oldWineBin] error:nil];
@@ -118,6 +134,16 @@
     
     [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/wine_OLD", [self wineBundlePath]] toPath:[NSString stringWithFormat:@"%@/bin/wine", [self wineBundlePath]] error:nil];
     [[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/bin/wineserver_OLD", [self wineBundlePath]] toPath:[NSString stringWithFormat:@"%@/bin/wineserver", [self wineBundlePath]] error:nil];
+}
+
+-(void) runWinetricksWithArgs: (NSString *)args {
+    [self prepareBinariesForWinetricks];
+    
+    NSString *script = [NSString stringWithFormat:@"cd \"%@/bin\";export PATH=\"$PWD:%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";export WINEDEBUG=\"err+all,fixme+all\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" winetricks --no-isolate%@", [self wineBundlePath], [self wineBundlePath], [self frameworksPath], [self winePrefixPath], [self dyldFallbackPath], args];
+    [self setScriptPath:@""];
+    [self systemCommand:script shouldWaitForProcess:YES redirectOutput:YES];
+    
+    [self restoreBinaryNames];
 }
 
 -(void) runWineWithWindowsBinary:(NSString *)binaryPath {
@@ -314,7 +340,8 @@
         {
             [returnString appendString:[NSString stringWithCString:buff encoding:NSUTF8StringEncoding]];
             if (redirect) {
-                NSLog(@"%@", [NSString stringWithCString:buff encoding:NSUTF8StringEncoding]);
+                // NSLog(@"%@", [NSString stringWithCString:buff encoding:NSUTF8StringEncoding]);
+                printf("%s", buff);
             }
             else if ([logFilePath length] > 0) {
                 NSFileHandle *aFileHandle;
