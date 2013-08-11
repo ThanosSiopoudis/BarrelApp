@@ -36,8 +36,11 @@
 
 #import "AppCakeAPI.h"
 #import "AC_WineBuild.h"
+#import "AC_Game.h"
+
 #import "BLFileDownloader.h"
 #import "BLArchiver.h"
+#import "BLSystemCommand.h"
 
 static const int MaxSimultaneousImports = 1; // imports can't really be simultaneous because access to queue is not ready for multithreadding right now
 
@@ -54,21 +57,23 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
     dispatch_queue_t dispatchQueue;
 }
 
-@property(readwrite)            NSInteger          status;
-@property(readwrite)            NSInteger          activeImports;
-@property(readwrite)            NSInteger          numberOfProcessedItems;
-@property(readwrite, nonatomic) NSInteger          totalNumberOfItems;
-@property(readwrite)            NSMutableArray    *queue;
-@property(weak)                 OELibraryDatabase *database;
-@property(readwrite, atomic)    OEHUDAlert        *progressWindow;
-@property(readwrite)            NSString          *volumeName;
-@property(readwrite)            NSString          *gameName;
-@property(readwrite)            NSString          *downloadPath;
-@property(readwrite)            AppCakeAPI        *appCake;
-@property(readwrite)            BLImportItem      *currentItem;
-@property(readwrite, atomic)    OEHUDAlert        *alertCache;
-@property(readwrite)            NSString          *scriptPath;
-@property(readwrite)            NSString          *engineID;
+@property(readwrite)            NSInteger           status;
+@property(readwrite)            NSInteger           activeImports;
+@property(readwrite)            NSInteger           numberOfProcessedItems;
+@property(readwrite, nonatomic) NSInteger           totalNumberOfItems;
+@property(readwrite)            NSMutableArray      *queue;
+@property(weak)                 OELibraryDatabase   *database;
+@property(readwrite, atomic)    OEHUDAlert          *progressWindow;
+@property(readwrite)            NSString            *volumeName;
+@property(readwrite)            NSString            *gameName;
+@property(readwrite)            NSString            *downloadPath;
+@property(readwrite)            AppCakeAPI          *appCake;
+@property(readwrite)            BLImportItem        *currentItem;
+@property(readwrite, atomic)    OEHUDAlert          *alertCache;
+@property(readwrite)            NSString            *scriptPath;
+@property(readwrite)            NSString            *engineID;
+@property(readwrite)            AC_Game             *serverGame;
+@property(readwrite)            NSString            *downloadedRecipePath;
 
 - (void)processNextItemIfNeeded;
 
@@ -297,7 +302,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     
     self.appCake = [[AppCakeAPI alloc] init];
     [item setImportState:BLImportItemStatusWait];
-    [[self appCake] searchDBForGameWithName:[self volumeName] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [[self appCake] searchDBForGameWithName:[self volumeName] orIdentifier:[self volumeName] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         if ([mappingResult count] < 1) {
             [[self progressWindow] close];
             
@@ -309,9 +314,40 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             [noResultsAlert runModal];
         }
         else if ([mappingResult count] == 1) {
-            // We found a result.
-            [item setImportState:BLImportItemStatusActive];
-            [self scheduleItemForNextStep:item];
+            [[self progressWindow] close];
+            
+            // We found a result. One result means get it.
+            [self setServerGame:[mappingResult firstObject]];
+            
+            // Fetch the .plist file
+            OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading Recipe..." andTitle:@"Download" indeterminate:NO];
+            [self setAlertCache:downloadAlert];
+            [[self alertCache] open];
+            NSString *path = [[[self database] tempFolderURL] path];
+            // Run the downloader in the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
+                [fileDownloader downloadWithNSURLConnectionFromURL:[[self serverGame] recipeURL] withCompletionBlock:^(int result, NSString *resultPath) {
+                    [[self alertCache] close];
+                    if (result) {
+                        [self setDownloadedRecipePath:resultPath];
+                        [self setDownloadPath:[[self serverGame] engineURL]];
+                        [self setGameName:[[self serverGame] name]];
+                        [self setEngineID:[NSString stringWithFormat:@"%li",(long)[[self serverGame] wineBuildID]]];
+                        
+                        [item setImportState:BLImportItemStatusActive];
+                        [self scheduleItemForNextStep:item];
+                    }
+                    else {
+                        // Something went wrong, abort
+                        [[self alertCache] close];
+                        OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error communicating with the server! Please try again later!" defaultButton:@"OK" alternateButton:@""];
+                        [errorAlert setDefaultButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
+                        [errorAlert runModal];
+                    }
+                }];
+                [fileDownloader startDownload];
+            });
         }
         else {
             // If the results were more than one, let the user choose
@@ -340,6 +376,13 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
                 // The bundle has been downloaded, so proceed with extracting it and deleting the archive
                 [[self alertCache] close];
                 [self extractArchive:resultPath toPath:path];
+            }
+            else {
+                // Something went wrong, abort
+                [[self alertCache] close];
+                OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error communicating with the server! Please try again later!" defaultButton:@"OK" alternateButton:@""];
+                [errorAlert setDefaultButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
+                [errorAlert runModal];
             }
         }];
         [fileDownloader startDownload];
@@ -386,10 +429,11 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
                 }
                 
                 // Add some info in the newly created bundle's plist
-                NSMutableDictionary *plist = [NSMutableDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/Info.plist", destinationPath]];
+                NSMutableDictionary *plist =
+                    [NSMutableDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.app/Contents/Info.plist", destinationPath, [self gameName]]];
                 [plist setValue:[self volumeName] forKey:@"BLVolumeName"];
                 [plist setValue:[self engineID] forKey:@"BLEngineID"];
-                [plist writeToFile:[NSString stringWithFormat:@"%@/Info.plist", destinationPath] atomically:YES];
+                [plist writeToFile:[NSString stringWithFormat:@"%@/%@.app/Contents/Info.plist", destinationPath, [self gameName]] atomically:YES];
                 
                 [[self alertCache] setShowsProgressbar: NO];
                 [[self alertCache] setShowsIndeterminateProgressbar:YES];
@@ -419,8 +463,6 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         setupEXE = [url path];
     }
     [self runScript:newBarrelApp withArguments:[NSArray arrayWithObjects:@"--runSetup", setupEXE, nil] shouldWaitForProcess:YES];
-    
-    // FIXME: Check here if the installer failed
 }
 
 - (void)performImportStepOrganize:(BLImportItem *)item {
@@ -429,8 +471,51 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     NSString    *genre              = [genreComponents lastObject];
     NSString    *newBundlePath      = [[[[self database] databaseFolderURL] URLByAppendingPathComponent:@"tmp"] path];
     NSString    *newBarrelApp       = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];
+    NSBundle    *newBarrelBundle    = [NSBundle bundleWithPath:newBarrelApp];
     NSURL       *url                = [NSURL fileURLWithPath:newBarrelApp];
     NSURL       *newUrl             = [[[self database] gamesFolderURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@.app", genre, [self gameName]]];
+    
+    // Was the installation successful? Check the new bundle for a proper windows executable
+    NSMutableDictionary *newBundleInfo = [NSMutableDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", newBarrelApp]];
+    NSString *newWinBinary = [newBundleInfo valueForKey:@"Windows Executable"];
+    if ([newWinBinary isEqualToString:@"none.exe"]) {
+        // Failed. Halt
+        [self stopImportForItem:item withError:error];
+        return;
+    }
+    
+    // If we have a downloaded recipe, run the required winetricks
+    if ([self downloadedRecipePath] != nil && [[self downloadedRecipePath] length] > 0) {
+        NSMutableDictionary *recipe = [NSMutableDictionary dictionaryWithContentsOfFile:[self downloadedRecipePath]];
+        NSString *wineticksVerbs = [recipe valueForKey:@"BLWinetricksVerbs"];
+        if ([wineticksVerbs length]) {
+            [item setImportState:BLImportItemStatusWait];
+            OEHUDAlert *winetricksAlert = [OEHUDAlert showProgressAlertWithMessage:@"Installing Winetricks... This may take a while..." andTitle:@"Installing Winetricks" indeterminate:YES];
+            [self setAlertCache:winetricksAlert];
+            [[self alertCache] open];
+            
+            NSString *winetricksFinalCommand = [NSString stringWithFormat:@"%@/BLWineLauncher", [[newBarrelBundle executablePath] stringByDeletingLastPathComponent]];
+            NSMutableArray *args = [NSMutableArray arrayWithArray:[wineticksVerbs componentsSeparatedByString:@", "]];
+            
+            dispatch_async(dispatchQueue, ^{
+                [BLSystemCommand runScript:winetricksFinalCommand withArguments:args shouldWaitForProcess:YES runForMain:NO];
+                [[self alertCache] close];
+                
+                [self organiseItemWithGenre:genre URL:url NewURL:newUrl andItem:item];
+                [item setImportState:BLImportItemStatusActive];
+            });
+        }
+        else {
+            [self organiseItemWithGenre:genre URL:url NewURL:newUrl andItem:item];
+        }
+    }
+    else {
+        [self organiseItemWithGenre:genre URL:url NewURL:newUrl andItem:item];
+    }
+}
+
+- (void) organiseItemWithGenre:(NSString *)genre URL:(NSURL *)url NewURL:(NSURL *)newUrl andItem:(BLImportItem *)item {
+    NSError *error = nil;
     
     [[NSFileManager defaultManager] createDirectoryAtURL:[[[self database] gamesFolderURL] URLByAppendingPathComponent:genre] withIntermediateDirectories:YES attributes:nil error:&error];
     
@@ -459,6 +544,15 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     OEDBSystem *system = [OEDBSystem systemForPluginIdentifier:[[item importInfo] valueForKey:OEImportInfoSystemID] inDatabase:[self database]];
     
     game = [OEDBGame createGameWithName:[self gameName] andGenre:@"barrel.genre.strategy" andSystem:system andBundlePath:[[item URL] path] inDatabase:[self database]];
+    
+    // Do we have artwork from the API? If yes, set it
+    if ([self serverGame] != nil) {
+        if ([[[self serverGame] coverArtURL] length]) {
+            [game setBoxImageByURL:[NSURL URLWithString:[[self serverGame] coverArtURL]]];
+        }
+        [game setAuthorIDInfo:[NSNumber numberWithInteger:[[self serverGame] userID]] andAPIIDInfo:[NSNumber numberWithInteger:[[self serverGame] id]]];
+    }
+    
     
     if (game != nil) {
         [self stopImportForItem:item withError:nil];
