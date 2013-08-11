@@ -178,8 +178,15 @@
             }
         }
         
-        if ([cleanArray count] > 10) {
-            stillRunning = YES;
+        if ([cleanArray count] > 0) {
+            for (int i=0; i<[cleanArray count]; i++) {
+                NSString *test = [cleanArray objectAtIndex:i];
+                NSRange strRange = [test rangeOfString:@"BLWineLauncher"];
+                NSRange stuckRange = [test rangeOfString:@")"];
+                if ((strRange.location != NSNotFound && stuckRange.location == NSNotFound) && ![(NSString *)[cleanArray objectAtIndex:(i-1)] isEqualToString:@"grep"]) {
+                    stillRunning = YES;
+                }
+            }
         }
         if (!stillRunning) {
             NSLog(@"WineLauncher not running");
