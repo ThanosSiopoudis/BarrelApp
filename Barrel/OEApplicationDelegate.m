@@ -253,8 +253,8 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
     // please do not change this method, i'm tired of fixing stuff over and over again!!!!!
 
     // setup alert, with options "Quit", "Select", "Create"
-    NSString *title = @"Choose OpenEmu Library";
-    NSString *const msg = @"OpenEmu needs a library to continue. You may choose an existing OpenEmu library or create a new one";
+    NSString *title = @"Choose Barrel Library";
+    NSString *const msg = @"Barrel needs a library to continue. You may choose an existing Barrel library or create a new one";
 
     NSString *chooseButton = @"Choose Library…";
     NSString *createButton = @"Create Library…";
@@ -292,7 +292,7 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
         case NSAlertOtherReturn:
         {
             NSSavePanel *savePanel = [NSSavePanel savePanel];
-            [savePanel setNameFieldStringValue:@"OpenEmu Library"];
+            [savePanel setNameFieldStringValue:@"Barrel Library"];
             result = [savePanel runModal];
 
             if(result == NSOKButton)
@@ -471,7 +471,7 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
 
 - (NSAttributedString *)projectURL
 {
-    return [NSAttributedString hyperlinkFromString:@"http://openemu.org" withURL:[NSURL URLWithString:@"http://openemu.org"]];
+    return [NSAttributedString hyperlinkFromString:@"http://barrelapp.co.uk" withURL:[NSURL URLWithString:@"http://barrelapp.co.uk"]];
 }
 
 #pragma mark -
