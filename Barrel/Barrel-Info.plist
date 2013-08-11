@@ -21,9 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>Barr</string>
 	<key>CFBundleVersion</key>
-	<string>b15</string>
-	<key>FRFeedbackReporter.targetURL</key>
-	<string>http://openemu.org/feedback/submit.php?project=%@</string>
+	<string>0.9</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.games</string>
 	<key>LSMinimumSystemVersion</key>
@@ -33,14 +31,10 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>OEBundleBuildReference</key>
-	<string>108-gc887b97-Debug</string>
-	<key>OEBundlePath</key>
-	<string>~/Library/Application Support/OpenEmu/Cores/</string>
-	<key>OECoreListURL</key>
-	<string>http://openemu.org/updater/oecores.xml</string>
+	<string>97-gc1b97-Debug</string>
 	<key>SUFeedURL</key>
-	<string>http://openemu.org/updater/appcast.xml</string>
+	<string>http://barrelapp.co.uk/updater/appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
-	<string>dsa_pub.pem</string>
+	<string>barrel_dsa_pub.pem</string>
 </dict>
 </plist>

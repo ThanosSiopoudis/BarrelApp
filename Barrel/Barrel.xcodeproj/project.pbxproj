@@ -344,6 +344,7 @@
 		C6BFB29F0F7CC8E700040FFA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C6BFB29E0F7CC8E700040FFA /* Localizable.strings */; };
 		C6D6FA7E14E2264C0083C75D /* NSViewController+OEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D6FA7D14E2264C0083C75D /* NSViewController+OEAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C6F738FC1617FF2B00BB2519 /* OEUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = C6F738FB1617FF2B00BB2519 /* OEUtilities.m */; };
+		E23F365C17B849D8003401E5 /* barrel_dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = E23F365B17B849D8003401E5 /* barrel_dsa_pub.pem */; };
 		E250405F17A3FAD2004CDA8B /* BLPrefUserController.m in Sources */ = {isa = PBXBuildFile; fileRef = E250405D17A3FAD2004CDA8B /* BLPrefUserController.m */; };
 		E250406017A3FAD2004CDA8B /* BLPrefUserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E250405E17A3FAD2004CDA8B /* BLPrefUserController.xib */; };
 		E250406717A3FEC0004CDA8B /* user_tab_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E250406617A3FEC0004CDA8B /* user_tab_icon.png */; };
@@ -1020,7 +1021,8 @@
 		C6D6FA7D14E2264C0083C75D /* NSViewController+OEAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSViewController+OEAdditions.m"; sourceTree = "<group>"; };
 		C6F6480415F4BA7000BA9D9B /* OEUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEUtilities.h; sourceTree = "<group>"; };
 		C6F738FB1617FF2B00BB2519 /* OEUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEUtilities.m; sourceTree = "<group>"; };
-		E23F365117B72006003401E5 /* BLDatabase 0.9.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BLDatabase 0.9.1.xcdatamodel"; sourceTree = "<group>"; };
+		E23F365117B72006003401E5 /* BLDatabase 0.9.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BLDatabase 0.9.1.xcdatamodel"; sourceTree = "<group>"; };
+		E23F365B17B849D8003401E5 /* barrel_dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = barrel_dsa_pub.pem; sourceTree = "<group>"; };
 		E250405C17A3FAD2004CDA8B /* BLPrefUserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPrefUserController.h; sourceTree = "<group>"; };
 		E250405D17A3FAD2004CDA8B /* BLPrefUserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPrefUserController.m; sourceTree = "<group>"; };
 		E250405E17A3FAD2004CDA8B /* BLPrefUserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLPrefUserController.xib; sourceTree = "<group>"; };
@@ -1176,6 +1178,7 @@
 		1BEF34741168F8640090F72B /* PLists */ = {
 			isa = PBXGroup;
 			children = (
+				E23F365B17B849D8003401E5 /* barrel_dsa_pub.pem */,
 				838E2A221600A05C00CF7198 /* Theme.plist */,
 				82DD29DA12369F1100B58A8F /* KeyboardUsages.plist */,
 				82444BA20F51256C007C171B /* OpenEmuBase-Info.plist */,
@@ -2528,6 +2531,7 @@
 				53439C3113B93920005C0CC8 /* tab_selector.png in Resources */,
 				53439C3213B93920005C0CC8 /* wood_inset_box.png in Resources */,
 				53439C3313B93920005C0CC8 /* wood_popup_button.png in Resources */,
+				E23F365C17B849D8003401E5 /* barrel_dsa_pub.pem in Resources */,
 				53439C3413B93920005C0CC8 /* resizer.png in Resources */,
 				53439C3513B93920005C0CC8 /* scrollbar_corner.png in Resources */,
 				53439C3613B93920005C0CC8 /* search_cancel.png in Resources */,
