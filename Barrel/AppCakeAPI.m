@@ -47,7 +47,8 @@
         @"wineBuildID"  : @"wineBuildID",
         @"description"  : @"description",
         @"userID"       : @"userID",
-        @"coverArtURL"  : @"coverArtURL"
+        @"coverArtURL"  : @"coverArtURL",
+        @"recipeURL"    : @"recipeURL"
      }];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:gameMapping method:RKRequestMethodGET pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
@@ -164,5 +165,47 @@
     [objectRequestOperation setCompletionBlockWithSuccess:completionBlock failure:errorBlock];
     
     [objectRequestOperation start];
+}
+
+- (void)uploadGame:     (NSString *)gameName
+        fromVolName:    (NSString *)volName
+        wineBuildID:    (NSString *)wineBuildID
+        fromAuthor:     (NSString *)authorID
+        recipePath:     (NSString *)recipePath
+        toBlock:        (void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock
+        failBlock:      (void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock
+{
+    RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
+    AC_Game *game = [AC_Game new];
+    game.name = gameName;
+    game.identifiers = volName;
+    game.wineBuildID = [wineBuildID integerValue];
+    game.userID = [authorID integerValue];
+    
+    RKObjectMapping *requestMapping = [RKObjectMapping requestMapping];
+    [requestMapping addAttributeMappingsFromArray:@[@"name", @"identifiers", @"wineBuildID", @"userID", @"game"]];
+    
+    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[BL_GenericAPIResponse class]];
+    [responseMapping addAttributeMappingsFromDictionary:@{
+        @"gameID": @"responseID",
+        @"responseCode": @"responseCode",
+        @"responseDescription": @"responseDescription"
+    }];
+    
+    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:requestMapping objectClass:[AC_Game class] rootKeyPath:nil method:RKRequestMethodPOST];
+    RKResponseDescriptor *innerResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:RKRequestMethodPOST pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    
+    // Serialize the Article attributes then attach a file
+    RKObjectManager *manager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:@"http://api.appcake.co.uk"]];
+    
+    [manager addResponseDescriptor:innerResponseDescriptor];
+    [manager addRequestDescriptor:requestDescriptor];
+    
+    NSMutableURLRequest *request = [manager multipartFormRequestWithObject:game method:RKRequestMethodPOST path:@"/Games/addNewGame.json" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileData:[NSData dataWithContentsOfFile:recipePath] name:@"game" fileName:[recipePath lastPathComponent] mimeType:@"application/xml"];
+    }];
+    
+    RKObjectRequestOperation *operation = [manager objectRequestOperationWithRequest:request success:completionBlock failure:errorBlock];
+    [manager enqueueObjectRequestOperation:operation]; // NOTE: Must be enqueued rather than started
 }
 @end
