@@ -447,9 +447,14 @@ static const CGFloat _OEToolbarHeight = 44;
         [uploadAlert setMessageText:@"Uploading data to server... Please wait..."];
         
         // Make a comma seperated list
-        winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@"\n" withString:@", "];
-        winetricksResults = [winetricksResults substringWithRange:NSMakeRange(0, [winetricksResults length] - 2)];
-        [gameRecipe setValue:winetricksResults forKey:@"BLWinetricksVerbs"];
+        if ([winetricksResults length]) {
+            winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@"\n" withString:@", "];
+            winetricksResults = [winetricksResults substringWithRange:NSMakeRange(0, [winetricksResults length] - 2)];
+            [gameRecipe setValue:winetricksResults forKey:@"BLWinetricksVerbs"];
+        }
+        else {
+            [gameRecipe setValue:@"" forKey:@"BLWinetricksVerbs"];
+        }
         
         [gameRecipe writeToURL:[[[self database] tempFolderURL] URLByAppendingPathComponent:recipePlistFilename] atomically:YES];
         
@@ -465,11 +470,10 @@ static const CGFloat _OEToolbarHeight = 44;
         AppCakeAPI *apiConection = [[AppCakeAPI alloc] init];
         [apiConection uploadGame:[[self currentGame] name] fromVolName:[bundleDict valueForKey:@"BLVolumeName"] wineBuildID:[bundleDict valueForKey:@"BLEngineID"] fromAuthor:[[NSUserDefaults standardUserDefaults] valueForKey:@"userID"] recipePath:[[[[self database] tempFolderURL] URLByAppendingPathComponent:recipePlistFilename] path] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *result) {
             
-            [uploadAlert close];
-            
             BL_GenericAPIResponse *response = [result firstObject];
             
             if ([response responseCode] != 200) {
+                [uploadAlert close];
                 // Upload failed for some reason. Show why
                 NSError *resultError = [[NSError alloc] initWithDomain:@"barrel.error" code:[response responseCode] userInfo:nil];
                 [resultError setValue:[response responseDescription] forKey:NSLocalizedDescriptionKey];
@@ -477,9 +481,28 @@ static const CGFloat _OEToolbarHeight = 44;
                 [errorAlert runModal];
             }
             else {
+                [uploadAlert setMessageText:@"Uploading Artwork..."];
                 // Successful upload
-                [[self currentGame] setApiID:[NSNumber numberWithInteger:[response responseID]]];
-                [[self currentGame] setAuthorID:[[NSUserDefaults standardUserDefaults] valueForKey:@"userID"]]; // Set to self
+                [[self currentGame] setAuthorIDInfo:[[NSUserDefaults standardUserDefaults] valueForKey:@"userID"] andAPIIDInfo:[NSNumber numberWithInteger:[response responseID]]];
+                
+                // Now upload the artwork
+                [apiConection uploadArtwork:[NSString stringWithFormat:@"%@/%@_artwork.png", [[[self database] tempFolderURL] path], [[[self currentGame] name] stringByReplacingOccurrencesOfString:@" " withString:@"_"]] forGameID:[response responseID] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *result) {
+                    [uploadAlert close];
+                    if ([response responseCode] != 200) {
+                        // Upload failed for some reason. Show why
+                        NSError *resultError = [[NSError alloc] initWithDomain:@"barrel.error" code:[response responseCode] userInfo:nil];
+                        [resultError setValue:[response responseDescription] forKey:NSLocalizedDescriptionKey];
+                        OEHUDAlert *errorAlert = [OEHUDAlert alertWithError:resultError];
+                        [errorAlert runModal];
+                    }
+                    else {
+                        OEHUDAlert *success = [OEHUDAlert alertWithMessageText:@"Bundle successfully uploaded. Thanks for sharing!" defaultButton:@"OK" alternateButton:@""];
+                        [success runModal];
+                    }
+                } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
+                    OEHUDAlert *errorAlert = [OEHUDAlert alertWithError:error];
+                    [errorAlert runModal];
+                }];
             }
             
         } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
