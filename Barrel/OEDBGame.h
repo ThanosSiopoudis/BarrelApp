@@ -81,6 +81,9 @@ extern NSString *const OEDisplayGameTitle;
 + (NSArray *)allGamesInDatabase:(OELibraryDatabase *)database error:(NSError **)error;
 
 #pragma mark -
+#pragma mark Barrel.API Sync
+- (void)setAuthorIDInfo:(NSNumber *)authorID andAPIIDInfo:(NSNumber *)APIID;
+#pragma mark -
 #pragma mark Archive.VG Sync
 - (void)setArchiveVGInfo:(NSDictionary *)gameInfoDictionary;
 - (void)setNeedsArchiveSync;

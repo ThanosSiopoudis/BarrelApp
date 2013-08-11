@@ -191,6 +191,17 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
     return [context executeFetchRequest:request error:error];
 }
 #pragma mark -
+#pragma mark Barrel.API Sync
+- (void)setAuthorIDInfo:(NSNumber *)authorID andAPIIDInfo:(NSNumber *)APIID {
+    OEDBGame *game = self;
+    if (authorID == nil || APIID == nil) return;
+    
+    [game setAuthorID:authorID];
+    [game setApiID:APIID];
+    [[game libraryDatabase] save:nil];
+}
+
+#pragma mark -
 #pragma mark Archive.VG Sync
 - (void)setArchiveVGInfo:(NSDictionary *)gameInfoDictionary
 {
