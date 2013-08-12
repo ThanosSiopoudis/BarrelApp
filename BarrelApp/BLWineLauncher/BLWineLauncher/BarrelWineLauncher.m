@@ -248,8 +248,15 @@
             }
         }
         
-        if ([cleanArray count] > 0 && ![(NSString *)[cleanArray objectAtIndex:8] isEqualToString:@"grep"]) {
-            stillRunning = YES;
+        if ([cleanArray count] > 0) {
+            for (int i=0; i<[cleanArray count]; i++) {
+                NSString *test = [cleanArray objectAtIndex:i];
+                NSRange strRange = [test rangeOfString:[self wineserverBundleName]];
+                NSRange stuckRange = [test rangeOfString:@")"];
+                if ((strRange.location != NSNotFound && stuckRange.location == NSNotFound) && ![(NSString *)[cleanArray objectAtIndex:(i-1)] isEqualToString:@"grep"]) {
+                    stillRunning = YES;
+                }
+            }
         }
         if (!stillRunning) {
             NSLog(@"Wineserver not running");
@@ -272,8 +279,15 @@
             }
         }
         
-        if ([cleanArray count] > 0 && ![(NSString *)[cleanArray objectAtIndex:8] isEqualToString:@"grep"]) {
-            stillRunning = YES;
+        if ([cleanArray count] > 0) {
+            for (int i=0; i<[cleanArray count]; i++) {
+                NSString *test = [cleanArray objectAtIndex:i];
+                NSRange strRange = [test rangeOfString:[self wineserverBundleName]];
+                NSRange stuckRange = [test rangeOfString:@")"];
+                if ((strRange.location != NSNotFound && stuckRange.location == NSNotFound) && ![(NSString *)[cleanArray objectAtIndex:(i-1)] isEqualToString:@"grep"]) {
+                    stillRunning = YES;
+                }
+            }
         }
         if (!stillRunning) {
             NSLog(@"Wineserver not running");
