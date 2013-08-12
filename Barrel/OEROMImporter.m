@@ -57,11 +57,11 @@ NSString *const OEImportErrorDomainResolvable = @"OEImportResolvableDomain";
 NSString *const OEImportErrorDomainSuccess    = @"OEImportSuccessDomain";
 
 #pragma mark Import Info Keys -
-NSString *const OEImportInfoMD5         = @"md5";
-NSString *const OEImportInfoCRC         = @"crc";
-NSString *const OEImportInfoROMObjectID = @"RomObjectID";
-NSString *const OEImportInfoSystemID    = @"systemID";
-NSString *const OEImportInfoCollectionID= @"collectionID";
+NSString *const OEImportInfoMD5             = @"md5";
+NSString *const OEImportInfoCRC             = @"crc";
+NSString *const OEImportInfoROMObjectID     = @"RomObjectID";
+NSString *const OEImportInfoSystemID        = @"systemID";
+NSString *const OEImportInfoCollectionID    = @"collectionID";
 NSString *const OEImportInfoArchivedFileURL = @"archivedFileURL";
 
 @interface OEROMImporter ()
