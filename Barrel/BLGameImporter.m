@@ -314,10 +314,14 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             [noResultsAlert runModal];
         }
         else if ([mappingResult count] == 1) {
-            [[self progressWindow] close];
-            
             // We found a result. One result means get it.
             [self setServerGame:[mappingResult firstObject]];
+            
+            // Quickly save the volumename in the database
+            // We don't mind if it fails, it's not fatal if it's not able to store it
+            AppCakeAPI *apiConnection = [[AppCakeAPI alloc] init];
+            [apiConnection pushIdentifierToServer:[self volumeName] forGameWithID: [NSString stringWithFormat:@"%li", (long)[[self serverGame] id]] toBlock:nil failBlock:nil];
+            [[self progressWindow] close];
             
             // Fetch the .plist file
             OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading Recipe..." andTitle:@"Download" indeterminate:NO];

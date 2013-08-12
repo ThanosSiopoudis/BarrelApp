@@ -246,4 +246,30 @@
     RKObjectRequestOperation *operation = [manager objectRequestOperationWithRequest:request success:completionBlock failure:errorBlock];
     [manager enqueueObjectRequestOperation:operation]; // NOTE: Must be enqueued rather than started
 }
+
+- (void) pushIdentifierToServer:(NSString *)identifier forGameWithID:(NSString *)gameID toBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock {
+    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[BL_GenericAPIResponse class]];
+    [responseMapping addAttributeMappingsFromDictionary:@{
+        @"responseCode": @"responseCode",
+        @"responseDescription": @"responseDescription"
+    }];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:RKRequestMethodGET pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    
+    // Escape the string for URL use
+    // See: http://stackoverflow.com/questions/8086584/objective-c-url-encoding
+    NSString *escapedIdentifier = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
+                                                                                                    NULL,
+                                                                                                    (__bridge CFStringRef) identifier,
+                                                                                                    NULL,
+                                                                                                    CFSTR("!*'();:@&=+$,/?%#[]"),
+                                                                                                    kCFStringEncodingUTF8));
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?identifier=%@&gameID=%@", @"http://api.appcake.co.uk/Games/saveGameIdentifier.json", escapedIdentifier, gameID]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
+    [objectRequestOperation setCompletionBlockWithSuccess:completionBlock failure:errorBlock];
+    
+    [objectRequestOperation start];
+}
 @end
