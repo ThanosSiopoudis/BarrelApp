@@ -490,19 +490,43 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         NSString *wineticksVerbs = [recipe valueForKey:@"BLWinetricksVerbs"];
         if ([wineticksVerbs length]) {
             [item setImportState:BLImportItemStatusWait];
-            OEHUDAlert *winetricksAlert = [OEHUDAlert showProgressAlertWithMessage:@"Installing Winetricks... This may take a while..." andTitle:@"Installing Winetricks" indeterminate:YES];
-            [self setAlertCache:winetricksAlert];
+            NSString *winetricksSrc = @"http://winetricks.googlecode.com/svn/trunk/src/winetricks";
+            OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading Winetricks..." andTitle:@"Download" indeterminate:NO];
+            [self setAlertCache:downloadAlert];
             [[self alertCache] open];
-            
-            NSString *winetricksFinalCommand = [NSString stringWithFormat:@"%@/BLWineLauncher", [[newBarrelBundle executablePath] stringByDeletingLastPathComponent]];
-            NSMutableArray *args = [NSMutableArray arrayWithArray:[wineticksVerbs componentsSeparatedByString:@", "]];
-            
-            dispatch_async(dispatchQueue, ^{
-                [BLSystemCommand runScript:winetricksFinalCommand withArguments:args shouldWaitForProcess:YES runForMain:NO];
-                [[self alertCache] close];
-                
-                [self organiseItemWithGenre:genre URL:url NewURL:newUrl andItem:item];
-                [item setImportState:BLImportItemStatusActive];
+            NSString *path = [[[self database] cacheFolderURL] path];
+            // Run the downloader in the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
+                [fileDownloader downloadWithNSURLConnectionFromURL:winetricksSrc withCompletionBlock:^(int result, NSString *resultPath) {
+                    if (result) {
+                        // Finally, change the binary rights and move it inside the wrappers binaries folder
+                        NSString *command = [NSString stringWithFormat:@"chmod 755 \"%@\"", resultPath];
+                        [BLSystemCommand systemCommand:command shouldWaitForProcess:YES];
+                        [[self alertCache] close];
+                        
+                        NSError *fsError = nil;
+                        [[NSFileManager defaultManager] moveItemAtPath:resultPath toPath:[NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/winetricks", newBarrelApp] error:&fsError];
+                        
+                        OEHUDAlert *winetricksAlert = [OEHUDAlert showProgressAlertWithMessage:@"Installing Winetricks... This may take a while..." andTitle:@"Installing Winetricks" indeterminate:YES];
+                        [self setAlertCache:winetricksAlert];
+                        [[self alertCache] open];
+                        
+                        NSString *winetricksFinalCommand = [NSString stringWithFormat:@"%@/BLWineLauncher", [[newBarrelBundle executablePath] stringByDeletingLastPathComponent]];
+                        NSMutableArray *args = [NSMutableArray arrayWithObject:@"--runWinetricks"];
+                        [args addObjectsFromArray:[wineticksVerbs componentsSeparatedByString:@", "]];
+                        
+                        dispatch_async(dispatchQueue, ^{
+                            [BLSystemCommand runScript:winetricksFinalCommand withArguments:args shouldWaitForProcess:YES runForMain:NO];
+                            [[self alertCache] close];
+                            
+                            [self organiseItemWithGenre:genre URL:url NewURL:newUrl andItem:item];
+                            [item setImportState:BLImportItemStatusActive];
+                            [self scheduleItemForNextStep:item];
+                        });
+                    }
+                }];
+                [fileDownloader startDownload];
             });
         }
         else {
