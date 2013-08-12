@@ -26,6 +26,7 @@
 
 #import "BLGameImporter.h"
 #import "BLImportItem.h"
+#import "OEDBCollection.h"
 
 #import "OELibraryDatabase.h"
 #import "NSArray+OEAdditions.h"
@@ -239,6 +240,17 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 #pragma mark - Import Steps
 - (void)performImportStepCheckVolume:(BLImportItem *)item
 {
+    // Determine first and foremost if we have a Genre as everything will fail if we don't
+    if ([[item importInfo] valueForKey:OEImportInfoSystemID] == nil) {
+        [[self progressWindow] close];
+        NSArray *systems = [OEDBSystem allSystems];
+        
+        OEHUDAlert *chooseGenreAlert = [OEHUDAlert showGenreSelectionAlertWithGenres:systems];
+        [chooseGenreAlert runModal];
+        
+        [[item importInfo] setValue:[[chooseGenreAlert popupButtonSelectedItem] systemIdentifier] forKey:OEImportInfoSystemID];
+    }
+    
     // Make sure that the item points to a mounted disk volume
     IMPORTDLog(@"Volume URL: %@", [item sourceURL]);
     
@@ -319,8 +331,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             
             // Quickly save the volumename in the database
             // We don't mind if it fails, it's not fatal if it's not able to store it
-            AppCakeAPI *apiConnection = [[AppCakeAPI alloc] init];
-            [apiConnection pushIdentifierToServer:[self volumeName] forGameWithID: [NSString stringWithFormat:@"%li", (long)[[self serverGame] id]] toBlock:nil failBlock:nil];
+            [[self appCake] pushIdentifierToServer:[self volumeName] forGameWithID: [NSString stringWithFormat:@"%li", (long)[[self serverGame] id]] toBlock:nil failBlock:nil];
             [[self progressWindow] close];
             
             // Fetch the .plist file
@@ -569,7 +580,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     OEDBGame *game = nil;
     
     // Determine the "System" (Should be renamed to Genre in the future)
-    OEDBSystem *system = [OEDBSystem systemForPluginIdentifier:[[item importInfo] valueForKey:OEImportInfoSystemID] inDatabase:[self database]];
+    OEDBSystem *system = [OEDBSystem systemForPluginIdentifier:[[item importInfo] valueForKey:BLImportInfoSystemID] inDatabase:[self database]];
     
     game = [OEDBGame createGameWithName:[self gameName] andGenre:@"barrel.genre.strategy" andSystem:system andBundlePath:[[item URL] path] inDatabase:[self database]];
     
@@ -581,6 +592,12 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         [game setAuthorIDInfo:[NSNumber numberWithInteger:[[self serverGame] userID]] andAPIIDInfo:[NSNumber numberWithInteger:[[self serverGame] id]]];
     }
     
+    if ([[item importInfo] valueForKey:BLImportInfoCollectionID] != nil) {
+        FIXME("Currently crashes!");
+        OEDBCollection *collection = [[item importInfo] valueForKey:BLImportInfoCollectionID];
+        [[collection mutableGames] addObject:game];
+        [[collection managedObjectContext] save:nil];
+    }
     
     if (game != nil) {
         [self stopImportForItem:item withError:nil];
@@ -811,6 +828,15 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 {
     NSURL *url = [NSURL fileURLWithPath:path];
     return [self importItemAtURL:url intoCollectionWithID:collectionID withSystem:systemID withCompletionHandler:handler];
+}
+
+- (BOOL)importItemsAtURLs:(NSArray *)URLs intoCollectionWithID:(NSURL *)collectionID {
+    BOOL result = NO;
+    for (NSURL *importURL in URLs) {
+        result = [self importItemAtURL:importURL intoCollectionWithID:collectionID withSystem:nil withCompletionHandler:nil];
+    }
+    
+    return result;
 }
 
 - (BOOL)importItemAtURL:(NSURL *)url intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler

@@ -74,6 +74,7 @@ typedef enum : NSInteger {
 #pragma mark - Importing Game into collections -
 - (BOOL)importItemAtPath:(NSString *)path intoCollectionWithID:(NSURL *)collectionID;
 - (BOOL)importItemAtPath:(NSString *)path intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID;
+- (BOOL)importItemsAtURLs:(NSArray *)URLs intoCollectionWithID:(NSURL *)collectionID;
 #pragma mark - Importing Game into collections with completion handler
 - (BOOL)importItemAtPath:(NSString *)path intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(OEImportItemCompletionBlock)handler;
 - (BOOL)importItemAtURL:(NSURL *)url intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(OEImportItemCompletionBlock)handler;

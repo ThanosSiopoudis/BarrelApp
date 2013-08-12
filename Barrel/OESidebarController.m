@@ -357,8 +357,7 @@ NSString * const OEMainViewMinWidth = @"mainViewMinWidth";
         NSURL *collectionID = [[collection objectID] URIRepresentation];
         BLGameImporter *importer = [[OELibraryDatabase defaultDatabase] importer];
         
-        FIXME("Add importItemsAtURLs method");
-        // [importer importItemsAtURLs:files intoCollectionWithID:collectionID];
+        [importer importItemsAtURLs:files intoCollectionWithID:collectionID];
     }
 
     return YES;
