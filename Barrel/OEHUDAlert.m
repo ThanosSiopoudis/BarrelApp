@@ -879,6 +879,10 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
             NSUInteger linesInMessageTextView = [self OE_countLinesOfTextView:[self messageTextView]];
             boxFrame.size.height = _OEHUDAlertBoxTextTopMargin + (_OEHUDAlertBoxTextHeight * linesInMessageTextView) + _OEHUDAlertBoxTextBottomMargin;
         }
+        if (![[self popupButton] isHidden]) {
+            [[self popupButton] setFrame:NSMakeRect(68, 52, 300, 23)];
+            [[self popupButtonLabelView] setFrame:NSMakeRect(3, 50, 61, 23)];
+        }
 
         frame.size.height = _OEHUDAlertBoxTopMargin + boxFrame.size.height + _OEHUDAlertBoxBottomMargin;
         frame.size.width = (2 * _OEHUDAlertBoxSideMargin) + boxFrame.size.width;

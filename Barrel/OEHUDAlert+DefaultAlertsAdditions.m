@@ -228,6 +228,21 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
     return alert;
 }
 
++ (id)showGenreSelectionAlertWithGenres:(NSArray *)genres {
+    OEHUDAlert *alert = [[OEHUDAlert alloc] init];
+    [alert setTitle:@"Select Genre"];
+    [alert setMessageText:@"Please select a Genre before proceeding."];
+    
+    [alert setShowsPopupButton:YES];
+    [alert setPopupButtonLabelText:@"Genre"];
+    [alert setPopupButtonItems:[NSMutableArray arrayWithArray:genres]];
+    
+    [[alert boxView] setHidden:NO];
+    [alert setDefaultButtonTitle:@"OK"];
+    
+    return alert;
+}
+
 + (id)alertWithMessageText:(NSString *)msgText defaultButton:(NSString *)defaultButtonLabel alternateButton:(NSString *)alternateButtonLabel otherButton:(NSString *)otherButton {
     OEHUDAlert *alert = [[OEHUDAlert alloc] init];
     [alert setMessageText:msgText];
