@@ -52,10 +52,6 @@
     if((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]))
     {
         [self OE_calculateHeight];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(OE_rebuildAvailableLibraries) name:OEDBSystemsDidChangeNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toggleSystem:) name:OESidebarTogglesSystemNotification object:nil];
-        
-        [[OEPlugin class] addObserver:self forKeyPath:@"allPlugins" options:0 context:nil];
     }
     
     return self;
@@ -68,14 +64,6 @@
     
 	NSString *path = [[NSUserDefaults standardUserDefaults] objectForKey:OEDatabasePathKey];
 	[[self pathField] setStringValue:[path stringByAbbreviatingWithTildeInPath]];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if([keyPath isEqualToString:@"allPlugins"])
-    {
-        [self OE_rebuildAvailableLibraries];
-    }
 }
 
 - (void)dealloc
@@ -144,61 +132,6 @@
              }
          }
      }];
-}
-
-- (IBAction)toggleSystem:(id)sender
-{
-    NSString *systemIdentifier;
-    BOOL isCheckboxSender;
-
-    // This method is either invoked by a checkbox in the prefs or a notification
-    if([sender isKindOfClass:[OEButton class]])
-    {
-        systemIdentifier = [[sender cell] representedObject];
-        isCheckboxSender = YES;
-    }
-    else
-    {
-        systemIdentifier = [[sender object] systemIdentifier];
-        isCheckboxSender = NO;
-    }
-    
-    OEDBSystem *system = [OEDBSystem systemForPluginIdentifier:systemIdentifier inDatabase:[OELibraryDatabase defaultDatabase]];
-    BOOL enabled = [[system enabled] boolValue];
-    
-    // Make sure that at least one system is enabled.
-    // Otherwise the mainwindow sidebar would be messed up
-    if(enabled && [[OEDBSystem enabledSystems] count] == 1)
-    {
-        NSString *message = NSLocalizedString(@"At least one System must be enabled", @"");
-        NSString *button = NSLocalizedString(@"OK", @"");
-        OEHUDAlert *alert = [OEHUDAlert alertWithMessageText:message defaultButton:button alternateButton:nil];
-        [alert runModal];
-
-        if(isCheckboxSender)
-            [sender setState:NSOnState];
-        
-        return;
-    }
-    
-    // Make sure only systems with a valid plugin are enabled.
-    // Is also ensured by disabling ui element (checkbox)
-    if(![system plugin])
-    {
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"%@ could not be enabled because it's plugin was not found.", @""), [system name]];
-        NSString *button = NSLocalizedString(@"OK", @"");
-        OEHUDAlert *alert = [OEHUDAlert alertWithMessageText:message defaultButton:button alternateButton:nil];
-        [alert runModal];
-
-        if(isCheckboxSender)
-            [sender setState:NSOffState];
-        
-        return;
-    }
-    
-    [system setEnabled:[NSNumber numberWithBool:!enabled]];
-    [[system libraryDatabase] save:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:OEDBSystemsDidChangeNotification object:system userInfo:nil];
 }
 
 #pragma mark -
