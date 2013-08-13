@@ -328,7 +328,7 @@
             }
         }
         
-        if ([[cleanArray objectAtIndex:0] floatValue] > 90.0)
+        if ([[cleanArray objectAtIndex:0] floatValue] > 90.0 && [[cleanArray objectAtIndex:2] rangeOfString:@"grep"].location == NSNotFound)
         {
             NSLog(@"Found stuck wine process with PID: %@, killing...", (NSString *)[cleanArray objectAtIndex:1]);
             // Send the kill signal as a system command
