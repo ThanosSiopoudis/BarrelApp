@@ -280,8 +280,7 @@ static const CGFloat _OEToolbarHeight = 44;
              // exit our initial open panels completion handler
              //[self performSelector:@selector(startImportSheet:) withObject:[openPanel URLs] afterDelay:0.0];
              BLGameImporter *gameImporter = [[self database] importer];
-             FIXME("Add importItemsAtURLs method");
-             // [gameImporter importItemsAtURLs:[openPanel URLs]];
+             [gameImporter importItemsAtURLs:[openPanel URLs]];
          }
      }];
 }
@@ -347,7 +346,27 @@ static const CGFloat _OEToolbarHeight = 44;
     });
 }
 
+- (IBAction)openUserPreferences:(id)sender {
+    [NSApp stopModal];
+    [[NSNotificationCenter defaultCenter] postNotificationName:OEPreferencesOpenPaneNotificationName object:nil userInfo:@{OEPreferencesUserInfoPanelNameKey: @"User Account"}];
+}
+
 - (IBAction)makeGameRecipeAndUpload:(id)sender {
+    // Don't even think about doing anything unless the user is registered and logged in
+    // https://github.com/ThanosSiopoudis/BarrelApp/issues/26
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"userID"] == nil) {
+        NSMutableDictionary *errorDetails = [NSMutableDictionary dictionary];
+        [errorDetails setValue:@"Please register and log in first! To do that, go to Preferences > Account, or click the button below." forKey:NSLocalizedDescriptionKey];
+        
+        NSError *error = [NSError errorWithDomain:@"com.barrel.fatal" code:100 userInfo:errorDetails];
+        OEHUDAlert *errorAlert = [OEHUDAlert alertWithError:error];
+        [errorAlert setAlternateButtonTitle:@"User Account"];
+        [errorAlert setAlternateButtonAction:@selector(openUserPreferences:) andTarget:self];
+        [errorAlert runModal];
+        
+        return;
+    }
+    
     NSMutableArray *gamesToUpload = [NSMutableArray new];
     
     if ([sender isKindOfClass:[OEDBGame class]]) {
