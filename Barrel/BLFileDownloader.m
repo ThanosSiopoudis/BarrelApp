@@ -67,6 +67,10 @@
     [[self connection] start];
 }
 
+- (void)cancelDownload {
+    [[self connection] cancel];
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     [[self receivedData] setLength:0];
     [self setTotalBytes:[response expectedContentLength]];

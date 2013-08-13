@@ -40,5 +40,6 @@
 - (id)initWithProgressBar:(OEHUDProgressbar *)progressBar saveToPath:(NSString *)path;
 - (void)downloadWithNSURLConnectionFromURL:(NSString *)currentURL withCompletionBlock:(void (^)(int, NSString *))completionBlock;
 - (void)startDownload;
+- (void)cancelDownload;
 
 @end
