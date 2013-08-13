@@ -879,6 +879,10 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     return result;
 }
 
+- (BOOL)importItemsAtURLs:(NSArray *)URLs {
+    return [self importItemsAtURLs:URLs intoCollectionWithID:nil];
+}
+
 - (BOOL)importItemsAtURLs:(NSArray *)URLs intoCollectionWithID:(NSURL *)collectionID {
     BOOL result = NO;
     for (NSURL *importURL in URLs) {
