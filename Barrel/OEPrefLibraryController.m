@@ -80,7 +80,6 @@
 
 - (void)dealloc
 {
-    [[OECorePlugin class] removeObserver:self forKeyPath:@"allPlugins" context:nil];
 }
 #pragma mark ViewController Overrides
 
