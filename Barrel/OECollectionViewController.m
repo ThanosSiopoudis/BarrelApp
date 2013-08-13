@@ -1226,9 +1226,9 @@ static NSArray *OE_defaultSortDescriptors;
     NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
     BLGameImporter *gameImporter = [[[self libraryController] database] importer];
     OEDBCollection *collection = [[self representedObject] isKindOfClass:[OEDBCollection class]] ? [self representedObject] : nil;
+    OEDBSystem *intoSystem = [[self representedObject] isKindOfClass:[OEDBSystem class]] ? [self representedObject] : nil;
     
-    FIXME("Add importItemsAtPaths method");
-    // [romImporter importItemsAtPaths:files intoCollectionWithID:[[collection objectID] URIRepresentation]];
+    [gameImporter importItemsAtPaths:files intoCollectionWithID:(collection != nil ? [[collection objectID] URIRepresentation] : nil) withSystem:[intoSystem systemIdentifier]];
     
     return YES;
 }
