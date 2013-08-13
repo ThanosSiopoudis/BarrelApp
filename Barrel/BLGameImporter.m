@@ -842,6 +842,20 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     return [self importItemAtURL:url intoCollectionWithID:collectionID withSystem:systemID withCompletionHandler:handler];
 }
 
+- (BOOL)importItemsAtPaths:(NSArray *)paths {
+    return [self importItemsAtPaths:paths intoCollectionWithID:nil withSystem:nil];
+}
+
+- (BOOL)importItemsAtPaths:(NSArray *)paths intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID {
+    BOOL result = NO;
+    for (NSString *importPath in paths) {
+        NSURL *url = [NSURL fileURLWithPath:importPath];
+        result = [self importItemAtURL:url intoCollectionWithID:collectionID withSystem:systemID withCompletionHandler:nil];
+    }
+    
+    return result;
+}
+
 - (BOOL)importItemsAtURLs:(NSArray *)URLs intoCollectionWithID:(NSURL *)collectionID {
     BOOL result = NO;
     for (NSURL *importURL in URLs) {
