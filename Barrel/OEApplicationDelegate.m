@@ -180,10 +180,8 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
         NSApplicationDelegateReply reply = NSApplicationDelegateReplyFailure;
         BLGameImporter *importer = [[OELibraryDatabase defaultDatabase] importer];
 
-        FIXME("Add importItemsAtPaths method");
-        /*
         if([importer importItemsAtPaths:filenames])
-            reply = NSApplicationDelegateReplySuccess; */
+            reply = NSApplicationDelegateReplySuccess;
 
         [NSApp replyToOpenOrPrint:reply];
     }
@@ -532,7 +530,7 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
         [item setTitle:[(OEDBGame *)[value game] displayName]];
         [item setEnabled:YES];
         [item setRepresentedObject:value];
-        [item setAction:@selector(launchLastPlayedROM:)];
+        // [item setAction:@selector(launchLastPlayedROM:)];
         [item setTarget:[self mainWindowController]];
     }
 
