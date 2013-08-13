@@ -240,6 +240,18 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 #pragma mark - Import Steps
 - (void)performImportStepCheckVolume:(BLImportItem *)item
 {
+    // Do tmp path cleanup
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *directory = [[[self database] tempFolderURL] path];
+    NSError *error = nil;
+    for (NSString *file in [fm contentsOfDirectoryAtPath:directory error:&error]) {
+        BOOL success = [fm removeItemAtPath:[NSString stringWithFormat:@"%@/%@", directory, file] error:&error];
+        if (!success || error) {
+            OEHUDAlert *alert = [OEHUDAlert alertWithError:error];
+            [alert runModal];
+        }
+    }
+    
     // Determine first and foremost if we have a Genre as everything will fail if we don't
     if ([[item importInfo] valueForKey:OEImportInfoSystemID] == nil) {
         [[self progressWindow] close];
