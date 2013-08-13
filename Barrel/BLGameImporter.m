@@ -393,32 +393,39 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 
 - (void)performImportStepDownloadBundle:(BLImportItem *)item {
     [item setImportState:BLImportItemStatusWait];
-    OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading..." andTitle:@"Download" indeterminate:NO];
-    [self setAlertCache:downloadAlert];
-    [[self alertCache] open];
-    NSString *path = [[[[self database] databaseFolderURL] URLByAppendingPathComponent:@"tmp"] path];
     
-    // Run the downloader in the main thread
-    dispatch_async(dispatch_get_main_queue(), ^{
-        BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
-        [self setDownloaderCache:fileDownloader];
-        [[self alertCache] setDefaultButtonAction:@selector(cancelDownloadAndStop) andTarget:self];
-        [fileDownloader downloadWithNSURLConnectionFromURL:[self downloadPath] withCompletionBlock:^(int result, NSString *resultPath) {
-            if (result) {
-                // The bundle has been downloaded, so proceed with extracting it and deleting the archive
-                [[self alertCache] close];
-                [self extractArchive:resultPath toPath:path];
-            }
-            else {
-                // Something went wrong, abort
-                [[self alertCache] close];
-                OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error communicating with the server! Please try again later!" defaultButton:@"OK" alternateButton:@""];
-                [errorAlert setDefaultButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
-                [errorAlert runModal];
-            }
-        }];
-        [fileDownloader startDownload];
-    });
+    NSString *path = [[[[self database] databaseFolderURL] URLByAppendingPathComponent:@"tmp"] path];
+    // Do we already have the engine in the cache?
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%@/Engines/%@", [[[self database] cacheFolderURL] path], [[self downloadPath] lastPathComponent]]] && [[NSUserDefaults standardUserDefaults] valueForKey:@"keepLocalCopyOfEngines"]) {
+        [self extractArchive:[NSString stringWithFormat:@"%@/Engines/%@", [[[self database] cacheFolderURL] path], [[self downloadPath] lastPathComponent]] toPath:path];
+    }
+    else {
+        OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading..." andTitle:@"Download" indeterminate:NO];
+        [self setAlertCache:downloadAlert];
+        [[self alertCache] open];
+        
+        // Run the downloader in the main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
+            [self setDownloaderCache:fileDownloader];
+            [[self alertCache] setDefaultButtonAction:@selector(cancelDownloadAndStop) andTarget:self];
+            [fileDownloader downloadWithNSURLConnectionFromURL:[self downloadPath] withCompletionBlock:^(int result, NSString *resultPath) {
+                if (result) {
+                    // The bundle has been downloaded, so proceed with extracting it and deleting the archive
+                    [[self alertCache] close];
+                    [self extractArchive:resultPath toPath:path];
+                }
+                else {
+                    // Something went wrong, abort
+                    [[self alertCache] close];
+                    OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error communicating with the server! Please try again later!" defaultButton:@"OK" alternateButton:@""];
+                    [errorAlert setDefaultButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
+                    [errorAlert runModal];
+                }
+            }];
+            [fileDownloader startDownload];
+        });
+    }
 }
 
 - (void)performImportStepBuildEngine:(BLImportItem *)item {
@@ -674,12 +681,22 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         [archiver startExtractingToPath:targetPath callbackBlock:^(int result){
             // Delete the archive if the extraction was successful
             if (result) {
-                BOOL deleteSuccess = [[NSFileManager defaultManager] removeItemAtPath:archivePath error:nil];
-                [[self alertCache] close];
-                if (!deleteSuccess) {
-                    // Non-Fatal error
-                    OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error deleting downloaded archive! Please remove manually." defaultButton:@"OK" alternateButton:@""];
-                    [errorAlert runModal];
+                // Does the user want a local engine cache? If yes don't delete, but move into cache folder
+                if ([[NSUserDefaults standardUserDefaults] valueForKey:@"keepLocalCopyOfEngines"]) {
+                    if (![[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%@/Engines", [[[self database] cacheFolderURL] path]]]) {
+                        [[NSFileManager defaultManager] createDirectoryAtPath:[NSString stringWithFormat:@"%@/Engines", [[[self database] cacheFolderURL] path]] withIntermediateDirectories:YES attributes:nil error:nil];
+                        [[NSFileManager defaultManager] moveItemAtPath:archivePath toPath:[NSString stringWithFormat:@"%@/Engines/%@", [[[self database] cacheFolderURL] path], [archivePath lastPathComponent]] error:nil];
+                    }
+                }
+                else {
+                    BOOL deleteSuccess = [[NSFileManager defaultManager] removeItemAtPath:archivePath error:nil];
+                    [[self alertCache] close];
+                    if (!deleteSuccess) {
+                        // Non-Fatal error
+                        OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error deleting downloaded archive! Please remove manually." defaultButton:@"OK" alternateButton:@""];
+                        [errorAlert runModal];
+                    }
+
                 }
                 [[self currentItem] setImportState:BLImportItemStatusActive];
                 [self scheduleItemForNextStep:[self currentItem]];

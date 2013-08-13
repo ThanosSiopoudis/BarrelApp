@@ -49,6 +49,7 @@
 
 #import "AppCakeAPI.h"
 #import "BL_GenericAPIResponse.h"
+#import "BLFileDownloader.h"
 
 #pragma mark - Exported variables
 NSString * const OELastCollectionSelectedKey = @"lastCollectionSelected";
@@ -453,6 +454,36 @@ static const CGFloat _OEToolbarHeight = 44;
     [gameRecipe setValue:[bundleDict valueForKey:@"BLEngineID"] forKey:@"BLWineVersionID"];
     [gameRecipe setValue:[bundleDict valueForKey:@"BLVolumeName"] forKey:@"BLImportedVolName"];
     
+    // Is winetricks installed in the bundle? If not, get it first!
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%@/blwine.bundle/bin/winetricks", [gameBundle privateFrameworksPath]]]) {
+        NSString *winetricksSrc = @"http://winetricks.googlecode.com/svn/trunk/src/winetricks";
+        OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading Winetricks..." andTitle:@"Download" indeterminate:NO];
+        [downloadAlert open];
+        NSString *path = [[[self database] cacheFolderURL] path];
+        // Run the downloader in the main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[downloadAlert progressbar] saveToPath:path];
+            // [downloadAlert setDefaultButtonAction:@selector(cancelDownloadAndStop) andTarget:self];
+            [fileDownloader downloadWithNSURLConnectionFromURL:winetricksSrc withCompletionBlock:^(int result, NSString *resultPath) {
+                if (result) {
+                    // Finally, change the binary rights and move it inside the wrappers binaries folder
+                    NSString *command = [NSString stringWithFormat:@"chmod 755 \"%@\"", resultPath];
+                    [BLSystemCommand systemCommand:command shouldWaitForProcess:YES];
+                    NSError *fsError = nil;
+                    [[NSFileManager defaultManager] moveItemAtPath:resultPath toPath:[NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/winetricks", [[self currentGame] bundlePath]] error:&fsError];
+                    [downloadAlert close];
+                    [self doPushToServerWithBundle:gameBundle partialRecipe:gameRecipe bundleDictionary:bundleDict recipeFilename:recipePlistFilename];
+                }
+            }];
+            [fileDownloader startDownload];
+        });
+    }
+    else {
+        [self doPushToServerWithBundle:gameBundle partialRecipe:gameRecipe bundleDictionary:bundleDict recipeFilename:recipePlistFilename];
+    }
+}
+
+- (void) doPushToServerWithBundle:(NSBundle *)gameBundle partialRecipe:(NSMutableDictionary *)gameRecipe bundleDictionary:(NSMutableDictionary *)bundleDict recipeFilename:(NSString *)recipePlistFilename {
     // Run winetricks list to get a list of the installed winetricks but notify the user
     OEHUDAlert *uploadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Getting list of winetricks. This may take a while..." andTitle:@"Getting Winetricks" indeterminate:YES];
     [uploadAlert open];
