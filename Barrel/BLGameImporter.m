@@ -605,10 +605,17 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     }
     
     if ([[item importInfo] valueForKey:BLImportInfoCollectionID] != nil) {
-        FIXME("Currently crashes!");
-        OEDBCollection *collection = [[item importInfo] valueForKey:BLImportInfoCollectionID];
-        [[collection mutableGames] addObject:game];
-        [[collection managedObjectContext] save:nil];
+        NSArray *collections = [[self database] collections];
+        for (id collection in collections) {
+            if([collection isMemberOfClass:[OEDBCollection class]]) {
+                NSURL *currentURIRep = [[(OEDBCollection *)collection objectID] URIRepresentation];
+                NSURL *storedURIRep = [[item importInfo] valueForKey:BLImportInfoCollectionID];
+                if ([currentURIRep isEqual:storedURIRep]) {
+                    [[collection mutableGames] addObject:game];
+                    [[collection managedObjectContext] save:nil];
+                }
+            }
+        }
     }
     
     if (game != nil) {
