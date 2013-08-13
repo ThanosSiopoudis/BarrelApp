@@ -717,7 +717,10 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)fetchListOfEngines {
+    [[self progressWindow] setMessageText:@"Fetching list of engines..."];
+    [[self progressWindow] open];
     [[self appCake] listOfAllWineBuildsToBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [[self progressWindow] close];
         if ([mappingResult count] > 0) {
             [self showSelectionAlertWithItems:mappingResult];
         }
