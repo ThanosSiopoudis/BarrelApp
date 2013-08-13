@@ -75,6 +75,7 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 @property(readwrite)            NSString            *engineID;
 @property(readwrite)            AC_Game             *serverGame;
 @property(readwrite)            NSString            *downloadedRecipePath;
+@property(readwrite)            BLFileDownloader    *downloaderCache;
 
 - (void)processNextItemIfNeeded;
 
@@ -354,6 +355,8 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             // Run the downloader in the main thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
+                [self setDownloaderCache:fileDownloader];
+                [[self alertCache] setDefaultButtonAction:@selector(cancelDownloadAndStop) andTarget:self];
                 [fileDownloader downloadWithNSURLConnectionFromURL:[[self serverGame] recipeURL] withCompletionBlock:^(int result, NSString *resultPath) {
                     [[self alertCache] close];
                     if (result) {
@@ -398,6 +401,8 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     // Run the downloader in the main thread
     dispatch_async(dispatch_get_main_queue(), ^{
         BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
+        [self setDownloaderCache:fileDownloader];
+        [[self alertCache] setDefaultButtonAction:@selector(cancelDownloadAndStop) andTarget:self];
         [fileDownloader downloadWithNSURLConnectionFromURL:[self downloadPath] withCompletionBlock:^(int result, NSString *resultPath) {
             if (result) {
                 // The bundle has been downloaded, so proceed with extracting it and deleting the archive
@@ -525,6 +530,8 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             // Run the downloader in the main thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
+                [self setDownloaderCache:fileDownloader];
+                [[self alertCache] setDefaultButtonAction:@selector(cancelDownloadAndStop) andTarget:self];
                 [fileDownloader downloadWithNSURLConnectionFromURL:winetricksSrc withCompletionBlock:^(int result, NSString *resultPath) {
                     if (result) {
                         // Finally, change the binary rights and move it inside the wrappers binaries folder
@@ -624,6 +631,12 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 #pragma mark Perform Helper Methods
+- (void)cancelDownloadAndStop {
+    [[self alertCache] close];
+    [[self downloaderCache] cancelDownload];
+    [self stopImportForItem:[self currentItem] withError:nil];
+}
+
 - (void)runScript:(NSString*)scriptName withArguments:(NSArray *)arguments shouldWaitForProcess:(BOOL)waitForProcess
 {
     NSTask *task;
