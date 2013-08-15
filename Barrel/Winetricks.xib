@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
 		<string key="IBDocument.SystemVersion">12E55</string>
-		<string key="IBDocument.InterfaceBuilderVersion">4471.1</string>
+		<string key="IBDocument.InterfaceBuilderVersion">4488.2</string>
 		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">4471.1</string>
+			<string key="NS.object.0">4488.2</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSButton</string>
@@ -375,7 +375,7 @@
 																<nil key="NSMarkedAttributes"/>
 																<object class="NSColor" key="NSBackgroundColor">
 																	<int key="NSColorSpace">2</int>
-																	<bytes key="NSRGB">MC4wMjM1Mjk0MTQwOSAwLjAwMzkyMTU2ODg1OSAwLjAwMzkyMTU2ODg1OQA</bytes>
+																	<bytes key="NSRGB">MC4zMjE1Njg2Mjc1IDAuMzUyOTQxMTc2NSAwLjQwNzg0MzEzNzMAA</bytes>
 																</object>
 																<dictionary key="NSSelectedAttributes">
 																	<object class="NSColor" key="NSBackgroundColor">
@@ -615,14 +615,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">winetricksOutline</string>
-						<reference key="source" ref="404453639"/>
-						<reference key="destination" ref="749118577"/>
-					</object>
-					<string key="id">eI6-Va-83f</string>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">executeWinetricksBtn</string>
 						<reference key="source" ref="404453639"/>
 						<reference key="destination" ref="922647894"/>
@@ -647,19 +639,27 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">winetricksOutput</string>
-						<reference key="source" ref="404453639"/>
-						<reference key="destination" ref="1276578"/>
-					</object>
-					<string key="id">cF3-Xo-QkK</string>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">winetricksBusyIndicator</string>
 						<reference key="source" ref="404453639"/>
 						<reference key="destination" ref="375409069"/>
 					</object>
 					<string key="id">9Ge-vV-8bt</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">winetricksOutline</string>
+						<reference key="source" ref="404453639"/>
+						<reference key="destination" ref="749118577"/>
+					</object>
+					<string key="id">eI6-Va-83f</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">winetricksOutput</string>
+						<reference key="source" ref="404453639"/>
+						<reference key="destination" ref="1276578"/>
+					</object>
+					<string key="id">cF3-Xo-QkK</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -781,55 +781,14 @@
 						<reference key="parent" ref="523038523"/>
 					</object>
 					<object class="IBObjectRecord">
-						<string key="id">jzE-5g-gI6</string>
-						<reference key="object" ref="749118577"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="460796335"/>
-							<reference ref="880091326"/>
-							<reference ref="651855595"/>
-						</array>
-						<reference key="parent" ref="523038523"/>
-					</object>
-					<object class="IBObjectRecord">
-						<string key="id">fIQ-rO-oca</string>
-						<reference key="object" ref="460796335"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="795374117"/>
-						</array>
-						<reference key="parent" ref="749118577"/>
-					</object>
-					<object class="IBObjectRecord">
-						<string key="id">W3Z-xt-vvd</string>
-						<reference key="object" ref="880091326"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="1046668201"/>
-						</array>
-						<reference key="parent" ref="749118577"/>
-					</object>
-					<object class="IBObjectRecord">
-						<string key="id">vfG-H2-eWg</string>
-						<reference key="object" ref="1046668201"/>
-						<reference key="parent" ref="880091326"/>
-					</object>
-					<object class="IBObjectRecord">
-						<string key="id">zdM-5p-IAv</string>
-						<reference key="object" ref="795374117"/>
-						<reference key="parent" ref="460796335"/>
-					</object>
-					<object class="IBObjectRecord">
 						<string key="id">OV6-cy-CKN</string>
 						<reference key="object" ref="1063014320"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="1276578"/>
 							<reference ref="1057142323"/>
 							<reference ref="672508361"/>
+							<reference ref="1276578"/>
 						</array>
 						<reference key="parent" ref="250096505"/>
-					</object>
-					<object class="IBObjectRecord">
-						<string key="id">Uq6-PE-MjC</string>
-						<reference key="object" ref="1276578"/>
-						<reference key="parent" ref="1063014320"/>
 					</object>
 					<object class="IBObjectRecord">
 						<string key="id">N23-DL-6xL</string>
@@ -840,19 +799,6 @@
 						<string key="id">iqJ-5h-TEP</string>
 						<reference key="object" ref="672508361"/>
 						<reference key="parent" ref="1063014320"/>
-					</object>
-					<object class="IBObjectRecord">
-						<string key="id">dFN-eh-DEg</string>
-						<reference key="object" ref="651855595"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="117261870"/>
-						</array>
-						<reference key="parent" ref="749118577"/>
-					</object>
-					<object class="IBObjectRecord">
-						<string key="id">AA9-d1-4KR</string>
-						<reference key="object" ref="117261870"/>
-						<reference key="parent" ref="651855595"/>
 					</object>
 					<object class="IBObjectRecord">
 						<string key="id">r2y-g8-bkb</string>
@@ -894,6 +840,60 @@
 						<string key="id">fP2-lA-sQ8</string>
 						<reference key="object" ref="375409069"/>
 						<reference key="parent" ref="740945037"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">jzE-5g-gI6</string>
+						<reference key="object" ref="749118577"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="460796335"/>
+							<reference ref="880091326"/>
+							<reference ref="651855595"/>
+						</array>
+						<reference key="parent" ref="523038523"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">fIQ-rO-oca</string>
+						<reference key="object" ref="460796335"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="795374117"/>
+						</array>
+						<reference key="parent" ref="749118577"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">W3Z-xt-vvd</string>
+						<reference key="object" ref="880091326"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="1046668201"/>
+						</array>
+						<reference key="parent" ref="749118577"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">dFN-eh-DEg</string>
+						<reference key="object" ref="651855595"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="117261870"/>
+						</array>
+						<reference key="parent" ref="749118577"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">AA9-d1-4KR</string>
+						<reference key="object" ref="117261870"/>
+						<reference key="parent" ref="651855595"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">vfG-H2-eWg</string>
+						<reference key="object" ref="1046668201"/>
+						<reference key="parent" ref="880091326"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">zdM-5p-IAv</string>
+						<reference key="object" ref="795374117"/>
+						<reference key="parent" ref="460796335"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">Uq6-PE-MjC</string>
+						<reference key="object" ref="1276578"/>
+						<reference key="parent" ref="1063014320"/>
 					</object>
 				</array>
 			</object>
@@ -1011,6 +1011,7 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
+		<bool key="IBDocument.previouslyAttemptedUpgradeToXcode5">YES</bool>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
 			<real value="1070" key="NS.object.0"/>
