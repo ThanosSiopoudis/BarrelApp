@@ -57,7 +57,7 @@
     if([controlView isKindOfClass:[OESidebarOutlineView class]] && [(OESidebarOutlineView*)controlView isDrawingAboveDropHighlight])
         [[(OESidebarOutlineView*)controlView dropBackgroundColor] setFill];
     else
-        [[NSColor colorWithDeviceWhite:(63/255.0) alpha:1.0] setFill];
+        [[NSColor colorWithDeviceRed:82.0/255.0 green:90.0/255.0 blue:104.0/255.0 alpha:1.0] setFill];
     NSRectFillUsingOperation(triangleRect, NSCompositeDestinationOver);
 }
 

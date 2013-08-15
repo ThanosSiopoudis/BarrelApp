@@ -9,7 +9,7 @@
 		<key>game_scanner_issues_background</key>
 		<string>#1d1d1d</string>
 		<key>black_background</key>
-		<string>black</string>
+		<string>#7c8b9a</string>
 		<key>dark_menu_background</key>
 		<string>rgba(0,0,0,0.8)</string>
 		<key>light_menu_background</key>

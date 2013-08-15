@@ -30,7 +30,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    [[NSColor colorWithDeviceWhite:(63/255.0) alpha:1.0] setFill];
+    [[NSColor colorWithDeviceRed:82.0/255.0 green:90.0/255.0 blue:104.0/255.0 alpha:1.0] setFill];
     NSRectFill(dirtyRect);
     [[NSColor blackColor] setFill];
     NSRect blackBorderLine = [self bounds];
