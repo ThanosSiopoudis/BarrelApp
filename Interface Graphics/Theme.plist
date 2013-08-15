@@ -11,9 +11,9 @@
 		<key>black_background</key>
 		<string>#7c8b9a</string>
 		<key>dark_menu_background</key>
-		<string>rgba(0,0,0,0.8)</string>
+		<string>rgba(82,90,104,0.8)</string>
 		<key>light_menu_background</key>
-		<string>clear</string>
+		<string>rgba(158,173,189,0.8)</string>
 		<key>hud_tooltip_background</key>
 		<string>white</string>
 	</dict>
@@ -904,6 +904,15 @@
 		</dict>
 		<key>dark_menu_item</key>
 		<dict>
+			<key>Shadow</key>
+			<dict>
+				<key>Blur Radius</key>
+				<integer>1</integer>
+				<key>Color</key>
+				<string>rgba(0,0,0,0.95)</string>
+				<key>Offset</key>
+				<string>{0,-1}</string>
+			</dict>
 			<key>Family</key>
 			<string>Lucida Grande</string>
 			<key>Size</key>
@@ -929,7 +938,7 @@
 				<key>Pressed</key>
 				<dict>
 					<key>Color</key>
-					<string>black</string>
+					<string>white</string>
 				</dict>
 				<key>Pressed,Alternate</key>
 				<dict>
@@ -2168,7 +2177,7 @@
 					<key>Resource</key>
 					<string>menu_item_tick_mark</string>
 					<key>Parts</key>
-					<string>{{7,0},{7,12}}</string>
+					<string>{{0,0},{7,12}}</string>
 				</dict>
 				<key>Toggle Mixed</key>
 				<dict>
@@ -2182,7 +2191,7 @@
 					<key>Resource</key>
 					<string>menu_item_mixed_state</string>
 					<key>Parts</key>
-					<string>{{7,0},{7,12}}</string>
+					<string>{{0,0},{7,12}}</string>
 				</dict>
 			</dict>
 		</dict>
@@ -2193,7 +2202,7 @@
 		<dict>
 			<key>Colors</key>
 			<array>
-				<string>#373737</string>
+				<string>#7c8b9a</string>
 				<string>rgb(0,0,0)</string>
 			</array>
 			<key>Locations</key>
@@ -2219,8 +2228,8 @@
 		<dict>
 			<key>Colors</key>
 			<array>
-				<string>rgba(232,232,232,0.10)</string>
-				<string>rgba(232,232,232,0)</string>
+				<string>rgba(82,90,104,0.80)</string>
+				<string>rgba(82,90,104,0.70)</string>
 			</array>
 			<key>Locations</key>
 			<array>
@@ -2232,8 +2241,8 @@
 		<dict>
 			<key>Colors</key>
 			<array>
-				<string>rgba(217,217,217,0.90)</string>
-				<string>rgba(191,191,191,0.90)</string>
+				<string>rgba(158,173,189,0.90)</string>
+				<string>rgba(158,173,189,0.80)</string>
 			</array>
 			<key>Locations</key>
 			<array>
@@ -2256,8 +2265,8 @@
 				<dict>
 					<key>Colors</key>
 					<array>
-						<string>rgb(232,232,232)</string>
-						<string>rgb(122,122,122)</string>
+						<string>rgb(41,49,61)</string>
+						<string>rgb(30,38,50)</string>
 					</array>
 				</dict>
 				<key>Pressed,Alternate</key>

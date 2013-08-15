@@ -241,7 +241,7 @@
                                 [[NSFontManager sharedFontManager] fontWithFamily:@"Lucida Grande" traits:NSBoldFontMask weight:10 size:18.0], NSFontAttributeName,
                                 style, NSParagraphStyleAttributeName,
                                 shadow, NSShadowAttributeName,
-                                [NSColor colorWithDeviceWhite:0.11 alpha:1.0], NSForegroundColorAttributeName,
+                                [NSColor colorWithDeviceRed:(47.0/255.0) green:(61.0/255.0) blue:(74.0/255.0) alpha:1.0], NSForegroundColorAttributeName,
                                 nil];
     [defaultCell setTextAttributes:dictionary];
     
@@ -255,7 +255,7 @@
                   [[NSFontManager sharedFontManager] fontWithFamily:@"Lucida Grande" traits:NSBoldFontMask weight:10 size:18.0], NSFontAttributeName,
                   style, NSParagraphStyleAttributeName,
                   shadow, NSShadowAttributeName,
-                  [NSColor colorWithDeviceWhite:0.11 alpha:0.0], NSForegroundColorAttributeName,
+                  [NSColor colorWithDeviceRed:(47.0/255.0) green:(61.0/255.0) blue:(74.0/255.0) alpha:1.0], NSForegroundColorAttributeName,
                   nil];
     [glowCell setTextAttributes:dictionary];
     

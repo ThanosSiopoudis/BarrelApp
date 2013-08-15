@@ -108,7 +108,7 @@ NSString *const OEPreferencesUserInfoSystemIdentifierKey = @"systemIdentifier";
     OEAppStoreWindow *win = (OEAppStoreWindow *)[self window];
     [win close]; // Make sure window doesn't show up in window menu until it's actual visible
 
-    NSColor *windowBackgroundColor = [NSColor colorWithDeviceRed:0.149 green:0.149 blue:0.149 alpha:1.0];
+    NSColor *windowBackgroundColor = [NSColor colorWithDeviceRed:(82.0/255.0) green:(90.0/255.0) blue:(104.0/255.0) alpha:1.0];
     [win setBackgroundColor:windowBackgroundColor];
     
     [self OE_reloadPreferencePanes];

@@ -38,9 +38,9 @@
     viewRect.origin.y = NSMinY(viewRect);
     viewRect.size.height = 44.0;
     
-    NSColor *topLineColor   = [NSColor colorWithDeviceWhite:0.32 alpha:1];
-    NSColor *gradientTop    = [NSColor colorWithDeviceWhite:0.20 alpha:1];
-    NSColor *gradientBottom = [NSColor colorWithDeviceWhite:0.15 alpha:1];
+    NSColor *topLineColor   = [NSColor colorWithDeviceRed:(127.0/255.0) green:(143.0/255.0) blue:(164.0/255.0) alpha:1.0];
+    NSColor *gradientTop    = [NSColor colorWithDeviceRed:(88.0/255.0) green:(99.0/255.0) blue:(114.0/255.0) alpha:1.0];
+    NSColor *gradientBottom = [NSColor colorWithDeviceRed:(80.0/255.0) green:(90.0/255.0) blue:(104.0/255.0) alpha:1.0];
     
     // Draw top line
     NSRect lineRect = NSMakeRect(0, 43, viewRect.size.width, 1);

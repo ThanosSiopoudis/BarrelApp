@@ -103,8 +103,8 @@ static NSGradient *highlightGradient, *normalGradient;
 
 - (void)drawBackgroundInClipRect:(NSRect)clipRect
 {
-	NSColor *rowBackground = [NSColor colorWithDeviceWhite:0.059 alpha:1.0];
-	NSColor *alternateRowBackground = [NSColor colorWithDeviceWhite:0.114 alpha:1.0];
+	NSColor *rowBackground = [NSColor colorWithDeviceRed:(94.0/255.0) green:(108.0/255.0) blue:(123.0/255.0) alpha:1.0];
+	NSColor *alternateRowBackground = [NSColor colorWithDeviceRed:(82.0/255.0) green:(90.0/255.0) blue:(104.0/255.0) alpha:1.0];
 	
 	[rowBackground setFill];
 	NSRectFill(clipRect);
