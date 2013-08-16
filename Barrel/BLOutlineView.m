@@ -281,24 +281,6 @@ static NSGradient *highlightGradient, *normalGradient;
     }
 }
 
-#pragma mark - Context menu
-
-- (void)renameSelectedGame:(id)sender
-{
-    if([[self selectedRowIndexes] count] != 1)
-    {
-        DLog(@"I can only rename a single game, sir.");
-        return;
-    }
-    
-    NSInteger selectedRow = [[self selectedRowIndexes] firstIndex];
-    
-    NSInteger titleColumnIndex = [self columnWithIdentifier:@"listViewTitle"];
-    NSAssert(titleColumnIndex != -1, @"The list view must have a column identified by listViewTitle");
-    
-    [self editColumn:titleColumnIndex row:selectedRow withEvent:nil select:NO];
-}
-
 @synthesize selectionColor;
 
 @end
