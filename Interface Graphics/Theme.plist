@@ -34,17 +34,17 @@
 				<key>Window Inactive</key>
 				<dict>
 					<key>Color</key>
-					<string>#545454</string>
+					<string>#999999</string>
 				</dict>
 				<key>Disabled</key>
 				<dict>
 					<key>Color</key>
-					<string>#545454</string>
+					<string>#7c8b9a</string>
 				</dict>
 				<key>Window Active, Enabled</key>
 				<dict>
 					<key>Color</key>
-					<string>#848484</string>
+					<string>#b3bec6</string>
 				</dict>
 				<key>Window Active, Enabled, Focused</key>
 				<dict>
