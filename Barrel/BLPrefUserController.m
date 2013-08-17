@@ -95,6 +95,13 @@ NSString *const BLEmail         = @"email";
 #pragma mark -
 #pragma mark Interface Actions
 - (IBAction)didSelectLoginButton:(id)sender {
+    // Make sure there's data in the textfields
+    if (![[usernameField stringValue] length] || ![[pwdField stringValue] length] || ![[emailField stringValue] length]) {
+        OEHUDAlert *alert = [OEHUDAlert alertWithMessageText:@"Please fill in all fields and try again!" defaultButton:@"OK" alternateButton:@""];
+        [alert runModal];
+        return;
+    }
+    
     AppCakeAPI *apiConnection = [[AppCakeAPI alloc] init];
     
     // Generate an SHA-1 Digest for the password
@@ -137,6 +144,12 @@ NSString *const BLEmail         = @"email";
 }
 
 - (IBAction)didSelectRegisterButton:(id)sender {
+    if (![[usernameField stringValue] length] || ![[pwdField stringValue] length] || ![[emailField stringValue] length]) {
+        OEHUDAlert *alert = [OEHUDAlert alertWithMessageText:@"Please fill in all fields and try again!" defaultButton:@"OK" alternateButton:@""];
+        [alert runModal];
+        return;
+    }
+    
     AppCakeAPI *apiConnection = [[AppCakeAPI alloc] init];
     
     // Generate an SHA-1 Digest for the password
