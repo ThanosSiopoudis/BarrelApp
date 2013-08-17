@@ -768,7 +768,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 - (void)setBundleToDownloadWithGameName:(id)sender {
     [self setGameName:[[self alertCache] stringValue]];
     AC_WineBuild *build = [[self alertCache] popupButtonSelectedItem];
-    [self setDownloadPath:[NSString stringWithFormat:@"http://api.appcake.co.uk%@", [build archivePath]]];
+    [self setDownloadPath:[NSString stringWithFormat:@"%@%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BLApiServerURL"], [build archivePath]]];
     [self setEngineID:[NSString stringWithFormat:@"%li", (long)[build id]]];
     
     // Close the alert and proceed

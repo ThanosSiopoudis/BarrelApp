@@ -69,7 +69,7 @@
                                                                                                     CFSTR("!*'();:@&=+$,/?%#[]"),
                                                                                                     kCFStringEncodingUTF8));
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?gameName=%@&identifier=%@", @"http://api.appcake.co.uk/Games/searchForGame.json", escapedString, escapedIdentifier]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?gameName=%@&identifier=%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BLApiServerURL"], @"/Games/searchForGame.json", escapedString, escapedIdentifier]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
     [objectRequestOperation setCompletionBlockWithSuccess:completionBlock failure:errorBlock];
@@ -88,7 +88,7 @@
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:wineBuildsMapping method:RKRequestMethodGET pathPattern:nil keyPath:@"wineBuilds" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     
-    NSURL *url = [NSURL URLWithString:@"http://api.appcake.co.uk/WineBuilds/getAllWineBuilds.json"];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/WineBuilds/getAllWineBuilds.json", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BLApiServerURL"]]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
     [objectRequestOperation setCompletionBlockWithSuccess:completionBlock
@@ -112,7 +112,7 @@
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:userMap method:RKRequestMethodGET pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.appcake.co.uk/Users/searchForUser.json?username=%@", username]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/Users/searchForUser.json?username=%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BLApiServerURL"], username]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
     [objectRequestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *inOp, RKMappingResult *inMapResult){
@@ -137,7 +137,7 @@
             RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:requestMapping objectClass:[AC_User class] rootKeyPath:nil method:RKRequestMethodPOST];
             RKResponseDescriptor *innerResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:RKRequestMethodPOST pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
             
-            NSURL *registerURL = [NSURL URLWithString:@"http://api.appcake.co.uk/Users/"];
+            NSURL *registerURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/Users/", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BLApiServerURL"]]];
             RKObjectManager *manager = [RKObjectManager managerWithBaseURL:registerURL];
             [manager addRequestDescriptor:requestDescriptor];
             [manager addResponseDescriptor:innerResponseDescriptor];
@@ -166,7 +166,7 @@
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:userMap method:RKRequestMethodGET pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.appcake.co.uk/Users/searchForUser.json?username=%@", username]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/Users/searchForUser.json?username=%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BLApiServerURL"], username]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
     [objectRequestOperation setCompletionBlockWithSuccess:completionBlock failure:errorBlock];
@@ -202,7 +202,7 @@
     RKResponseDescriptor *innerResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:RKRequestMethodPOST pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     
     // Serialize the Article attributes then attach a file
-    RKObjectManager *manager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:@"http://api.appcake.co.uk"]];
+    RKObjectManager *manager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"BLApiServerURL"]]];
     
     [manager addResponseDescriptor:innerResponseDescriptor];
     [manager addRequestDescriptor:requestDescriptor];
@@ -234,7 +234,7 @@
     RKResponseDescriptor *innerResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:RKRequestMethodPOST pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     
     // Serialize the Article attributes then attach a file
-    RKObjectManager *manager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:@"http://api.appcake.co.uk"]];
+    RKObjectManager *manager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"BLApiServerURL"]]];
     
     [manager addResponseDescriptor:innerResponseDescriptor];
     [manager addRequestDescriptor:requestDescriptor];
@@ -265,7 +265,7 @@
                                                                                                     CFSTR("!*'();:@&=+$,/?%#[]"),
                                                                                                     kCFStringEncodingUTF8));
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?identifier=%@&gameID=%@", @"http://api.appcake.co.uk/Games/saveGameIdentifier.json", escapedIdentifier, gameID]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?identifier=%@&gameID=%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BLApiServerURL"], @"/Games/saveGameIdentifier.json", escapedIdentifier, gameID]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
     [objectRequestOperation setCompletionBlockWithSuccess:completionBlock failure:errorBlock];
