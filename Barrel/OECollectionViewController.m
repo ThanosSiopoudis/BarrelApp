@@ -748,7 +748,7 @@ static NSArray *OE_defaultSortDescriptors;
         [advancedMenu addItemWithTitle:NSLocalizedString(@"Registry Editor", @"") action:@selector(startRegedit:) keyEquivalent:@""];
         [advancedMenu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(showWinetricksMenu:) keyEquivalent:@""];
         [advancedMenu addItem:[NSMenuItem separatorItem]];
-        [advancedMenu addItemWithTitle:NSLocalizedString(@"Run external .exe", @"") action:nil keyEquivalent:@""];
+        [advancedMenu addItemWithTitle:NSLocalizedString(@"Run external .exe", @"") action:@selector(runExternalBinary:) keyEquivalent:@""];
         [advancedMenu addItemWithTitle:NSLocalizedString(@"Change executable path", @"") action:@selector(changeExecutablePath:) keyEquivalent:@""];
         
         // Wine commands
@@ -961,6 +961,35 @@ static NSArray *OE_defaultSortDescriptors;
     if (![self lastModalResult]) {
         [[self alertCache] runModal];
     }
+}
+
+- (IBAction)runExternalBinary:(id)sender {
+    NSArray *selectedGames = [self selectedGames];
+    [self setLastModalResult:YES];
+    
+    [selectedGames enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[OEDBGame class]]) {
+            NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+            [openPanel setAllowsMultipleSelection:NO];
+            [openPanel setCanChooseFiles:YES];
+            [openPanel setCanCreateDirectories:NO];
+            [openPanel setCanChooseDirectories:NO];
+            [openPanel setAllowedFileTypes:[NSArray arrayWithObject:@"exe"]];
+            
+            NSWindow *win = [[self view] window];
+            
+            [openPanel beginSheetModalForWindow:win completionHandler:
+             ^(NSInteger result)
+             {
+                 if(result == NSFileHandlingPanelOKButton)
+                 {
+                     for (NSURL *url in [openPanel URLs]) {
+                         [BLSystemCommand runScript:[obj bundlePath] withArguments:[NSArray arrayWithObjects:@"--run", [url path], nil] shouldWaitForProcess:NO runForMain:YES];
+                     }
+                 }
+             }];
+        }
+    }];
 }
 
 - (IBAction)openPanelRetry:(id)sender {
