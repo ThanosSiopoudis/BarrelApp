@@ -69,6 +69,7 @@
 
 #import "BLWinetricksWindowController.h"
 #import "BLSystemCommand.h"
+#import "OEHUDAlert+DefaultAlertsAdditions.h"
 
 #pragma mark - Public variables
 
@@ -898,6 +899,54 @@ static NSArray *OE_defaultSortDescriptors;
     }];
 
     [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:urls];
+}
+
+- (IBAction)changeExecutablePath:(id)sender {
+    NSArray *selectedGames = [self selectedGames];
+    
+    [selectedGames enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[OEDBGame class]]) {
+            NSBundle *gameBundle = [NSBundle bundleWithPath:[obj bundlePath]];
+            NSString *currentPath = [NSString stringWithFormat:@"%@/Contents/Resources/%@", [obj bundlePath], [gameBundle objectForInfoDictionaryKey:@"Windows Executable"]];
+            NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+            [openPanel setAllowsMultipleSelection:NO];
+            [openPanel setCanChooseFiles:YES];
+            [openPanel setCanCreateDirectories:NO];
+            [openPanel setCanChooseDirectories:NO];
+            [openPanel setAllowedFileTypes:[NSArray arrayWithObject:@"exe"]];
+            [openPanel setDirectoryURL:[NSURL fileURLWithPath:[currentPath stringByDeletingLastPathComponent]]];
+            
+            NSWindow *win = [[self view] window];
+            
+            [openPanel beginSheetModalForWindow:win completionHandler:
+             ^(NSInteger result)
+             {
+                 if(result == NSFileHandlingPanelOKButton)
+                 {
+                     for (NSURL *url in [openPanel URLs]) {
+                         // Just make absolutely sure that the file exists and we have access to it
+                         if ([[NSFileManager defaultManager] fileExistsAtPath:[url path]]) {
+                             NSMutableArray *infoDict = [[NSMutableArray alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", [obj bundlePath]]];
+                             NSRange driveCRange = [[url path] rangeOfString:@"drive_c"];
+                             if (driveCRange.location != NSNotFound) {
+                                 NSString *finalPath = [[url path] substringWithRange:NSMakeRange(driveCRange.location, ([[url path] length] - driveCRange.location))];
+                                 [infoDict setValue:finalPath forKey:@"Windows Executable"];
+                                 [infoDict writeToFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", [obj bundlePath]] atomically:YES];
+                             }
+                             else {
+                                 OEHUDAlert *noFileError = [OEHUDAlert alertWithMessageText:@"The path selected does not appear to be withing the bundle's C: drive. Please select an executable that is inside your bundle's C: drive" defaultButton:@"Choose Another" alternateButton:@"Cancel"];
+                                 [noFileError runModal];
+                             }
+                         }
+                         else {
+                             OEHUDAlert *noFileError = [OEHUDAlert alertWithMessageText:@"File does not exist, or Barrel has no access to it" defaultButton:@"Choose Another" alternateButton:@"Cancel"];
+                             [noFileError runModal];
+                         }
+                     }
+                 }
+             }];
+        }
+    }];
 }
 
 - (IBAction)showWinetricksMenu:(id)sender
