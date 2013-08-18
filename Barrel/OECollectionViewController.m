@@ -739,11 +739,19 @@ static NSArray *OE_defaultSortDescriptors;
         
         [menu addItem:[NSMenuItem separatorItem]];
         
+        NSMenu *advancedMenu = [[NSMenu alloc] init];
+        [advancedMenu addItemWithTitle:NSLocalizedString(@"Debug Run", @"") action:@selector(startDebugRun:) keyEquivalent:@""];
+        [advancedMenu addItemWithTitle:NSLocalizedString(@"Wine Config", @"") action:@selector(startWineConfig:) keyEquivalent:@""];
+        [advancedMenu addItemWithTitle:NSLocalizedString(@"Registry Editor", @"") action:@selector(startRegedit:) keyEquivalent:@""];
+        [advancedMenu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(showWinetricksMenu:) keyEquivalent:@""];
+        [advancedMenu addItem:[NSMenuItem separatorItem]];
+        [advancedMenu addItemWithTitle:NSLocalizedString(@"Run external .exe", @"") action:nil keyEquivalent:@""];
+        [advancedMenu addItemWithTitle:NSLocalizedString(@"Change executable path", @"") action:@selector(changeExecutablePath:) keyEquivalent:@""];
+        
         // Wine commands
-        [menu addItemWithTitle:NSLocalizedString(@"Debug Run", @"") action:@selector(startDebugRun:) keyEquivalent:@""];
-        [menu addItemWithTitle:NSLocalizedString(@"Wine Config", @"") action:@selector(startWineConfig:) keyEquivalent:@""];
-        [menu addItemWithTitle:NSLocalizedString(@"Registry Editor", @"") action:@selector(startRegedit:) keyEquivalent:@""];
-        [menu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(showWinetricksMenu:) keyEquivalent:@""];
+        NSMenuItem *advancedItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Advanced Settings", @"") action:nil keyEquivalent:@""];
+        [advancedItem setSubmenu:advancedMenu];
+        [menu addItem:advancedItem];
         
         [menu addItem:[NSMenuItem separatorItem]];
         
