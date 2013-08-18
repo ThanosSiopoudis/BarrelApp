@@ -111,6 +111,8 @@ static NSArray *OE_defaultSortDescriptors;
 - (NSMenu *)OE_collectionsMenuForGames:(NSArray *)games;
 
 @property(strong) BLWinetricksWindowController *winetricksController;
+@property(nonatomic, readwrite) OEHUDAlert *alertCache;
+@property(readwrite) BOOL lastModalResult;
 
 @end
 
@@ -903,6 +905,7 @@ static NSArray *OE_defaultSortDescriptors;
 
 - (IBAction)changeExecutablePath:(id)sender {
     NSArray *selectedGames = [self selectedGames];
+    [self setLastModalResult:YES];
     
     [selectedGames enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if ([obj isKindOfClass:[OEDBGame class]]) {
@@ -917,6 +920,7 @@ static NSArray *OE_defaultSortDescriptors;
             [openPanel setDirectoryURL:[NSURL fileURLWithPath:[currentPath stringByDeletingLastPathComponent]]];
             
             NSWindow *win = [[self view] window];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openPanelDidClose:) name:NSWindowDidEndSheetNotification object:win];
             
             [openPanel beginSheetModalForWindow:win completionHandler:
              ^(NSInteger result)
@@ -934,19 +938,35 @@ static NSArray *OE_defaultSortDescriptors;
                                  [infoDict writeToFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", [obj bundlePath]] atomically:YES];
                              }
                              else {
-                                 OEHUDAlert *noFileError = [OEHUDAlert alertWithMessageText:@"The path selected does not appear to be withing the bundle's C: drive. Please select an executable that is inside your bundle's C: drive" defaultButton:@"Choose Another" alternateButton:@"Cancel"];
-                                 [noFileError runModal];
+                                 OEHUDAlert *noFileError = [OEHUDAlert alertWithMessageText:@"The path selected does not appear to be within the bundle's C: drive. Please select an executable that is inside your bundle's C: drive" defaultButton:@"Choose Another" alternateButton:@"Cancel"];
+                                 [self setAlertCache:noFileError];
+                                 [[self alertCache] setDefaultButtonAction:@selector(openPanelRetry:) andTarget:self];
+                                 [self setLastModalResult:NO];
                              }
                          }
                          else {
                              OEHUDAlert *noFileError = [OEHUDAlert alertWithMessageText:@"File does not exist, or Barrel has no access to it" defaultButton:@"Choose Another" alternateButton:@"Cancel"];
-                             [noFileError runModal];
+                             [self setAlertCache:noFileError];
+                             [[self alertCache] setDefaultButtonAction:@selector(openPanelRetry:) andTarget:self];
+                             [self setLastModalResult:NO];
                          }
                      }
                  }
              }];
         }
     }];
+}
+
+- (void)openPanelDidClose:(NSNotification *)notification {
+    if (![self lastModalResult]) {
+        [[self alertCache] runModal];
+    }
+}
+
+- (IBAction)openPanelRetry:(id)sender {
+    [NSApp stopModal];
+    // Reopen the panel
+    [self changeExecutablePath:nil];
 }
 
 - (IBAction)showWinetricksMenu:(id)sender
