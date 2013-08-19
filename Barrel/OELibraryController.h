@@ -61,6 +61,7 @@
 - (IBAction)newCollectionFolder:(id)sender;
 
 - (IBAction)editSmartCollection:(id)sender;
+- (IBAction)createEmptyBundle:(id)sender;
 - (IBAction)addToLibrary:(id)sender;
 - (IBAction)startDebugRun:(id)sender;
 - (IBAction)startGame:(id)sender;

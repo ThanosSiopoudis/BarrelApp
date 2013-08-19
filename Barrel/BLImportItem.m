@@ -36,8 +36,22 @@
     
     item = [[BLImportItem alloc] init];
     
+    [item setIsEmptyBundle:NO];
     [item setURL:url];
     [item setSourceURL:url];
+    [item setCompletionHandler:handler];
+    [item setImportState:BLImportItemStatusIdle];
+    [item setImportInfo:[NSMutableDictionary dictionaryWithCapacity:5]];
+    
+    return item;
+}
+
++ (id)itemWithEmptyBundleAndCompletionHandler:(BLImportItemCompletionBlock)handler {
+    id item = nil;
+    
+    item = [[BLImportItem alloc] init];
+    
+    [item setIsEmptyBundle:YES];
     [item setCompletionHandler:handler];
     [item setImportState:BLImportItemStatusIdle];
     [item setImportInfo:[NSMutableDictionary dictionaryWithCapacity:5]];

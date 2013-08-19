@@ -263,6 +263,12 @@ static const CGFloat _OEToolbarHeight = 44;
 
 #pragma mark -
 #pragma mark Import
+- (IBAction)createEmptyBundle:(id)sender
+{
+    BLGameImporter *gameImporter = [[self database] importer];
+    [gameImporter importEmptyBundleIntoCollectionWithID:nil];
+}
+
 - (IBAction)addToLibrary:(id)sender
 {
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];

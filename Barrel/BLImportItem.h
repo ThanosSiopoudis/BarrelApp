@@ -56,10 +56,12 @@ typedef void (^BLImportItemCompletionBlock)(void);
 @property       BLImportItemState               importState;
 @property       BLImportStep                    importStep;
 @property       NSMutableDictionary             *importInfo;
+@property       BOOL                            isEmptyBundle;
 
 @property       NSError                         *error;
 @property(copy) BLImportItemCompletionBlock     completionHandler;
 
 + (id)itemWithURL:(NSURL *)url andCompletionHandler:(BLImportItemCompletionBlock)handler;
++ (id)itemWithEmptyBundleAndCompletionHandler:(BLImportItemCompletionBlock)handler;
 
 @end

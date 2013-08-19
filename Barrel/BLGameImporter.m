@@ -268,6 +268,11 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         [[item importInfo] setValue:[[chooseGenreAlert popupButtonSelectedItem] systemIdentifier] forKey:BLImportInfoSystemID];
     }
     
+    // That's as far as we go if we're creating an empty bundle...
+    if ([item isEmptyBundle]) {
+        return;
+    }
+    
     // Make sure that the item points to a mounted disk volume
     IMPORTDLog(@"Volume URL: %@", [item sourceURL]);
     
@@ -294,6 +299,11 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 
 - (void)performImportStepCheckDirectory:(BLImportItem *)item
 {
+    // No need for this step if we're creating an empty bundle
+    if ([item isEmptyBundle]) {
+        return;
+    }
+    
     // Try to identify the game name that will be used to lookup for an entry
     // in the online db
     IMPORTDLog(@"Volume URL: %@", [item sourceURL]);
@@ -325,12 +335,19 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 - (void)performImportStepLookupEntry:(BLImportItem *)item
 {
     IMPORTDLog(@"Volume URL: %@", [item sourceURL]);
+    self.appCake = [[AppCakeAPI alloc] init];
+    [item setImportState:BLImportItemStatusWait];
+    
+    // Present the Manual import immediately if empty bundle
+    if ([item isEmptyBundle]) {
+        [self startManualImport:nil];
+        return;
+    }
+    
     
     [[self progressWindow] setMessageText:@"Looking up game..."];
     [[self progressWindow] setShowsIndeterminateProgressbar:YES];
     
-    self.appCake = [[AppCakeAPI alloc] init];
-    [item setImportState:BLImportItemStatusWait];
     [[self appCake] searchDBForGameWithName:[self volumeName] orIdentifier:[self volumeName] toBlock:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         if ([mappingResult count] < 1) {
             [[self progressWindow] close];
@@ -491,6 +508,11 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)performImportStepCreateBundle:(BLImportItem *)item {
+    // Is this empty? Go away if it is
+    if ([item isEmptyBundle]) {
+        return;
+    }
+    
     // Run the setup in BarrelApp and wait for the whole process to finish
     NSString *newBundlePath = [[[[self database] databaseFolderURL] URLByAppendingPathComponent:@"tmp"] path];
     NSString *newBarrelApp = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];
@@ -519,12 +541,15 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     NSURL       *newUrl             = [[[self database] gamesFolderURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@.app", genre, [self gameName]]];
     
     // Was the installation successful? Check the new bundle for a proper windows executable
-    NSMutableDictionary *newBundleInfo = [NSMutableDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", newBarrelApp]];
-    NSString *newWinBinary = [newBundleInfo valueForKey:@"Windows Executable"];
-    if ([newWinBinary isEqualToString:@"none.exe"]) {
-        // Failed. Halt
-        [self stopImportForItem:item withError:error];
-        return;
+    // Only if we're not creating an empty bundle though
+    if (![item isEmptyBundle]) {
+        NSMutableDictionary *newBundleInfo = [NSMutableDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", newBarrelApp]];
+        NSString *newWinBinary = [newBundleInfo valueForKey:@"Windows Executable"];
+        if ([newWinBinary isEqualToString:@"none.exe"]) {
+            // Failed. Halt
+            [self stopImportForItem:item withError:error];
+            return;
+        }
     }
     
     // If we have a downloaded recipe, run the required winetricks
@@ -760,6 +785,9 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 - (void)showSelectionAlertWithItems:(RKMappingResult *)items {
     // Prepare the NSMutableArray from the objects in the result
     NSMutableArray *engines = [NSMutableArray arrayWithArray:[items array]];
+    if (![self volumeName] || [[self volumeName] length] < 1) {
+        [self setVolumeName:@"Empty Bundle"];
+    }
     
     OEHUDAlert *selectionAlert = [OEHUDAlert showManualImportAlertWithVolumeName:[self volumeName] andPopupItems:engines];
 
@@ -937,6 +965,33 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     
     return NO;
 }
+
+#pragma mark - Importing and empty bundle into collections
+- (BOOL)importEmptyBundleIntoCollectionWithID:(NSURL *)collectionID {
+    return [self importEmptyBundleIntoCollectionWithID:collectionID withSystem:nil];
+}
+- (BOOL)importEmptyBundleIntoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID {
+    return [self importEmptyBundleIntoCollectionWithID:collectionID withSystem:systemID withCompletionHandler:nil];
+}
+
+#pragma mark - Importing an empty bundle into collections with completion handler
+- (BOOL)importEmptyBundleIntoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler {
+    
+    BLImportItem *item = [BLImportItem itemWithEmptyBundleAndCompletionHandler:handler];
+    if (item)
+    {
+        if (collectionID) [[item importInfo] setObject:collectionID forKey:BLImportInfoCollectionID];
+        if (systemID) [[item importInfo] setObject:systemID forKey:BLImportInfoSystemID];
+        [[self queue] addObject:item];
+        self.totalNumberOfItems++;
+        [self setCurrentItem:item];
+        [self start];
+        return YES;
+    }
+    
+    return NO;
+}
+
 
 #pragma mark - Controlling Import -
 - (void)start

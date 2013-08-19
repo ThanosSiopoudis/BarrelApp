@@ -1961,11 +1961,11 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">addToLibrary:</string>
+						<string key="label">createEmptyBundle:</string>
 						<reference key="source" ref="1014"/>
 						<reference key="destination" ref="649929869"/>
 					</object>
-					<string key="id">4FG-Rl-YDo</string>
+					<string key="id">jVI-XG-BbW</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
