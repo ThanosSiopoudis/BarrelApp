@@ -290,7 +290,7 @@ NSString *const OECoreUpdaterErrorDomain = @"OECoreUpdaterErrorDomain";
         [[self alert] setAlternateButtonTitle:nil];
 
         [[[self alert] defaultButton] setThemeKey:@"hud_button_red"];
-        [[self alert] setDefaultButtonAction:@selector(buttonAction:) andTarget:[self alert]];
+        // [[self alert] setDefaultButtonAction:@selector(buttonAction:) andTarget:[self alert]];
         return;
     }
 
