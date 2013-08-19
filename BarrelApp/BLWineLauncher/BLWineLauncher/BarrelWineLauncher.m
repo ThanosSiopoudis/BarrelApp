@@ -166,10 +166,13 @@
     [self setScriptPath:@""];
     
     // Start a new thread with the wine monitor
-    dispatch_async(dispatchQueue, ^{
-        [self monitorWineProcessForPrefixBuild];
-    });
-    
+    // Only if the engine id is < 7
+    NSMutableDictionary *infoKeys = [[NSMutableDictionary alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", [self bundlePath]]];
+    if ([[infoKeys valueForKey:@"BLEngineID"] integerValue] < 7) {
+        dispatch_async(dispatchQueue, ^{
+            [self monitorWineProcessForPrefixBuild];
+        });
+    }
     [self systemCommand:script shouldWaitForProcess:YES redirectOutput:NO];
     [self waitForWineserverToExitForMaximumTime:60];
     // Wait for all wine processes to exit
