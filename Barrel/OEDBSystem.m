@@ -129,8 +129,6 @@ NSString * const OEDBSystemsDidChangeNotification = @"OEDBSystemsDidChangeNotifi
     __block OESystemPlugin *theOneAndOnlySystemThatGetsAChanceToHandleTheFile = nil;
     NSMutableArray         *otherSystemsThatMightBeAbleToHandleTheFile = [NSMutableArray array];
     
-    NSString *fileExtension = [url pathExtension];
-    
     if(theOneAndOnlySystemThatGetsAChanceToHandleTheFile != nil)
     {
         NSString *systemIdentifier = [theOneAndOnlySystemThatGetsAChanceToHandleTheFile systemIdentifier];
