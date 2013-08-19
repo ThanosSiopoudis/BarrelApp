@@ -82,7 +82,7 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
          @{
                                       OEDefaultDatabasePathKey : path,
                                              OEDatabasePathKey : path,
-                                     OEAutomaticallyGetInfoKey : @YES,
+                                     BLAutomaticallyGetInfoKey : @YES,
                             @"defaultCore.barrel.genre.action" : @"com.appcake.barrel",
                                             OEDisplayGameTitle : @YES
          }];

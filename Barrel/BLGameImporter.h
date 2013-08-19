@@ -25,7 +25,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "OEImportItem.h"
+#import "BLImportItem.h"
 
 #ifdef DEBUG_IMPORT
 #define IMPORTDLog DLog
@@ -34,14 +34,14 @@
 #endif
 
 #pragma mark User Default Keys -
-extern NSString *const OEOrganizeLibraryKey;
-extern NSString *const OECopyToLibraryKey;
-extern NSString *const OEAutomaticallyGetInfoKey;
+extern NSString *const BLOrganizeLibraryKey;
+extern NSString *const BLCopyToLibraryKey;
+extern NSString *const BLAutomaticallyGetInfoKey;
 
 #pragma mark Error Codes -
-extern NSString *const OEImportErrorDomainFatal;
-extern NSString *const OEImportErrorDomainResolvable;
-extern NSString *const OEImportErrorDomainSuccess;
+extern NSString *const BLImportErrorDomainFatal;
+extern NSString *const BLImportErrorDomainResolvable;
+extern NSString *const BLImportErrorDomainSuccess;
 
 typedef enum : NSInteger {
     BLImportErrorCodeAlreadyInDatabase  = -1,
@@ -82,8 +82,8 @@ typedef enum : NSInteger {
 - (BOOL)importItemsAtURLs:(NSArray *)URLs intoCollectionWithID:(NSURL *)collectionID;
 
 #pragma mark - Importing Game into collections with completion handler
-- (BOOL)importItemAtPath:(NSString *)path intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(OEImportItemCompletionBlock)handler;
-- (BOOL)importItemAtURL:(NSURL *)url intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(OEImportItemCompletionBlock)handler;
+- (BOOL)importItemAtPath:(NSString *)path intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler;
+- (BOOL)importItemAtURL:(NSURL *)url intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler;
 @end
 
 #pragma mark - Controlling Import

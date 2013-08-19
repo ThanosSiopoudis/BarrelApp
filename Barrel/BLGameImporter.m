@@ -45,6 +45,10 @@
 
 static const int MaxSimultaneousImports = 1; // imports can't really be simultaneous because access to queue is not ready for multithreadding right now
 
+NSString *const BLOrganizeLibraryKey       = @"organizeLibrary";
+NSString *const BLCopyToLibraryKey         = @"copyToLibrary";
+NSString *const BLAutomaticallyGetInfoKey  = @"automaticallyGetInfo";
+
 #pragma mark Error Codes -
 NSString *const BLImportErrorDomainFatal        = @"BLImportFatalDomain";
 NSString *const BLImportErrorDomainResolvable   = @"BLImportResolvableDomain";
@@ -103,8 +107,8 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 {
     if (self != [BLGameImporter class]) return;
     [[NSUserDefaults standardUserDefaults] registerDefaults:(@{
-                                                             OEOrganizeLibraryKey: @(YES),
-                                                             OECopyToLibraryKey: @(YES),OEAutomaticallyGetInfoKey: @(YES),
+                                                             BLOrganizeLibraryKey: @(YES),
+                                                             BLCopyToLibraryKey: @(YES),BLAutomaticallyGetInfoKey: @(YES),
                                                              })];
 }
 
@@ -254,14 +258,14 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     }
     
     // Determine first and foremost if we have a Genre as everything will fail if we don't
-    if ([[item importInfo] valueForKey:OEImportInfoSystemID] == nil) {
+    if ([[item importInfo] valueForKey:BLImportInfoSystemID] == nil) {
         [[self progressWindow] close];
         NSArray *systems = [OEDBSystem allSystems];
         
         OEHUDAlert *chooseGenreAlert = [OEHUDAlert showGenreSelectionAlertWithGenres:systems];
         [chooseGenreAlert runModal];
         
-        [[item importInfo] setValue:[[chooseGenreAlert popupButtonSelectedItem] systemIdentifier] forKey:OEImportInfoSystemID];
+        [[item importInfo] setValue:[[chooseGenreAlert popupButtonSelectedItem] systemIdentifier] forKey:BLImportInfoSystemID];
     }
     
     // Make sure that the item points to a mounted disk volume
@@ -506,7 +510,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 
 - (void)performImportStepOrganize:(BLImportItem *)item {
     NSError     *error              = nil;
-    NSArray     *genreComponents    = [[[item importInfo] valueForKey:OEImportInfoSystemID] componentsSeparatedByString:@"."];
+    NSArray     *genreComponents    = [[[item importInfo] valueForKey:BLImportInfoSystemID] componentsSeparatedByString:@"."];
     NSString    *genre              = [genreComponents lastObject];
     NSString    *newBundlePath      = [[[[self database] databaseFolderURL] URLByAppendingPathComponent:@"tmp"] path];
     NSString    *newBarrelApp       = [NSString stringWithFormat:@"%@/%@.app", newBundlePath, [self gameName]];

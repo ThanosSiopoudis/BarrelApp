@@ -48,8 +48,6 @@
 
 #import "BLGameImporter.h"
 
-#import "OEROMImporter.h"
-
 NSString *const OEDatabasePathKey            = @"databasePath";
 NSString *const OEDefaultDatabasePathKey     = @"defaultDatabasePath";
 NSString *const OESaveStateLastFSEventIDKey  = @"lastSaveStateEventID";
