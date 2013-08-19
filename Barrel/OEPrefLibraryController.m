@@ -152,8 +152,8 @@
     NSInteger rows = ceil([systems count] / 2.0);
 
     // set some spaces and dimensions
-    CGFloat hSpace = 16, vSpace = 10;
-    CGFloat iWidth = 163, iHeight = 18;
+    CGFloat vSpace = 10;
+    CGFloat iHeight = 18;
     
     // calculate complete view height
     height = baseViewHeight;
