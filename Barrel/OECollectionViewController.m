@@ -70,6 +70,7 @@
 #import "BLWinetricksWindowController.h"
 #import "BLSystemCommand.h"
 #import "OEHUDAlert+DefaultAlertsAdditions.h"
+#import "BLReviewsWindowController.h"
 
 #pragma mark - Public variables
 
@@ -759,7 +760,7 @@ static NSArray *OE_defaultSortDescriptors;
         [menu addItem:[NSMenuItem separatorItem]];
         
         // Create Rating Item
-        // [menu addItemWithTitle:NSLocalizedString(@"Leave a Review", @"") action:@selector(startGame:) keyEquivalent:@""];
+        [menu addItemWithTitle:NSLocalizedString(@"Leave a Review", @"") action:@selector(showReviewWindow:) keyEquivalent:@""];
         menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Rating", @"") action:NULL keyEquivalent:@""];
         [menuItem setSubmenu:[self OE_ratingMenuForGames:games]];
         [menu addItem:menuItem];

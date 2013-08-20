@@ -353,6 +353,43 @@ static const CGFloat _OEToolbarHeight = 44;
     });
 }
 
+- (IBAction)showReviewWindow:(id)sender {
+    NSMutableArray *gamesToStart = [NSMutableArray new];
+    
+    if([sender isKindOfClass:[OEDBGame class]]) {
+        [gamesToStart addObject:sender];
+    }
+    else {
+        NSAssert([(id)[self currentViewController] respondsToSelector:@selector(selectedGames)], @"Attempt to start a game from a view controller that doesn't announce selectedGames");
+        [gamesToStart addObjectsFromArray:[(id <OELibrarySubviewController>)[self currentViewController] selectedGames]];
+    }
+    
+    NSAssert([gamesToStart count] > 0, @"Attempt to start a game while the selection is empty");
+    
+    [gamesToStart enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[OEDBGame class]]) {
+            // First, make sure we're logged in
+            if ([[NSUserDefaults standardUserDefaults] valueForKey:@"userID"] == nil) {
+                NSMutableDictionary *errorDetails = [NSMutableDictionary dictionary];
+                [errorDetails setValue:@"Please register and log in first! To do that, go to Preferences > Account, or click the button below." forKey:NSLocalizedDescriptionKey];
+                
+                NSError *error = [NSError errorWithDomain:@"com.barrel.fatal" code:100 userInfo:errorDetails];
+                OEHUDAlert *errorAlert = [OEHUDAlert alertWithError:error];
+                [errorAlert setAlternateButtonTitle:@"User Account"];
+                [errorAlert setAlternateButtonAction:@selector(openUserPreferences:) andTarget:self];
+                [errorAlert runModal];
+                
+                return;
+            }
+            else {
+                [self setReviewsWindowController:[[BLReviewsWindowController alloc] initWithGame:obj]];
+                [[[self reviewsWindowController] window] center];
+                [[[self reviewsWindowController] window] makeKeyAndOrderFront:self];
+            }
+        }
+    }];
+}
+
 - (IBAction)openUserPreferences:(id)sender {
     [NSApp stopModal];
     [[NSNotificationCenter defaultCenter] postNotificationName:OEPreferencesOpenPaneNotificationName object:nil userInfo:@{OEPreferencesUserInfoPanelNameKey: @"User Account"}];

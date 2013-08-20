@@ -32,6 +32,7 @@
 #import "OELibrarySplitView.h"
 #import "OEButton.h"
 #import "OEHUDAlert.h"
+#import "BLReviewsWindowController.h"
 
 @class OELibraryDatabase;
 @class OESidebarController;
@@ -68,6 +69,8 @@
 - (IBAction)makeGameRecipeAndUpload:(id)sender;
 - (IBAction)startWineConfig:(id)sender;
 - (IBAction)startRegedit:(id)sender;
+- (IBAction)openUserPreferences:(id)sender;
+- (IBAction)showReviewWindow:(id)sender;
 
 #pragma mark -
 #pragma mark Menu Items
@@ -97,6 +100,8 @@
 
 @property (readwrite) OEHUDAlert *debugAlert;
 @property (readwrite) OEDBGame *currentGame;
+
+@property(nonatomic, readwrite) BLReviewsWindowController *reviewsWindowController;
 
 
 - (void)showViewController:(NSViewController <OELibrarySubviewController>*)nextViewController;
