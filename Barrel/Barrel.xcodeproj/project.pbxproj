@@ -304,6 +304,8 @@
 		C16AE70B17BE2B4300C4A593 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C16AE70917BE2B4200C4A593 /* OpenGL.framework */; };
 		C16D643917A14364002BA615 /* BLOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = C16D643817A14364002BA615 /* BLOutlineView.m */; };
 		C16D643B17A16D77002BA615 /* game_scanner_progress_blue_candy.png in Resources */ = {isa = PBXBuildFile; fileRef = C16D643A17A16D77002BA615 /* game_scanner_progress_blue_candy.png */; };
+		C1718C3317C380E600A86AA6 /* Review.xib in Resources */ = {isa = PBXBuildFile; fileRef = C1718C3217C380E600A86AA6 /* Review.xib */; };
+		C1718C3C17C39BB800A86AA6 /* BLReviewsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C1718C3B17C39BB800A86AA6 /* BLReviewsWindowController.m */; };
 		C176B63017551589003E65EB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C176B62F17551588003E65EB /* SystemConfiguration.framework */; };
 		C17C8CF0179E86330089D9BA /* BLSystemCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = C17C8CEF179E86330089D9BA /* BLSystemCommand.m */; };
 		C184BFE017589B5200622EF1 /* BarrelApp.app in Copy Files (1 item) */ = {isa = PBXBuildFile; fileRef = C184BFDB1758980C00622EF1 /* BarrelApp.app */; };
@@ -946,6 +948,9 @@
 		C16D643717A14364002BA615 /* BLOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLOutlineView.h; sourceTree = "<group>"; };
 		C16D643817A14364002BA615 /* BLOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLOutlineView.m; sourceTree = "<group>"; };
 		C16D643A17A16D77002BA615 /* game_scanner_progress_blue_candy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = game_scanner_progress_blue_candy.png; sourceTree = "<group>"; };
+		C1718C3217C380E600A86AA6 /* Review.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Review.xib; sourceTree = "<group>"; };
+		C1718C3A17C39BB800A86AA6 /* BLReviewsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLReviewsWindowController.h; sourceTree = "<group>"; };
+		C1718C3B17C39BB800A86AA6 /* BLReviewsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLReviewsWindowController.m; sourceTree = "<group>"; };
 		C176B62F17551588003E65EB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C17C8CEE179E86330089D9BA /* BLSystemCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLSystemCommand.h; sourceTree = "<group>"; };
 		C17C8CEF179E86330089D9BA /* BLSystemCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLSystemCommand.m; sourceTree = "<group>"; };
@@ -1106,6 +1111,7 @@
 				831C2AE8144F453C009533C0 /* MainMenu.xib */,
 				832D29421451ACF200BDF950 /* MainWindow.xib */,
 				E2DB7D6D179C579D00FECA54 /* Winetricks.xib */,
+				C1718C3217C380E600A86AA6 /* Review.xib */,
 			);
 			name = XIBs;
 			sourceTree = "<group>";
@@ -1323,6 +1329,7 @@
 				83FC3CC4156D155B00F0CDB6 /* OEMainWindowContentController.h */,
 				832D293E1451A68700BDF950 /* OEMainWindowController.h */,
 				832D293F1451A68700BDF950 /* OEMainWindowController.m */,
+				C1718C3917C39B8300A86AA6 /* MainWindow: Review */,
 				832D29441451B0CA00BDF950 /* MainWindow: Library */,
 				53439AE813B92E72005C0CC8 /* Controls */,
 			);
@@ -2187,6 +2194,15 @@
 			name = "Outline View";
 			sourceTree = "<group>";
 		};
+		C1718C3917C39B8300A86AA6 /* MainWindow: Review */ = {
+			isa = PBXGroup;
+			children = (
+				C1718C3A17C39BB800A86AA6 /* BLReviewsWindowController.h */,
+				C1718C3B17C39BB800A86AA6 /* BLReviewsWindowController.m */,
+			);
+			name = "MainWindow: Review";
+			sourceTree = "<group>";
+		};
 		C184BFD71758980B00622EF1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2519,6 +2535,7 @@
 				83025E63146BDD9400A06EF9 /* slim_dark_pill_button.png in Resources */,
 				83025E69146BE71600A06EF9 /* install_progress_bar_track.png in Resources */,
 				83025E6A146BE71600A06EF9 /* install_progress_bar.png in Resources */,
+				C1718C3317C380E600A86AA6 /* Review.xib in Resources */,
 				83BF5292146C2F0A00B5F742 /* blank_slate_arrow.png in Resources */,
 				83BF5295146C2F4000B5F742 /* blank_slate_box.png in Resources */,
 				830EF6CC146C590D00B0C8B0 /* blank_slate_core_icon.png in Resources */,
@@ -2664,6 +2681,7 @@
 				EFBD5D8314EFE27500FBD1E0 /* OEGridViewCell.m in Sources */,
 				EFBD5D8614EFE27F00FBD1E0 /* OEGridViewLayoutManager.m in Sources */,
 				EFBD5D8B14EFE29500FBD1E0 /* OECoverGridViewCell.m in Sources */,
+				C1718C3C17C39BB800A86AA6 /* BLReviewsWindowController.m in Sources */,
 				EFBD5D8C14EFE29500FBD1E0 /* OECoverGridViewCellRatingLayer.m in Sources */,
 				EFBD5D8F14F1398400FBD1E0 /* OECoverGridViewCellIndicationLayer.m in Sources */,
 				83753F1714F537C400D708A7 /* OEPrefDebugController.m in Sources */,
