@@ -931,7 +931,7 @@ static NSArray *OE_defaultSortDescriptors;
                      for (NSURL *url in [openPanel URLs]) {
                          // Just make absolutely sure that the file exists and we have access to it
                          if ([[NSFileManager defaultManager] fileExistsAtPath:[url path]]) {
-                             NSMutableArray *infoDict = [[NSMutableArray alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", [obj bundlePath]]];
+                             NSMutableDictionary *infoDict = [[NSMutableDictionary alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", [obj bundlePath]]];
                              NSRange driveCRange = [[url path] rangeOfString:@"drive_c"];
                              if (driveCRange.location != NSNotFound) {
                                  NSString *finalPath = [[url path] substringWithRange:NSMakeRange(driveCRange.location, ([[url path] length] - driveCRange.location))];
