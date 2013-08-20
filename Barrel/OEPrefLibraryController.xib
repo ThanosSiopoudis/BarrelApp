@@ -39,7 +39,7 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSView" id="260910718">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">256</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSCustomView" id="245748282">
@@ -119,7 +119,6 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{42, 22}, {377, 102}}</string>
 						<reference key="NSSuperview" ref="260910718"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 						<int key="NSNumRows">4</int>
@@ -241,7 +240,7 @@
 					<object class="NSButton" id="54998610">
 						<reference key="NSNextResponder" ref="260910718"/>
 						<int key="NSvFlags">284</int>
-						<string key="NSFrame">{{214, 193}, {78, 23}}</string>
+						<string key="NSFrame">{{214, 193}, {78, 22.999999999999996}}</string>
 						<reference key="NSSuperview" ref="260910718"/>
 						<reference key="NSNextKeyView" ref="399148658"/>
 						<bool key="NSEnabled">YES</bool>
@@ -263,7 +262,7 @@
 					<object class="NSButton" id="399148658">
 						<reference key="NSNextResponder" ref="260910718"/>
 						<int key="NSvFlags">284</int>
-						<string key="NSFrame">{{303, 193}, {78, 23}}</string>
+						<string key="NSFrame">{{303, 193}, {78, 22.999999999999986}}</string>
 						<reference key="NSSuperview" ref="260910718"/>
 						<reference key="NSNextKeyView" ref="525206165"/>
 						<bool key="NSEnabled">YES</bool>
@@ -284,7 +283,6 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{423, 321}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="457362967"/>
 			</object>
 			<object class="NSUserDefaultsController" id="48365423">
