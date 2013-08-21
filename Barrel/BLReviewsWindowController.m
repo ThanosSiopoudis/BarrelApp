@@ -114,7 +114,7 @@
             BL_GenericAPIResponse *genericResponse = [mappingResult firstObject];
             if ([genericResponse responseCode] != 200) {
                 NSMutableDictionary *errorDescription = [NSMutableDictionary dictionary];
-                [errorDescription setValue:[genericResponse description] forKey:NSLocalizedDescriptionKey];
+                [errorDescription setValue:[genericResponse responseDescription] forKey:NSLocalizedDescriptionKey];
                 NSError *codedError = [NSError errorWithDomain:@"BLFatalDomain" code:[genericResponse responseCode] userInfo:errorDescription];
                 OEHUDAlert *alert = [OEHUDAlert alertWithError:codedError];
                 [alert runModal];
