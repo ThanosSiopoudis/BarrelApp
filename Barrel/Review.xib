@@ -284,7 +284,7 @@
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="547139978"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -299,6 +299,46 @@
 						<reference key="destination" ref="781196953"/>
 					</object>
 					<string key="id">ras-Tc-OAC</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">starRating</string>
+						<reference key="source" ref="774556752"/>
+						<reference key="destination" ref="367622220"/>
+					</object>
+					<string key="id">O1V-ox-J1x</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">title</string>
+						<reference key="source" ref="774556752"/>
+						<reference key="destination" ref="497243777"/>
+					</object>
+					<string key="id">qY9-ds-oaL</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">comment</string>
+						<reference key="source" ref="774556752"/>
+						<reference key="destination" ref="825814375"/>
+					</object>
+					<string key="id">6nf-RI-s2m</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">sendReviewToServer:</string>
+						<reference key="source" ref="774556752"/>
+						<reference key="destination" ref="238195997"/>
+					</object>
+					<string key="id">6zk-Ms-cR9</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">closeReviewWindow:</string>
+						<reference key="source" ref="774556752"/>
+						<reference key="destination" ref="237206602"/>
+					</object>
+					<string key="id">4tk-Wt-mPZ</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
