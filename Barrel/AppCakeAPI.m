@@ -28,6 +28,7 @@
 #import "AC_Game.h"
 #import "AC_WineBuild.h"
 #import "AC_User.h"
+#import "BL_Comment.h"
 #import "BL_GenericAPIResponse.h"
 
 @interface AppCakeAPI()
@@ -272,4 +273,41 @@
     
     [objectRequestOperation start];
 }
+
+- (void)uploadReviewForGameID:(NSInteger)gameID
+                       byUser:(NSInteger)user
+                    withTitle:(NSString *)title
+                  withComment:(NSString *)comment
+                    andRating:(NSInteger)rating
+                      toBlock:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))completionBlock
+                    failBlock:(void (^)(RKObjectRequestOperation *operation, NSError *error))errorBlock
+{
+    BL_Comment *newComment = [BL_Comment new];
+    newComment.title = title;
+    newComment.gameID = gameID;
+    newComment.userID = user;
+    newComment.comment = comment;
+    newComment.rating = [NSNumber numberWithInteger:rating];
+    
+    RKObjectMapping *requestMapping = [RKObjectMapping requestMapping];
+    [requestMapping addAttributeMappingsFromArray:@[@"title", @"gameID", @"userID", @"comment", @"rating"]];
+    
+    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[BL_GenericAPIResponse class]];
+    [responseMapping addAttributeMappingsFromDictionary:@{
+                                                          @"responseCode": @"responseCode",
+                                                          @"responseDescription": @"responseDescription"
+                                                          }];
+    
+    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:requestMapping objectClass:[BL_Comment class] rootKeyPath:nil method:RKRequestMethodPOST];
+    RKResponseDescriptor *innerResponseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:RKRequestMethodPOST pathPattern:nil keyPath:@"results" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    
+    // Serialize the Article attributes then attach a file
+    RKObjectManager *manager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"BLApiServerURL"]]];
+    
+    [manager addResponseDescriptor:innerResponseDescriptor];
+    [manager addRequestDescriptor:requestDescriptor];
+    
+    [manager postObject:newComment path:@"/Comments/addNewComment.json" parameters:nil success:completionBlock failure:errorBlock];
+}
+
 @end
