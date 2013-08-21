@@ -24,10 +24,13 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import "OETextField.h"
 #import <Cocoa/Cocoa.h>
 
 @interface BLReviewsWindowController : NSWindowController
 
 - (id)initWithGame:(OEDBGame *)game;
+- (IBAction)sendReviewToServer:(id)sender;
+- (IBAction)closeReviewWindow:(id)sender;
 
 @end
