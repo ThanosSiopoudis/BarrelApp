@@ -747,8 +747,9 @@ static NSArray *OE_defaultSortDescriptors;
         [advancedMenu addItemWithTitle:NSLocalizedString(@"Debug Run", @"") action:@selector(startDebugRun:) keyEquivalent:@""];
         [advancedMenu addItemWithTitle:NSLocalizedString(@"Wine Config", @"") action:@selector(startWineConfig:) keyEquivalent:@""];
         [advancedMenu addItemWithTitle:NSLocalizedString(@"Registry Editor", @"") action:@selector(startRegedit:) keyEquivalent:@""];
-        [advancedMenu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(showWinetricksMenu:) keyEquivalent:@""];
+        [advancedMenu addItemWithTitle:NSLocalizedString(@"Wine Command Line", @"") action:@selector(startWineCommandLine:) keyEquivalent:@""];
         [advancedMenu addItem:[NSMenuItem separatorItem]];
+        [advancedMenu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(showWinetricksMenu:) keyEquivalent:@""];
         [advancedMenu addItemWithTitle:NSLocalizedString(@"Run external .exe", @"") action:@selector(runExternalBinary:) keyEquivalent:@""];
         [advancedMenu addItemWithTitle:NSLocalizedString(@"Change executable path", @"") action:@selector(changeExecutablePath:) keyEquivalent:@""];
         

@@ -66,6 +66,7 @@
 - (IBAction)addToLibrary:(id)sender;
 - (IBAction)startDebugRun:(id)sender;
 - (IBAction)startGame:(id)sender;
+- (IBAction)startWineCommandLine:(id)sender;
 - (IBAction)makeGameRecipeAndUpload:(id)sender;
 - (IBAction)startWineConfig:(id)sender;
 - (IBAction)startRegedit:(id)sender;

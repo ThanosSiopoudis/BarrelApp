@@ -353,6 +353,26 @@ static const CGFloat _OEToolbarHeight = 44;
     });
 }
 
+- (IBAction)startWineCommandLine:(id)sender {
+    NSMutableArray *gamesToStart = [NSMutableArray new];
+    
+    if([sender isKindOfClass:[OEDBGame class]]) {
+        [gamesToStart addObject:sender];
+    }
+    else {
+        NSAssert([(id)[self currentViewController] respondsToSelector:@selector(selectedGames)], @"Attempt to start a game from a view controller that doesn't announce selectedGames");
+        [gamesToStart addObjectsFromArray:[(id <OELibrarySubviewController>)[self currentViewController] selectedGames]];
+    }
+    
+    [gamesToStart enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[OEDBGame class]]) {
+            NSString *wineStartLocation = [NSString stringWithFormat:@"%@/Contents/Resources/drive_c/windows/command/start.exe", [obj bundlePath]];
+            NSString *wineCmdLocation = [NSString stringWithFormat:@"%@/Contents/Resources/drive_c/windows/system32/cmd.exe", [obj bundlePath]];
+            [BLSystemCommand runScript:[obj bundlePath] withArguments:[NSArray arrayWithObjects:@"--run", wineStartLocation, wineCmdLocation, nil] shouldWaitForProcess:NO runForMain:YES];
+        }
+    }];
+}
+
 - (IBAction)showReviewWindow:(id)sender {
     NSMutableArray *gamesToStart = [NSMutableArray new];
     
