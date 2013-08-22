@@ -7,6 +7,9 @@ Current Build Status:
 A PC game library manager for Wine games on Mac with bundling abilities, based on the source code and amazing
 design of OpenEmu (https://github.com/OpenEmu/OpenEmu)
 
+Calling out to all designers out there! The project needs a UI designer for both the main Barrel app,
+and for the standalone bundle configurator. If you're interested, please open a new Issue!
+
 Minimum System Requirements (for the Barrel App)
 - OS X 10.7+
 - Core 2 Duo Processor
