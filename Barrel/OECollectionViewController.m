@@ -1006,7 +1006,7 @@ static NSArray *OE_defaultSortDescriptors;
         if ([obj isKindOfClass:[OEDBGame class]]) {
             // Check if we have a cached version of the winetricks list. We'll auto-update this daily
             // Save the wine and wineserver names in the Info.plist for external access
-            NSString *winetricksPlistPath = [NSString stringWithFormat:@"%@/Winetricks.plist", [[[[self libraryController] database] cacheFolderURL] path]];
+            NSString *winetricksPlistPath = [NSString stringWithFormat:@"%@/Contents/Resources/Winetricks.plist", [obj bundlePath]];
             NSString *gameWinetricksBinaryPath = [NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/winetricks", [obj bundlePath]];
             if (![[NSFileManager defaultManager] fileExistsAtPath:winetricksPlistPath] || ![[NSFileManager defaultManager] fileExistsAtPath:gameWinetricksBinaryPath]) {
                 [self doWinetricksUpdateAndParseWithPlist:winetricksPlistPath andObject:obj];
