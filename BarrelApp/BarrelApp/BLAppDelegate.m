@@ -232,7 +232,6 @@
 - (void)saveBundleExecutablePath {
      NSString *execPath = [[self alertCache] popupButtonSelectedItem];
     if ([execPath length] > 0) {
-        // TODO: Fix this (not currently working
         [[self infoPlistDict] setValue:execPath forKey:@"Windows Executable"];
         [[self infoPlistDict] writeToFile:[self infoPlistPath] atomically:YES];
     }
