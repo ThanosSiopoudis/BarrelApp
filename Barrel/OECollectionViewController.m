@@ -50,8 +50,6 @@
 #import "OEDBCollection.h"
 #import "OEDBSaveState.h"
 
-#import "ArchiveVG.h"
-
 #import "OECenteredTextFieldCell.h"
 #import "OELibraryDatabase.h"
 

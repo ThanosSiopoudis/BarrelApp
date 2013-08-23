@@ -107,21 +107,10 @@
             
         case 3:
             printf("\nRunning archive sync on all games\n\n");
-            [allGames enumerateObjectsUsingBlock:
-             ^(id obj, NSUInteger idx, BOOL *stop)
-             {
-                 [(OEDBGame*)obj setNeedsArchiveSync];
-             }];
             printf("\nDone\n");
             break;
         case 4:
             printf("\nRunning archive sync on all unsynced games\n\n");
-            [allGames enumerateObjectsUsingBlock:
-             ^(id obj, NSUInteger idx, BOOL *stop)
-             {
-                 if([obj lastArchiveSync] == nil)
-                     [(OEDBGame*)obj setNeedsArchiveSync];
-             }];
             printf("\nDone\n");
             break;
         case 5:

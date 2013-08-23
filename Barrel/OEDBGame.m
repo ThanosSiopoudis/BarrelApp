@@ -31,7 +31,6 @@
 #import "OEDBGame.h"
 #import "OEDBImage.h"
 
-#import "ArchiveVG.h"
 #import "OELibraryDatabase.h"
 
 #import "OEDBSystem.h"
@@ -44,7 +43,7 @@ NSString *const OEBoxSizesKey = @"BoxSizes";
 NSString *const OEDisplayGameTitle = @"displayGameTitle";
 
 @interface OEDBGame ()
-- (void)OE_performArchiveSync;
+
 @end
 
 @implementation OEDBGame
@@ -201,105 +200,6 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
     [[game libraryDatabase] save:nil];
 }
 
-#pragma mark -
-#pragma mark Archive.VG Sync
-- (void)setArchiveVGInfo:(NSDictionary *)gameInfoDictionary
-{
-    OEDBGame *game = self;
-    
-    // The following values have to be included in a valid archiveVG info dictionary
-    if([[gameInfoDictionary allKeys] count] == 0) return;
-    
-    NSNumber *archiveID = [gameInfoDictionary valueForKey:AVGGameIDKey];
-    if([archiveID integerValue] != 0)
-        [game setArchiveID:archiveID];
-    
-    NSString *stringValue = nil;
-    
-    stringValue = [gameInfoDictionary valueForKey:AVGGameRomNameKey];
-    if(stringValue != nil)
-    {
-        [game setName:stringValue];
-    }
-    
-    stringValue = [gameInfoDictionary valueForKey:AVGGameTitleKey];
-    if(stringValue != nil)
-    {
-        [game setGameTitle:stringValue];
-    }
-    
-    // Get + Set game developer
-    stringValue = [gameInfoDictionary valueForKey:AVGGameDeveloperKey];
-    if(stringValue != nil)
-    {
-        // TODO: Handle credits
-    }
-	
-    // Get + Set game description
-    stringValue = [gameInfoDictionary valueForKey:AVGGameDescriptionKey];
-    if(stringValue != nil)
-    {
-        [game setGameDescription:stringValue];
-    }
-    
-    // TODO: implement the following keys:
-    //// DLog(@"AVGGameGenreKey: %@", [gameInfoDictionary valueForKey:AVGGameGenreKey]);
-    if([gameInfoDictionary valueForKey:AVGGameBoxURLStringKey])
-        [game setBoxImageByURL:[NSURL URLWithString:[gameInfoDictionary valueForKey:AVGGameBoxURLStringKey]]];
-    //// DLog(@"AVGGameBoxURLKey: %@", [gameInfoDictionary valueForKey:AVGGameBoxURLKey]);
-    //// DLog(@"AVGGameESRBRatingKey: %@", [gameInfoDictionary valueForKey:AVGGameESRBRatingKey]);
-    //// DLog(@"AVGGameCreditsKey: %@", [gameInfoDictionary valueForKey:AVGGameCreditsKey]);
-    
-    // Save changes
-//    [[game libraryDatabase] save:nil];
-}
-
-- (void)setNeedsArchiveSync
-{
-    [self setStatus:[NSNumber numberWithInt:OEDBGameStatusProcessing]];
-    [[self libraryDatabase] save:nil];
-    [self OE_performArchiveSync];
-}
-
-// -OE_performArchiveSync
-- (void)OE_performArchiveSync
-{
-    NSURL		      *objectID				= [[self objectID] URIRepresentation];
-	void(^block)(NSDictionary *gameInfo)	= ^(NSDictionary *gameInfo){
-        OELibraryDatabase *blockDatabase	= [self libraryDatabase];
-        OEDBGame *game = [blockDatabase objectWithURI:objectID];
-        [game setArchiveVGInfo:gameInfo];
-        [game setLastArchiveSync:[NSDate date]];
-        [game setStatus:[NSNumber numberWithInt:OEDBGameStatusOK]];
-        [[game libraryDatabase] save:nil];
-    };
-    
-    NSNumber *archiveID = [self archiveID];
-    if([archiveID integerValue] != 0)
-		[[ArchiveVG throttled] gameInfoByID:[archiveID integerValue] withCallback:^(id result, NSError *error) {
-			block(result);
-		}];
-    else
-    {
-        NSSet *roms = [self roms];
-        __block int remainingResults = [roms count];
-        [roms enumerateObjectsUsingBlock:^(OEDBRom *aRom, BOOL *stop)
-         {
-			 [[ArchiveVG throttled] gameInfoByMD5:[aRom md5Hash] andCRC:[aRom crcHash] withCallback:^(id result, NSError *error) {
-                 remainingResults--;
-				 if([result valueForKey:AVGGameIDKey] != nil && [[result valueForKey:AVGGameIDKey] integerValue] != 0)
-				 {
-					 block(result);
-                     remainingResults = 0;
-				 }
-                 else if(remainingResults == 0)
-                 {
-                     block(nil);
-                 }
-			 }];
-		 }];
-    }
-}
 #pragma mark -
 - (id)mergeInfoFromGame:(OEDBGame *)game
 {
@@ -497,27 +397,6 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
         
         [self setBoxImage:boxImage];
     }
-}
-
-#pragma mark -
-- (void)mergeWithGameInfo:(NSDictionary *)archiveGameDict
-{  
-    
-    if([[archiveGameDict valueForKey:AVGGameIDKey] intValue] == 0) return;
-    
-    [self setArchiveID:[archiveGameDict valueForKey:AVGGameIDKey]];
-    [self setName:[archiveGameDict valueForKey:AVGGameRomNameKey]];
-    [self setGameTitle:[archiveGameDict valueForKey:AVGGameTitleKey]];
-    [self setLastArchiveSync:[NSDate date]];
-    [self setImportDate:[NSDate date]];
-    
-    NSString *boxURLString = [archiveGameDict valueForKey:(NSString *)AVGGameBoxURLStringKey];
-    if(boxURLString != nil)
-        [self setBoxImageByURL:[NSURL URLWithString:boxURLString]];
-    
-    NSString *gameDescription = [archiveGameDict valueForKey:(NSString *)AVGGameDescriptionKey];
-    if(gameDescription != nil)
-        [self setGameDescription:gameDescription];
 }
 
 #pragma mark -

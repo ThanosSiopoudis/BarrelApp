@@ -84,13 +84,6 @@ extern NSString *const OEDisplayGameTitle;
 #pragma mark Barrel.API Sync
 - (void)setAuthorIDInfo:(NSNumber *)authorID andAPIIDInfo:(NSNumber *)APIID;
 #pragma mark -
-#pragma mark Archive.VG Sync
-- (void)setArchiveVGInfo:(NSDictionary *)gameInfoDictionary;
-- (void)setNeedsArchiveSync;
-
-- (id)mergeInfoFromGame:(OEDBGame *)game;
-
-#pragma mark -
 #pragma mark Accessors
 @property(readonly) OEDBRom         *defaultROM;
 @property(readonly) NSDate          *lastPlayed;
@@ -103,8 +96,6 @@ extern NSString *const OEDisplayGameTitle;
 #pragma mark -
 - (void)setBoxImageByImage:(NSImage *)img;
 - (void)setBoxImageByURL:(NSURL *)url;
-
-- (void)mergeWithGameInfo:(NSDictionary *)archiveGameDict;
 
 - (void)deleteByMovingFile:(BOOL)moveToTrash;
 #pragma mark -
