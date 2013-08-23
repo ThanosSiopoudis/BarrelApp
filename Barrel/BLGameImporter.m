@@ -97,6 +97,7 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 - (void)scheduleItemForNextStep:(BLImportItem *)item;
 - (void)stopImportForItem:(BLImportItem *)item withError:(NSError *)error;
 - (void)cleanupImportForItem:(BLImportItem *)item;
+- (IBAction)didSelectGameRecipe:(id)sender;
 
 @end
 
@@ -365,48 +366,17 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             [noResultsAlert runModal];
         }
         else if ([mappingResult count] == 1) {
-            // We found a result. One result means get it.
-            [self setServerGame:[mappingResult firstObject]];
-            
-            // Quickly save the volumename in the database
-            // We don't mind if it fails, it's not fatal if it's not able to store it
-            [[self appCake] pushIdentifierToServer:[self volumeName] forGameWithID: [NSString stringWithFormat:@"%li", (long)[[self serverGame] id]] toBlock:nil failBlock:nil];
-            [[self progressWindow] close];
-            
-            // Fetch the .plist file
-            OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading Recipe..." andTitle:@"Download" indeterminate:NO];
-            [self setAlertCache:downloadAlert];
-            [[self alertCache] open];
-            NSString *path = [[[self database] tempFolderURL] path];
-            // Run the downloader in the main thread
-            dispatch_async(dispatch_get_main_queue(), ^{
-                BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
-                [self setDownloaderCache:fileDownloader];
-                [[self alertCache] setDefaultButtonAction:@selector(cancelDownloadAndStop) andTarget:self];
-                [fileDownloader downloadWithNSURLConnectionFromURL:[[self serverGame] recipeURL] withCompletionBlock:^(int result, NSString *resultPath) {
-                    [[self alertCache] close];
-                    if (result) {
-                        [self setDownloadedRecipePath:resultPath];
-                        [self setDownloadPath:[[self serverGame] engineURL]];
-                        [self setGameName:[[self serverGame] name]];
-                        [self setEngineID:[NSString stringWithFormat:@"%li",(long)[[self serverGame] wineBuildID]]];
-                        
-                        [item setImportState:BLImportItemStatusActive];
-                        [self scheduleItemForNextStep:item];
-                    }
-                    else {
-                        // Something went wrong, abort
-                        [[self alertCache] close];
-                        OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error communicating with the server! Please try again later!" defaultButton:@"OK" alternateButton:@""];
-                        [errorAlert setDefaultButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
-                        [errorAlert runModal];
-                    }
-                }];
-                [fileDownloader startDownload];
-            });
+            [self getRecipeAndContinue:[mappingResult firstObject] withItem:item];
         }
         else {
             // If the results were more than one, let the user choose
+            [[self progressWindow] close];
+            NSMutableArray *results = [NSMutableArray arrayWithArray:[mappingResult array]];
+            OEHUDAlert *chooseGameAlert = [OEHUDAlert alertWithMessageText:@"Barrel found more than one match on the server. Please select the game that you want to install." defaultButton:@"OK" alternateButton:@"" otherButton:@"Cancel" popupGameItems:results popupButtonLabel:@"Game"];
+            [self setAlertCache:chooseGameAlert];
+            [[self alertCache] open];
+            [[self alertCache] setDefaultButtonAction:@selector(didSelectGameRecipe:) andTarget:self];
+            [[self alertCache] setOtherButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
         }
     } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
         [[self progressWindow] close];
@@ -712,6 +682,54 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 #pragma mark Perform Helper Methods
+- (IBAction)didSelectGameRecipe:(id)sender {
+    AC_Game *selectedGame = [[self alertCache] popupButtonSelectedItem];
+    [[self alertCache] close];
+    [self getRecipeAndContinue:selectedGame withItem:[self currentItem]];
+}
+
+- (void)getRecipeAndContinue:(AC_Game *)game withItem:(BLImportItem *)item {
+    // We found a result. One result means get it.
+    [self setServerGame:game];
+    
+    // Quickly save the volumename in the database
+    // We don't mind if it fails, it's not fatal if it's not able to store it
+    [[self appCake] pushIdentifierToServer:[self volumeName] forGameWithID: [NSString stringWithFormat:@"%li", (long)[[self serverGame] id]] toBlock:nil failBlock:nil];
+    [[self progressWindow] close];
+    
+    // Fetch the .plist file
+    OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading Recipe..." andTitle:@"Download" indeterminate:NO];
+    [self setAlertCache:downloadAlert];
+    [[self alertCache] open];
+    NSString *path = [[[self database] tempFolderURL] path];
+    // Run the downloader in the main thread
+    dispatch_async(dispatch_get_main_queue(), ^{
+        BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
+        [self setDownloaderCache:fileDownloader];
+        [[self alertCache] setDefaultButtonAction:@selector(cancelDownloadAndStop) andTarget:self];
+        [fileDownloader downloadWithNSURLConnectionFromURL:[[self serverGame] recipeURL] withCompletionBlock:^(int result, NSString *resultPath) {
+            [[self alertCache] close];
+            if (result) {
+                [self setDownloadedRecipePath:resultPath];
+                [self setDownloadPath:[[self serverGame] engineURL]];
+                [self setGameName:[[self serverGame] name]];
+                [self setEngineID:[NSString stringWithFormat:@"%li",(long)[[self serverGame] wineBuildID]]];
+                
+                [item setImportState:BLImportItemStatusActive];
+                [self scheduleItemForNextStep:item];
+            }
+            else {
+                // Something went wrong, abort
+                [[self alertCache] close];
+                OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error communicating with the server! Please try again later!" defaultButton:@"OK" alternateButton:@""];
+                [errorAlert setDefaultButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
+                [errorAlert runModal];
+            }
+        }];
+        [fileDownloader startDownload];
+    });
+}
+
 - (NSMutableArray *)searchFolderForExecutables:(NSString *)folder {
     NSMutableArray *results = [[NSMutableArray alloc] init];
     
