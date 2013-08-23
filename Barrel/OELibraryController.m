@@ -514,6 +514,10 @@ static const CGFloat _OEToolbarHeight = 44;
     // Get some of the saved info from the Info.plist of the game
     NSBundle *gameBundle = [NSBundle bundleWithPath:[[self currentGame] bundlePath]];
     NSMutableDictionary *bundleDict = [NSMutableDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", [[self currentGame] bundlePath]]];
+    BOOL isSteam = NO;
+    if ([bundleDict valueForKey:@"BLSteamBundle"] != nil) {
+        isSteam = [[bundleDict valueForKey:@"BLSteamBundle"] isEqualToString:@"TRUE"];
+    }
 
     NSMutableDictionary *gameRecipe = [[NSMutableDictionary alloc] init];
     [gameRecipe setValue:[[self currentGame] name] forKey:@"BLGameName"];
@@ -522,6 +526,10 @@ static const CGFloat _OEToolbarHeight = 44;
     [gameRecipe setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"userID"] forKey:@"BLAuthorID"];
     [gameRecipe setValue:[bundleDict valueForKey:@"BLEngineID"] forKey:@"BLWineVersionID"];
     [gameRecipe setValue:[bundleDict valueForKey:@"BLVolumeName"] forKey:@"BLImportedVolName"];
+    // Is this game Steam?
+    if (isSteam) {
+        [gameRecipe setValue:@"TRUE" forKey:@"BLSteamBundle"];
+    }
     
     // Is winetricks installed in the bundle? If not, get it first!
     if (![[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%@/blwine.bundle/bin/winetricks", [gameBundle privateFrameworksPath]]]) {
@@ -541,18 +549,18 @@ static const CGFloat _OEToolbarHeight = 44;
                     NSError *fsError = nil;
                     [[NSFileManager defaultManager] moveItemAtPath:resultPath toPath:[NSString stringWithFormat:@"%@/Contents/Frameworks/blwine.bundle/bin/winetricks", [[self currentGame] bundlePath]] error:&fsError];
                     [downloadAlert close];
-                    [self doPushToServerWithBundle:gameBundle partialRecipe:gameRecipe bundleDictionary:bundleDict recipeFilename:recipePlistFilename];
+                    [self doPushToServerWithBundle:gameBundle partialRecipe:gameRecipe bundleDictionary:bundleDict recipeFilename:recipePlistFilename withSteam:isSteam];
                 }
             }];
             [fileDownloader startDownload];
         });
     }
     else {
-        [self doPushToServerWithBundle:gameBundle partialRecipe:gameRecipe bundleDictionary:bundleDict recipeFilename:recipePlistFilename];
+        [self doPushToServerWithBundle:gameBundle partialRecipe:gameRecipe bundleDictionary:bundleDict recipeFilename:recipePlistFilename withSteam:isSteam];
     }
 }
 
-- (void) doPushToServerWithBundle:(NSBundle *)gameBundle partialRecipe:(NSMutableDictionary *)gameRecipe bundleDictionary:(NSMutableDictionary *)bundleDict recipeFilename:(NSString *)recipePlistFilename {
+- (void) doPushToServerWithBundle:(NSBundle *)gameBundle partialRecipe:(NSMutableDictionary *)gameRecipe bundleDictionary:(NSMutableDictionary *)bundleDict recipeFilename:(NSString *)recipePlistFilename withSteam:(BOOL)withSteam {
     // Run winetricks list to get a list of the installed winetricks but notify the user
     OEHUDAlert *uploadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Getting list of winetricks. This may take a while..." andTitle:@"Getting Winetricks" indeterminate:YES];
     [uploadAlert open];
@@ -569,6 +577,19 @@ static const CGFloat _OEToolbarHeight = 44;
         if ([winetricksResults length]) {
             winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@"\n" withString:@", "];
             winetricksResults = [winetricksResults substringWithRange:NSMakeRange(0, [winetricksResults length] - 2)];
+            if (withSteam) {
+                // if this is Steam, remove the steam winetricks entry, as it's going to be prepended on import.
+                // Also remove corefonts, eufonts
+                winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@"steam, " withString:@""];
+                winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@", steam" withString:@""];
+                winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@"steam" withString:@""];
+                winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@"corefonts, " withString:@""];
+                winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@", corefonts" withString:@""];
+                winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@"corefonts" withString:@""];
+                winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@"eufonts, " withString:@""];
+                winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@", eufonts" withString:@""];
+                winetricksResults = [winetricksResults stringByReplacingOccurrencesOfString:@"eufonts" withString:@""];
+            }
             [gameRecipe setValue:winetricksResults forKey:@"BLWinetricksVerbs"];
         }
         else {
