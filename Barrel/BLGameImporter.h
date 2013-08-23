@@ -85,11 +85,15 @@ typedef enum : NSInteger {
 - (BOOL)importItemAtPath:(NSString *)path intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler;
 - (BOOL)importItemAtURL:(NSURL *)url intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler;
 
-#pragma mark - Importing and empty bundle into collections
+#pragma mark - Importing an empty bundle into collections
+- (BOOL)importSteamBundleIntoCollectionWithID:(NSURL *)collectionID;
 - (BOOL)importEmptyBundleIntoCollectionWithID:(NSURL *)collectionID;
+
+- (BOOL)importSteamBundleIntoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID;
 - (BOOL)importEmptyBundleIntoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID;
 
 #pragma mark - Importing an empty bundle into collections with completion handler
+- (BOOL)importSteamBundleIntoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler;
 - (BOOL)importEmptyBundleIntoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler;
 @end
 

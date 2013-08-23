@@ -80,6 +80,7 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 @property(readwrite)            AC_Game             *serverGame;
 @property(readwrite)            NSString            *downloadedRecipePath;
 @property(readwrite)            BLFileDownloader    *downloaderCache;
+@property(readwrite)            NSString            *execPath;
 
 - (void)processNextItemIfNeeded;
 
@@ -96,7 +97,6 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 - (void)scheduleItemForNextStep:(BLImportItem *)item;
 - (void)stopImportForItem:(BLImportItem *)item withError:(NSError *)error;
 - (void)cleanupImportForItem:(BLImportItem *)item;
-- (void)reSearchItem:(BLImportItem *)item;
 
 @end
 
@@ -268,8 +268,8 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         [[item importInfo] setValue:[[chooseGenreAlert popupButtonSelectedItem] systemIdentifier] forKey:BLImportInfoSystemID];
     }
     
-    // That's as far as we go if we're creating an empty bundle...
-    if ([item isEmptyBundle]) {
+    // That's as far as we go if we're creating an empty or Steam bundle...
+    if ([item isEmptyBundle] || [item isSteamBundle]) {
         return;
     }
     
@@ -299,8 +299,8 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 
 - (void)performImportStepCheckDirectory:(BLImportItem *)item
 {
-    // No need for this step if we're creating an empty bundle
-    if ([item isEmptyBundle]) {
+    // No need for this step if we're creating an empty or Steam bundle
+    if ([item isEmptyBundle] || [item isSteamBundle]) {
         return;
     }
     
@@ -344,6 +344,11 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         return;
     }
     
+    // If this is Steam, prompt the user for a name to search before proceeding
+    if ([item isSteamBundle] && [self volumeName] == nil) {
+        [self reSearchItem:nil];
+        return;
+    }
     
     [[self progressWindow] setMessageText:@"Looking up game..."];
     [[self progressWindow] setShowsIndeterminateProgressbar:YES];
@@ -493,6 +498,11 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
                     [NSMutableDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.app/Contents/Info.plist", destinationPath, [self gameName]]];
                 [plist setValue:[self volumeName] forKey:@"BLVolumeName"];
                 [plist setValue:[self engineID] forKey:@"BLEngineID"];
+                
+                // If this is a Steam bundle, write it in the plist
+                if ([item isSteamBundle])
+                    [plist setValue:@"TRUE" forKey:@"BLSteamBundle"];
+                
                 [plist writeToFile:[NSString stringWithFormat:@"%@/%@.app/Contents/Info.plist", destinationPath, [self gameName]] atomically:YES];
                 
                 [[self alertCache] setShowsProgressbar: NO];
@@ -509,7 +519,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 
 - (void)performImportStepCreateBundle:(BLImportItem *)item {
     // Is this empty? Go away if it is
-    if ([item isEmptyBundle]) {
+    if ([item isEmptyBundle] || [item isSteamBundle]) {
         return;
     }
     
@@ -541,8 +551,8 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     NSURL       *newUrl             = [[[self database] gamesFolderURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@.app", genre, [self gameName]]];
     
     // Was the installation successful? Check the new bundle for a proper windows executable
-    // Only if we're not creating an empty bundle though
-    if (![item isEmptyBundle]) {
+    // Only if we're not creating an empty or Steam bundle though
+    if (![item isEmptyBundle] && ![item isSteamBundle]) {
         NSMutableDictionary *newBundleInfo = [NSMutableDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", newBarrelApp]];
         NSString *newWinBinary = [newBundleInfo valueForKey:@"Windows Executable"];
         if ([newWinBinary isEqualToString:@"none.exe"]) {
@@ -552,11 +562,32 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         }
     }
     
+    if ([item isSteamBundle]) {
+        OEHUDAlert *steamWarning = [OEHUDAlert alertWithMessageText:@"Warning: Steam is about to be installed in the bundle. The process is known to take a while and may look stuck at times, but let it finish through. Login with your account and download the game you want to play when prompted to login. When the installation is finished, exit Steam and also quit from the toolbar icon. If it gets stuck you can safely Force Quit from the Dock." defaultButton:@"I Understand" alternateButton:@""];
+        [steamWarning runModal];
+    }
+    
     // If we have a downloaded recipe, run the required winetricks
-    if ([self downloadedRecipePath] != nil && [[self downloadedRecipePath] length] > 0) {
-        NSMutableDictionary *recipe = [NSMutableDictionary dictionaryWithContentsOfFile:[self downloadedRecipePath]];
-        NSString *wineticksVerbs = [recipe valueForKey:@"BLWinetricksVerbs"];
-        if ([wineticksVerbs length]) {
+    if (([self downloadedRecipePath] != nil && [[self downloadedRecipePath] length] > 0) || [item isSteamBundle]) {
+        
+        NSMutableDictionary *recipe;
+        NSString *winetricksVerbs;
+        
+        if ([self downloadedRecipePath] != nil && [[self downloadedRecipePath] length] > 0) {
+            recipe = [NSMutableDictionary dictionaryWithContentsOfFile:[self downloadedRecipePath]];
+            winetricksVerbs = [recipe valueForKey:@"BLWinetricksVerbs"];
+            if ([winetricksVerbs length]) {
+                winetricksVerbs = [NSString stringWithFormat:@"steam, %@", winetricksVerbs];
+            }
+            else if ([item isSteamBundle]) {
+                winetricksVerbs = @"steam";
+            }
+        }
+        else if ([item isSteamBundle]) {
+            winetricksVerbs = @"steam";
+        }
+        
+        if ([winetricksVerbs length]) {
             [item setImportState:BLImportItemStatusWait];
             NSString *winetricksSrc = @"http://winetricks.googlecode.com/svn/trunk/src/winetricks";
             OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading Winetricks..." andTitle:@"Download" indeterminate:NO];
@@ -584,7 +615,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
                         
                         NSString *winetricksFinalCommand = [NSString stringWithFormat:@"%@/BLWineLauncher", [[newBarrelBundle executablePath] stringByDeletingLastPathComponent]];
                         NSMutableArray *args = [NSMutableArray arrayWithObject:@"--runWinetricks"];
-                        [args addObjectsFromArray:[wineticksVerbs componentsSeparatedByString:@", "]];
+                        [args addObjectsFromArray:[winetricksVerbs componentsSeparatedByString:@", "]];
                         
                         dispatch_async(dispatchQueue, ^{
                             [BLSystemCommand runScript:winetricksFinalCommand withArguments:args shouldWaitForProcess:YES runForMain:NO];
@@ -608,8 +639,22 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     }
 }
 
+- (void)saveBundleExecutablePath {
+    [self setExecPath:[[self alertCache] popupButtonSelectedItem]];
+    [NSApp stopModal];
+}
+
 - (void) organiseItemWithGenre:(NSString *)genre URL:(NSURL *)url NewURL:(NSURL *)newUrl andItem:(BLImportItem *)item {
     NSError *error = nil;
+    
+    if ([item isSteamBundle]) {
+        // Set the executable to steam
+        
+        NSMutableDictionary *plist = [[NSMutableDictionary alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", [url path]]];
+        [plist setValue:@"drive_c/Program Files/Steam/Steam.exe" forKey:@"Windows Executable"];
+        [plist writeToFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", [url path]] atomically:YES];
+    }
+    
     
     [[NSFileManager defaultManager] createDirectoryAtURL:[[[self database] gamesFolderURL] URLByAppendingPathComponent:genre] withIntermediateDirectories:YES attributes:nil error:&error];
     
@@ -667,6 +712,29 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 #pragma mark Perform Helper Methods
+- (NSMutableArray *)searchFolderForExecutables:(NSString *)folder {
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    
+    NSDirectoryEnumerator *direnum = [[NSFileManager defaultManager] enumeratorAtURL:[NSURL URLWithString:[folder stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]includingPropertiesForKeys:[NSArray arrayWithObjects:NSURLNameKey, NSURLIsDirectoryKey, nil] options:NSDirectoryEnumerationSkipsHiddenFiles errorHandler:nil];
+    
+    NSNumber *isDirectory = nil;
+    NSError *error;
+    
+    for (NSURL *url in direnum) {
+        if (![url getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:&error]) {
+            // ERROR
+        }
+        else if (![isDirectory boolValue]) {
+            // It's a file. Add it to the array if it's an .exe
+            if ([[url pathExtension] isEqualToString:@"exe"]) {
+                [results addObject:[url path]];
+            }
+        }
+    }
+    
+    return results;
+}
+
 - (void)cancelDownloadAndStop {
     [[self alertCache] close];
     [[self downloaderCache] cancelDownload];
@@ -735,11 +803,11 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)reSearchItem:(id)sender {
-    [self cancelModalWindow:sender];
-    
+    if (sender)
+        [self cancelModalWindow:sender];
     FIXME("Open the new alert in a callback to give the already open alert a chance to close");
     
-    OEHUDAlert *manualSearchAlert = [OEHUDAlert manualGameSearchWithVolumeName:[self volumeName]];
+    OEHUDAlert *manualSearchAlert = [OEHUDAlert manualGameSearchWithVolumeName:([self volumeName] !=nil ? [self volumeName] : @"")];
     [manualSearchAlert setDefaultButtonAction:@selector(startManualGameSearch:) andTarget:self];
     [manualSearchAlert setAlternateButtonAction:@selector(cancelModalWindowAndStop:) andTarget:self];
     [self setAlertCache:manualSearchAlert];
@@ -754,7 +822,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     [self setVolumeName:[[self alertCache] stringValue]];
     [[self currentItem] setImportState:BLImportItemStatusActive];
     [[self currentItem] setImportStep:BLImportStepCheckDirectory];
-    [self scheduleItemForNextStep:[self currentItem]];
+    // [self scheduleItemForNextStep:[self currentItem]];
 }
 
 - (void)startManualImport:(id)sender {
@@ -966,15 +1034,40 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     return NO;
 }
 
-#pragma mark - Importing and empty bundle into collections
+#pragma mark - Importing an empty bundle into collections
 - (BOOL)importEmptyBundleIntoCollectionWithID:(NSURL *)collectionID {
     return [self importEmptyBundleIntoCollectionWithID:collectionID withSystem:nil];
 }
+
+- (BOOL)importSteamBundleIntoCollectionWithID:(NSURL *)collectionID {
+    return [self importSteamBundleIntoCollectionWithID:collectionID withSystem:nil];
+}
+
+- (BOOL)importSteamBundleIntoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID {
+    return [self importSteamBundleIntoCollectionWithID:collectionID withSystem:systemID withCompletionHandler:nil];
+}
+
 - (BOOL)importEmptyBundleIntoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID {
     return [self importEmptyBundleIntoCollectionWithID:collectionID withSystem:systemID withCompletionHandler:nil];
 }
 
 #pragma mark - Importing an empty bundle into collections with completion handler
+- (BOOL)importSteamBundleIntoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler {
+    BLImportItem *item = [BLImportItem itemWithSteamBundleAndCompletionHandler:handler];
+    if (item)
+    {
+        if (collectionID) [[item importInfo] setObject:collectionID forKey:BLImportInfoCollectionID];
+        if (systemID) [[item importInfo] setObject:systemID forKey:BLImportInfoSystemID];
+        [[self queue] addObject:item];
+        self.totalNumberOfItems++;
+        [self setCurrentItem:item];
+        [self start];
+        return YES;
+    }
+    
+    return NO;
+}
+
 - (BOOL)importEmptyBundleIntoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler {
     
     BLImportItem *item = [BLImportItem itemWithEmptyBundleAndCompletionHandler:handler];

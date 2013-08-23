@@ -269,6 +269,12 @@ static const CGFloat _OEToolbarHeight = 44;
     [gameImporter importEmptyBundleIntoCollectionWithID:nil];
 }
 
+- (IBAction)addSteamGameToLibrary:(id)sender {
+    // Start the import process for Steam games
+    BLGameImporter *gameImporter = [[self database] importer];
+    [gameImporter importSteamBundleIntoCollectionWithID:nil];
+}
+
 - (IBAction)addToLibrary:(id)sender
 {
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];

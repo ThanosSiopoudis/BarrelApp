@@ -95,6 +95,7 @@ typedef void (^OEAlertCompletionHandler)(OEHUDAlert *alert, NSUInteger result);
 #pragma mark -
 #pragma mark PopupButtonItems
 - (void)setPopupButtonItems:(NSMutableArray *)items;
+- (void)setPopupButtonMenuItems:(NSMutableArray *)items;
 - (NSMutableArray *)popupButtonItems;
 - (id)popupButtonSelectedItem;
 #pragma mark -

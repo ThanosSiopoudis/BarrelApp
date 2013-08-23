@@ -643,6 +643,17 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     return [[self popupButtonLabelView] string];
 }
 
+- (void)setPopupButtonMenuItems:(NSMutableArray *)items {
+    NSMenu *filterMenu = [[NSMenu alloc] init];
+    
+    for(id item in items) {
+		[filterMenu addItemWithTitle:item action:NULL keyEquivalent:@""];
+    }
+    
+    [[self popupButton] setMenu:filterMenu];
+    [[self popupButton] selectItemAtIndex:0];
+}
+
 - (void)setPopupButtonItems:(NSMutableArray *)items {
     NSMenu *filterMenu = [[NSMenu alloc] init];
     

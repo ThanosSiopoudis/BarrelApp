@@ -64,6 +64,7 @@
 - (IBAction)editSmartCollection:(id)sender;
 - (IBAction)createEmptyBundle:(id)sender;
 - (IBAction)addToLibrary:(id)sender;
+- (IBAction)addSteamGameToLibrary:(id)sender;
 - (IBAction)startDebugRun:(id)sender;
 - (IBAction)startGame:(id)sender;
 - (IBAction)startWineCommandLine:(id)sender;

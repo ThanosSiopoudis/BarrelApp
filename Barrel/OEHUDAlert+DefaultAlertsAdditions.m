@@ -278,4 +278,19 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
     return alert;
 }
 
++ (id)alertWithMessageText:(NSString *)msgText defaultButton:(NSString *)defaultButtonLabel alternateButton:(NSString *)alternateButtonLabel otherButton:(NSString *)otherButton popupItems:(NSMutableArray *)items popupButtonLabel:(NSString *)popupLabel {
+    
+    OEHUDAlert *alert = [[OEHUDAlert alloc] init];
+    
+    [alert setMessageText:msgText];
+    [alert setDefaultButtonTitle:defaultButtonLabel];
+    [alert setAlternateButtonTitle:alternateButtonLabel];
+    [alert setOtherButtonTitle:otherButton];
+    [alert setShowsPopupButton:YES];
+    [alert setPopupButtonLabelText:popupLabel];
+    [alert setPopupButtonMenuItems:items];
+    
+    return alert;
+}
+
 @end

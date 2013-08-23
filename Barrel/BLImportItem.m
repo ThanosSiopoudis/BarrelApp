@@ -37,6 +37,7 @@
     item = [[BLImportItem alloc] init];
     
     [item setIsEmptyBundle:NO];
+    [item setIsSteamBundle:NO];
     [item setURL:url];
     [item setSourceURL:url];
     [item setCompletionHandler:handler];
@@ -52,6 +53,21 @@
     item = [[BLImportItem alloc] init];
     
     [item setIsEmptyBundle:YES];
+    [item setIsSteamBundle:NO];
+    [item setCompletionHandler:handler];
+    [item setImportState:BLImportItemStatusIdle];
+    [item setImportInfo:[NSMutableDictionary dictionaryWithCapacity:5]];
+    
+    return item;
+}
+
++ (id)itemWithSteamBundleAndCompletionHandler:(BLImportItemCompletionBlock)handler {
+    id item = nil;
+    
+    item = [[BLImportItem alloc] init];
+    
+    [item setIsEmptyBundle:NO];
+    [item setIsSteamBundle:YES];
     [item setCompletionHandler:handler];
     [item setImportState:BLImportItemStatusIdle];
     [item setImportInfo:[NSMutableDictionary dictionaryWithCapacity:5]];
