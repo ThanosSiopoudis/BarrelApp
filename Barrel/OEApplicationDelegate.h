@@ -35,8 +35,6 @@
 
 - (IBAction)updateBundles:(id)sender;
 
-- (void)updateInfoPlist;
-
 - (void)loadDatabase;
 
 @property(unsafe_unretained) IBOutlet NSWindow               *aboutWindow;

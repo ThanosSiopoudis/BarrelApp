@@ -60,9 +60,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
 @interface OEApplicationDelegate ()
 
 - (void)OE_performDatabaseSelection;
-
-- (void)OE_loadPlugins;
-- (void)OE_setupHIDSupport;
 - (void)OE_createDatabaseAtURL:(NSURL *)aURL;
 
 @property(strong) NSArray *cachedLastPlayedInfo;
@@ -104,8 +101,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
             [NSApp terminate:self];
             return self = nil;
         }
-
-		[self OE_loadPlugins];
     }
 
     return self;
@@ -135,9 +130,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
 
     // Run Migration Manager
     [[OEVersionMigrationController defaultMigrationController] runMigrationIfNeeded];
-
-    // update extensions
-    [self updateInfoPlist];
 
     // Preload Composition plugins so HUDControls Bar and Gameplay Preferneces load faster
     [OECompositionPlugin allPluginNames];
@@ -333,26 +325,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
 
 #pragma mark -
 
-- (void)OE_loadPlugins
-{
-    [OEPlugin registerPluginClass:[OECorePlugin class]];
-    [OEPlugin registerPluginClass:[OESystemPlugin class]];
-    [OEPlugin registerPluginClass:[OECompositionPlugin class]];
-
-    // Preload composition plugins
-    [OECompositionPlugin allPlugins];
-
-    [[OELibraryDatabase defaultDatabase] save:nil];
-    [[OELibraryDatabase defaultDatabase] disableSystemsWithoutPlugin];
-
-    [[OECorePlugin class] addObserver:self forKeyPath:@"allPlugins" options:0xF context:_OEApplicationDelegateAllPluginsContext];
-}
-
-- (void)OE_setupHIDSupport
-{
-    // Setup OEBindingsController
-}
-
 #pragma mark -
 #pragma mark Preferences Window
 
@@ -406,56 +378,6 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
 
 #pragma mark -
 #pragma mark App Info
-
-- (void)updateInfoPlist
-{
-    // TODO: Think of a way to register for document types without manipulating the plist
-    // as it's generally bad to modify the bundle's contents and we may not have write access
-    NSArray             *systemPlugins = [OESystemPlugin allPlugins];
-    NSMutableDictionary *allTypes      = [NSMutableDictionary dictionaryWithCapacity:[systemPlugins count]];
-
-    for(OESystemPlugin *plugin in systemPlugins)
-    {
-        NSMutableDictionary *systemDocument = [NSMutableDictionary dictionary];
-        for(NSString *type in [plugin supportedTypeExtensions])
-        {
-            [systemDocument setObject:@"OEGameDocument"                 forKey:@"NSDocumentClass"];
-            [systemDocument setObject:@"Viewer"                         forKey:@"CFBundleTypeRole"];
-            [systemDocument setObject:@"Owner"                          forKey:@"LSHandlerRank"];
-            [systemDocument setObject:[NSArray arrayWithObject:@"????"] forKey:@"CFBundleTypeOSTypes"];
-        }
-
-        [systemDocument setObject:[plugin supportedTypeExtensions] forKey:@"CFBundleTypeExtensions"];
-        NSString *typeName = [NSString stringWithFormat:@"%@ Game", [plugin systemName]];
-        [systemDocument setObject:typeName forKey:@"CFBundleTypeName"];
-        [allTypes setObject:systemDocument forKey:typeName];
-    }
-
-    NSString *error = nil;
-    NSPropertyListFormat format;
-
-    NSString *infoPlistPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Contents/Info.plist"];
-    NSData   *infoPlistXml  = [[NSFileManager defaultManager] contentsAtPath:infoPlistPath];
-    NSMutableDictionary *infoPlist = [NSPropertyListSerialization propertyListFromData:infoPlistXml
-                                                                      mutabilityOption:NSPropertyListMutableContainers
-                                                                                format:&format
-                                                                      errorDescription:&error];
-    if(infoPlist == nil) NSLog(@"%@", error);
-
-    NSArray *existingTypes = [infoPlist objectForKey:@"CFBundleDocumentTypes"];
-    for(NSDictionary *type in existingTypes)
-        [allTypes setObject:type forKey:[type objectForKey:@"CFBundleTypeName"]];
-    [infoPlist setObject:[allTypes allValues] forKey:@"CFBundleDocumentTypes"];
-
-    NSData *updated = [NSPropertyListSerialization dataFromPropertyList:infoPlist
-                                                                 format:NSPropertyListXMLFormat_v1_0
-                                                       errorDescription:&error];
-
-    if(updated != nil)
-        [updated writeToFile:infoPlistPath atomically:YES];
-    else
-        NSLog(@"Error: %@", error);
-}
 
 - (NSString *)appVersion
 {
@@ -542,7 +464,7 @@ static void *const _OEApplicationDelegateAllPluginsContext = (void *)&_OEApplica
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if(context == _OEApplicationDelegateAllPluginsContext)
-        [self updateInfoPlist];
+        ;// [self updateInfoPlist];
     else
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
