@@ -48,8 +48,10 @@
 #import "OEDBImage.h"
 
 #import "AppCakeAPI.h"
+#import "AC_WineBuild.h"
 #import "BL_GenericAPIResponse.h"
 #import "BLFileDownloader.h"
+#import "BLArchiver.h"
 
 #pragma mark - Exported variables
 NSString * const OELastCollectionSelectedKey = @"lastCollectionSelected";
@@ -414,6 +416,166 @@ static const CGFloat _OEToolbarHeight = 44;
             }
         }
     }];
+}
+
+- (IBAction)changeBundleWineEngine:(id)sender {
+    NSMutableArray *gamesToChangeEngine = [NSMutableArray new];
+    
+    if([sender isKindOfClass:[OEDBGame class]]) {
+        [gamesToChangeEngine addObject:sender];
+    }
+    else {
+        NSAssert([(id)[self currentViewController] respondsToSelector:@selector(selectedGames)], @"Attempt to change wine engine from a view controller that doesn't announce selectedGames");
+        [gamesToChangeEngine addObjectsFromArray:[(id <OELibrarySubviewController>)[self currentViewController] selectedGames]];
+    }
+    
+    NSAssert([gamesToChangeEngine count] > 0, @"Attempt to change wine engine while the selection is empty");
+    
+    [gamesToChangeEngine enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[OEDBGame class]]) {
+            // Warn user before actually doing anything!
+            [self setCurrentGame:obj];
+            NSError *error;
+            NSString *warningMessage;
+            NSBundle *gameBundle = [NSBundle bundleWithPath:[obj bundlePath]];
+            NSString *wineVersionPath = [NSString stringWithFormat:@"%@/blwine.bundle/version", [gameBundle privateFrameworksPath]];
+            NSString *currentWineVersion = [NSString stringWithContentsOfFile:wineVersionPath encoding:NSUTF8StringEncoding error:&error];
+            if (error != nil) {
+                warningMessage = @"Changing the Wine engine may cause your game not to start! If this happens, you can always change back to the engine currently in use.\nAre you sure you want to proceed?";
+            }
+            else {
+                warningMessage = [NSString stringWithFormat:@"Changing the Wine engine may cause your game not to start! If this happens, you can always change back to the engine currently in use, which is:\n%@Are you sure you want to proceed?", currentWineVersion];
+            }
+            OEHUDAlert *engineWarn = [OEHUDAlert alertWithMessageText:warningMessage defaultButton:@"Yes" alternateButton:@"No"];
+            [engineWarn setDefaultButtonAction:@selector(runWineEngineChoice:) andTarget:self];
+            [engineWarn runModal];
+        }
+    }];
+}
+
+- (IBAction)runWineEngineChoice:(id)sender {
+    [NSApp stopModal];
+    
+    // Get a list of the Wine engines from the server
+    AppCakeAPI *apiConnection = [[AppCakeAPI alloc] init];
+    [apiConnection listOfAllWineBuildsToBlock:^(RKObjectRequestOperation *operation, RKMappingResult *result) {
+        if ([result count] > 0) {
+            NSMutableArray *engines = [NSMutableArray arrayWithArray:[result array]];
+            OEHUDAlert *engineChoiceAlert = [OEHUDAlert alertWithMessageText:@"Please select the new Engine" defaultButton:@"OK" alternateButton:@"" otherButton:@"Cancel" popupGameItems:engines popupButtonLabel:@"Engine"];
+            [self setAlertCache:engineChoiceAlert];
+            [[self alertCache] open];
+            [[self alertCache] setDefaultButtonAction:@selector(doEngineChange:) andTarget:self];
+        }
+        else {
+            OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Oops! No engines were found in the database! Please try again later!" defaultButton:@"OK" alternateButton:@""];
+            [errorAlert runModal];
+        }
+    } failBlock:^(RKObjectRequestOperation *operation, NSError *error) {
+        OEHUDAlert *alert = [OEHUDAlert alertWithError:error];
+        [alert runModal];
+    }];
+}
+
+- (IBAction)doEngineChange:(id)sender {
+    AC_WineBuild *winebuild = [[self alertCache] popupButtonSelectedItem];
+    [[self alertCache] close];
+    
+    // Check if we have the engine, and download it if we don't
+    NSString *path =  [[[self database] tempFolderURL] path];
+    NSString *engineURL =[NSString stringWithFormat:@"http://api.barrelapp.co.uk%@", [winebuild archivePath]];
+    
+    // Do we already have the engine in the cache?
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%@/Engines/%@", [[[self database] cacheFolderURL] path], [engineURL lastPathComponent]]] && [[NSUserDefaults standardUserDefaults] valueForKey:@"keepLocalCopyOfEngines"]) {
+        [self extractArchiveAtPath:[NSString stringWithFormat:@"%@/Engines/%@", [[[self database] cacheFolderURL] path], [engineURL lastPathComponent]] toPath:path];
+    }
+    else {
+        OEHUDAlert *downloadAlert = [OEHUDAlert showProgressAlertWithMessage:@"Downloading..." andTitle:@"Download" indeterminate:NO];
+        [self setAlertCache:downloadAlert];
+        [[self alertCache] open];
+        
+        // Run the downloader in the main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            BLFileDownloader *fileDownloader = [[BLFileDownloader alloc] initWithProgressBar:[[self alertCache] progressbar] saveToPath:path];
+            [self setDownloaderCache:fileDownloader];
+            [[self alertCache] setDefaultButtonAction:@selector(cancelDownloadAndStop) andTarget:self];
+            [fileDownloader downloadWithNSURLConnectionFromURL:engineURL withCompletionBlock:^(int result, NSString *resultPath) {
+                if (result) {
+                    // The bundle has been downloaded, so proceed with extracting it and deleting the archive
+                    [[self alertCache] close];
+                    [self extractArchiveAtPath:resultPath toPath:path];
+                }
+                else {
+                    // Something went wrong, abort
+                    [[self alertCache] close];
+                    OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error communicating with the server! Please try again later!" defaultButton:@"OK" alternateButton:@""];
+                    [errorAlert runModal];
+                }
+            }];
+            [fileDownloader startDownload];
+        });
+    }
+}
+
+- (void)cancelDownloadAndStop {
+    [[self alertCache] close];
+    [[self downloaderCache] cancelDownload];
+}
+
+- (void)extractArchiveAtPath:(NSString *)archivePath toPath:(NSString *)targetPath {
+    [self setAlertCache:[OEHUDAlert showProgressAlertWithMessage:@"Extracting archive..." andTitle:@"Extracting..." indeterminate:NO]];
+    [[self alertCache] open];
+    
+    dispatch_queue_t dispatchQueue = dispatch_queue_create("com.appcake.extractqueue", DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_t priority = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+    dispatch_set_target_queue(dispatchQueue, priority);
+    
+    BLArchiver *archiver = [[BLArchiver alloc] initWithArchiveAtPath:archivePath andProgressBar:[[self alertCache] progressbar]];
+    dispatch_async(dispatchQueue, ^{
+        [archiver startExtractingToPath:targetPath callbackBlock:^(int result){
+            // Delete the archive if the extraction was successful
+            if (result) {
+                [[self alertCache] close];
+                if ([[NSUserDefaults standardUserDefaults] valueForKey:@"keepLocalCopyOfEngines"]) {
+                    NSString *engineFolderPath = [NSString stringWithFormat:@"%@/Engines", [[[self database] cacheFolderURL] path]];
+                    NSString *newEnginePath = [NSString stringWithFormat:@"%@/%@", engineFolderPath, [archivePath lastPathComponent]];
+                    
+                    if (![[NSFileManager defaultManager] fileExistsAtPath: engineFolderPath]) {
+                        [[NSFileManager defaultManager] createDirectoryAtPath:engineFolderPath withIntermediateDirectories:YES attributes:nil error:nil];
+                    }
+                    if (![[NSFileManager defaultManager] fileExistsAtPath:newEnginePath]) {
+                        [[NSFileManager defaultManager] moveItemAtPath:archivePath toPath:newEnginePath error:nil];
+                    }
+                }
+                else {
+                    BOOL deleteSuccess = [[NSFileManager defaultManager] removeItemAtPath:archivePath error:nil];
+                    if (!deleteSuccess) {
+                        // Non-Fatal error
+                        OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Error deleting downloaded archive! Please remove manually." defaultButton:@"OK" alternateButton:@""];
+                        [errorAlert runModal];
+                    }
+                }
+                OEHUDAlert *progressAlert = [OEHUDAlert showProgressAlertWithMessage:@"Running wineboot..." andTitle:@"Wine Init" indeterminate:YES];
+                [progressAlert open];
+                // Delete the old WineBundle from the bundle
+                NSBundle *gameBundle = [NSBundle bundleWithPath:[[self currentGame] bundlePath]];
+                NSString *wineEngineBundle = [NSString stringWithFormat:@"%@/blwine.bundle", [gameBundle privateFrameworksPath]];
+                BOOL deleteSuccess = [[NSFileManager defaultManager] removeItemAtPath:wineEngineBundle error:nil];
+                if (!deleteSuccess) {
+                    // Non-Fatal error
+                    OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Fatal error: Could not remove old blwine.bundle. Please check permissions manually." defaultButton:@"OK" alternateButton:@""];
+                    [errorAlert runModal];
+                }
+                else {
+                    // Move the new bundle inside
+                    NSString *wineBundlePath = [NSString stringWithFormat:@"%@/blwine.bundle", [[[self database] tempFolderURL] path]];
+                    [[NSFileManager defaultManager] moveItemAtPath:wineBundlePath toPath:wineEngineBundle error:nil];
+                    // Now run wineboot
+                    [BLSystemCommand runScript:[[self currentGame] bundlePath] withArguments:[NSArray arrayWithObjects:@"--run", [NSString stringWithFormat:@"%@/Contents/Resources/drive_c/windows/system32/wineboot.exe", [[self currentGame] bundlePath]], nil] shouldWaitForProcess:YES runForMain:YES];
+                    [progressAlert close];
+                }
+            }
+        }];
+    });
 }
 
 - (IBAction)openUserPreferences:(id)sender {

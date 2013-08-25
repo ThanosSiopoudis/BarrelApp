@@ -750,6 +750,7 @@ static NSArray *OE_defaultSortDescriptors;
         [advancedMenu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(showWinetricksMenu:) keyEquivalent:@""];
         [advancedMenu addItemWithTitle:NSLocalizedString(@"Run external .exe", @"") action:@selector(runExternalBinary:) keyEquivalent:@""];
         [advancedMenu addItemWithTitle:NSLocalizedString(@"Change executable path", @"") action:@selector(changeExecutablePath:) keyEquivalent:@""];
+        [advancedMenu addItemWithTitle:NSLocalizedString(@"Change Wine Engine", @"") action:@selector(changeBundleWineEngine:) keyEquivalent:@""];
         
         // Wine commands
         NSMenuItem *advancedItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Advanced Settings", @"") action:nil keyEquivalent:@""];

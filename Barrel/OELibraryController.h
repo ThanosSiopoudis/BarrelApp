@@ -33,6 +33,7 @@
 #import "OEButton.h"
 #import "OEHUDAlert.h"
 #import "BLReviewsWindowController.h"
+#import "BLFileDownloader.h"
 
 @class OELibraryDatabase;
 @class OESidebarController;
@@ -73,6 +74,8 @@
 - (IBAction)startRegedit:(id)sender;
 - (IBAction)openUserPreferences:(id)sender;
 - (IBAction)showReviewWindow:(id)sender;
+- (IBAction)changeBundleWineEngine:(id)sender;
+- (IBAction)runWineEngineChoice:(id)sender;
 
 #pragma mark -
 #pragma mark Menu Items
@@ -102,6 +105,8 @@
 
 @property (readwrite) OEHUDAlert *debugAlert;
 @property (readwrite) OEDBGame *currentGame;
+@property (readwrite) OEHUDAlert *alertCache;
+@property (readwrite) BLFileDownloader *downloaderCache;
 
 @property(nonatomic, readwrite) BLReviewsWindowController *reviewsWindowController;
 
