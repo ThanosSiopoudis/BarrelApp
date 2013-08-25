@@ -798,9 +798,14 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             if (result) {
                 // Does the user want a local engine cache? If yes don't delete, but move into cache folder
                 if ([[NSUserDefaults standardUserDefaults] valueForKey:@"keepLocalCopyOfEngines"]) {
-                    if (![[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%@/Engines", [[[self database] cacheFolderURL] path]]]) {
-                        [[NSFileManager defaultManager] createDirectoryAtPath:[NSString stringWithFormat:@"%@/Engines", [[[self database] cacheFolderURL] path]] withIntermediateDirectories:YES attributes:nil error:nil];
-                        [[NSFileManager defaultManager] moveItemAtPath:archivePath toPath:[NSString stringWithFormat:@"%@/Engines/%@", [[[self database] cacheFolderURL] path], [archivePath lastPathComponent]] error:nil];
+                    NSString *engineFolderPath = [NSString stringWithFormat:@"%@/Engines", [[[self database] cacheFolderURL] path]];
+                    NSString *newEnginePath = [NSString stringWithFormat:@"%@/Engines/%@", engineFolderPath, [archivePath lastPathComponent]];
+                    
+                    if (![[NSFileManager defaultManager] fileExistsAtPath: engineFolderPath]) {
+                        [[NSFileManager defaultManager] createDirectoryAtPath:engineFolderPath withIntermediateDirectories:YES attributes:nil error:nil];
+                    }
+                    if (![[NSFileManager defaultManager] fileExistsAtPath:newEnginePath]) {
+                        [[NSFileManager defaultManager] moveItemAtPath:archivePath toPath:newEnginePath error:nil];
                     }
                 }
                 else {
