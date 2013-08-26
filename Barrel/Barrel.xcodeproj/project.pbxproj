@@ -200,7 +200,6 @@
 		83507247142F6029005D9033 /* OEControllerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83507246142F6029005D9033 /* OEControllerImageView.m */; };
 		8353EB2015FF5CB10026E326 /* OEDBRomMigrationPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8353EB1F15FF5CB10026E326 /* OEDBRomMigrationPolicy.m */; };
 		8353EB2315FF609F0026E326 /* OEDBSaveStateMigrationPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8353EB2215FF609F0026E326 /* OEDBSaveStateMigrationPolicy.m */; };
-		8353EB7D15FF695D0026E326 /* 1.0 Beta to 0.2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8353EB7C15FF695D0026E326 /* 1.0 Beta to 0.2.xcmappingmodel */; };
 		835F3F401683534700C74B97 /* OEToolTipManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 835F3F3F1683534700C74B97 /* OEToolTipManager.m */; };
 		836291FE1515F30700192116 /* OEFSWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 836291FD1515F30700192116 /* OEFSWatcher.m */; };
 		83691817147FE3EF00F28231 /* NSWindow+OECustomWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 83691816147FE3EF00F28231 /* NSWindow+OECustomWindow.m */; };
@@ -793,7 +792,6 @@
 		8353EB1F15FF5CB10026E326 /* OEDBRomMigrationPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEDBRomMigrationPolicy.m; sourceTree = "<group>"; };
 		8353EB2115FF609F0026E326 /* OEDBSaveStateMigrationPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEDBSaveStateMigrationPolicy.h; sourceTree = "<group>"; };
 		8353EB2215FF609F0026E326 /* OEDBSaveStateMigrationPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEDBSaveStateMigrationPolicy.m; sourceTree = "<group>"; };
-		8353EB7C15FF695D0026E326 /* 1.0 Beta to 0.2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "1.0 Beta to 0.2.xcmappingmodel"; sourceTree = "<group>"; };
 		835F3F3E1683534700C74B97 /* OEToolTipManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEToolTipManager.h; sourceTree = "<group>"; };
 		835F3F3F1683534700C74B97 /* OEToolTipManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEToolTipManager.m; sourceTree = "<group>"; };
 		835F3F4116835F1A00C74B97 /* OEToolTip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEToolTip.h; sourceTree = "<group>"; };
@@ -984,6 +982,8 @@
 		C6D6FA7D14E2264C0083C75D /* NSViewController+OEAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSViewController+OEAdditions.m"; sourceTree = "<group>"; };
 		C6F6480415F4BA7000BA9D9B /* OEUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEUtilities.h; sourceTree = "<group>"; };
 		C6F738FB1617FF2B00BB2519 /* OEUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEUtilities.m; sourceTree = "<group>"; };
+		E20CB86917CB7F56008065BA /* BLDatabase 0.9.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BLDatabase 0.9.3.xcdatamodel"; sourceTree = "<group>"; };
+		E20CB86F17CB8156008065BA /* BLDatabase 0.9.6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BLDatabase 0.9.6.xcdatamodel"; sourceTree = "<group>"; };
 		E23F365117B72006003401E5 /* BLDatabase 0.9.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BLDatabase 0.9.1.xcdatamodel"; sourceTree = "<group>"; };
 		E23F365B17B849D8003401E5 /* barrel_dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = barrel_dsa_pub.pem; sourceTree = "<group>"; };
 		E250405C17A3FAD2004CDA8B /* BLPrefUserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPrefUserController.h; sourceTree = "<group>"; };
@@ -1980,7 +1980,6 @@
 		8353EB2715FF63760026E326 /* Mapping Models */ = {
 			isa = PBXGroup;
 			children = (
-				8353EB7C15FF695D0026E326 /* 1.0 Beta to 0.2.xcmappingmodel */,
 				8397082E163C405000E04871 /* 0.2 to 0.3.xcmappingmodel */,
 			);
 			name = "Mapping Models";
@@ -2665,7 +2664,6 @@
 				E28F7EA117A468D2000DB2AC /* AC_User.m in Sources */,
 				8353EB2015FF5CB10026E326 /* OEDBRomMigrationPolicy.m in Sources */,
 				8353EB2315FF609F0026E326 /* OEDBSaveStateMigrationPolicy.m in Sources */,
-				8353EB7D15FF695D0026E326 /* 1.0 Beta to 0.2.xcmappingmodel in Sources */,
 				831C9AAD160095BA00038D0D /* OETheme.m in Sources */,
 				831C9AB0160095E500038D0D /* OEThemeObject.m in Sources */,
 				831C9AB9160095F800038D0D /* OEThemeColor.m in Sources */,
@@ -2919,11 +2917,13 @@
 		C1F4E07F176A0C2F00C6FC96 /* BLDatabase.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				E20CB86F17CB8156008065BA /* BLDatabase 0.9.6.xcdatamodel */,
+				E20CB86917CB7F56008065BA /* BLDatabase 0.9.3.xcdatamodel */,
 				E23F365117B72006003401E5 /* BLDatabase 0.9.1.xcdatamodel */,
 				C1D97D781771B1A2005472DB /* BLDatabase 0.9.xcdatamodel */,
 				C1F4E080176A0C2F00C6FC96 /* OEDatabase.xcdatamodel */,
 			);
-			currentVersion = E23F365117B72006003401E5 /* BLDatabase 0.9.1.xcdatamodel */;
+			currentVersion = E20CB86F17CB8156008065BA /* BLDatabase 0.9.6.xcdatamodel */;
 			path = BLDatabase.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
