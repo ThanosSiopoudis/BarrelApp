@@ -28,6 +28,10 @@
 #import <Sparkle/SUStandardVersionComparator.h>
 #import <objc/message.h>
 
+#import "OELibraryDatabase.h"
+#import "OEDBSystem.h"
+#import "OEDBGame.h"
+
 #pragma mark -
 #pragma mark Storage
 
@@ -87,6 +91,11 @@ static OEVersionMigrationController *sDefaultMigrationController = nil;
         self.versionComparator = [SUStandardVersionComparator defaultComparator];
         
         // We'll cheat here and rely on Sparkle's key
+        // Fix the wrong userDefault version that was left over from OpenEmu
+        if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"OEMigrationLastVersion"] isEqualToString:@"1.0.0b10"]) {
+            [[NSUserDefaults standardUserDefaults] setObject:@"0.9.5" forKey:@"OEMigrationLastVersion"];
+        }
+        
         isFirstRun  = ![[NSUserDefaults standardUserDefaults] boolForKey:@"SUHasLaunchedBefore"];
         lastVersion = [[[NSUserDefaults standardUserDefaults] objectForKey:@"OEMigrationLastVersion"] copy];
     }
@@ -121,8 +130,39 @@ static OEVersionMigrationController *sDefaultMigrationController = nil;
     
     // if it's not the first run, and there's no most recent version, then it's a pre-1.0.0b5 upgrade
     // if the current version has a higher version than the most recent version, then it's an upgrade
-    if(mostRecentVersion == nil || [[self versionComparator] compareVersion:mostRecentVersion toVersion:currentVersion] == NSOrderedAscending)
+    if(mostRecentVersion == nil || [[self versionComparator] compareVersion:mostRecentVersion toVersion:currentVersion] == NSOrderedAscending) {
+        // If this is a migration to 0.9.6, then create a new "Barrel" system, move all items in there, then
+        // delete all other systems. Finally, add "Wineskin", "Cider", and "Native"
+        if ([currentVersion isEqualToString:@"0.9.6"]) {
+            [self migrateToONineSix];
+        }
+        
         [self migrateFromVersion:mostRecentVersion toVersion:currentVersion error:nil];
+    }
+}
+
+- (void)migrateToONineSix {
+    // If this is a migration to 0.9.6, then create a new "Barrel" system, move all items in there, then
+    // delete all other systems. Finally, add "Wineskin", "Cider", and "Native"
+    OEDBSystem *barrelSystem = [OEDBSystem createSystemWithName:@"Barrel" andIdentifier:@"barrel.system.barrel" inDatabase:[OELibraryDatabase defaultDatabase]];
+    
+    NSMutableArray *allGames = [NSMutableArray arrayWithArray:[OEDBGame allGames]];
+    for (OEDBGame *game in allGames) {
+        [game setSystem:barrelSystem];
+    }
+    
+    NSMutableArray *allSystems = [NSMutableArray arrayWithArray:[OEDBSystem allSystems]];
+    for (OEDBSystem *system in allSystems) {
+        if (![[system lastLocalizedName] isEqualToString:@"Barrel"]) {
+            [[system managedObjectContext] deleteObject:system];
+        }
+    }
+    
+    [OEDBSystem createSystemWithName:@"Wineskin" andIdentifier:@"barrel.system.wineskin" inDatabase:[OELibraryDatabase defaultDatabase]];
+    
+    [OEDBSystem createSystemWithName:@"Cider" andIdentifier:@"barrel.system.cider" inDatabase:[OELibraryDatabase defaultDatabase]];
+    
+    [OEDBSystem createSystemWithName:@"Native" andIdentifier:@"barrel.system.native" inDatabase:[OELibraryDatabase defaultDatabase]];
 }
 
 - (BOOL)migrateFromVersion:(NSString *)mostRecentVersion toVersion:(NSString *)currentVersion error:(NSError **)err
