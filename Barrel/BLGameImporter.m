@@ -119,6 +119,15 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
     if (self) {
         [self setDatabase:aDatabase];
         [self setQueue:[NSMutableArray array]];
+        [self setVolumeName:nil];
+        [self setAlertCache:nil];
+        [self setAppCake:nil];
+        [self setCurrentItem:nil];
+        [self setServerGame:nil];
+        [self setGameName:nil];
+        [self setExecPath:nil];
+        [self setEngineID:nil];
+        [self setDownloadPath:nil];
         
         dispatchQueue = dispatch_queue_create("com.appcake.importqueue", DISPATCH_QUEUE_SERIAL);
         dispatch_queue_t priority = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
@@ -259,14 +268,10 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     }
     
     // Determine first and foremost if we have a Genre as everything will fail if we don't
+    // If it's empty, go ahead and default it to Barrel
     if ([[item importInfo] valueForKey:BLImportInfoSystemID] == nil) {
         [[self progressWindow] close];
-        NSArray *systems = [OEDBSystem allSystems];
-        
-        OEHUDAlert *chooseGenreAlert = [OEHUDAlert showGenreSelectionAlertWithGenres:systems];
-        [chooseGenreAlert runModal];
-        
-        [[item importInfo] setValue:[[chooseGenreAlert popupButtonSelectedItem] systemIdentifier] forKey:BLImportInfoSystemID];
+        [[item importInfo] setValue:@"barrel.system.barrel" forKey:BLImportInfoSystemID];
     }
     
     // That's as far as we go if we're creating an empty or Steam bundle...
@@ -286,8 +291,10 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         // Split the path
         NSArray *pathComponents = [[url path] componentsSeparatedByString:@"/"];
         if (![(NSString *)[pathComponents objectAtIndex:1] isEqualToString:@"Volumes"] || [pathComponents count] != 3) {
-            // Throw the error here
-            [self stopImportForItem:item withError:[NSError errorWithDomain:@"BLImportFatalDomain" code:1000 userInfo:nil]];
+            // The imported item was not a volume.
+            // Check for other known types of bundles. We support Barrel, Cider, Wineskin and Native
+            // 1: Check for Wineskin
+            
         }
     }
     else { // Only accept exetuables
@@ -843,9 +850,8 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     
     [[self progressWindow] open];
     [self setVolumeName:[[self alertCache] stringValue]];
-    [[self currentItem] setImportState:BLImportItemStatusActive];
-    [[self currentItem] setImportStep:BLImportStepCheckDirectory];
-    // [self scheduleItemForNextStep:[self currentItem]];
+    [self performImportStepLookupEntry:[self currentItem]];
+    NSLog(@"%u", [[self currentItem] importStep]);
 }
 
 - (void)startManualImport:(id)sender {
@@ -1034,6 +1040,17 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 
 - (BOOL)importItemAtURL:(NSURL *)url intoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler
 {
+    // Cleanup before starting
+    [self setVolumeName:nil];
+    [self setAlertCache:nil];
+    [self setAppCake:nil];
+    [self setCurrentItem:nil];
+    [self setServerGame:nil];
+    [self setGameName:nil];
+    [self setExecPath:nil];
+    [self setEngineID:nil];
+    [self setDownloadPath:nil];
+    
     id item = [[self queue] firstObjectMatchingBlock:
                ^ BOOL (id item)
                {
@@ -1076,6 +1093,16 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 
 #pragma mark - Importing an empty bundle into collections with completion handler
 - (BOOL)importSteamBundleIntoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler {
+    [self setVolumeName:nil];
+    [self setAlertCache:nil];
+    [self setAppCake:nil];
+    [self setCurrentItem:nil];
+    [self setServerGame:nil];
+    [self setGameName:nil];
+    [self setExecPath:nil];
+    [self setEngineID:nil];
+    [self setDownloadPath:nil];
+    
     BLImportItem *item = [BLImportItem itemWithSteamBundleAndCompletionHandler:handler];
     if (item)
     {
@@ -1092,6 +1119,16 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (BOOL)importEmptyBundleIntoCollectionWithID:(NSURL *)collectionID withSystem:(NSString *)systemID withCompletionHandler:(BLImportItemCompletionBlock)handler {
+    
+    [self setVolumeName:nil];
+    [self setAlertCache:nil];
+    [self setAppCake:nil];
+    [self setCurrentItem:nil];
+    [self setServerGame:nil];
+    [self setGameName:nil];
+    [self setExecPath:nil];
+    [self setEngineID:nil];
+    [self setDownloadPath:nil];
     
     BLImportItem *item = [BLImportItem itemWithEmptyBundleAndCompletionHandler:handler];
     if (item)
