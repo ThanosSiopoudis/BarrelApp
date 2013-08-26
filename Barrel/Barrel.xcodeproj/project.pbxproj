@@ -329,6 +329,10 @@
 		C6BFB29F0F7CC8E700040FFA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C6BFB29E0F7CC8E700040FFA /* Localizable.strings */; };
 		C6D6FA7E14E2264C0083C75D /* NSViewController+OEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D6FA7D14E2264C0083C75D /* NSViewController+OEAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C6F738FC1617FF2B00BB2519 /* OEUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = C6F738FB1617FF2B00BB2519 /* OEUtilities.m */; };
+		E20CB87217CB9856008065BA /* Barrel.png in Resources */ = {isa = PBXBuildFile; fileRef = E20CB87117CB9856008065BA /* Barrel.png */; };
+		E20CB87417CB9897008065BA /* Wineskin.png in Resources */ = {isa = PBXBuildFile; fileRef = E20CB87317CB9897008065BA /* Wineskin.png */; };
+		E20CB87617CB9A99008065BA /* Cider.png in Resources */ = {isa = PBXBuildFile; fileRef = E20CB87517CB9A99008065BA /* Cider.png */; };
+		E20CB87817CB9ADC008065BA /* Native.png in Resources */ = {isa = PBXBuildFile; fileRef = E20CB87717CB9ADC008065BA /* Native.png */; };
 		E23F365C17B849D8003401E5 /* barrel_dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = E23F365B17B849D8003401E5 /* barrel_dsa_pub.pem */; };
 		E250405F17A3FAD2004CDA8B /* BLPrefUserController.m in Sources */ = {isa = PBXBuildFile; fileRef = E250405D17A3FAD2004CDA8B /* BLPrefUserController.m */; };
 		E250406017A3FAD2004CDA8B /* BLPrefUserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E250405E17A3FAD2004CDA8B /* BLPrefUserController.xib */; };
@@ -984,6 +988,10 @@
 		C6F738FB1617FF2B00BB2519 /* OEUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEUtilities.m; sourceTree = "<group>"; };
 		E20CB86917CB7F56008065BA /* BLDatabase 0.9.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BLDatabase 0.9.3.xcdatamodel"; sourceTree = "<group>"; };
 		E20CB86F17CB8156008065BA /* BLDatabase 0.9.6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BLDatabase 0.9.6.xcdatamodel"; sourceTree = "<group>"; };
+		E20CB87117CB9856008065BA /* Barrel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Barrel.png; sourceTree = "<group>"; };
+		E20CB87317CB9897008065BA /* Wineskin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wineskin.png; sourceTree = "<group>"; };
+		E20CB87517CB9A99008065BA /* Cider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cider.png; sourceTree = "<group>"; };
+		E20CB87717CB9ADC008065BA /* Native.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Native.png; sourceTree = "<group>"; };
 		E23F365117B72006003401E5 /* BLDatabase 0.9.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BLDatabase 0.9.1.xcdatamodel"; sourceTree = "<group>"; };
 		E23F365B17B849D8003401E5 /* barrel_dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = barrel_dsa_pub.pem; sourceTree = "<group>"; };
 		E250405C17A3FAD2004CDA8B /* BLPrefUserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPrefUserController.h; sourceTree = "<group>"; };
@@ -1634,6 +1642,7 @@
 		53439B9D13B93920005C0CC8 /* Interface Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				E20CB87017CB9846008065BA /* BundleTypes */,
 				C16D643A17A16D77002BA615 /* game_scanner_progress_blue_candy.png */,
 				83B867B8171D63510038988C /* retrode.png */,
 				83DEE499162D62B2005D8AD7 /* game_scanner_buttons.png */,
@@ -2243,6 +2252,17 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
+		E20CB87017CB9846008065BA /* BundleTypes */ = {
+			isa = PBXGroup;
+			children = (
+				E20CB87517CB9A99008065BA /* Cider.png */,
+				E20CB87717CB9ADC008065BA /* Native.png */,
+				E20CB87317CB9897008065BA /* Wineskin.png */,
+				E20CB87117CB9856008065BA /* Barrel.png */,
+			);
+			name = BundleTypes;
+			sourceTree = "<group>";
+		};
 		E2DB7D74179C60E800FECA54 /* Winetricks Window */ = {
 			isa = PBXGroup;
 			children = (
@@ -2391,6 +2411,8 @@
 				1B7505140FEEB72700B0D0AF /* About.png in Resources */,
 				8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */,
 				8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */,
+				E20CB87817CB9ADC008065BA /* Native.png in Resources */,
+				E20CB87417CB9897008065BA /* Wineskin.png in Resources */,
 				82C434130EE393530037C54B /* icon.icns in Resources */,
 				C6BFB29F0F7CC8E700040FFA /* Localizable.strings in Resources */,
 				C67A36AA0FE7F1F500A665E2 /* OECorePluginIcon.icns in Resources */,
@@ -2462,6 +2484,7 @@
 				53439C3713B93920005C0CC8 /* search_field.png in Resources */,
 				53439C3813B93920005C0CC8 /* search_loupe.png in Resources */,
 				53439C3913B93920005C0CC8 /* selector_ring.png in Resources */,
+				E20CB87617CB9A99008065BA /* Cider.png in Resources */,
 				E250406017A3FAD2004CDA8B /* BLPrefUserController.xib in Resources */,
 				53439C3A13B93920005C0CC8 /* sort_arrow.png in Resources */,
 				53439C3B13B93920005C0CC8 /* spinner.pdf in Resources */,
@@ -2510,6 +2533,7 @@
 				837777BC147A8F6A0091A896 /* hud_progress_bar_track.png in Resources */,
 				837777BD147A8F6A0091A896 /* hud_progress_bar.png in Resources */,
 				83E25058147BC6BF0074EE14 /* hud_textfield.png in Resources */,
+				E20CB87217CB9856008065BA /* Barrel.png in Resources */,
 				83920CDD147E675C00D219EA /* hud_alert_window.png in Resources */,
 				83CE3DC314C84EC10036DB28 /* beta_icon.png in Resources */,
 				83C0B37414D6FC58007CAC00 /* sidebar_triangle.png in Resources */,

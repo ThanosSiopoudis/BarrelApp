@@ -173,7 +173,7 @@
     
     NSRect      rect     = (NSRect){ .size = {[view frame].size.width, bottomTextViewHeight}};
     NSTextView *textView = [[NSTextView alloc] initWithFrame:NSInsetRect(rect, -4, 0)];
-    NSString   *text     = [NSString stringWithFormat:NSLocalizedString(@"To install a game in the '%@' Genre Library, drag and drop a mounted disk from the desktop. Barrel will start the installation and create an icon in the Library.", @""), genre];
+    NSString   *text     = [NSString stringWithFormat:NSLocalizedString(@"To install a game in the '%@' Library, drag and drop a mounted disk from the desktop. Barrel will start the installation and create an icon in the Library.", @""), genre];
     [textView setDrawsBackground:NO];
     [textView setEditable:NO];
     [textView setSelectable:NO];

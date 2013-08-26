@@ -247,7 +247,7 @@ NSString * const OEDBSystemsDidChangeNotification = @"OEDBSystemsDidChangeNotifi
 
 - (NSImage *)icon
 {
-    return [[self plugin] systemIcon];
+    return [NSImage imageNamed:[self name]];
 }
 
 - (NSString *)name
