@@ -30,6 +30,21 @@
 
 NSString * const OEDBSystemsDidChangeNotification = @"OEDBSystemsDidChangeNotification";
 @implementation OEDBSystem
+
++ (id)createSystemWithName:(NSString*)name andIdentifier:(NSString *)identifier inDatabase:(OELibraryDatabase *)database
+{
+    NSManagedObjectContext *context = [database managedObjectContext];
+    NSEntityDescription *description = [NSEntityDescription entityForName:@"System" inManagedObjectContext:context];
+    
+    OEDBSystem *system = [[OEDBSystem alloc] initWithEntity:description insertIntoManagedObjectContext:context];
+    
+    [system setLastLocalizedName:name];
+    [system setSystemIdentifier:identifier];
+    [system setEnabled:[NSNumber numberWithInteger:1]];
+    
+    return system;
+}
+
 + (NSInteger)systemsCount
 {
     return [self systemsCountInDatabase:[OELibraryDatabase defaultDatabase]];
@@ -210,7 +225,7 @@ NSString * const OEDBSystemsDidChangeNotification = @"OEDBSystemsDidChangeNotifi
 
 #pragma mark -
 #pragma mark Data Model Properties
-@dynamic lastLocalizedName, shortname, systemIdentifier, enabled;
+@dynamic lastLocalizedName, shortname, systemIdentifier, enabled, name;
 
 #pragma mark -
 #pragma mark Data Model Relationships

@@ -31,6 +31,8 @@ extern NSString * const OEDBSystemsDidChangeNotification;
 
 @class OESystemPlugin, OELibraryDatabase;
 @interface OEDBSystem : OEDBItem
++ (id)createSystemWithName:(NSString*)name andIdentifier:(NSString *)identifier inDatabase:(OELibraryDatabase *)database;
+
 + (NSInteger)systemsCount;
 + (NSInteger)systemsCountInDatabase:(OELibraryDatabase *)database;
 + (NSInteger)systemsCountInDatabase:(OELibraryDatabase *)database error:(NSError**)error;
