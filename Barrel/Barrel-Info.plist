@@ -33,7 +33,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>OEBundleBuildReference</key>
-	<string>128-gc5b128-Release</string>
+	<string>133-gc6b133-Release</string>
 	<key>SUFeedURL</key>
 	<string>http://barrelapp.co.uk/updater/appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>

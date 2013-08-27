@@ -987,7 +987,7 @@
 		C6F6480415F4BA7000BA9D9B /* OEUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEUtilities.h; sourceTree = "<group>"; };
 		C6F738FB1617FF2B00BB2519 /* OEUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEUtilities.m; sourceTree = "<group>"; };
 		E20CB86917CB7F56008065BA /* BLDatabase 0.9.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BLDatabase 0.9.3.xcdatamodel"; sourceTree = "<group>"; };
-		E20CB86F17CB8156008065BA /* BLDatabase 0.9.6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BLDatabase 0.9.6.xcdatamodel"; sourceTree = "<group>"; };
+		E20CB86F17CB8156008065BA /* BLDatabase 0.9.6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BLDatabase 0.9.6.xcdatamodel"; sourceTree = "<group>"; };
 		E20CB87117CB9856008065BA /* Barrel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Barrel.png; sourceTree = "<group>"; };
 		E20CB87317CB9897008065BA /* Wineskin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wineskin.png; sourceTree = "<group>"; };
 		E20CB87517CB9A99008065BA /* Cider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cider.png; sourceTree = "<group>"; };
