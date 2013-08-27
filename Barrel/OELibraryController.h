@@ -68,6 +68,7 @@
 - (IBAction)addSteamGameToLibrary:(id)sender;
 - (IBAction)startDebugRun:(id)sender;
 - (IBAction)startGame:(id)sender;
+- (IBAction)startWineskin:(id)sender;
 - (IBAction)startWineCommandLine:(id)sender;
 - (IBAction)makeGameRecipeAndUpload:(id)sender;
 - (IBAction)startWineConfig:(id)sender;

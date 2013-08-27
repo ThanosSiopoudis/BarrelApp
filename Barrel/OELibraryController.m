@@ -319,6 +319,23 @@ static const CGFloat _OEToolbarHeight = 44;
     }
 }
 
+- (IBAction)startWineskin:(id)sender {
+    NSMutableArray *gamesToStart = [NSMutableArray new];
+    
+    if([sender isKindOfClass:[OEDBGame class]]) {
+        [gamesToStart addObject:sender];
+    }
+    else {
+        NSAssert([(id)[self currentViewController] respondsToSelector:@selector(selectedGames)], @"Attempt to start a game from a view controller that doesn't announce selectedGames");
+        [gamesToStart addObjectsFromArray:[(id <OELibrarySubviewController>)[self currentViewController] selectedGames]];
+    }
+    
+    for(OEDBGame *game in gamesToStart) [self setCurrentGame:game];
+    // Find the wineskin.app path
+    NSString *wineskinPath = [NSString stringWithFormat:@"%@/Wineskin.app", [[self currentGame] bundlePath]];
+    [BLSystemCommand runScript:wineskinPath withArguments:nil shouldWaitForProcess:NO];
+}
+
 - (IBAction)startDebugRun:(id)sender {
     NSMutableArray *gamesToStart = [NSMutableArray new];
     
