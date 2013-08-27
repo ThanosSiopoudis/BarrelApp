@@ -732,6 +732,7 @@ static NSArray *OE_defaultSortDescriptors;
     NSMenu *menu = [[NSMenu alloc] init];
     NSMenuItem *menuItem;
     NSArray *games = [[gamesController arrangedObjects] objectsAtIndexes:indexes];
+    OEDBGame *firstGame = [games objectAtIndex:0];
     
     if([indexes count] == 1)
     {
@@ -739,40 +740,57 @@ static NSArray *OE_defaultSortDescriptors;
         [menu addItemWithTitle:NSLocalizedString(@"Show In Finder", @"") action:@selector(showSelectedGamesInFinder:) keyEquivalent:@""];
         // [menu addItemWithTitle:NSLocalizedString(@"Show Info", @"") action:@selector(startGame:) keyEquivalent:@""];
         
-        [menu addItem:[NSMenuItem separatorItem]];
-        
-        NSMenu *advancedMenu = [[NSMenu alloc] init];
-        [advancedMenu addItemWithTitle:NSLocalizedString(@"Debug Run", @"") action:@selector(startDebugRun:) keyEquivalent:@""];
-        [advancedMenu addItemWithTitle:NSLocalizedString(@"Wine Config", @"") action:@selector(startWineConfig:) keyEquivalent:@""];
-        [advancedMenu addItemWithTitle:NSLocalizedString(@"Registry Editor", @"") action:@selector(startRegedit:) keyEquivalent:@""];
-        [advancedMenu addItemWithTitle:NSLocalizedString(@"Wine Command Line", @"") action:@selector(startWineCommandLine:) keyEquivalent:@""];
-        [advancedMenu addItem:[NSMenuItem separatorItem]];
-        [advancedMenu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(showWinetricksMenu:) keyEquivalent:@""];
-        [advancedMenu addItemWithTitle:NSLocalizedString(@"Run external .exe", @"") action:@selector(runExternalBinary:) keyEquivalent:@""];
-        [advancedMenu addItemWithTitle:NSLocalizedString(@"Change executable path", @"") action:@selector(changeExecutablePath:) keyEquivalent:@""];
-        [advancedMenu addItemWithTitle:NSLocalizedString(@"Change Wine Engine", @"") action:@selector(changeBundleWineEngine:) keyEquivalent:@""];
-        
-        // Wine commands
-        NSMenuItem *advancedItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Advanced Settings", @"") action:nil keyEquivalent:@""];
-        [advancedItem setSubmenu:advancedMenu];
-        [menu addItem:advancedItem];
+        if ([[firstGame bundleType] isEqualToString:@"wineskin"]) {
+            [menu addItem:[NSMenuItem separatorItem]];
+            [menu addItemWithTitle:NSLocalizedString(@"Start Wineskin", @"") action:@selector(startWineskin:) keyEquivalent:@""];
+            // [menu addItemWithTitle:NSLocalizedString(@"Convert to Barrel", @"") action:@selector(showReviewWindow:) keyEquivalent:@""];
+        }
+        else if ([[firstGame bundleType] isEqualToString:@"cider"]) {
+            //[menu addItem:[NSMenuItem separatorItem]];
+            //[menu addItemWithTitle:NSLocalizedString(@"Convert to Barrel", @"") action:@selector(showReviewWindow:) keyEquivalent:@""];
+        }
+        else if ([[firstGame bundleType] isEqualToString:@"native"]) {
+            // TODO: Add Native-specific options here
+        }
+        else {
+            [menu addItem:[NSMenuItem separatorItem]];
+            NSMenu *advancedMenu = [[NSMenu alloc] init];
+            [advancedMenu addItemWithTitle:NSLocalizedString(@"Debug Run", @"") action:@selector(startDebugRun:) keyEquivalent:@""];
+            [advancedMenu addItemWithTitle:NSLocalizedString(@"Wine Config", @"") action:@selector(startWineConfig:) keyEquivalent:@""];
+            [advancedMenu addItemWithTitle:NSLocalizedString(@"Registry Editor", @"") action:@selector(startRegedit:) keyEquivalent:@""];
+            [advancedMenu addItemWithTitle:NSLocalizedString(@"Wine Command Line", @"") action:@selector(startWineCommandLine:) keyEquivalent:@""];
+            [advancedMenu addItem:[NSMenuItem separatorItem]];
+            [advancedMenu addItemWithTitle:NSLocalizedString(@"Winetricks", @"") action:@selector(showWinetricksMenu:) keyEquivalent:@""];
+            [advancedMenu addItemWithTitle:NSLocalizedString(@"Run external .exe", @"") action:@selector(runExternalBinary:) keyEquivalent:@""];
+            [advancedMenu addItemWithTitle:NSLocalizedString(@"Change executable path", @"") action:@selector(changeExecutablePath:) keyEquivalent:@""];
+            [advancedMenu addItemWithTitle:NSLocalizedString(@"Change Wine Engine", @"") action:@selector(changeBundleWineEngine:) keyEquivalent:@""];
+            
+            // Wine commands
+            NSMenuItem *advancedItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Advanced Settings", @"") action:nil keyEquivalent:@""];
+            [advancedItem setSubmenu:advancedMenu];
+            [menu addItem:advancedItem];
+        }
         
         [menu addItem:[NSMenuItem separatorItem]];
         
         // Create Rating Item
-        [menu addItemWithTitle:NSLocalizedString(@"Write a Review", @"") action:@selector(showReviewWindow:) keyEquivalent:@""];
+        if ([[firstGame bundleType] isEqualToString:@"barrel"] || [firstGame bundleType] == nil) {
+            [menu addItemWithTitle:NSLocalizedString(@"Write a Review", @"") action:@selector(showReviewWindow:) keyEquivalent:@""];
+        }
         menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Rating", @"") action:NULL keyEquivalent:@""];
         [menuItem setSubmenu:[self OE_ratingMenuForGames:games]];
         [menu addItem:menuItem];
         [menu addItemWithTitle:NSLocalizedString(@"Add Cover Art From File…", @"") action:@selector(addCoverArtFromFile:) keyEquivalent:@""];
         
         // Show upload option only if the bundle has no author
-        if ([[games objectAtIndex:0] authorID] == nil || [[[games objectAtIndex:0] authorID] integerValue] == 0) {
-            [menu addItemWithTitle:NSLocalizedString(@"Upload Bundle", @"") action:@selector(makeGameRecipeAndUpload:) keyEquivalent:@""];
-        }
-        else if ([[[games objectAtIndex:0] authorID] integerValue] == [[[NSUserDefaults standardUserDefaults] valueForKey:@"userID"] integerValue]) {
-            TODO("Implement Bundle updating");
-            // [menu addItemWithTitle:NSLocalizedString(@"Push Update", @"") action:@selector(makeGameRecipeAndUpload:) keyEquivalent:@""];
+        if ([[firstGame bundleType] isEqualToString:@"barrel"] || [firstGame bundleType] == nil) {
+            if ([[games objectAtIndex:0] authorID] == nil || [[[games objectAtIndex:0] authorID] integerValue] == 0) {
+                [menu addItemWithTitle:NSLocalizedString(@"Upload Bundle", @"") action:@selector(makeGameRecipeAndUpload:) keyEquivalent:@""];
+            }
+            else if ([[[games objectAtIndex:0] authorID] integerValue] == [[[NSUserDefaults standardUserDefaults] valueForKey:@"userID"] integerValue]) {
+                TODO("Implement Bundle updating");
+                // [menu addItemWithTitle:NSLocalizedString(@"Push Update", @"") action:@selector(makeGameRecipeAndUpload:) keyEquivalent:@""];
+            }
         }
         
         [menu addItem:[NSMenuItem separatorItem]];
