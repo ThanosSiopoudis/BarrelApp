@@ -81,6 +81,7 @@ NSString *const BLImportInfoCollectionID        = @"collectionID";
 @property(readwrite)            NSString            *downloadedRecipePath;
 @property(readwrite)            BLFileDownloader    *downloaderCache;
 @property(readwrite)            NSString            *execPath;
+@property(readwrite)            NSString            *importBundleType;
 
 - (void)processNextItemIfNeeded;
 
@@ -292,15 +293,49 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         NSArray *pathComponents = [[url path] componentsSeparatedByString:@"/"];
         if (![(NSString *)[pathComponents objectAtIndex:1] isEqualToString:@"Volumes"] || [pathComponents count] != 3) {
             // The imported item was not a volume.
-            // Check for other known types of bundles. We support Barrel, Cider, Wineskin and Native
-            // 1: Check for Wineskin
-            
-        }
-    }
-    else { // Only accept exetuables
-        if (![[[url lastPathComponent] pathExtension] isEqualToString:@"exe"]) {
             // Throw the error here
             [self stopImportForItem:item withError:[NSError errorWithDomain:@"BLImportFatalDomain" code:1000 userInfo:nil]];
+        }
+        else {
+            [self setImportBundleType:@"barrel"];
+        }
+    }
+    else { // Only accept executables
+        if (![[[url lastPathComponent] pathExtension] isEqualToString:@"exe"]) {
+            // Check for other known types of bundles. We support Barrel, Cider, Wineskin and Native
+            // Does it have a .app extension? Force the system identifier.
+            if ([[url pathExtension] isEqualToString:@"app"]) {
+                NSBundle *applicationBundle = [[NSBundle alloc] initWithURL:url];
+                NSString *bundleExecutable = [applicationBundle objectForInfoDictionaryKey:@"CFBundleExecutable"];
+                
+                if ([bundleExecutable isEqualToString:@"WineskinLauncher"]) {
+                    // 1: Check for Wineskin
+                    [self setImportBundleType:@"wineskin"];
+                    [[item importInfo] setValue:@"barrel.system.wineskin" forKey:BLImportInfoSystemID];
+                }
+                else if ([bundleExecutable isEqualToString:@"cider"]) {
+                    // 2: Check for Cider
+                    [self setImportBundleType:@"cider"];
+                    [[item importInfo] setValue:@"barrel.system.cider" forKey:BLImportInfoSystemID];
+                }
+                else if ([bundleExecutable isEqualToString:@"BarrelApp"]) {
+                    // 3: Check for Barrel
+                    [self setImportBundleType:@"barrel"];
+                    [[item importInfo] setValue:@"barrel.system.barrel" forKey:BLImportInfoSystemID];
+                }
+                else {
+                    // 3: it's native
+                    [self setImportBundleType:@"native"];
+                    [[item importInfo] setValue:@"barrel.system.native" forKey:BLImportInfoSystemID];
+                }
+            }
+            else {
+                // Throw the error here
+                [self stopImportForItem:item withError:[NSError errorWithDomain:@"BLImportFatalDomain" code:1000 userInfo:nil]];
+            }
+        }
+        else {
+            [self setImportBundleType:@"barrel"];
         }
     }
 }
@@ -331,18 +366,31 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
         [self setVolumeName:cvolumeName];
     }
     else {
-        [[self progressWindow] setMessageText:@"Checking File..."];
-        NSString *filename = [url lastPathComponent];
-        NSArray *fileParts = [filename componentsSeparatedByString:@"."];
-        filename = [fileParts objectAtIndex:0];
-        
-        [self setVolumeName:filename];
+        if ([[self importBundleType] isEqualToString:@"barrel"]) {
+            [[self progressWindow] setMessageText:@"Checking File..."];
+            NSString *filename = [url lastPathComponent];
+            NSArray *fileParts = [filename componentsSeparatedByString:@"."];
+            filename = [fileParts objectAtIndex:0];
+            
+            [self setVolumeName:filename];
+        }
+        else {
+            // Set the volume name to the bundle's name excuding the extension
+            [self setVolumeName:[[[url path] lastPathComponent] stringByDeletingPathExtension]];
+            [self setGameName:[[[url path] lastPathComponent] stringByDeletingPathExtension]];
+        }
     }
 }
 
 - (void)performImportStepLookupEntry:(BLImportItem *)item
 {
     IMPORTDLog(@"Volume URL: %@", [item sourceURL]);
+    
+    // If the import is not a barrel bundle, proceed
+    if (![[self importBundleType] isEqualToString:@"barrel"]) {
+        return;
+    }
+    
     self.appCake = [[AppCakeAPI alloc] init];
     [item setImportState:BLImportItemStatusWait];
     
@@ -395,6 +443,11 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)performImportStepDownloadBundle:(BLImportItem *)item {
+    // If the import is not a barrel bundle, proceed
+    if (![[self importBundleType] isEqualToString:@"barrel"]) {
+        return;
+    }
+    
     [item setImportState:BLImportItemStatusWait];
     
     NSString *path = [[[[self database] databaseFolderURL] URLByAppendingPathComponent:@"tmp"] path];
@@ -432,6 +485,11 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 }
 
 - (void)performImportStepBuildEngine:(BLImportItem *)item {
+    // If the import is not a barrel bundle, proceed
+    if (![[self importBundleType] isEqualToString:@"barrel"]) {
+        return;
+    }
+    
     [item setImportState:BLImportItemStatusWait];
     dispatch_async(dispatch_get_main_queue(), ^{
         OEHUDAlert *preparingAlert = [OEHUDAlert showProgressAlertWithMessage:@"Preparing bundle..." andTitle:@"Preparing" indeterminate:YES];
@@ -496,7 +554,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
 
 - (void)performImportStepCreateBundle:(BLImportItem *)item {
     // Is this empty? Go away if it is
-    if ([item isEmptyBundle] || [item isSteamBundle]) {
+    if ([item isEmptyBundle] || [item isSteamBundle] || ![[self importBundleType] isEqualToString:@"barrel"]) {
         return;
     }
     
@@ -527,9 +585,20 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     NSURL       *url                = [NSURL fileURLWithPath:newBarrelApp];
     NSURL       *newUrl             = [[[self database] gamesFolderURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@.app", genre, [self gameName]]];
     
+    [[self progressWindow] setMessageText:@"Organising..."];
+    
+    // If it's not a Barrel import, set proper paths
+    if (![[self importBundleType] isEqualToString:@"barrel"]) {
+        newBundlePath = [[[item URL] path] stringByDeletingLastPathComponent];
+        newBarrelApp = [[item URL] path];
+        newBarrelBundle = [NSBundle bundleWithURL:[item URL]];
+        url = [item URL];
+        newUrl = [[[self database] gamesFolderURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@", genre, [[[item URL] path] lastPathComponent]]];
+    }
+    
     // Was the installation successful? Check the new bundle for a proper windows executable
     // Only if we're not creating an empty or Steam bundle though
-    if (![item isEmptyBundle] && ![item isSteamBundle]) {
+    if (![item isEmptyBundle] && ![item isSteamBundle] && [[self importBundleType] isEqualToString:@"barrel"]) {
         NSMutableDictionary *newBundleInfo = [NSMutableDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/Contents/Info.plist", newBarrelApp]];
         NSString *newWinBinary = [newBundleInfo valueForKey:@"Windows Executable"];
         if ([newWinBinary isEqualToString:@"none.exe"]) {
@@ -646,8 +715,12 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     }
     
     if (error != nil) {
-        [self stopImportForItem:item withError:error];
-        return;
+        // We didn't manage to move the item. Try copying instead, before failing
+        [[NSFileManager defaultManager] copyItemAtURL:url toURL:newUrl error:&error];
+        if (error != nil) {
+            [self stopImportForItem:item withError:error];
+            return;
+        }
     }
     
     [item setURL:newUrl];
@@ -660,6 +733,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     OEDBSystem *system = [OEDBSystem systemForPluginIdentifier:[[item importInfo] valueForKey:BLImportInfoSystemID] inDatabase:[self database]];
     
     game = [OEDBGame createGameWithName:[self gameName] andGenre:@"barrel.genre.strategy" andSystem:system andBundlePath:[[item URL] path] inDatabase:[self database]];
+    [game setBundleType:[self importBundleType]];
     
     // Do we have artwork from the API? If yes, set it
     if ([self serverGame] != nil) {
@@ -682,6 +756,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
             }
         }
     }
+    [[self progressWindow] close];
     
     if (game != nil) {
         [self stopImportForItem:item withError:nil];
