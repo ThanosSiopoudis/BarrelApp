@@ -25,6 +25,7 @@
         <attribute name="archiveID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="authorID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="bundlePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bundleType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="gameDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="gameTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="genre" optional="YES" attributeType="String" syncable="YES"/>
