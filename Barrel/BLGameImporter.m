@@ -273,6 +273,7 @@ static void importBlock(BLGameImporter *importer, BLImportItem *item)
     if ([[item importInfo] valueForKey:BLImportInfoSystemID] == nil) {
         [[self progressWindow] close];
         [[item importInfo] setValue:@"barrel.system.barrel" forKey:BLImportInfoSystemID];
+        [self setImportBundleType:@"barrel"];
     }
     
     // That's as far as we go if we're creating an empty or Steam bundle...
