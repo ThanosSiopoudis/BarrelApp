@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
 		<string key="IBDocument.SystemVersion">12E55</string>
-		<string key="IBDocument.InterfaceBuilderVersion">4488.1</string>
+		<string key="IBDocument.InterfaceBuilderVersion">4488.2</string>
 		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">4488.1</string>
+			<string key="NS.object.0">4488.2</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSButton</string>
@@ -37,20 +37,21 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSView" id="450679658">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">256</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSButton" id="982783455">
 						<reference key="NSNextResponder" ref="450679658"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{42, 90}, {223, 18}}</string>
+						<string key="NSFrame">{{42, 90}, {305, 18}}</string>
 						<reference key="NSSuperview" ref="450679658"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1021236093"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="164630669">
 							<int key="NSCellFlags">603979776</int>
 							<int key="NSCellFlags2">0</int>
-							<string key="NSContents">Always launch games fullscreen</string>
+							<string key="NSContents">Always launch games fullscreen (XQuatz)</string>
 							<object class="NSFont" key="NSSupport" id="975884823">
 								<string key="NSName">LucidaGrande</string>
 								<double key="NSSize">13</double>
@@ -76,14 +77,15 @@
 					<object class="NSButton" id="1021236093">
 						<reference key="NSNextResponder" ref="450679658"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{42, 61}, {305, 18}}</string>
+						<string key="NSFrame">{{42, 61}, {338, 18}}</string>
 						<reference key="NSSuperview" ref="450679658"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1051657740"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="691447346">
 							<int key="NSCellFlags">603979776</int>
 							<int key="NSCellFlags2">0</int>
-							<string key="NSContents">Always use X11 instead of Winemac driver</string>
+							<string key="NSContents">Always use XQuatz instead of Winemac driver</string>
 							<reference key="NSSupport" ref="975884823"/>
 							<reference key="NSControlView" ref="1021236093"/>
 							<int key="NSButtonFlags">1211912448</int>
@@ -102,6 +104,8 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{42, 32}, {305, 18}}</string>
 						<reference key="NSSuperview" ref="450679658"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="255100288">
 							<int key="NSCellFlags">603979776</int>
@@ -125,6 +129,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{41, 124}, {139, 14}}</string>
 						<reference key="NSSuperview" ref="450679658"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="982783455"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="307261816">
@@ -160,6 +165,8 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{423, 158}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="406681499"/>
 			</object>
 			<object class="NSUserDefaultsController" id="404735014">
