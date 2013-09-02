@@ -148,7 +148,7 @@
     NSRect rect = (NSRect){ .size = { [view frame].size.width, bottomTextViewHeight }};
     
     NSTextView *textView = [[NSTextView alloc] initWithFrame:NSInsetRect(rect, -4, 0)];
-    NSString   *text     = [NSString stringWithFormat:NSLocalizedString(@"Create a personal game selection. To add to a collection, select a game from your console library and drag it to ’%@’ on the left.", @""), collectionName];
+    NSString   *text     = [NSString stringWithFormat:NSLocalizedString(@"Create a personal game selection. To add to a collection, select a game from your games library and drag it to ’%@’ on the left.", @""), collectionName];
     [textView setString:text];
     [textView setDrawsBackground:NO];
     [textView setEditable:NO];
