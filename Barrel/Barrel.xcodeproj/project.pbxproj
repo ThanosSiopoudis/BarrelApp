@@ -2814,7 +2814,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Barrel;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
@@ -2845,7 +2845,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Barrel;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 				VALID_ARCHS = x86_64;
 			};
 			name = Release;

@@ -2,37 +2,87 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>ADA10FB5-5EFC-40AD-96BA-6D1EE6775EA1</string>
+	<string>7DF81551-2E39-42DC-A682-499F8141CC77</string>
 	<key>IDESourceControlProjectName</key>
 	<string>BarrelWorkspace</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>0F9641F9-7488-490A-B4AC-DEB5DF057232</key>
-		<string>https://github.com/ThanosSiopoudis/BarrelApp.git</string>
+		<key>2AFE4E60-C406-41EC-B185-DB822F0AC11C</key>
+		<string>git://github.com/RestKit/RestKit.git</string>
+		<key>2B799753-072F-46C0-A54A-DF0280B22B86</key>
+		<string>https://github.com/AFNetworking/AFNetworking.git</string>
+		<key>55ACB8F1-2439-4EDA-9CE2-117355EBA34E</key>
+		<string>https://github.com/blakewatters/TransitionKit.git</string>
+		<key>92F3332A-5A36-47C3-9411-E07A0921D11D</key>
+		<string>https://github.com/aidansteele/MagicKit.git</string>
+		<key>E9C62316-BAD2-41F6-BD1D-CDEED1EDAE69</key>
+		<string>https://github.com/ThanosSiopoudis/BarrelApp</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>BarrelWorkspace.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>0F9641F9-7488-490A-B4AC-DEB5DF057232</key>
+		<key>2AFE4E60-C406-41EC-B185-DB822F0AC11C</key>
+		<string>../RestKit</string>
+		<key>2B799753-072F-46C0-A54A-DF0280B22B86</key>
+		<string>../RestKit/Vendor/AFNetworking</string>
+		<key>55ACB8F1-2439-4EDA-9CE2-117355EBA34E</key>
+		<string>../RestKit/Vendor/TransitionKit</string>
+		<key>92F3332A-5A36-47C3-9411-E07A0921D11D</key>
+		<string>../MagicKit</string>
+		<key>E9C62316-BAD2-41F6-BD1D-CDEED1EDAE69</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/ThanosSiopoudis/BarrelApp.git</string>
+	<string>https://github.com/ThanosSiopoudis/BarrelApp</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>0F9641F9-7488-490A-B4AC-DEB5DF057232</string>
+	<string>E9C62316-BAD2-41F6-BD1D-CDEED1EDAE69</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>0F9641F9-7488-490A-B4AC-DEB5DF057232</string>
+			<string>2B799753-072F-46C0-A54A-DF0280B22B86</string>
 			<key>IDESourceControlWCCName</key>
-			<string>Barrel</string>
+			<string>AFNetworking</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E9C62316-BAD2-41F6-BD1D-CDEED1EDAE69</string>
+			<key>IDESourceControlWCCName</key>
+			<string>BarrelApp</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>92F3332A-5A36-47C3-9411-E07A0921D11D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MagicKit</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2AFE4E60-C406-41EC-B185-DB822F0AC11C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>RestKit</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>55ACB8F1-2439-4EDA-9CE2-117355EBA34E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>TransitionKit</string>
 		</dict>
 	</array>
 </dict>
