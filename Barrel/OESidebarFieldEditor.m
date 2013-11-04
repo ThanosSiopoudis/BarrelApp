@@ -102,6 +102,9 @@ static void *const _OESidebarFieldEditorContext = (void *)&_OESidebarFieldEditor
         [self updateContainerFrame];
         
         [[[self superview] superview] addSubview:[self container] positioned:NSWindowBelow relativeTo:[self superview]];
+        dispatch_after(DISPATCH_TIME_NOW, dispatch_get_main_queue(), ^(void){
+            [self setNeedsDisplayInRect:[self bounds] avoidAdditionalLayout:YES];
+        });
     }
     else if([self container] != nil)
     {
