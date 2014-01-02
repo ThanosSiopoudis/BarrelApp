@@ -332,7 +332,8 @@ NSString *const OEDisplayGameTitle = @"displayGameTitle";
     if(moveToTrash)
     {
         NSString *path = [self bundlePath];
-        [[NSWorkspace sharedWorkspace] performFileOperation:NSWorkspaceRecycleOperation source:[path stringByDeletingLastPathComponent] destination:nil files:[NSArray arrayWithObject:[path lastPathComponent]] tag:NULL];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[self bundlePath]])
+            [[NSWorkspace sharedWorkspace] performFileOperation:NSWorkspaceRecycleOperation source:[path stringByDeletingLastPathComponent] destination:nil files:[NSArray arrayWithObject:[path lastPathComponent]] tag:NULL];
     }
     
     [[self managedObjectContext] deleteObject:self];
