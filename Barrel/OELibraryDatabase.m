@@ -119,7 +119,7 @@ static OELibraryDatabase *defaultDatabase = nil;
     }
 
     [[NSUserDefaults standardUserDefaults] setObject:[[defaultDatabase databaseURL] path] forKey:OEDatabasePathKey];
-    [defaultDatabase OE_setupStateWatcher];
+    // [defaultDatabase OE_setupStateWatcher];
 
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
