@@ -282,7 +282,7 @@ NSInteger OE_compare(OEPlugin *obj1, OEPlugin *obj2, void *ctx)
 
             if(extension == nil) return nil;
 
-            NSString *openEmuSearchPath = [@"OpenEmu" stringByAppendingPathComponent:folder];
+            NSString *openEmuSearchPath = [@"Barrel" stringByAppendingPathComponent:folder];
 
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
             NSFileManager *manager = [NSFileManager defaultManager];
