@@ -12,7 +12,7 @@
 		14861960166076A400BDB800 /* NSDate+OESortAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1486195F166076A400BDB800 /* NSDate+OESortAdditions.m */; };
 		14A9073C16FAA0EF005E2635 /* FeedbackReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A9073916FAA0AE005E2635 /* FeedbackReporter.framework */; };
 		14E4A7FA1616EF8B00082311 /* NSWindow+OEFullScreenAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E4A7F91616EF8B00082311 /* NSWindow+OEFullScreenAdditions.m */; };
-		1B48F24B166714AC004E8ABA /* FeedbackReporter.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = 1B48F21716671473004E8ABA /* FeedbackReporter.framework */; };
+		1B48F24B166714AC004E8ABA /* FeedbackReporter.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = 1B48F21716671473004E8ABA /* FeedbackReporter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1B7505140FEEB72700B0D0AF /* About.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B7505100FEEB4F600B0D0AF /* About.png */; };
 		1BFC26D9116C1CB800B95689 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BEF2AC311682A9D0090F72B /* IOSurface.framework */; };
 		1BFC2725116C1F6700B95689 /* OETaskWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF2D14116855690090F72B /* OETaskWrapper.m */; };
@@ -150,7 +150,7 @@
 		82DD29DB12369F1100B58A8F /* KeyboardUsages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 82DD29DA12369F1100B58A8F /* KeyboardUsages.plist */; };
 		82DD2B1E1236CF0200B58A8F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82DD2B1D1236CF0200B58A8F /* Carbon.framework */; };
 		82DE4B62102655D5007184EB /* XADMaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82DE4AEF1026533E007184EB /* XADMaster.framework */; };
-		82DE4B7F102655FC007184EB /* XADMaster.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = 82DE4AEF1026533E007184EB /* XADMaster.framework */; };
+		82DE4B7F102655FC007184EB /* XADMaster.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = 82DE4AEF1026533E007184EB /* XADMaster.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		83025E60146BDD5E00A06EF9 /* OECoreTableButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83025E5F146BDD5E00A06EF9 /* OECoreTableButtonCell.m */; };
 		83025E63146BDD9400A06EF9 /* slim_dark_pill_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 83025E62146BDD9400A06EF9 /* slim_dark_pill_button.png */; };
 		83025E66146BE68E00A06EF9 /* OECoreTableProgressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83025E65146BE68D00A06EF9 /* OECoreTableProgressCell.m */; };
@@ -285,7 +285,7 @@
 		83F7EADA171D911400D32E26 /* OESearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F7EAD9171D911400D32E26 /* OESearchField.m */; };
 		83FA054B13B9DEFD0055A520 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6711813136368330034379A /* AppKit.framework */; };
 		83FA054E13B9DF940055A520 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FA054D13B9DF940055A520 /* Sparkle.framework */; };
-		83FA055013B9E01B0055A520 /* Sparkle.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = 83FA054D13B9DF940055A520 /* Sparkle.framework */; };
+		83FA055013B9E01B0055A520 /* Sparkle.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = 83FA054D13B9DF940055A520 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		83FFC069145819070077EC27 /* installer_backgroundSample.png in Resources */ = {isa = PBXBuildFile; fileRef = 83FFC068145819070077EC27 /* installer_backgroundSample.png */; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
@@ -392,9 +392,9 @@
 		C1A030D717316E0A00BF897F /* AC_WineBuild.m in Sources */ = {isa = PBXBuildFile; fileRef = C1A030D617316E0A00BF897F /* AC_WineBuild.m */; };
 		C1A210201755F7FD0061A438 /* BLFileDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C1A2101F1755F7FD0061A438 /* BLFileDownloader.m */; };
 		C1C83B6417674A2200697964 /* MagicKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1C83B5F176749D700697964 /* MagicKit.framework */; };
-		C1C83B6517674A3100697964 /* MagicKit.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = C1C83B5F176749D700697964 /* MagicKit.framework */; };
+		C1C83B6517674A3100697964 /* MagicKit.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = C1C83B5F176749D700697964 /* MagicKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C1C83B7517674DC600697964 /* RestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1C83B7217674D3F00697964 /* RestKit.framework */; };
-		C1C83B7617674DDC00697964 /* RestKit.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = C1C83B7217674D3F00697964 /* RestKit.framework */; };
+		C1C83B7617674DDC00697964 /* RestKit.framework in Copy Frameworks to App Frameworks */ = {isa = PBXBuildFile; fileRef = C1C83B7217674D3F00697964 /* RestKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C1D97D771771A633005472DB /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D97D761771A633005472DB /* NSString+UUID.m */; };
 		C1DE8FA0172EC1300081FEC7 /* BLHUDProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = C1DE8F9F172EC12F0081FEC7 /* BLHUDProgressIndicator.m */; };
 		C1E4FB47171E9A020081FE1D /* Barrel_Empty.icns in Resources */ = {isa = PBXBuildFile; fileRef = C1E4FB46171E99FE0081FE1D /* Barrel_Empty.icns */; };
@@ -2591,7 +2591,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0600;
 			};
 			buildConfigurationList = C05733CB08A9546B00998B17 /* Build configuration list for PBXProject "Barrel" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -3156,9 +3156,9 @@
 		C05733C808A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_EXPERIMENTAL = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3188,9 +3188,9 @@
 		C05733C908A9546B00998B17 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_EXPERIMENTAL = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3226,9 +3226,11 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3238,6 +3240,7 @@
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3247,7 +3250,7 @@
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -3261,13 +3264,16 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = NS_BUILD_32_LIKE_64;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3276,7 +3282,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

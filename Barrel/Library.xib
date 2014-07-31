@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">13B3116</string>
-		<string key="IBDocument.InterfaceBuilderVersion">4514</string>
-		<string key="IBDocument.AppKitVersion">1265</string>
-		<string key="IBDocument.HIToolboxVersion">696.00</string>
+		<string key="IBDocument.SystemVersion">14A238x</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6154.17</string>
+		<string key="IBDocument.AppKitVersion">1318.14</string>
+		<string key="IBDocument.HIToolboxVersion">735.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">4514</string>
+			<string key="NS.object.0">6154.17</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSButton</string>
@@ -69,6 +69,7 @@
 												<string key="NSFrame">{{185, 0}, {1, 75}}</string>
 												<reference key="NSSuperview" ref="11501890"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="934483657"/>
 												<string key="NSClassName">OEBackgroundColorView</string>
 											</object>
 											<object class="NSTextField" id="5597115">
@@ -77,13 +78,14 @@
 												<string key="NSFrame">{{17, 4}, {157, 17}}</string>
 												<reference key="NSSuperview" ref="11501890"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="428049072"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="540379609">
 													<int key="NSCellFlags">67108928</int>
 													<int key="NSCellFlags2">272631296</int>
 													<string key="NSContents">Scanner Paused</string>
 													<object class="NSFont" key="NSSupport" id="26">
-														<string key="NSName">.LucidaGrandeUI</string>
+														<bool key="IBIsSystemFont">YES</bool>
 														<double key="NSSize">11</double>
 														<int key="NSfFlags">3100</int>
 													</object>
@@ -116,13 +118,14 @@
 												<string key="NSFrame">{{17, 43}, {157, 17}}</string>
 												<reference key="NSSuperview" ref="11501890"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="210541441"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="770934479">
 													<int key="NSCellFlags">67108928</int>
 													<int key="NSCellFlags2">272631808</int>
 													<string key="NSContents">GAME SCANNER</string>
 													<object class="NSFont" key="NSSupport">
-														<string key="NSName">.LucidaGrandeUI-Bold</string>
+														<bool key="IBIsSystemFont">YES</bool>
 														<double key="NSSize">13</double>
 														<int key="NSfFlags">2072</int>
 													</object>
@@ -139,6 +142,7 @@
 												<string key="NSFrame">{{16, 20}, {132, 20}}</string>
 												<reference key="NSSuperview" ref="11501890"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="854153960"/>
 												<string key="NSHuggingPriority">{250, 250}</string>
 												<int key="NSpiFlags">16397</int>
 												<double key="NSMaxValue">100</double>
@@ -149,6 +153,7 @@
 												<string key="NSFrame">{{0, 73}, {185, 2}}</string>
 												<reference key="NSSuperview" ref="11501890"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="74947601"/>
 												<string key="NSClassName">OEHorizontalLine</string>
 											</object>
 											<object class="NSButton" id="854153960">
@@ -157,15 +162,16 @@
 												<string key="NSFrame">{{151, 22}, {25, 25}}</string>
 												<reference key="NSSuperview" ref="11501890"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="5597115"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSButtonCell" key="NSCell" id="903851682">
 													<int key="NSCellFlags">67108864</int>
 													<int key="NSCellFlags2">134217728</int>
 													<string key="NSContents"/>
 													<object class="NSFont" key="NSSupport">
-														<string key="NSName">LucidaGrande</string>
+														<bool key="IBIsSystemFont">YES</bool>
 														<double key="NSSize">10</double>
-														<int key="NSfFlags">16</int>
+														<int key="NSfFlags">1044</int>
 													</object>
 													<reference key="NSControlView" ref="854153960"/>
 													<int key="NSButtonFlags">-2042478592</int>
@@ -186,6 +192,7 @@
 										<string key="NSFrame">{{0, -75}, {186, 75}}</string>
 										<reference key="NSSuperview" ref="973116199"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="124482167"/>
 										<string key="NSClassName">OEBackgroundColorView</string>
 									</object>
 									<object class="NSScrollView" id="296452790">
@@ -202,6 +209,7 @@
 														<string key="NSFrameSize">{186, 555}</string>
 														<reference key="NSSuperview" ref="741668646"/>
 														<reference key="NSWindow"/>
+														<reference key="NSNextKeyView" ref="603105938"/>
 														<bool key="NSEnabled">YES</bool>
 														<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 														<bool key="NSControlAllowsExpansionToolTips">YES</bool>
@@ -236,7 +244,7 @@
 																	<int key="NSCellFlags2">2048</int>
 																	<string key="NSContents">Text Cell</string>
 																	<object class="NSFont" key="NSSupport" id="112331537">
-																		<string key="NSName">.LucidaGrandeUI</string>
+																		<bool key="IBIsSystemFont">YES</bool>
 																		<double key="NSSize">13</double>
 																		<int key="NSfFlags">1044</int>
 																	</object>
@@ -297,7 +305,10 @@
 												<string key="NSFrame">{{-100, -100}, {171, 15}}</string>
 												<reference key="NSSuperview" ref="296452790"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="741668646"/>
 												<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+												<string key="NSControlAction">_doScroller:</string>
+												<reference key="NSControlTarget" ref="296452790"/>
 												<int key="NSsFlags">1</int>
 												<reference key="NSTarget" ref="296452790"/>
 												<string key="NSAction">_doScroller:</string>
@@ -308,7 +319,10 @@
 												<string key="NSFrame">{{171, 17}, {15, 494}}</string>
 												<reference key="NSSuperview" ref="296452790"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="11501890"/>
 												<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+												<string key="NSControlAction">_doScroller:</string>
+												<reference key="NSControlTarget" ref="296452790"/>
 												<reference key="NSTarget" ref="296452790"/>
 												<string key="NSAction">_doScroller:</string>
 											</object>
@@ -316,7 +330,7 @@
 										<string key="NSFrameSize">{186, 555}</string>
 										<reference key="NSSuperview" ref="973116199"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="741668646"/>
+										<reference key="NSNextKeyView" ref="417268445"/>
 										<int key="NSsFlags">133648</int>
 										<reference key="NSVScroller" ref="603105938"/>
 										<reference key="NSHScroller" ref="417268445"/>
@@ -330,6 +344,7 @@
 								<string key="NSFrameSize">{186, 555}</string>
 								<reference key="NSSuperview" ref="877213047"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="296452790"/>
 								<bool key="NSViewIsLayerTreeHost">YES</bool>
 								<bool key="NSDoNotTranslateAutoresizingMask">YES</bool>
 								<string key="NSClassName">OESidebarBackgroundView</string>
@@ -344,12 +359,14 @@
 										<string key="NSFrameSize">{643, 556}</string>
 										<reference key="NSSuperview" ref="934483657"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="981395886"/>
 										<string key="NSClassName">NSView</string>
 									</object>
 								</array>
 								<string key="NSFrame">{{187, 0}, {643, 555}}</string>
 								<reference key="NSSuperview" ref="877213047"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="907309559"/>
 								<bool key="NSDoNotTranslateAutoresizingMask">YES</bool>
 								<string key="NSClassName">NSView</string>
 							</object>
@@ -357,6 +374,7 @@
 						<string key="NSFrame">{{0, 45}, {830, 555}}</string>
 						<reference key="NSSuperview" ref="659783271"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="973116199"/>
 						<bool key="NSIsVertical">YES</bool>
 						<int key="NSDividerStyle">2</int>
 						<string key="NSAutosaveName">mainSplitView</string>
@@ -387,6 +405,7 @@
 												<string key="NSFrame">{{138, 17}, {10, 10}}</string>
 												<reference key="NSSuperview" ref="779372513"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="1026155780"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSImageCell" key="NSCell" id="502081024">
 													<int key="NSCellFlags">0</int>
@@ -405,6 +424,7 @@
 												<string key="NSFrame">{{27, 13}, {103, 15}}</string>
 												<reference key="NSSuperview" ref="779372513"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="112154934"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSSliderCell" key="NSCell" id="302887380">
 													<int key="NSCellFlags">-2147483648</int>
@@ -435,6 +455,7 @@
 												<string key="NSFrame">{{15, 18}, {7, 7}}</string>
 												<reference key="NSSuperview" ref="779372513"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="560396036"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSImageCell" key="NSCell" id="263742332">
 													<int key="NSCellFlags">0</int>
@@ -451,6 +472,7 @@
 										<string key="NSFrame">{{667, 0}, {163, 44}}</string>
 										<reference key="NSSuperview" ref="999711871"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="815186251"/>
 										<string key="NSClassName">NSView</string>
 									</object>
 									<object class="NSSearchField" id="719699141">
@@ -459,6 +481,8 @@
 										<string key="NSFrame">{{282, 10}, {271, 22}}</string>
 										<reference key="NSSuperview" ref="999711871"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="779372513"/>
+										<bool key="NSViewIsLayerTreeHost">YES</bool>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSSearchFieldCell" key="NSCell" id="980493488">
 											<int key="NSCellFlags">342884417</int>
@@ -491,22 +515,24 @@
 											<object class="NSButtonCell" key="NSCancelButtonCell">
 												<int key="NSCellFlags">-2147483648</int>
 												<int key="NSCellFlags2">0</int>
+												<string key="NSContents">clear</string>
 												<array class="NSMutableArray" key="NSAccessibilityOverriddenAttributes">
 													<dictionary class="NSMutableDictionary">
 														<string key="AXDescription">cancel</string>
 														<integer value="1" key="NSAccessibilityEncodedAttributesValueType"/>
 													</dictionary>
 												</array>
+												<reference key="NSControlView" ref="719699141"/>
 												<string key="NSAction">_searchFieldCancel:</string>
 												<reference key="NSTarget" ref="980493488"/>
-												<int key="NSButtonFlags">138428416</int>
+												<int key="NSButtonFlags">138690560</int>
 												<int key="NSButtonFlags2">0</int>
 												<string key="NSKeyEquivalent"/>
 												<int key="NSPeriodicDelay">400</int>
 												<int key="NSPeriodicInterval">75</int>
 											</object>
 											<int key="NSMaximumRecents">255</int>
-											<bytes key="NSSearchFieldFlags">CAAAAA</bytes>
+											<bytes key="NSSearchFieldFlags">DgAAAA</bytes>
 										</object>
 										<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 										<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
@@ -517,6 +543,7 @@
 										<string key="NSFrame">{{128, 10}, {27, 23}}</string>
 										<reference key="NSSuperview" ref="999711871"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="719699141"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSButtonCell" key="NSCell" id="84815577">
 											<int key="NSCellFlags">67108864</int>
@@ -544,6 +571,7 @@
 										<string key="NSFrame">{{101, 10}, {27, 23}}</string>
 										<reference key="NSSuperview" ref="999711871"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="398014796"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSButtonCell" key="NSCell" id="773525264">
 											<int key="NSCellFlags">67108864</int>
@@ -567,6 +595,7 @@
 										<string key="NSFrame">{{74, 10}, {27, 23}}</string>
 										<reference key="NSSuperview" ref="999711871"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="18312246"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSButtonCell" key="NSCell" id="100819717">
 											<int key="NSCellFlags">-2080374784</int>
@@ -590,6 +619,7 @@
 										<string key="NSFrame">{{14, 10}, {28, 23}}</string>
 										<reference key="NSSuperview" ref="999711871"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="1057795069"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSButtonCell" key="NSCell" id="1026858970">
 											<int key="NSCellFlags">-2080374784</int>
@@ -611,6 +641,7 @@
 								<string key="NSFrameSize">{830, 44}</string>
 								<reference key="NSSuperview" ref="981395886"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="895524293"/>
 								<string key="NSClassName">NSView</string>
 							</object>
 							<object class="NSButton" id="1026155780">
@@ -619,6 +650,7 @@
 								<string key="NSFrame">{{14, 10}, {28, 23}}</string>
 								<reference key="NSSuperview" ref="981395886"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="483111074">
 									<int key="NSCellFlags">-2080374784</int>
@@ -640,12 +672,14 @@
 						<string key="NSFrameSize">{830, 44}</string>
 						<reference key="NSSuperview" ref="659783271"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="999711871"/>
 						<string key="NSClassName">OELibraryToolbarView</string>
 					</object>
 				</array>
 				<string key="NSFrameSize">{830, 600}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView" ref="877213047"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomObject" id="1031751896">
@@ -1516,11 +1550,26 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
+					<string key="className">FirstResponder</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBUserSource</string>
+						<string key="minorKey"/>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">IKImageFlowView</string>
 					<string key="superclassName">NSOpenGLView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/IKImageFlowView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">IKImageFlowView</string>
+					<string key="superclassName">NSOpenGLView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/IKImageFlowView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1532,11 +1581,27 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">OEBackgroundColorView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OEBackgroundColorView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">OEBlankSlateView</string>
 					<string key="superclassName">NSView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/OEBlankSlateView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OEBlankSlateView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OEBlankSlateView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1548,6 +1613,22 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">OEButton</string>
+					<string key="superclassName">NSButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OEButton.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OEButton</string>
+					<string key="superclassName">NSButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">BarrelApp/BarrelApp/OEButton.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">OEButtonCell</string>
 					<string key="superclassName">NSButtonCell</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -1556,12 +1637,127 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">OEButtonCell</string>
+					<string key="superclassName">NSButtonCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OEButtonCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OEButtonCell</string>
+					<string key="superclassName">NSButtonCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">BarrelApp/BarrelApp/OEButtonCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OECollectionViewController</string>
+					<string key="superclassName">NSViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="changeExecutablePath:">id</string>
+						<string key="changeGridSize:">id</string>
+						<string key="openPanelRetry:">id</string>
+						<string key="runExternalBinary:">id</string>
+						<string key="search:">id</string>
+						<string key="showSelectedGamesInFinder:">id</string>
+						<string key="showWinetricksMenu:">id</string>
+						<string key="switchToFlowView:">id</string>
+						<string key="switchToGridView:">id</string>
+						<string key="switchToListView:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="changeExecutablePath:" id="1050650537">
+							<string key="name">changeExecutablePath:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="changeGridSize:" id="691549178">
+							<string key="name">changeGridSize:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="openPanelRetry:" id="458385197">
+							<string key="name">openPanelRetry:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="runExternalBinary:" id="702040586">
+							<string key="name">runExternalBinary:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="search:" id="436054760">
+							<string key="name">search:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showSelectedGamesInFinder:" id="512031507">
+							<string key="name">showSelectedGamesInFinder:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showWinetricksMenu:" id="543223397">
+							<string key="name">showWinetricksMenu:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="switchToFlowView:" id="584611214">
+							<string key="name">switchToFlowView:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="switchToGridView:" id="238203284">
+							<string key="name">switchToGridView:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="switchToListView:" id="41793533">
+							<string key="name">switchToListView:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="blankSlateView">OEBlankSlateView</string>
+						<string key="coverFlowView">IKImageFlowView</string>
+						<string key="flowlistViewContainer">OEHorizontalSplitView</string>
+						<string key="gridView">OEGridView</string>
+						<string key="gridViewContainer">NSView</string>
+						<string key="libraryController">OELibraryController</string>
+						<string key="listView">OETableView</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="blankSlateView" id="980183160">
+							<string key="name">blankSlateView</string>
+							<string key="candidateClassName">OEBlankSlateView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="coverFlowView" id="681609676">
+							<string key="name">coverFlowView</string>
+							<string key="candidateClassName">IKImageFlowView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="flowlistViewContainer" id="980518784">
+							<string key="name">flowlistViewContainer</string>
+							<string key="candidateClassName">OEHorizontalSplitView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="gridView" id="957677961">
+							<string key="name">gridView</string>
+							<string key="candidateClassName">OEGridView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="gridViewContainer" id="325513953">
+							<string key="name">gridViewContainer</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="libraryController" id="778299130">
+							<string key="name">libraryController</string>
+							<string key="candidateClassName">OELibraryController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="listView" id="1067053467">
+							<string key="name">listView</string>
+							<string key="candidateClassName">OETableView</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/OECollectionViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">OECollectionViewController</string>
 					<string key="superclassName">NSViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="changeGridSize:">id</string>
-						<string key="openPanelRetry:">id</string>
-						<string key="runExternalBinary:">id</string>
 						<string key="search:">id</string>
 						<string key="showSelectedGamesInFinder:">id</string>
 						<string key="switchToFlowView:">id</string>
@@ -1571,14 +1767,6 @@
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="changeGridSize:">
 							<string key="name">changeGridSize:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openPanelRetry:">
-							<string key="name">openPanelRetry:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="runExternalBinary:">
-							<string key="name">runExternalBinary:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="search:">
@@ -1602,53 +1790,103 @@
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">libraryController</string>
+						<string key="NS.object.0">OELibraryController</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">libraryController</string>
+						<reference key="NS.object.0" ref="778299130"/>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OECollectionViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OECollectionViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="changeExecutablePath:">id</string>
+						<string key="changeGridSize:">id</string>
+						<string key="openPanelRetry:">id</string>
+						<string key="runExternalBinary:">id</string>
+						<string key="search:">id</string>
+						<string key="showSelectedGamesInFinder:">id</string>
+						<string key="showWinetricksMenu:">id</string>
+						<string key="switchToFlowView:">id</string>
+						<string key="switchToGridView:">id</string>
+						<string key="switchToListView:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<reference key="changeExecutablePath:" ref="1050650537"/>
+						<reference key="changeGridSize:" ref="691549178"/>
+						<reference key="openPanelRetry:" ref="458385197"/>
+						<reference key="runExternalBinary:" ref="702040586"/>
+						<reference key="search:" ref="436054760"/>
+						<reference key="showSelectedGamesInFinder:" ref="512031507"/>
+						<reference key="showWinetricksMenu:" ref="543223397"/>
+						<reference key="switchToFlowView:" ref="584611214"/>
+						<reference key="switchToGridView:" ref="238203284"/>
+						<reference key="switchToListView:" ref="41793533"/>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="blankSlateView">OEBlankSlateView</string>
 						<string key="coverFlowView">IKImageFlowView</string>
 						<string key="flowlistViewContainer">OEHorizontalSplitView</string>
 						<string key="gridView">OEGridView</string>
 						<string key="gridViewContainer">NSView</string>
-						<string key="libraryController">OELibraryController</string>
 						<string key="listView">OETableView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="blankSlateView">
-							<string key="name">blankSlateView</string>
-							<string key="candidateClassName">OEBlankSlateView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="coverFlowView">
-							<string key="name">coverFlowView</string>
-							<string key="candidateClassName">IKImageFlowView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="flowlistViewContainer">
-							<string key="name">flowlistViewContainer</string>
-							<string key="candidateClassName">OEHorizontalSplitView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="gridView">
-							<string key="name">gridView</string>
-							<string key="candidateClassName">OEGridView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="gridViewContainer">
-							<string key="name">gridViewContainer</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="libraryController">
-							<string key="name">libraryController</string>
-							<string key="candidateClassName">OELibraryController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="listView">
-							<string key="name">listView</string>
-							<string key="candidateClassName">OETableView</string>
-						</object>
+						<reference key="blankSlateView" ref="980183160"/>
+						<reference key="coverFlowView" ref="681609676"/>
+						<reference key="flowlistViewContainer" ref="980518784"/>
+						<reference key="gridView" ref="957677961"/>
+						<reference key="gridViewContainer" ref="325513953"/>
+						<reference key="listView" ref="1067053467"/>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/OECollectionViewController.h</string>
+						<string key="minorKey">Barrel/OECollectionViewController.m</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">OEGridView</string>
 					<string key="superclassName">NSView</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">OEDebug_logGridViewFrames:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">OEDebug_logGridViewFrames:</string>
+						<object class="IBActionInfo" key="NS.object.0" id="992286286">
+							<string key="name">OEDebug_logGridViewFrames:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/OEGridView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OEGridView</string>
+					<string key="superclassName">NSView</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">OEDebug_logGridViewFrames:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">OEDebug_logGridViewFrames:</string>
+						<reference key="NS.object.0" ref="992286286"/>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OEGridView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OEGridView</string>
 					<object class="NSMutableDictionary" key="actions">
 						<string key="NS.key.0">OEDebug_logGridViewFrames:</string>
 						<string key="NS.object.0">id</string>
@@ -1662,7 +1900,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/OEGridView.h</string>
+						<string key="minorKey">Barrel/OEGridView.m</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1674,11 +1912,27 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">OEHorizontalLine</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OEHorizontalLine.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">OEHorizontalSplitView</string>
 					<string key="superclassName">NSSplitView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/OEHorizontalSplitView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OEHorizontalSplitView</string>
+					<string key="superclassName">NSSplitView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OEHorizontalSplitView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1690,6 +1944,14 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">OELabel</string>
+					<string key="superclassName">NSTextField</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OELabel.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">OELabelCell</string>
 					<string key="superclassName">NSTextFieldCell</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -1698,8 +1960,312 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">OELabelCell</string>
+					<string key="superclassName">NSTextFieldCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OELabelCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">OELibraryController</string>
 					<string key="superclassName">NSViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="addCollectionAction:">id</string>
+						<string key="addSteamGameToLibrary:">id</string>
+						<string key="addToLibrary:">id</string>
+						<string key="changeBundleWineEngine:">id</string>
+						<string key="changeGridSize:">id</string>
+						<string key="createEmptyBundle:">id</string>
+						<string key="doEngineChange:">id</string>
+						<string key="editSmartCollection:">id</string>
+						<string key="find:">id</string>
+						<string key="makeGameRecipeAndUpload:">id</string>
+						<string key="newCollection:">id</string>
+						<string key="newCollectionFolder:">id</string>
+						<string key="newSmartCollection:">id</string>
+						<string key="openUserPreferences:">id</string>
+						<string key="runGameWithDebug:">id</string>
+						<string key="runWineEngineChoice:">id</string>
+						<string key="search:">id</string>
+						<string key="showLogFile:">id</string>
+						<string key="showReviewWindow:">id</string>
+						<string key="startDebugRun:">id</string>
+						<string key="startGame:">id</string>
+						<string key="startRegedit:">id</string>
+						<string key="startWineCommandLine:">id</string>
+						<string key="startWineConfig:">id</string>
+						<string key="startWineskin:">id</string>
+						<string key="switchToFlowView:">id</string>
+						<string key="switchToGridView:">id</string>
+						<string key="switchToListView:">id</string>
+						<string key="toggleSidebar:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="addCollectionAction:" id="490459532">
+							<string key="name">addCollectionAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="addSteamGameToLibrary:" id="62596102">
+							<string key="name">addSteamGameToLibrary:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="addToLibrary:" id="448761538">
+							<string key="name">addToLibrary:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="changeBundleWineEngine:" id="750588971">
+							<string key="name">changeBundleWineEngine:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="changeGridSize:" id="995116194">
+							<string key="name">changeGridSize:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="createEmptyBundle:" id="169379663">
+							<string key="name">createEmptyBundle:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="doEngineChange:" id="725242675">
+							<string key="name">doEngineChange:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="editSmartCollection:" id="822524355">
+							<string key="name">editSmartCollection:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="find:" id="896774608">
+							<string key="name">find:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="makeGameRecipeAndUpload:" id="782680036">
+							<string key="name">makeGameRecipeAndUpload:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="newCollection:" id="228697388">
+							<string key="name">newCollection:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="newCollectionFolder:" id="191158191">
+							<string key="name">newCollectionFolder:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="newSmartCollection:" id="556803079">
+							<string key="name">newSmartCollection:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="openUserPreferences:" id="650970190">
+							<string key="name">openUserPreferences:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="runGameWithDebug:" id="245697569">
+							<string key="name">runGameWithDebug:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="runWineEngineChoice:" id="1004990964">
+							<string key="name">runWineEngineChoice:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="search:" id="261358386">
+							<string key="name">search:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showLogFile:" id="434180887">
+							<string key="name">showLogFile:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showReviewWindow:" id="627876905">
+							<string key="name">showReviewWindow:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="startDebugRun:" id="622796319">
+							<string key="name">startDebugRun:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="startGame:" id="719742583">
+							<string key="name">startGame:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="startRegedit:" id="256173668">
+							<string key="name">startRegedit:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="startWineCommandLine:" id="1058850079">
+							<string key="name">startWineCommandLine:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="startWineConfig:" id="158030267">
+							<string key="name">startWineConfig:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="startWineskin:" id="799396065">
+							<string key="name">startWineskin:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="switchToFlowView:" id="569717471">
+							<string key="name">switchToFlowView:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="switchToGridView:" id="396232552">
+							<string key="name">switchToGridView:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="switchToListView:" id="841188598">
+							<string key="name">switchToListView:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="toggleSidebar:" id="476156808">
+							<string key="name">toggleSidebar:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="mainContentPlaceholderView">NSView</string>
+						<string key="mainSplitView">OELibrarySplitView</string>
+						<string key="sidebarController">OESidebarController</string>
+						<string key="toolbarAddToSidebarButton">OEButton</string>
+						<string key="toolbarFlowViewButton">OEButton</string>
+						<string key="toolbarGridViewButton">OEButton</string>
+						<string key="toolbarListViewButton">OEButton</string>
+						<string key="toolbarSearchField">NSSearchField</string>
+						<string key="toolbarSidebarButton">OEButton</string>
+						<string key="toolbarSlider">NSSlider</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="mainContentPlaceholderView" id="4098405">
+							<string key="name">mainContentPlaceholderView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mainSplitView" id="747963560">
+							<string key="name">mainSplitView</string>
+							<string key="candidateClassName">OELibrarySplitView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sidebarController" id="360090946">
+							<string key="name">sidebarController</string>
+							<string key="candidateClassName">OESidebarController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toolbarAddToSidebarButton" id="329611358">
+							<string key="name">toolbarAddToSidebarButton</string>
+							<string key="candidateClassName">OEButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toolbarFlowViewButton" id="741275202">
+							<string key="name">toolbarFlowViewButton</string>
+							<string key="candidateClassName">OEButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toolbarGridViewButton" id="278635407">
+							<string key="name">toolbarGridViewButton</string>
+							<string key="candidateClassName">OEButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toolbarListViewButton" id="820069890">
+							<string key="name">toolbarListViewButton</string>
+							<string key="candidateClassName">OEButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toolbarSearchField" id="803870304">
+							<string key="name">toolbarSearchField</string>
+							<string key="candidateClassName">NSSearchField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toolbarSidebarButton" id="727395945">
+							<string key="name">toolbarSidebarButton</string>
+							<string key="candidateClassName">OEButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toolbarSlider" id="496917036">
+							<string key="name">toolbarSlider</string>
+							<string key="candidateClassName">NSSlider</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/OELibraryController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OELibraryController</string>
+					<string key="superclassName">NSViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="addCollectionAction:">id</string>
+						<string key="addSteamGameToLibrary:">id</string>
+						<string key="addToLibrary:">id</string>
+						<string key="changeBundleWineEngine:">id</string>
+						<string key="changeGridSize:">id</string>
+						<string key="createEmptyBundle:">id</string>
+						<string key="editSmartCollection:">id</string>
+						<string key="makeGameRecipeAndUpload:">id</string>
+						<string key="newCollection:">id</string>
+						<string key="newCollectionFolder:">id</string>
+						<string key="newSmartCollection:">id</string>
+						<string key="openUserPreferences:">id</string>
+						<string key="runWineEngineChoice:">id</string>
+						<string key="search:">id</string>
+						<string key="showReviewWindow:">id</string>
+						<string key="startDebugRun:">id</string>
+						<string key="startGame:">id</string>
+						<string key="startRegedit:">id</string>
+						<string key="startWineCommandLine:">id</string>
+						<string key="startWineConfig:">id</string>
+						<string key="startWineskin:">id</string>
+						<string key="switchToFlowView:">id</string>
+						<string key="switchToGridView:">id</string>
+						<string key="switchToListView:">id</string>
+						<string key="toggleSidebar:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<reference key="addCollectionAction:" ref="490459532"/>
+						<reference key="addSteamGameToLibrary:" ref="62596102"/>
+						<reference key="addToLibrary:" ref="448761538"/>
+						<reference key="changeBundleWineEngine:" ref="750588971"/>
+						<reference key="changeGridSize:" ref="995116194"/>
+						<reference key="createEmptyBundle:" ref="169379663"/>
+						<reference key="editSmartCollection:" ref="822524355"/>
+						<reference key="makeGameRecipeAndUpload:" ref="782680036"/>
+						<reference key="newCollection:" ref="228697388"/>
+						<reference key="newCollectionFolder:" ref="191158191"/>
+						<reference key="newSmartCollection:" ref="556803079"/>
+						<reference key="openUserPreferences:" ref="650970190"/>
+						<reference key="runWineEngineChoice:" ref="1004990964"/>
+						<reference key="search:" ref="261358386"/>
+						<reference key="showReviewWindow:" ref="627876905"/>
+						<reference key="startDebugRun:" ref="622796319"/>
+						<reference key="startGame:" ref="719742583"/>
+						<reference key="startRegedit:" ref="256173668"/>
+						<reference key="startWineCommandLine:" ref="1058850079"/>
+						<reference key="startWineConfig:" ref="158030267"/>
+						<reference key="startWineskin:" ref="799396065"/>
+						<reference key="switchToFlowView:" ref="569717471"/>
+						<reference key="switchToGridView:" ref="396232552"/>
+						<reference key="switchToListView:" ref="841188598"/>
+						<reference key="toggleSidebar:" ref="476156808"/>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="mainContentPlaceholderView">NSView</string>
+						<string key="mainSplitView">OELibrarySplitView</string>
+						<string key="sidebarController">OESidebarController</string>
+						<string key="toolbarAddToSidebarButton">OEButton</string>
+						<string key="toolbarFlowViewButton">OEButton</string>
+						<string key="toolbarGridViewButton">OEButton</string>
+						<string key="toolbarListViewButton">OEButton</string>
+						<string key="toolbarSearchField">NSSearchField</string>
+						<string key="toolbarSidebarButton">OEButton</string>
+						<string key="toolbarSlider">NSSlider</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<reference key="mainContentPlaceholderView" ref="4098405"/>
+						<reference key="mainSplitView" ref="747963560"/>
+						<reference key="sidebarController" ref="360090946"/>
+						<reference key="toolbarAddToSidebarButton" ref="329611358"/>
+						<reference key="toolbarFlowViewButton" ref="741275202"/>
+						<reference key="toolbarGridViewButton" ref="278635407"/>
+						<reference key="toolbarListViewButton" ref="820069890"/>
+						<reference key="toolbarSearchField" ref="803870304"/>
+						<reference key="toolbarSidebarButton" ref="727395945"/>
+						<reference key="toolbarSlider" ref="496917036"/>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OELibraryController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OELibraryController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addCollectionAction:">id</string>
 						<string key="addSteamGameToLibrary:">id</string>
@@ -1756,18 +2322,12 @@
 							<string key="name">createEmptyBundle:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="doEngineChange:">
-							<string key="name">doEngineChange:</string>
-							<string key="candidateClassName">id</string>
-						</object>
+						<reference key="doEngineChange:" ref="725242675"/>
 						<object class="IBActionInfo" key="editSmartCollection:">
 							<string key="name">editSmartCollection:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="find:">
-							<string key="name">find:</string>
-							<string key="candidateClassName">id</string>
-						</object>
+						<reference key="find:" ref="896774608"/>
 						<object class="IBActionInfo" key="makeGameRecipeAndUpload:">
 							<string key="name">makeGameRecipeAndUpload:</string>
 							<string key="candidateClassName">id</string>
@@ -1788,10 +2348,7 @@
 							<string key="name">openUserPreferences:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="runGameWithDebug:">
-							<string key="name">runGameWithDebug:</string>
-							<string key="candidateClassName">id</string>
-						</object>
+						<reference key="runGameWithDebug:" ref="245697569"/>
 						<object class="IBActionInfo" key="runWineEngineChoice:">
 							<string key="name">runWineEngineChoice:</string>
 							<string key="candidateClassName">id</string>
@@ -1800,10 +2357,7 @@
 							<string key="name">search:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="showLogFile:">
-							<string key="name">showLogFile:</string>
-							<string key="candidateClassName">id</string>
-						</object>
+						<reference key="showLogFile:" ref="434180887"/>
 						<object class="IBActionInfo" key="showReviewWindow:">
 							<string key="name">showReviewWindow:</string>
 							<string key="candidateClassName">id</string>
@@ -1849,63 +2403,9 @@
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="mainContentPlaceholderView">NSView</string>
-						<string key="mainSplitView">OELibrarySplitView</string>
-						<string key="sidebarController">OESidebarController</string>
-						<string key="toolbarAddToSidebarButton">OEButton</string>
-						<string key="toolbarFlowViewButton">OEButton</string>
-						<string key="toolbarGridViewButton">OEButton</string>
-						<string key="toolbarListViewButton">OEButton</string>
-						<string key="toolbarSearchField">NSSearchField</string>
-						<string key="toolbarSidebarButton">OEButton</string>
-						<string key="toolbarSlider">NSSlider</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="mainContentPlaceholderView">
-							<string key="name">mainContentPlaceholderView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="mainSplitView">
-							<string key="name">mainSplitView</string>
-							<string key="candidateClassName">OELibrarySplitView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="sidebarController">
-							<string key="name">sidebarController</string>
-							<string key="candidateClassName">OESidebarController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="toolbarAddToSidebarButton">
-							<string key="name">toolbarAddToSidebarButton</string>
-							<string key="candidateClassName">OEButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="toolbarFlowViewButton">
-							<string key="name">toolbarFlowViewButton</string>
-							<string key="candidateClassName">OEButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="toolbarGridViewButton">
-							<string key="name">toolbarGridViewButton</string>
-							<string key="candidateClassName">OEButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="toolbarListViewButton">
-							<string key="name">toolbarListViewButton</string>
-							<string key="candidateClassName">OEButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="toolbarSearchField">
-							<string key="name">toolbarSearchField</string>
-							<string key="candidateClassName">NSSearchField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="toolbarSidebarButton">
-							<string key="name">toolbarSidebarButton</string>
-							<string key="candidateClassName">OEButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="toolbarSlider">
-							<string key="name">toolbarSlider</string>
-							<string key="candidateClassName">NSSlider</string>
-						</object>
-					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/OELibraryController.h</string>
+						<string key="minorKey">Barrel/OELibraryController.m</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1917,11 +2417,27 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">OELibrarySplitView</string>
+					<string key="superclassName">NSSplitView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OELibrarySplitView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">OELibraryToolbarView</string>
 					<string key="superclassName">NSView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/OELibraryToolbarView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OELibraryToolbarView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OELibraryToolbarView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1933,11 +2449,27 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">OEProgressIndicator</string>
+					<string key="superclassName">NSProgressIndicator</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OEProgressIndicator.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">OEScroller</string>
 					<string key="superclassName">NSScroller</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/OEScroller.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OEScroller</string>
+					<string key="superclassName">NSScroller</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OEScroller.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1949,6 +2481,22 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">OESearchField</string>
+					<string key="superclassName">NSSearchField</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OESearchField.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OESearchField</string>
+					<string key="superclassName">NSSearchField</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">BarrelApp/BarrelApp/OESearchField.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">OESearchFieldCell</string>
 					<string key="superclassName">NSSearchFieldCell</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -1957,11 +2505,54 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">OESearchFieldCell</string>
+					<string key="superclassName">NSSearchFieldCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OESearchFieldCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OESearchFieldCell</string>
+					<string key="superclassName">NSSearchFieldCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">BarrelApp/BarrelApp/OESearchFieldCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">OESidebarBackgroundView</string>
 					<string key="superclassName">NSView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/OESidebarBackgroundView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OESidebarBackgroundView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OESidebarBackgroundView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OESidebarController</string>
+					<string key="superclassName">NSViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">addCollectionAction:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">addCollectionAction:</string>
+						<object class="IBActionInfo" key="NS.object.0" id="51728174">
+							<string key="name">addCollectionAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/OESidebarController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1980,7 +2571,22 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/OESidebarController.h</string>
+						<string key="minorKey">Barrel/OESidebarController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OESidebarController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">addCollectionAction:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">addCollectionAction:</string>
+						<reference key="NS.object.0" ref="51728174"/>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OESidebarController.m</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1992,6 +2598,14 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">OESidebarOutlineView</string>
+					<string key="superclassName">NSOutlineView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OESidebarOutlineView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">OESlider</string>
 					<string key="superclassName">NSSlider</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
@@ -1999,11 +2613,11 @@
 						<string key="minHint">NSImageView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="maxHint">
+						<object class="IBToOneOutletInfo" key="maxHint" id="436854760">
 							<string key="name">maxHint</string>
 							<string key="candidateClassName">NSImageView</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="minHint">
+						<object class="IBToOneOutletInfo" key="minHint" id="990980968">
 							<string key="name">minHint</string>
 							<string key="candidateClassName">NSImageView</string>
 						</object>
@@ -2011,6 +2625,22 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/OESlider.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OESlider</string>
+					<string key="superclassName">NSSlider</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="maxHint">NSImageView</string>
+						<string key="minHint">NSImageView</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<reference key="maxHint" ref="436854760"/>
+						<reference key="minHint" ref="990980968"/>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OESlider.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -2022,11 +2652,27 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">OESliderCell</string>
+					<string key="superclassName">NSSliderCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OESliderCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">OETableView</string>
 					<string key="superclassName">NSTableView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/OETableView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OETableView</string>
+					<string key="superclassName">NSTableView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Barrel/OETableView.h</string>
 					</object>
 				</object>
 			</array>

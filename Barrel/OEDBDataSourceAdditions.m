@@ -117,6 +117,7 @@ static NSString * OE_stringFromElapsedTime(NSTimeInterval);
 {
     return [self gridImage];
     
+    /*
     NSManagedObject *boxImage = [self boxImage];
     if(boxImage == nil) return nil;
     
@@ -126,7 +127,7 @@ static NSString * OE_stringFromElapsedTime(NSTimeInterval);
     
     //if([boxImage valueForKey:@"sourceURL"]) return nil;
     
-    return nil;
+    return nil; */
 }
 
 - (NSString *)imageTitle

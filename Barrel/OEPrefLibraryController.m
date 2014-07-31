@@ -127,7 +127,7 @@
              if(databasePath != nil && ![databasePath isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:OEDatabasePathKey]])
              {
                  [[NSUserDefaults standardUserDefaults] setValue:databasePath forKey:OEDatabasePathKey];
-                 [[NSApp delegate] loadDatabase];
+                 // [[[NSApplication sharedApplication] delegate] loadDatabase];
                  [[self pathField] setStringValue:[databasePath stringByAbbreviatingWithTildeInPath]];
              }
          }

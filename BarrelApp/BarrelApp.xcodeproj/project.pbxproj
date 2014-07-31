@@ -167,7 +167,7 @@
 		C184BFCA1758980B00622EF1 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = C184BFC81758980B00622EF1 /* Credits.rtf */; };
 		C184BFCD1758980B00622EF1 /* BLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C184BFCC1758980B00622EF1 /* BLAppDelegate.m */; };
 		C184BFD01758980B00622EF1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C184BFCE1758980B00622EF1 /* MainMenu.xib */; };
-		C184C0471758A7FF00622EF1 /* BLWineLauncher in CopyFiles */ = {isa = PBXBuildFile; fileRef = C184C0441758A7D800622EF1 /* BLWineLauncher */; };
+		C184C0471758A7FF00622EF1 /* BLWineLauncher in CopyFiles */ = {isa = PBXBuildFile; fileRef = C184C0441758A7D800622EF1 /* BLWineLauncher */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -892,7 +892,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = BL;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = AppCake;
 			};
 			buildConfigurationList = C184BFB11758980B00622EF1 /* Build configuration list for PBXProject "BarrelApp" */;
@@ -1202,7 +1202,6 @@
 		C184BFD41758980B00622EF1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BarrelApp/BarrelApp-Prefix.pch";
@@ -1217,7 +1216,6 @@
 		C184BFD51758980B00622EF1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BarrelApp/BarrelApp-Prefix.pch";

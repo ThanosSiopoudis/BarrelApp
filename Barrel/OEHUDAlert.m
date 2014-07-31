@@ -165,14 +165,15 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 }
 
 - (void)dealloc
-{    
+{
+    /*
     _progressbar = nil;
     _indeterminateProgressbar = nil;
     _suppressionButton = nil;
         
     // Remove Callbacks
     self.target = nil;
-    self.callbackHandler = nil;    
+    self.callbackHandler = nil;    */
 }
 
 #pragma mark -

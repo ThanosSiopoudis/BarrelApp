@@ -77,12 +77,12 @@ NSString * const OELastCollectionViewKey = @"lastCollectionView";
 
 #pragma mark - Private variables
 
-typedef enum {
+typedef NS_ENUM(NSInteger, OECollectionViewControllerViewTag) {
     OEBlankSlateTag = -1,
     OEGridViewTag    = 0,
     OEFlowViewTag    = 1,
     OEListViewTag    = 2
-} OECollectionViewControllerViewTag;
+};
 
 static const float OE_coverFlowHeightPercentage = 0.75;
 static NSArray *OE_defaultSortDescriptors;
@@ -301,7 +301,7 @@ static NSArray *OE_defaultSortDescriptors;
 {
     if([self libraryController] == nil) return;
     
-    int           selectedViewTag;
+    NSInteger           selectedViewTag;
     float         sliderValue;
     NSIndexSet   *selectionIndexes = [NSIndexSet indexSet];
     NSDictionary *listViewHeaderState = nil;
@@ -835,7 +835,7 @@ static NSArray *OE_defaultSortDescriptors;
     NSMenu   *ratingMenu = [[NSMenu alloc] init];
     NSString *ratingLabel = @"★★★★★";
     
-    for (NSInteger i=0; i<=5; i++) {
+    for (int i=0; i<=5; i++) {
         NSMenuItem *ratingItem = [[NSMenuItem alloc] initWithTitle:[ratingLabel substringToIndex:i] action:@selector(setRatingForSelectedGames:) keyEquivalent:@""];
         [ratingItem setRepresentedObject:[NSNumber numberWithInt:i]];
         if(i==0)
@@ -1334,7 +1334,7 @@ static NSArray *OE_defaultSortDescriptors;
     {
         const NSInteger selectedRow = [[gamesController selectionIndexes] firstIndex];
         [coverFlowView reloadData];
-        [coverFlowView setSelectedIndex:selectedRow];
+        [coverFlowView setSelectedIndex:(uint)selectedRow];
     }
     else [coverFlowView reloadData];
 
@@ -1600,7 +1600,7 @@ static NSArray *OE_defaultSortDescriptors;
     [listView reloadDataForRowIndexes:indexSet
                         columnIndexes:[listView columnIndexesInRect:[listView visibleRect]]];
     [indexSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        [coverFlowView reloadCellDataAtIndex:idx];
+        [coverFlowView reloadCellDataAtIndex:(int)idx];
     }];
 }
 
