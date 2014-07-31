@@ -1,6 +1,4 @@
 language: objective-c
 before_script: git submodule update --init --recursive
-env:
-  global:
-    - XCWORKSPACE=BarrelWorkspace.xcworkspace
-    - DEFAULT_TARGETS=Barrel
+xcode_workspace: BarrelWorkspace.xcworkspace
+xcode_scheme: Barrel
