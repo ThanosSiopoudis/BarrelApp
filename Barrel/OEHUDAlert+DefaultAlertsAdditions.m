@@ -270,7 +270,7 @@ NSString *const OERemoveGameFilesFromLibraryAlertSuppressionKey = @"trashFilesDi
     [alert setShowsInputField:YES];
     [alert setInputLabelText:@"Debug"];
     [alert setMessageText:message];
-    [alert setStringValue:@"err+all,fixme+all"];
+    [alert setStringValue:@"err+all,fixme+all,+loaddll"];
     
     [alert setDefaultButtonTitle:@"Run"];
     [alert setAlternateButtonTitle:@"Cancel"];
