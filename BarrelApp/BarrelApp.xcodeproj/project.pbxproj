@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B1EE9841198DD78500A23233 /* OEUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EE9840198DD78500A23233 /* OEUtilities.m */; };
 		C100D5DB1765CA360081E3D8 /* arrow_down.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D54D1765CA360081E3D8 /* arrow_down.png */; };
 		C100D5DC1765CA360081E3D8 /* arrow_left.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D54E1765CA360081E3D8 /* arrow_left.png */; };
 		C100D5DD1765CA360081E3D8 /* arrow_right.png in Resources */ = {isa = PBXBuildFile; fileRef = C100D54F1765CA360081E3D8 /* arrow_right.png */; };
@@ -201,6 +202,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B1EE983F198DD78500A23233 /* OEUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OEUtilities.h; path = ../../Barrel/OEUtilities.h; sourceTree = "<group>"; };
+		B1EE9840198DD78500A23233 /* OEUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OEUtilities.m; path = ../../Barrel/OEUtilities.m; sourceTree = "<group>"; };
 		C100D54D1765CA360081E3D8 /* arrow_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_down.png; sourceTree = "<group>"; };
 		C100D54E1765CA360081E3D8 /* arrow_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left.png; sourceTree = "<group>"; };
 		C100D54F1765CA360081E3D8 /* arrow_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_right.png; sourceTree = "<group>"; };
@@ -846,6 +849,8 @@
 		C184BFC01758980B00622EF1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B1EE983F198DD78500A23233 /* OEUtilities.h */,
+				B1EE9840198DD78500A23233 /* OEUtilities.m */,
 				C184BFC11758980B00622EF1 /* BarrelApp-Info.plist */,
 				C184BFC21758980B00622EF1 /* InfoPlist.strings */,
 				C184BFC51758980B00622EF1 /* main.m */,
@@ -1082,6 +1087,7 @@
 				C1721296175F4BCA00786474 /* OETheme.m in Sources */,
 				C17212A1175F4BEB00786474 /* OEThemeColor.m in Sources */,
 				C17212A2175F4BEB00786474 /* OEThemeGradient.m in Sources */,
+				B1EE9841198DD78500A23233 /* OEUtilities.m in Sources */,
 				C17212A3175F4BEB00786474 /* OEThemeImage.m in Sources */,
 				C17212A4175F4BEB00786474 /* OEThemeObject.m in Sources */,
 				C17212A5175F4BEB00786474 /* OEThemeTextAttributes.m in Sources */,
