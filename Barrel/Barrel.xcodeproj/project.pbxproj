@@ -374,6 +374,7 @@
 		B1ED87A31827EA5A00C62BAE /* slim_dark_pill_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1ED87901827EA5A00C62BAE /* slim_dark_pill_button@2x.png */; };
 		B1ED87A41827EA5A00C62BAE /* tab_selector@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1ED87911827EA5A00C62BAE /* tab_selector@2x.png */; };
 		B1ED87A71827EFE000C62BAE /* OESliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1ED87A61827EFE000C62BAE /* OESliderCell.m */; };
+		B1EE983A198DD46A00A23233 /* OEUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EE9839198DD46A00A23233 /* OEUtilities.m */; };
 		C117A943172688BA00143421 /* BLImportItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C117A942172688BA00143421 /* BLImportItem.m */; };
 		C130F70017B1285500B707A8 /* BL_GenericAPIResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C130F6FF17B1285500B707A8 /* BL_GenericAPIResponse.m */; };
 		C15C68F01756546100969F6D /* BLArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = C15C68EF1756546100969F6D /* BLArchiver.m */; };
@@ -411,7 +412,6 @@
 		C6AC9D4D1190C9AE0083DDFD /* OEGameCoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C6AC9D4C1190C9AE0083DDFD /* OEGameCoreManager.m */; };
 		C6BFB29F0F7CC8E700040FFA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C6BFB29E0F7CC8E700040FFA /* Localizable.strings */; };
 		C6D6FA7E14E2264C0083C75D /* NSViewController+OEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D6FA7D14E2264C0083C75D /* NSViewController+OEAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		C6F738FC1617FF2B00BB2519 /* OEUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = C6F738FB1617FF2B00BB2519 /* OEUtilities.m */; };
 		E20CB87217CB9856008065BA /* Barrel.png in Resources */ = {isa = PBXBuildFile; fileRef = E20CB87117CB9856008065BA /* Barrel.png */; };
 		E20CB87417CB9897008065BA /* Wineskin.png in Resources */ = {isa = PBXBuildFile; fileRef = E20CB87317CB9897008065BA /* Wineskin.png */; };
 		E20CB87617CB9A99008065BA /* Cider.png in Resources */ = {isa = PBXBuildFile; fileRef = E20CB87517CB9A99008065BA /* Cider.png */; };
@@ -1091,6 +1091,8 @@
 		B1ED87911827EA5A00C62BAE /* tab_selector@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_selector@2x.png"; sourceTree = "<group>"; };
 		B1ED87A51827EFE000C62BAE /* OESliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OESliderCell.h; sourceTree = "<group>"; };
 		B1ED87A61827EFE000C62BAE /* OESliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OESliderCell.m; sourceTree = "<group>"; };
+		B1EE9838198DD46A00A23233 /* OEUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OEUtilities.h; sourceTree = "<group>"; };
+		B1EE9839198DD46A00A23233 /* OEUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEUtilities.m; sourceTree = "<group>"; };
 		C117A941172688B900143421 /* BLImportItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLImportItem.h; sourceTree = "<group>"; };
 		C117A942172688BA00143421 /* BLImportItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLImportItem.m; sourceTree = "<group>"; };
 		C130F6FE17B1285500B707A8 /* BL_GenericAPIResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL_GenericAPIResponse.h; sourceTree = "<group>"; };
@@ -1151,8 +1153,6 @@
 		C6BFB29C0F7CC8A600040FFA /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C6D6FA7C14E2264C0083C75D /* NSViewController+OEAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSViewController+OEAdditions.h"; sourceTree = "<group>"; };
 		C6D6FA7D14E2264C0083C75D /* NSViewController+OEAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSViewController+OEAdditions.m"; sourceTree = "<group>"; };
-		C6F6480415F4BA7000BA9D9B /* OEUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OEUtilities.h; sourceTree = "<group>"; };
-		C6F738FB1617FF2B00BB2519 /* OEUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OEUtilities.m; sourceTree = "<group>"; };
 		E20CB86917CB7F56008065BA /* BLDatabase 0.9.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BLDatabase 0.9.3.xcdatamodel"; sourceTree = "<group>"; };
 		E20CB86F17CB8156008065BA /* BLDatabase 0.9.6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BLDatabase 0.9.6.xcdatamodel"; sourceTree = "<group>"; };
 		E20CB87117CB9856008065BA /* Barrel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Barrel.png; sourceTree = "<group>"; };
@@ -1403,12 +1403,12 @@
 		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				B1EE9838198DD46A00A23233 /* OEUtilities.h */,
+				B1EE9839198DD46A00A23233 /* OEUtilities.m */,
 				82DE446510252F2F007184EB /* IKImageFlowView.h */,
 				1BEF2D13116855690090F72B /* OETaskWrapper.h */,
 				1BEF2D14116855690090F72B /* OETaskWrapper.m */,
 				32DBCF750370BD2300C91783 /* Barrel_Prefix.pch */,
-				C6F6480415F4BA7000BA9D9B /* OEUtilities.h */,
-				C6F738FB1617FF2B00BB2519 /* OEUtilities.m */,
 				2A37F4B0FDCFA73011CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
@@ -3023,6 +3023,7 @@
 				8375E14F1477FC0D0018DA1F /* OECoreUpdater.m in Sources */,
 				839310BC147802380020058E /* OECoreDownload.m in Sources */,
 				837777B9147A8E730091A896 /* OEHUDProgressbar.m in Sources */,
+				B1EE983A198DD46A00A23233 /* OEUtilities.m in Sources */,
 				83CAD4D4147BB641004C0E9B /* NSClipView+OEAnimatedScrolling.m in Sources */,
 				83691817147FE3EF00F28231 /* NSWindow+OECustomWindow.m in Sources */,
 				83C0B37114D6EF02007CAC00 /* OESidebarOutlineButtonCell.m in Sources */,
@@ -3077,7 +3078,6 @@
 				831C9ADD1600973B00038D0D /* OEPopUpButtonCell.m in Sources */,
 				838E2A271600A23800CF7198 /* NSMenuItem+OEMenuItemExtraDataAdditions.m in Sources */,
 				14E4A7FA1616EF8B00082311 /* NSWindow+OEFullScreenAdditions.m in Sources */,
-				C6F738FC1617FF2B00BB2519 /* OEUtilities.m in Sources */,
 				83DEE48F162D52DC005D8AD7 /* OELabel.m in Sources */,
 				83DEE490162D52DC005D8AD7 /* OELabelCell.m in Sources */,
 				83DEE495162D61C7005D8AD7 /* OEBackgroundColorView.m in Sources */,
