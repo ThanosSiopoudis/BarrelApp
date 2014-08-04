@@ -571,24 +571,39 @@ static const CGFloat _OEToolbarHeight = 44;
                         [errorAlert runModal];
                     }
                 }
-                OEHUDAlert *progressAlert = [OEHUDAlert showProgressAlertWithMessage:@"Running wineboot..." andTitle:@"Wine Init" indeterminate:YES];
-                [progressAlert open];
-                // Delete the old WineBundle from the bundle
+                // Delete the old dylibs from the bundle
                 NSBundle *gameBundle = [NSBundle bundleWithPath:[[self currentGame] bundlePath]];
+                NSArray *dylibFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[gameBundle privateFrameworksPath] error:nil];
+                BOOL deleteSuccess = YES;
                 NSString *wineEngineBundle = [NSString stringWithFormat:@"%@/blwine.bundle", [gameBundle privateFrameworksPath]];
-                BOOL deleteSuccess = [[NSFileManager defaultManager] removeItemAtPath:wineEngineBundle error:nil];
+                for (NSString *file in dylibFiles) {
+                    deleteSuccess &= [[NSFileManager defaultManager] removeItemAtPath:[[gameBundle privateFrameworksPath] stringByAppendingPathComponent:file] error:nil];
+                }
                 if (!deleteSuccess) {
                     // Non-Fatal error
                     OEHUDAlert *errorAlert = [OEHUDAlert alertWithMessageText:@"Fatal error: Could not remove old blwine.bundle. Please check permissions manually." defaultButton:@"OK" alternateButton:@""];
                     [errorAlert runModal];
                 }
                 else {
-                    // Move the new bundle inside
-                    NSString *wineBundlePath = [NSString stringWithFormat:@"%@/blwine.bundle", [[[self database] tempFolderURL] path]];
-                    [[NSFileManager defaultManager] moveItemAtPath:wineBundlePath toPath:wineEngineBundle error:nil];
-                    // Now run wineboot
-                    [BLSystemCommand runScript:[[self currentGame] bundlePath] withArguments:[NSArray arrayWithObjects:@"--run", [NSString stringWithFormat:@"%@/Contents/Resources/drive_c/windows/system32/wineboot.exe", [[self currentGame] bundlePath]], nil] shouldWaitForProcess:YES runForMain:YES];
-                    [progressAlert close];
+                    // Finally, extract the libraries inside the frameworks folder
+                    BLArchiver *libarchiver = [[BLArchiver alloc] initWithArchiveAtPath:[NSString stringWithFormat:@"%@/libraries.zip", [[[self database] tempFolderURL] path]] andProgressBar:[[self alertCache] progressbar]];
+                    [self setAlertCache:[OEHUDAlert showProgressAlertWithMessage:@"Extracting Wine Libraries..." andTitle:@"Extracting" indeterminate:NO]];
+                    [[self alertCache] open];
+                    dispatch_async(dispatchQueue, ^{
+                        [libarchiver startExtractingToPath:[NSString stringWithFormat:@"%@/Contents/Frameworks", [[self currentGame] bundlePath]] callbackBlock:^(int result) {
+                            if (result) {
+                                [[self alertCache] close];
+                                OEHUDAlert *progressAlert = [OEHUDAlert showProgressAlertWithMessage:@"Running wineboot..." andTitle:@"Wine Init" indeterminate:YES];
+                                [progressAlert open];
+                                // Move the new bundle inside
+                                NSString *wineBundlePath = [NSString stringWithFormat:@"%@/blwine.bundle", [[[self database] tempFolderURL] path]];
+                                [[NSFileManager defaultManager] moveItemAtPath:wineBundlePath toPath:wineEngineBundle error:nil];
+                                // Now run wineboot
+                                [BLSystemCommand runScript:[[self currentGame] bundlePath] withArguments:[NSArray arrayWithObjects:@"--run", [NSString stringWithFormat:@"%@/Contents/Resources/drive_c/windows/system32/wineboot.exe", [[self currentGame] bundlePath]], nil] shouldWaitForProcess:YES runForMain:YES];
+                                [progressAlert close];
+                            }
+                        }];
+                    });
                 }
             }
         }];
