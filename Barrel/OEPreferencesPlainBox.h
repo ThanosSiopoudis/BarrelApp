@@ -25,9 +25,9 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import "OEBackgroundImageView.h"
 
-
-@interface OEPreferencesPlainBox : NSView {
+@interface OEPreferencesPlainBox : OEBackgroundImageView {
 @private
     
 }

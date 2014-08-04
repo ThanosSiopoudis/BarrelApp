@@ -25,9 +25,9 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import "OEBackgroundImageView.h"
 
-
-@interface BLPreferencesInputBox : NSView {
+@interface BLPreferencesInputBox : OEBackgroundImageView {
 @private
     
 }

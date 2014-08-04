@@ -28,9 +28,27 @@
 
 @implementation OEPreferencesPlainBox
 
+- (id)initWithFrame:(NSRect)frameRect
+{
+    if(self=[super initWithFrame:frameRect])
+    {
+        [self OE_commonInit];
+    }
+    return self;
+}
+
+- (void)awakeFromNib
+{
+    [self OE_commonInit];
+}
+
 - (void)drawRect:(NSRect)dirtyRect{
-	NSImage *image = [NSImage imageNamed:@"dark_inset_box"];
-	[image drawInRect:[self bounds] fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil leftBorder:16 rightBorder:16 topBorder:16 bottomBorder:16];
+    [super drawRect:dirtyRect];
+}
+
+- (void)OE_commonInit
+{
+    [self setThemeKey:@"dark_inset_box"];
 }
 
 - (BOOL)isFlipped{

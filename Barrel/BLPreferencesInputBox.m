@@ -28,13 +28,31 @@
 
 @implementation BLPreferencesInputBox
 
+- (id)initWithFrame:(NSRect)frameRect
+{
+    if(self=[super initWithFrame:frameRect])
+    {
+        [self OE_commonInit];
+    }
+    return self;
+}
+
+- (void)awakeFromNib
+{
+    [self OE_commonInit];
+}
+
 - (void)drawRect:(NSRect)dirtyRect{
-	NSImage *image = [NSImage imageNamed:@"preferences_input_box"];
-	[image drawInRect:[self bounds] fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil leftBorder:3 rightBorder:3 topBorder:3 bottomBorder:3];
+    [super drawRect:dirtyRect];
+}
+
+- (void)OE_commonInit
+{
+    [self setThemeKey:@"preferences_input_box"];
 }
 
 - (BOOL)isFlipped{
-	return YES;
+    return YES;
 }
 
 @end
