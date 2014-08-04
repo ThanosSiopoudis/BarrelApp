@@ -1,27 +1,27 @@
 /*
  Copyright (c) 2012, OpenEmu Team
-
+ 
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
-     * Redistributions of source code must retain the above copyright
-       notice, this list of conditions and the following disclaimer.
-     * Redistributions in binary form must reproduce the above copyright
-       notice, this list of conditions and the following disclaimer in the
-       documentation and/or other materials provided with the distribution.
-     * Neither the name of the OpenEmu Team nor the
-       names of its contributors may be used to endorse or promote products
-       derived from this software without specific prior written permission.
-
+ * Redistributions of source code must retain the above copyright
+ notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+ notice, this list of conditions and the following disclaimer in the
+ documentation and/or other materials provided with the distribution.
+ * Neither the name of the OpenEmu Team nor the
+ names of its contributors may be used to endorse or promote products
+ derived from this software without specific prior written permission.
+ 
  THIS SOFTWARE IS PROVIDED BY OpenEmu Team ''AS IS'' AND ANY
  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  DISCLAIMED. IN NO EVENT SHALL OpenEmu Team BE LIABLE FOR ANY
  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #import "OEThemeObject.h"
@@ -92,14 +92,14 @@ static inline id OEKeyForState(OEThemeState state)
     {
         _states        = [[NSMutableArray alloc] init];
         _objectByState = [[NSMutableDictionary alloc] init];
-
+        
         if([definition isKindOfClass:[NSDictionary class]])
         {
             // Create a root definition that can be inherited by the states
             NSMutableDictionary *rootDefinition = [definition mutableCopy];
             [rootDefinition removeObjectForKey:OEThemeObjectStatesAttributeName];
             [self OE_setValue:[[self class] parseWithDefinition:rootDefinition] forState:OEThemeStateDefault];
-
+            
             // Iterate through each of the state descriptions and create a state table
             NSDictionary *states = [definition valueForKey:OEThemeObjectStatesAttributeName];
             if([states isKindOfClass:[NSDictionary class]])
@@ -110,21 +110,21 @@ static inline id OEKeyForState(OEThemeState state)
                      NSMutableDictionary *newDefinition = [rootDefinition mutableCopy];
                      if([obj isKindOfClass:[NSDictionary class]]) [newDefinition setValuesForKeysWithDictionary:obj];
                      else                                         [newDefinition setValue:obj forKey:OEThemeObjectValueAttributeName];
-
+                     
                      NSString     *trimmedKey = [key stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                      OEThemeState  state      = ([trimmedKey length] == 0 ? OEThemeStateDefault : OEThemeStateFromString(trimmedKey));
-
+                     
                      if(state == 0) NSLog(@"Error parsing state: %@", trimmedKey);
                      else
                      {
                          [self OE_setValue:[[self class] parseWithDefinition:newDefinition] forState:state];
-
+                         
                          // Append the state to the state mask
                          if(state != OEThemeStateDefault) _stateMask |= state;
                      }
                  }];
             }
-
+            
             if(_stateMask != OEThemeStateDefault)
             {
                 // Aggregate the bit-mask that all the state's cover
@@ -135,7 +135,7 @@ static inline id OEKeyForState(OEThemeState state)
                 if(_stateMask & OEThemeStateAnyFocus)          _stateMask |= OEThemeStateAnyFocus;
                 if(_stateMask & OEThemeStateAnyMouse)          _stateMask |= OEThemeStateAnyMouse;
                 if(_stateMask & OEThemeStateAnyModifier)       _stateMask |= OEThemeStateAnyModifier;
-
+                
                 // Iterate through each state to determine if unspecified inputs should be discarded
                 __block BOOL updateStates = FALSE;
                 [_states enumerateObjectsUsingBlock:
@@ -152,10 +152,10 @@ static inline id OEKeyForState(OEThemeState state)
                          if(!(state & OEThemeStateAnyFocus))          state |= OEThemeStateAnyFocus;
                          if(!(state & OEThemeStateAnyMouse))          state |= OEThemeStateAnyMouse;
                          if(!(state & OEThemeStateAnyModifier))       state |= OEThemeStateAnyModifier;
-
+                         
                          // Trim bits not specified in the state mask
                          state &= _stateMask;
-
+                         
                          // Update state table if the state was modified
                          if(state != [obj unsignedIntegerValue])
                          {
@@ -165,7 +165,7 @@ static inline id OEKeyForState(OEThemeState state)
                          }
                      }
                  }];
-
+                
                 // If the state table was modified then get a sorted list of states that can be used by -objectForState:
                 if(updateStates) _states = [[[_objectByState allKeys] sortedArrayUsingSelector:@selector(compare:)] mutableCopy];
             }
@@ -193,7 +193,7 @@ static inline id OEKeyForState(OEThemeState state)
             (enabled            ? OEThemeInputStateEnabled      : OEThemeInputStateDisabled)       |
             (focused            ? OEThemeInputStateFocused      : OEThemeInputStateUnfocused)      |
             (hover              ? OEThemeInputStateMouseOver    : OEThemeInputStateMouseOff)       |
-
+            
             ((modifierMask & NSAlternateKeyMask) != 0 ? OEThemeInputStateModifierAlternate : OEThemeInputStateModifierNone) |
             
             (state == NSOnState ? OEThemeInputStateToggleOn     : (state == NSMixedState ? OEThemeInputStateToggleMixed : OEThemeInputStateToggleOff)));
@@ -208,11 +208,11 @@ static inline id OEKeyForState(OEThemeState state)
 {
     // Assign the state look up table
     [_objectByState setValue:(value ?: [NSNull null]) forKey:OEKeyForState(state)];
-
+    
     // Insert the state in the states array (while maintaining a sorted array)
     const NSUInteger  count      = [_states count];
     NSNumber         *stateValue = [NSNumber numberWithUnsignedInteger:state];
-
+    
     if(count > 0)
     {
         NSUInteger index = [_states indexOfObject:stateValue inSortedRange:NSMakeRange(0, [_states count]) options:NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex usingComparator:
@@ -220,7 +220,7 @@ static inline id OEKeyForState(OEThemeState state)
                             {
                                 return [obj1 compare:obj2];
                             }];
-
+        
         if(![[_states objectAtIndex:index] isEqualToNumber:stateValue]) [_states insertObject:stateValue atIndex:index];
     }
     else
@@ -233,7 +233,7 @@ static inline id OEKeyForState(OEThemeState state)
 {
     OEThemeState maskedState = state & _stateMask; // Trim unused bits
     __block id   results     = nil;
-
+    
     if(maskedState == 0)
     {
         results = [_objectByState objectForKey:OEKeyForState(OEThemeStateDefault)];
@@ -253,18 +253,18 @@ static inline id OEKeyForState(OEThemeState state)
                  {
                      // This state is the best we are going to get for the requested state
                      results = [_objectByState objectForKey:OEKeyForState(state)];
-
+                     
                      // Explicitly set the state to the implicitly discovered object so the next time we are looking for this state we can short circuit this process
                      if(state != 0 && state != OEThemeStateDefault) [self OE_setValue:results forState:maskedState];
                      *stop = YES;
                  }
              }];
-
+            
             // If no object was found, then explicitly set it to Null, so the next time we try to obtain an object for the specified state we will quickly return nil
             if(results == nil) [self OE_setValue:[NSNull null] forState:maskedState];
         }
     }
-
+    
     return (results == [NSNull null] ? nil : results);
 }
 
@@ -273,7 +273,7 @@ static inline id OEKeyForState(OEThemeState state)
 NSString *NSStringFromThemeState(OEThemeState state)
 {
     NSMutableArray *results = [NSMutableArray array];
-
+    
     // Empty states implicitly represent the 'Default' state
     if(state == 0 || state == OEThemeStateDefault) [results addObject:OEThemeInputStateDefaultName];
     else
@@ -281,20 +281,20 @@ NSString *NSStringFromThemeState(OEThemeState state)
         if((state & OEThemeStateAnyWindowActivity) == OEThemeStateAnyWindowActivity) [results addObject:OEThemeStateAnyWindowActivityName];
         else if(state & OEThemeInputStateWindowActive)                               [results addObject:OEThemeInputStateWindowActiveName];
         else if(state & OEThemeInputStateWindowInactive)                             [results addObject:OEThemeInputStateWindowInactiveName];
-
+        
         if((state & OEThemeStateAnyToggle) == OEThemeStateAnyToggle)                 [results addObject:OEThemeStateAnyToggleName];
         else if(state & OEThemeInputStateToggleOn)                                   [results addObject:OEThemeInputStateToggleOnName];
         else if(state & OEThemeInputStateToggleMixed)                                [results addObject:OEThemeInputStateToggleMixedName];
         else if(state & OEThemeInputStateToggleOff)                                  [results addObject:OEThemeInputStateToggleOffName];
-
+        
         if((state & OEThemeStateAnySelection) == OEThemeStateAnySelection)           [results addObject:OEThemeStateAnySelectionName];
         else if(state & OEThemeInputStatePressed)                                    [results addObject:OEThemeInputStatePressedName];
         else if(state & OEThemeInputStateUnpressed)                                  [results addObject:OEThemeInputStateUnpressedName];
-
+        
         if((state & OEThemeStateAnyInteraction) == OEThemeStateAnyInteraction)       [results addObject:OEThemeStateAnyInteractionName];
         else if(state & OEThemeInputStateEnabled)                                    [results addObject:OEThemeInputStateEnabledName];
         else if(state & OEThemeInputStateDisabled)                                   [results addObject:OEThemeInputStateDisabledName];
-
+        
         if((state & OEThemeStateAnyFocus) == OEThemeStateAnyFocus)                   [results addObject:OEThemeStateAnyFocusName];
         else if(state & OEThemeInputStateFocused)                                    [results addObject:OEThemeInputStateFocusedName];
         else if(state & OEThemeInputStateUnfocused)                                  [results addObject:OEThemeInputStateUnfocusedName];
@@ -307,7 +307,7 @@ NSString *NSStringFromThemeState(OEThemeState state)
         else if(state & OEThemeInputStateModifierNone)                               [results addObject:OEThemeInputStateModifierNoneName];
         else if(state & OEThemeInputStateModifierAlternate)                          [results addObject:OEThemeInputStateModifierAlternateName];
     }
-
+    
     return [results componentsJoinedByString:@", "];
 }
 
@@ -318,7 +318,7 @@ OEThemeState OEThemeStateFromString(NSString *state)
      ^ (NSString *obj, NSUInteger idx, BOOL *stop)
      {
          NSString *component = [obj stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-
+         
          if([component caseInsensitiveCompare:OEThemeInputStateDefaultName] == NSOrderedSame)
          {
              // The 'Default' input state takes precendent over any other input state
@@ -350,7 +350,7 @@ OEThemeState OEThemeStateFromString(NSString *state)
          else
              NSLog(@"- Unknown State Input: %@", component);
      }];
-
+    
     // Implicitly return the default state, if no input state was specified
     return result;
 }

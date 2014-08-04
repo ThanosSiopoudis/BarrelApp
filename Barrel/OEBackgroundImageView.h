@@ -25,11 +25,17 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import "OEControl.h"
 
+@interface OEBackgroundImageView : NSView <OEControl>
+- (id)initWithThemeKey:(NSString*)themeKey;
 
-@interface OEBackgroundImageView : NSView
+@property(nonatomic, retain) NSImage               *image;
+@property(nonatomic, retain) OEThemeImage          *backgroundThemeImage;
+@property(nonatomic, retain) OEThemeImage          *themeImage;
+@property(nonatomic, retain) OEThemeTextAttributes *themeTextAttributes;
 
-@property(strong, readwrite) NSImage *image;
-@property float leftBorder, rightBorder, topBorder, bottomBorder;
-
+@property(nonatomic, readonly, getter = isTrackingWindowActivity)    BOOL trackWindowActivity;
+@property(nonatomic, readonly, getter = isTrackingMouseActivity)     BOOL trackMouseActivity;
+@property BOOL shouldFlipCoordinates;
 @end

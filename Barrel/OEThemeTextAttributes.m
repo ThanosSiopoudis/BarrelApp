@@ -1,27 +1,27 @@
 /*
  Copyright (c) 2012, OpenEmu Team
-
+ 
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
-     * Redistributions of source code must retain the above copyright
-       notice, this list of conditions and the following disclaimer.
-     * Redistributions in binary form must reproduce the above copyright
-       notice, this list of conditions and the following disclaimer in the
-       documentation and/or other materials provided with the distribution.
-     * Neither the name of the OpenEmu Team nor the
-       names of its contributors may be used to endorse or promote products
-       derived from this software without specific prior written permission.
-
+ * Redistributions of source code must retain the above copyright
+ notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+ notice, this list of conditions and the following disclaimer in the
+ documentation and/or other materials provided with the distribution.
+ * Neither the name of the OpenEmu Team nor the
+ names of its contributors may be used to endorse or promote products
+ derived from this software without specific prior written permission.
+ 
  THIS SOFTWARE IS PROVIDED BY OpenEmu Team ''AS IS'' AND ANY
  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  DISCLAIMED. IN NO EVENT SHALL OpenEmu Team BE LIABLE FOR ANY
  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #import "OEThemeTextAttributes.h"
@@ -37,6 +37,7 @@ static NSString * const OEThemeFontFamilyAttributeName          = @"Family";
 static NSString * const OEThemeFontSizeAttributeName            = @"Size";
 static NSString * const OEThemeFontWeightAttributeName          = @"Weight";
 static NSString * const OEThemeFontTraitsAttributeName          = @"Traits";
+static NSString * const OEThemeFontAlignmentAttributeName       = @"Alignment";
 
 #pragma mark -
 #pragma mark Theme font shadow
@@ -64,18 +65,18 @@ static id _OEObjectFromDictionary(NSDictionary *dictionary, NSString *attributeN
 NSFontTraitMask _OENSFontTraitMaskFromString(NSString *string)
 {
     __block NSFontTraitMask mask = 0;
-
+    
     [[string componentsSeparatedByString:@","] enumerateObjectsUsingBlock:
      ^ (NSString *obj, NSUInteger idx, BOOL *stop)
      {
          NSString *trait = [obj stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-
+         
          if([trait caseInsensitiveCompare:OEThemeFontTraitBoldName]        == NSOrderedSame) mask |= NSBoldFontMask;
          else if([trait caseInsensitiveCompare:OEThemeFontTraitUnboldName] == NSOrderedSame) mask |= NSUnboldFontMask;
          else if([trait caseInsensitiveCompare:OEThemeFontTraitItalicName] == NSOrderedSame) mask |= NSItalicFontMask;
          else if([trait caseInsensitiveCompare:OEThemeFontTraitUnitalic]   == NSOrderedSame) mask |= NSUnitalicFontMask;
      }];
-
+    
     return mask;
 }
 
@@ -83,7 +84,7 @@ NSFontTraitMask _OENSFontTraitMaskFromString(NSString *string)
 id _OEObjectFromDictionary(NSDictionary *dictionary, NSString *attributeName, Class expectedClass, id (^parse)(id obj))
 {
     id obj = [dictionary objectForKey:attributeName];
-
+    
     // If the object already conforms to the requested class, then return the object, otherwise parse the object
     return ([obj isKindOfClass:expectedClass] ? obj : parse(obj));
 }
@@ -98,52 +99,75 @@ id _OEObjectFromDictionary(NSDictionary *dictionary, NSString *attributeName, Cl
                                                        {
                                                            return ([color isKindOfClass:[NSString class]] ? (OENSColorFromString(color) ?: [NSColor blackColor]) : [NSColor blackColor]);
                                                        });
-
+    
     NSColor *backgroundColor = _OEObjectFromDictionary(definition, OEThemeFontBackgroundColorAttributeName, [NSColor class],
                                                        ^ id (id color)
                                                        {
                                                            return ([color isKindOfClass:[NSString class]] ? (OENSColorFromString(color) ?: nil) : nil);
                                                        });
-
+    
     NSShadow *shadow = _OEObjectFromDictionary(definition, OEThemeFontShadowAttributeName, [NSShadow class],
                                                ^ id (id shadow)
                                                {
                                                    if(![shadow isKindOfClass:[NSDictionary class]]) return nil;
-
+                                                   
                                                    NSSize  offset     = NSSizeFromString([shadow valueForKey:OEThemeShadowOffsetAttributeName]);
                                                    CGFloat blurRadius = [[shadow valueForKey:OEThemeShadowBlurRadiusAttributeName] floatValue];
                                                    id      color      = [shadow objectForKey:OEThemeShadowColorAttributeName];
-
+                                                   
                                                    if([color isKindOfClass:[NSString class]])      color = (OENSColorFromString(color) ?: [NSColor blackColor]);
                                                    else if(![color isKindOfClass:[NSColor class]]) color = [NSColor blackColor];
-
+                                                   
                                                    NSShadow *result = [[NSShadow alloc] init];
                                                    [result setShadowOffset:offset];
                                                    [result setShadowBlurRadius:blurRadius];
                                                    [result setShadowColor:color];
-
+                                                   
                                                    return result;
                                                });
-
+    
     NSString   *familyAttribute = ([definition valueForKey:OEThemeFontFamilyAttributeName]   ?: [definition objectForKey:OEThemeObjectValueAttributeName]);
     CGFloat     size            = [([definition objectForKey:OEThemeFontSizeAttributeName]   ?: [NSNumber numberWithFloat:12.0]) floatValue];
     NSUInteger  weight          = [([definition objectForKey:OEThemeFontWeightAttributeName] ?: [NSNumber numberWithInt:5]) intValue];
-
+    
     NSFontTraitMask  mask = [_OEObjectFromDictionary(definition, OEThemeFontTraitsAttributeName, [NSNumber class],
                                                      ^ id (id mask)
                                                      {
                                                          if(![mask isKindOfClass:[NSString class]]) return [NSNumber numberWithInt:0];
                                                          return [NSNumber numberWithUnsignedInteger:_OENSFontTraitMaskFromString(mask)];
                                                      }) unsignedIntegerValue];
-
+    
     NSFont *font = [[NSFontManager sharedFontManager] fontWithFamily:familyAttribute traits:mask weight:weight size:size];
-
+    
+    NSMutableParagraphStyle *style = nil;
+    if([definition objectForKey:OEThemeFontAlignmentAttributeName])
+    {
+        if(style == nil) style = [[NSMutableParagraphStyle alloc] init];
+        
+        NSString *alignment = [[definition objectForKey:OEThemeFontAlignmentAttributeName] lowercaseString];
+        NSTextAlignment textAlignment = NSNaturalTextAlignment;
+        
+        if([alignment isEqualToString:@"left"])
+            textAlignment = NSLeftTextAlignment;
+        else if([alignment isEqualToString:@"center"])
+            textAlignment = NSCenterTextAlignment;
+        else if([alignment isEqualToString:@"right"])
+            textAlignment = NSRightTextAlignment;
+        else if([alignment isEqualToString:@"justify"] || [alignment isEqualToString:@"justified"])
+            textAlignment = NSJustifiedTextAlignment;
+        else if([alignment isEqualToString:@"natural"])
+            textAlignment = NSNaturalTextAlignment;
+        
+        [style setAlignment:textAlignment];
+    }
+    
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
     if(font)            [attributes setValue:font            forKey:NSFontAttributeName];
     if(shadow)          [attributes setValue:shadow          forKey:NSShadowAttributeName];
     if(foregroundColor) [attributes setValue:foregroundColor forKey:NSForegroundColorAttributeName];
     if(backgroundColor) [attributes setValue:backgroundColor forKey:NSBackgroundColorAttributeName];
-
+    if(style)           [attributes setValue:style           forKey:NSParagraphStyleAttributeName];
+    
     return [attributes copy];
 }
 
