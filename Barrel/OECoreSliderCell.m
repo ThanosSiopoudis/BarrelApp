@@ -71,7 +71,7 @@
     aRect.origin.y += 4;
     
     NSImage *img = [NSImage imageNamed:@"mark_slider_track_normal"];
-    [img drawInRect:aRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:flipped hints:nil leftBorder:4 rightBorder:3 topBorder:2 bottomBorder:3];
+    [img drawInRect:aRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
     
     NSColor *tickmarkColor = [NSColor colorWithDeviceRed:0.561 green:0.551 blue:0.551 alpha:1.0];
     NSColor *tickmarkShadowColor = [NSColor blackColor];

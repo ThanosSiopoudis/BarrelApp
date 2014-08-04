@@ -26,6 +26,7 @@
 
 #import "OEHUDProgressbar.h"
 #import "NSImage+OEDrawingAdditions.h"
+#import "OETheme.h"
 
 @implementation OEHUDProgressbar
 @synthesize minValue, value, maxValue;
@@ -81,16 +82,18 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    NSImage *trackImage = [NSImage imageNamed:@"hud_progress_bar_track"];
-    [trackImage drawInRect:[self bounds] fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil leftBorder:7 rightBorder:7 topBorder:2 bottomBorder:2];
+    OEThemeImage *trackThemeImage = [[OETheme sharedTheme] themeImageForKey:@"hud_progress_bar_track"];
+    NSImage *trackImage = [trackThemeImage imageForState:OEThemeStateDefault];
+    [trackImage drawInRect:[self bounds] fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
     
     if([self value] == 0.0) return;
     
     NSRect bounds = [self bounds];
     bounds.size.width = round(NSWidth(bounds) * ([self value] - [self minValue]) / ([self maxValue] - [self minValue]));
     
-    NSImage *barImage = [NSImage imageNamed:@"hud_progress_bar"];
-    [barImage drawInRect:bounds fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil leftBorder:7 rightBorder:7 topBorder:1 bottomBorder:1];
+    OEThemeImage *barThemeImage = [[OETheme sharedTheme] themeImageForKey:@"hud_progress_bar"];
+    NSImage *barImage = [barThemeImage imageForState:OEThemeStateDefault];
+    [barImage drawInRect:bounds fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
 }
 
 @end

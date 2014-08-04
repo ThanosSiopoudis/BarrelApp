@@ -31,7 +31,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect{
 	NSImage *image = [NSImage imageNamed:@"wood_inset_box"];
-	[image drawInRect:NSInsetRect([self bounds], 0, 0) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:NO hints:nil leftBorder:16 rightBorder:16 topBorder:16 bottomBorder:16];
+    [image drawInRect:NSInsetRect([self bounds], 0, 0) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
 
     const NSColor *lineColor = [NSColor colorWithDeviceRed:0.45 green:0.24 blue:0.0 alpha:1.0];
     NSColor *highlightColor = [NSColor colorWithDeviceRed:1.0 green:0.92 blue:0.0 alpha:0.14];

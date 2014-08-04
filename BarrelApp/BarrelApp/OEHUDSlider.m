@@ -46,7 +46,7 @@
 {
     NSImage *track = [NSImage imageNamed:@"hud_slider_track"];
     NSRect targetRect = NSMakeRect(aRect.origin.x + 3,aRect.origin.y + 9, aRect.size.width - 12, 6);
-    [track drawInRect:targetRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil leftBorder:4 rightBorder:4 topBorder:0 bottomBorder:0];
+    [track drawInRect:targetRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
     
     // draw level
     NSImage *level = [NSImage imageNamed:@"hud_slider_level"];
@@ -55,7 +55,7 @@
     if(width < 2) return;
     
     targetRect = NSMakeRect(aRect.origin.x + 3,aRect.origin.y + 9, width, 5);
-    [level drawInRect:targetRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil leftBorder:3 rightBorder:1 topBorder:0 bottomBorder:0];
+    [level drawInRect:targetRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
 }
 
 - (CGFloat)knobThickness

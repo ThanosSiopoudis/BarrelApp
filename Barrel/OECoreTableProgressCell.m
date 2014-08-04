@@ -79,7 +79,7 @@
     
     NSRect trackRect = cellFrame;
     NSImage *image = [NSImage imageNamed:@"install_progress_bar_track"];
-    [image drawInRect:trackRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil leftBorder:10 rightBorder:10 topBorder:0 bottomBorder:0];
+    [image drawInRect:trackRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
     
     NSRect progressRect = cellFrame;
     float value = [[self objectValue] floatValue];
@@ -89,6 +89,6 @@
     progressRect.size.width = progressRect.size.width < 12 ? 12 : roundf(progressRect.size.width);
     
     image = [NSImage imageNamed:@"install_progress_bar"];
-    [image drawInRect:progressRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil leftBorder:6 rightBorder:6 topBorder:0 bottomBorder:0];    
+    [image drawInRect:progressRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
 }
 @end

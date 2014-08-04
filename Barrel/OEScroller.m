@@ -111,8 +111,9 @@
     if([self scrollerStyle] == NSScrollerStyleOverlay)
         return [super drawKnobSlotInRect:slotRect highlight:flag];
 
+    NSRect bounds = [self bounds];
     NSImage *image = [self OE_trackImage];
-    [image drawInRect:[self bounds] fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil leftBorder:isVertical?0:9 rightBorder:isVertical?0:9 topBorder:!isVertical?0:9 bottomBorder:!isVertical?0:9];
+    [image drawInRect:bounds fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
 }
 
 - (void)drawKnob
@@ -120,10 +121,9 @@
     if([self scrollerStyle] == NSScrollerStyleOverlay)
         return [super drawKnob];
     
-    NSRect imageRect = [self OE_knobSubimageRectForState:OEUIStateEnabled];
     NSRect targetRect = [self rectForPart:NSScrollerKnob];
     
-    [[self OE_knobImage] drawInRect:targetRect fromRect:imageRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil leftBorder:isVertical?0:7 rightBorder:isVertical?0:7 topBorder:!isVertical?0:7 bottomBorder:!isVertical?0:7];
+    [[self OE_knobImage] drawInRect:targetRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
 }
 
 - (NSRect)rectForPart:(NSScrollerPart)aPart{    

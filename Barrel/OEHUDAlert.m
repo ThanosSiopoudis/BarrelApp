@@ -927,12 +927,6 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
 {
     // Make sure not to reinitialize for subclassed objects
     if(self != [OEAlertWindow class]) return;
-
-    if([NSImage imageNamed:@"hud_alert_window_active"]) return;
-    
-    NSImage *hudWindowBorder = [NSImage imageNamed:@"hud_alert_window"];    
-    [hudWindowBorder setName:@"hud_alert_window_active" forSubimageInRect:(NSRect){ .size = { 29, 47 } }];
-    [hudWindowBorder setName:@"hud_alert_window_inactive" forSubimageInRect:(NSRect){ .size = { 29, 47 } }];
     
     [NSWindow registerWindowClassForCustomThemeFrameDrawing:[OEAlertWindow class]];
 }
@@ -960,8 +954,13 @@ static const CGFloat _OEHUDAlertMinimumHeadlineLength   = 291.0;
     NSRect bounds = [self frame];
     bounds.origin = (NSPoint){0,0};
     
-    NSImage *image = [NSImage imageNamed:@"hud_alert_window"];
-    [image drawInRect:bounds fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0 respectFlipped:YES hints:nil leftBorder:14 rightBorder:14 topBorder:24 bottomBorder:22];
+    [[NSColor clearColor] setFill];
+    NSRectFill(bounds);
+    
+    OEThemeState state = [[(NSView*)self window] isMainWindow] ? OEThemeInputStateWindowActive : OEThemeInputStateWindowInactive;
+    OEThemeImage *image = [[OETheme sharedTheme] themeImageForKey:@"hud_alert_window"];
+    NSImage *nsimage = [image imageForState:state];
+    [nsimage drawInRect:bounds fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
 }
 
 @end

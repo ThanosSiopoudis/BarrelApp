@@ -90,7 +90,7 @@
     
     cellFrame = NSInsetRect(cellFrame, self.widthInset, (cellFrame.size.height-15)/2);
     
-    [image drawInRect:cellFrame fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil leftBorder:9 rightBorder:9 topBorder:0 bottomBorder:0];
+    [image drawInRect:cellFrame fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
     
     cellFrame.origin.y += 1;
     

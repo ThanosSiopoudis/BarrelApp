@@ -131,7 +131,7 @@
         
         if(anItem == selectedItem){
             NSImage *selectionHighlight = [NSImage imageNamed:@"tab_selector"];
-            [selectionHighlight drawInRect:anItem.itemRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil leftBorder:12 rightBorder:12 topBorder:0 bottomBorder:0];
+            [selectionHighlight drawInRect:anItem.itemRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
         }
         
         NSImage *icon = anItem.icon;

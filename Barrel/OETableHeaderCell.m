@@ -84,7 +84,7 @@ static const CGFloat _OESortIndicatorMargin = 5;
 	const BOOL hideLeftHighlight     = isPressed || isFirstColumn || isOutOfBoundsColumn;
 	NSImage *backgroundImage         = [NSImage imageNamed:(isPressed ? @"table_header_background_pressed" : @"table_header_background_active")];
 
-    [backgroundImage drawInRect:cellFrame fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0 respectFlipped:YES hints:nil leftBorder:7 rightBorder:8 topBorder:0 bottomBorder:0];
+    [backgroundImage drawInRect:cellFrame fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0 respectFlipped:YES hints:nil];
 
     // Draw highlight on left edge
     if(!hideLeftHighlight)
