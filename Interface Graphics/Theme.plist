@@ -986,6 +986,150 @@
 	</dict>
 	<key>Images</key>
 	<dict>
+		<key>hud_progress_track_background</key>
+		<dict>
+			<key>Resource</key>
+			<string>hud_progress_bar_track</string>
+			<key>States</key>
+			<dict>
+				<key>Default</key>
+				<dict>
+					<key>Parts</key>
+					<array>
+						<string>{{0,0},{7,14}}</string>
+						<string>{{7,0},{1,14}}</string>
+						<string>{{8,0},{7,14}}</string>
+					</array>
+				</dict>
+			</dict>
+		</dict>
+		<key>hud_progress_bar</key>
+		<dict>
+			<key>Resource</key>
+			<string>hud_progress_bar</string>
+			<key>States</key>
+			<dict>
+				<key>Default</key>
+				<dict>
+					<key>Parts</key>
+					<array>
+						<string>{{0,0},{7,14}}</string>
+						<string>{{7,0},{1,14}}</string>
+						<string>{{8,0},{7,14}}</string>
+					</array>
+				</dict>
+			</dict>
+		</dict>
+		<key>preferences_input_box</key>
+		<dict>
+			<key>Parts</key>
+			<array>
+				<string>{{0,0},{11,11}}</string>
+				<string>{{11,0},{1,11}}</string>
+				<string>{{12,0},{11,11}}</string>
+				<string>{{0,11},{11,1}}</string>
+				<string>{{11,11},{1,1}}</string>
+				<string>{{12,11},{11,1}}</string>
+				<string>{{0,12},{11,11}}</string>
+				<string>{{11,12},{1,11}}</string>
+				<string>{{12,12},{11,11}}</string>
+			</array>
+			<key>Resource</key>
+			<string>preferences_input_box</string>
+		</dict>
+		<key>dark_inset_box_background</key>
+		<dict>
+			<key>Parts</key>
+			<array>
+				<string>{{0,0},{16,16}}</string>
+				<string>{{16,0},{1,16}}</string>
+				<string>{{17,0},{16,16}}</string>
+				<string>{{0,16},{16,1}}</string>
+				<string>{{16,16},{1,1}}</string>
+				<string>{{17,16},{16,1}}</string>
+				<string>{{0,17},{16,16}}</string>
+				<string>{{16,17},{1,16}}</string>
+				<string>{{17,17},{16,16}}</string>
+			</array>
+			<key>Resource</key>
+			<string>dark_inset_box</string>
+		</dict>
+		<key>hud_window</key>
+		<dict>
+			<key>Resource</key>
+			<string>hud_window</string>
+			<key>States</key>
+			<dict>
+				<key>Window Active</key>
+				<dict>
+					<key>Parts</key>
+					<array>
+						<string>{{0, 0}, {14, 26}}</string>
+						<string>{{14, 0}, {1, 26}}</string>
+						<string>{{15, 0}, {14, 26}}</string>
+						<string>{{0, 26}, {14, 1}}</string>
+						<string>{{14, 26}, {1, 1}}</string>
+						<string>{{15, 26}, {14, 1}}</string>
+						<string>{{0, 27}, {14, 20}}</string>
+						<string>{{14, 27}, {1, 20}}</string>
+						<string>{{15, 27}, {14, 20}}</string>
+					</array>
+				</dict>
+				<key>Window Inactive</key>
+				<dict>
+					<key>Parts</key>
+					<array>
+						<string>{{29, 0}, {14, 26}}</string>
+						<string>{{43, 0}, {1, 26}}</string>
+						<string>{{44, 0}, {14, 26}}</string>
+						<string>{{29, 26}, {14, 1}}</string>
+						<string>{{43, 26}, {1, 1}}</string>
+						<string>{{44, 26}, {14, 1}}</string>
+						<string>{{29, 27}, {14, 20}}</string>
+						<string>{{43, 27}, {1, 20}}</string>
+						<string>{{44, 27}, {14, 20}}</string>
+					</array>
+				</dict>
+			</dict>
+		</dict>
+		<key>hud_alert_window</key>
+		<dict>
+			<key>Resource</key>
+			<string>hud_alert_window</string>
+			<key>States</key>
+			<dict>
+				<key>Window Active</key>
+				<dict>
+					<key>Parts</key>
+					<array>
+						<string>{{0,0},{14,24}}</string>
+						<string>{{15,0},{1,24}}</string>
+						<string>{{16,0},{14,24}}</string>
+						<string>{{0,24},{14,1}}</string>
+						<string>{{15,24},{1,1}}</string>
+						<string>{{16,24},{14,1}}</string>
+						<string>{{0,25},{14,22}}</string>
+						<string>{{15,25},{1,22}}</string>
+						<string>{{16,25},{14,22}}</string>
+					</array>
+				</dict>
+				<key>Window Inactive</key>
+				<dict>
+					<key>Parts</key>
+					<array>
+						<string>{{0,0},{14,24}}</string>
+						<string>{{15,0},{1,24}}</string>
+						<string>{{16,0},{14,24}}</string>
+						<string>{{0,24},{14,1}}</string>
+						<string>{{15,24},{1,1}}</string>
+						<string>{{16,24},{14,1}}</string>
+						<string>{{0,25},{14,22}}</string>
+						<string>{{15,25},{1,22}}</string>
+						<string>{{16,25},{14,22}}</string>
+					</array>
+				</dict>
+			</dict>
+		</dict>
 		<key>grid_slider</key>
 		<dict>
 			<key>Resource</key>
