@@ -2,8 +2,8 @@ Barrel 2.0 for Mac OS X
 =========
 Current Build Status:
 
-(Warning: Travis doesn't yet support Swift or the OS X 10.10 SDK so it will always show as fail until it is updated)
-[![Build Status](https://travis-ci.org/ThanosSiopoudis/BarrelApp.svg?branch=master)](https://travis-ci.org/ThanosSiopoudis/BarrelApp)
+(Warning: Travis doesn't yet support Swift or the OS X 10.10 SDK so it will always show as fail until it is updated) 
+[![Build Status](https://travis-ci.org/ThanosSiopoudis/BarrelApp.svg?branch=Barrel-2.0)](https://travis-ci.org/ThanosSiopoudis/BarrelApp)
 
 Barrel is a wine port manager / bundler targeted at games (but it can handle applications, too!). Simple user interface and remote recipes for automated installation of known windows applications on OS X.
 
