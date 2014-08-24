@@ -1,24 +1,21 @@
-Barrel for Mac OS X
+Barrel 2.0 for Mac OS X
 =========
 Current Build Status:
 
+(Warning: Travis doesn't yet support Swift or the OS X 10.10 SDK so it will always show as fail until it is updated)
 [![Build Status](https://travis-ci.org/ThanosSiopoudis/BarrelApp.svg?branch=master)](https://travis-ci.org/ThanosSiopoudis/BarrelApp)
 
-A PC game library manager for Wine games on Mac with bundling abilities, based on the source code and amazing
-design of OpenEmu (https://github.com/OpenEmu/OpenEmu)
-
-Calling out to all designers out there! The project needs a UI designer for both the main Barrel app,
-and for the standalone bundle configurator. If you're interested, please open a new Issue!
+Barrel is a wine port manager / bundler targeted at games (but it can handle applications, too!). Simple user interface and remote recipes for automated installation of known windows applications on OS X.
 
 Minimum System Requirements (for the Barrel App)
-- OS X 10.7+
+- OS X 10.9+
 - Core 2 Duo Processor
 
 System Requirements for Games will be provided within the Game's details 
 
 The MIT License (MIT)
 
-Copyright (c) 2013 Barrel Team, Siopoudis Thanos
+Copyright (c) 2014 Barrel Team, AppCake LTD, Thanos Siopoudis.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
