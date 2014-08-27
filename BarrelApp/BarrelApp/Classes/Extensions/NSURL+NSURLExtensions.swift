@@ -1,0 +1,37 @@
+//
+//  NSURL+NSURLExtensions.swift
+//  BarrelApp
+//
+//  Created by Thanos Siopoudis on 26/08/2014.
+//  Copyright (c) 2014 AppCake Limited. All rights reserved.
+//
+
+import Foundation
+
+extension NSURL {
+    func isBasedInURL(baseURL:NSURL?) -> Bool {
+        if (baseURL == nil) {
+            return false;
+        }
+
+        var basePath:String? = baseURL?.URLByStandardizingPath?.path;
+        var originalPath:String? = self.URLByStandardizingPath?.path;
+
+        var bPath = basePath!
+        var oPath = originalPath!;
+
+        if (oPath == bPath) {
+            return true;
+        }
+
+        if (bPath.hasSuffix("/") == false) {
+            bPath = bPath.stringByAppendingString("/");
+        }
+
+        if (oPath.hasSuffix("/") == false) {
+            oPath = oPath.stringByAppendingString("/");
+        }
+
+        return oPath.hasPrefix(bPath);
+    }
+}
