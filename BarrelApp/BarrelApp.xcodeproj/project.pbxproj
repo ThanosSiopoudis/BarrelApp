@@ -13,6 +13,16 @@
 		B1107AD519A924CE000D4DEF /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1107AD319A924CE000D4DEF /* MainMenu.xib */; };
 		B1107AE119A924CE000D4DEF /* BarrelAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107AE019A924CE000D4DEF /* BarrelAppTests.swift */; };
 		B1107AED19A92F91000D4DEF /* BLBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107AEC19A92F91000D4DEF /* BLBackgroundView.swift */; };
+		B17D822119AC9C4C00638DF9 /* BLGamesFolderPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822019AC9C4C00638DF9 /* BLGamesFolderPanelController.swift */; };
+		B17D822319ACA1D200638DF9 /* GamesFolderPanelOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17D822219ACA1D200638DF9 /* GamesFolderPanelOptions.xib */; };
+		B17D822519ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822419ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift */; };
+		B17D822819ACD26B00638DF9 /* BLValueTransformers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822719ACD26B00638DF9 /* BLValueTransformers.swift */; };
+		B17D822A19ACE81F00638DF9 /* String+StringAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822919ACE81F00638DF9 /* String+StringAdditions.swift */; };
+		B1E903D319AD07E2002DECC6 /* gamefolder.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1E903D219AD07E2002DECC6 /* gamefolder.icns */; };
+		B1F597F719AA031B00AAF92B /* BLPreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F597F619AA031B00AAF92B /* BLPreferencesWindowController.swift */; };
+		B1F597F919AA0BDA00AAF92B /* BLPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1F597F819AA0BDA00AAF92B /* BLPreferences.xib */; };
+		B1F597FD19AB4DFE00AAF92B /* BLTabbedWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F597FC19AB4DFE00AAF92B /* BLTabbedWindowController.swift */; };
+		B1F5980019ABCFFC00AAF92B /* NSArray+NSArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F597FF19ABCFFC00AAF92B /* NSArray+NSArrayExtensions.swift */; };
 		B1F9AA6F19A938BB00259E27 /* BLWelcomeButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9AA6E19A938BB00259E27 /* BLWelcomeButtonCell.swift */; };
 		B1F9AA7219A93AAE00259E27 /* BLWelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9AA7119A93AAE00259E27 /* BLWelcomeViewController.swift */; };
 /* End PBXBuildFile section */
@@ -38,6 +48,16 @@
 		B1107ADF19A924CE000D4DEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1107AE019A924CE000D4DEF /* BarrelAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarrelAppTests.swift; sourceTree = "<group>"; };
 		B1107AEC19A92F91000D4DEF /* BLBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLBackgroundView.swift; path = Classes/SubClasses/BLBackgroundView.swift; sourceTree = "<group>"; };
+		B17D822019AC9C4C00638DF9 /* BLGamesFolderPanelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLGamesFolderPanelController.swift; path = Classes/SubClasses/BLPreferences/BLGamesFolderPanelController.swift; sourceTree = "<group>"; };
+		B17D822219ACA1D200638DF9 /* GamesFolderPanelOptions.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GamesFolderPanelOptions.xib; path = UserInterface/GamesFolderPanelOptions.xib; sourceTree = "<group>"; };
+		B17D822419ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSURL+NSURLExtensions.swift"; path = "Classes/Extensions/NSURL+NSURLExtensions.swift"; sourceTree = "<group>"; };
+		B17D822719ACD26B00638DF9 /* BLValueTransformers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLValueTransformers.swift; path = Classes/Extensions/ValueTransformers/BLValueTransformers.swift; sourceTree = "<group>"; };
+		B17D822919ACE81F00638DF9 /* String+StringAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+StringAdditions.swift"; path = "Classes/Extensions/String+StringAdditions.swift"; sourceTree = "<group>"; };
+		B1E903D219AD07E2002DECC6 /* gamefolder.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = gamefolder.icns; sourceTree = "<group>"; };
+		B1F597F619AA031B00AAF92B /* BLPreferencesWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLPreferencesWindowController.swift; path = Classes/SubClasses/BLPreferences/BLPreferencesWindowController.swift; sourceTree = "<group>"; };
+		B1F597F819AA0BDA00AAF92B /* BLPreferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BLPreferences.xib; path = UserInterface/BLPreferences.xib; sourceTree = "<group>"; };
+		B1F597FC19AB4DFE00AAF92B /* BLTabbedWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLTabbedWindowController.swift; path = Classes/SubClasses/TabbedWindow/BLTabbedWindowController.swift; sourceTree = "<group>"; };
+		B1F597FF19ABCFFC00AAF92B /* NSArray+NSArrayExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSArray+NSArrayExtensions.swift"; path = "Classes/Extensions/NSArray+NSArrayExtensions.swift"; sourceTree = "<group>"; };
 		B1F9AA6E19A938BB00259E27 /* BLWelcomeButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLWelcomeButtonCell.swift; path = Classes/SubClasses/BLWelcomeButtonCell.swift; sourceTree = "<group>"; };
 		B1F9AA7119A93AAE00259E27 /* BLWelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLWelcomeViewController.swift; path = Classes/Controllers/BLWelcomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -119,6 +139,7 @@
 			children = (
 				B1107ACF19A924CE000D4DEF /* AppDelegate.swift */,
 				B1F9AA7019A93A4F00259E27 /* Controllers */,
+				B1F597FE19ABCFE800AAF92B /* Extensions */,
 				B1107AEB19A92F5A000D4DEF /* SubClasses */,
 			);
 			name = Classes;
@@ -127,19 +148,84 @@
 		B1107AEB19A92F5A000D4DEF /* SubClasses */ = {
 			isa = PBXGroup;
 			children = (
+				B1F597FB19AB4DDA00AAF92B /* TabbedWindow */,
+				B1F597F519AA02BB00AAF92B /* BLPreferences */,
 				B1107AEC19A92F91000D4DEF /* BLBackgroundView.swift */,
 				B1F9AA6E19A938BB00259E27 /* BLWelcomeButtonCell.swift */,
 			);
 			name = SubClasses;
 			sourceTree = "<group>";
 		};
+		B17D821F19AC9C2F00638DF9 /* BLGamesFolderPanelController */ = {
+			isa = PBXGroup;
+			children = (
+				B17D822019AC9C4C00638DF9 /* BLGamesFolderPanelController.swift */,
+			);
+			name = BLGamesFolderPanelController;
+			sourceTree = "<group>";
+		};
+		B17D822619ACD25000638DF9 /* ValueTransformers */ = {
+			isa = PBXGroup;
+			children = (
+				B17D822719ACD26B00638DF9 /* BLValueTransformers.swift */,
+			);
+			name = ValueTransformers;
+			sourceTree = "<group>";
+		};
+		B1E903D019AD07D2002DECC6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B1E903D119AD07D9002DECC6 /* Icons */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		B1E903D119AD07D9002DECC6 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				B1E903D219AD07E2002DECC6 /* gamefolder.icns */,
+			);
+			name = Icons;
+			sourceTree = "<group>";
+		};
 		B1F597F319A971E100AAF92B /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
+				B1E903D019AD07D2002DECC6 /* Resources */,
 				B1107AD119A924CE000D4DEF /* Images.xcassets */,
 				B1107AD319A924CE000D4DEF /* MainMenu.xib */,
+				B1F597F819AA0BDA00AAF92B /* BLPreferences.xib */,
+				B17D822219ACA1D200638DF9 /* GamesFolderPanelOptions.xib */,
 			);
 			name = "User Interface";
+			sourceTree = "<group>";
+		};
+		B1F597F519AA02BB00AAF92B /* BLPreferences */ = {
+			isa = PBXGroup;
+			children = (
+				B17D821F19AC9C2F00638DF9 /* BLGamesFolderPanelController */,
+				B1F597F619AA031B00AAF92B /* BLPreferencesWindowController.swift */,
+			);
+			name = BLPreferences;
+			sourceTree = "<group>";
+		};
+		B1F597FB19AB4DDA00AAF92B /* TabbedWindow */ = {
+			isa = PBXGroup;
+			children = (
+				B1F597FC19AB4DFE00AAF92B /* BLTabbedWindowController.swift */,
+			);
+			name = TabbedWindow;
+			sourceTree = "<group>";
+		};
+		B1F597FE19ABCFE800AAF92B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B17D822619ACD25000638DF9 /* ValueTransformers */,
+				B1F597FF19ABCFFC00AAF92B /* NSArray+NSArrayExtensions.swift */,
+				B17D822419ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift */,
+				B17D822919ACE81F00638DF9 /* String+StringAdditions.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		B1F9AA7019A93A4F00259E27 /* Controllers */ = {
@@ -231,8 +317,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1E903D319AD07E2002DECC6 /* gamefolder.icns in Resources */,
 				B1107AD219A924CE000D4DEF /* Images.xcassets in Resources */,
+				B17D822319ACA1D200638DF9 /* GamesFolderPanelOptions.xib in Resources */,
 				B1107AD519A924CE000D4DEF /* MainMenu.xib in Resources */,
+				B1F597F919AA0BDA00AAF92B /* BLPreferences.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,10 +340,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1107AED19A92F91000D4DEF /* BLBackgroundView.swift in Sources */,
+				B17D822519ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift in Sources */,
+				B1F597FD19AB4DFE00AAF92B /* BLTabbedWindowController.swift in Sources */,
+				B17D822A19ACE81F00638DF9 /* String+StringAdditions.swift in Sources */,
+				B17D822819ACD26B00638DF9 /* BLValueTransformers.swift in Sources */,
+				B1F597F719AA031B00AAF92B /* BLPreferencesWindowController.swift in Sources */,
 				B1F9AA7219A93AAE00259E27 /* BLWelcomeViewController.swift in Sources */,
 				B1107AD019A924CE000D4DEF /* AppDelegate.swift in Sources */,
+				B1F5980019ABCFFC00AAF92B /* NSArray+NSArrayExtensions.swift in Sources */,
 				B1F9AA6F19A938BB00259E27 /* BLWelcomeButtonCell.swift in Sources */,
 				B1107ACE19A924CE000D4DEF /* main.swift in Sources */,
+				B17D822119AC9C4C00638DF9 /* BLGamesFolderPanelController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
