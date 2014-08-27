@@ -11,8 +11,13 @@ import Cocoa
 class BLWelcomeViewController: NSViewController {
     @IBOutlet
     var installButton:NSButton?
+    var preferencesWindow:BLPreferencesWindowController!
     
     override func viewDidLoad() {
         super.viewDidLoad();
+    }
+    @IBAction func showPreferences(sender: AnyObject) {
+        self.preferencesWindow = BLPreferencesWindowController(windowNibName: "BLPreferences");
+        self.preferencesWindow.showWindow(self);
     }
 }
