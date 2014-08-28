@@ -243,6 +243,67 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true;
     }
     
+    func promptForMissingGamesFolderInWindow(window:NSWindow?) {
+        var alert:NSAlert = NSAlert();
+        alert.messageText = "Barrel can no longer find your games folder."
+        alert.informativeText = "Make sure the disk containing your games folder is connected";
+        alert.addButtonWithTitle("Locate folder…");
+        
+        var cancelButton:NSButton = alert.addButtonWithTitle("Cancel");
+        cancelButton.keyEquivalent = "\\e";
+        
+        if (window != nil) {
+            alert.beginSheetModalForWindow(window, completionHandler: {(returnCode:NSModalResponse) -> Void in
+                if (returnCode == NSAlertFirstButtonReturn) {
+                    alert.window.orderOut(self);
+                    BLGamesFolderPanelController.controller()?.showGamesFolderPanelWindow(window);
+                }
+            });
+        }
+    }
+    
+    func revealURLsInFinder(URLs:NSArray) -> Bool {
+        var revealedAnyFiles:Bool = false;
+        var ws:NSWorkspace = NSWorkspace.sharedWorkspace();
+        
+        var safeURLs:NSMutableArray = NSMutableArray(capacity: URLs.count);
+        for val in URLs {
+            let URL:NSURL = val as NSURL;
+            if (URL.checkResourceIsReachableAndReturnError(nil)) {
+                var parentURL:NSURL? = URL.URLByDeletingLastPathComponent!;
+                var parentIsPackage:Bool? = parentURL?.resourceValueForKey(NSURLIsPackageKey)?.boolValue!
+                if (parentIsPackage!) {
+                    if (URL.isDirectory()!) {
+                        var options:NSDirectoryEnumerationOptions = NSDirectoryEnumerationOptions.SkipsHiddenFiles | NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants;
+                        var enumerator:NSDirectoryEnumerator = NSFileManager.defaultManager().enumeratorAtURL(URL,
+                            includingPropertiesForKeys: nil,
+                            options: options,
+                            errorHandler: nil
+                        );
+                        
+                        var childURL:NSURL? = enumerator.nextObject() as? NSURL;
+                        if (childURL != nil) {
+                            safeURLs.addObject(childURL!);
+                            continue;
+                        }
+                    }
+                    
+                    revealedAnyFiles = ws.selectFile(URL.path!, inFileViewerRootedAtPath: parentURL?.path!) || revealedAnyFiles;
+                }
+                else {
+                    safeURLs.addObject(URL);
+                    revealedAnyFiles = true;
+                }
+            }
+        }
+        
+        if (safeURLs.count > 0) {
+            ws.activateFileViewerSelectingURLs(safeURLs);
+        }
+        
+        return revealedAnyFiles;
+    }
+    
     func validateGamesFolderURL(inout ioValue:NSURL, inout outError:NSError?) -> Bool {
         var URL:NSURL? = ioValue;
         
