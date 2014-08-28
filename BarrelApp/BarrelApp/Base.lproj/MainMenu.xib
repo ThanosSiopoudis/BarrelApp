@@ -702,7 +702,7 @@
                                 </constraints>
                                 <buttonCell key="cell" type="squareTextured" title="Install Game" bezelStyle="texturedSquare" image="mb-install" imagePosition="above" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="nb9-li-QRP" customClass="BLWelcomeButtonCell" customModule="BarrelApp" customModuleProvider="target">
                                     <behavior key="behavior" lightByContents="YES"/>
-                                    <font key="font" size="18" name="AvenirNext-Medium"/>
+                                    <font key="font" size="16" name="AvenirNext-Medium"/>
                                 </buttonCell>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="f6q-if-m4J">
@@ -713,8 +713,11 @@
                                 </constraints>
                                 <buttonCell key="cell" type="squareTextured" title="Browse Games" bezelStyle="texturedSquare" image="GameFolder" imagePosition="above" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="2rw-BS-3dc" customClass="BLWelcomeButtonCell" customModule="BarrelApp" customModuleProvider="target">
                                     <behavior key="behavior" lightByContents="YES"/>
-                                    <font key="font" size="18" name="AvenirNext-Medium"/>
+                                    <font key="font" size="16" name="AvenirNext-Medium"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="showGamesFolder:" target="6Kz-Yd-teL" id="K8Q-iT-lpN"/>
+                                </connections>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="cj7-YF-ZJT">
                                 <rect key="frame" x="410" y="35" width="154" height="182"/>
@@ -724,7 +727,7 @@
                                 </constraints>
                                 <buttonCell key="cell" type="squareTextured" title="Manage Engines" bezelStyle="texturedSquare" image="EngineMan" imagePosition="above" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="e1n-iH-6nB" customClass="BLWelcomeButtonCell" customModule="BarrelApp" customModuleProvider="target">
                                     <behavior key="behavior" lightByContents="YES"/>
-                                    <font key="font" size="18" name="AvenirNext-Medium"/>
+                                    <font key="font" size="16" name="AvenirNext-Medium"/>
                                 </buttonCell>
                             </button>
                         </subviews>
