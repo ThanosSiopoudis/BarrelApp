@@ -8,12 +8,23 @@
 
 import Cocoa
 
+var singleton:BLGamesFolderPanelController? = nil
+
 class BLGamesFolderPanelController : NSViewController, NSOpenSavePanelDelegate {
     @IBOutlet
     var sampleGamesToggle:NSButton!
     
     override convenience init() {
         self.init(nibName: "GamesFolderPanelOptions", bundle: nil);
+        self.initialization();
+    }
+    
+    func initialization() {
+        singleton = self;
+    }
+    
+    class func controller() -> BLGamesFolderPanelController? {
+        return singleton;
     }
     
     func showGamesFolderPanelWindow(window:NSWindow!) {
