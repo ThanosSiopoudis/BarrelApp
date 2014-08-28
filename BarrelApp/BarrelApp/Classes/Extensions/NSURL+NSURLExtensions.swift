@@ -34,4 +34,19 @@ extension NSURL {
 
         return oPath.hasPrefix(bPath);
     }
+
+    func resourceValueForKey(key:String) -> AnyObject? {
+        var value:AnyObject?
+        var retrieved:Bool = self.getResourceValue(&value, forKey: key, error: nil);
+        if (retrieved) {
+            return value
+        }
+        else {
+            return nil;
+        }
+    }
+
+    func isDirectory() -> Bool? {
+        return self.resourceValueForKey(NSURLIsDirectoryKey)?.boolValue;
+    }
 }
