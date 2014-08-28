@@ -13,6 +13,9 @@
 		B1107AD519A924CE000D4DEF /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1107AD319A924CE000D4DEF /* MainMenu.xib */; };
 		B1107AE119A924CE000D4DEF /* BarrelAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107AE019A924CE000D4DEF /* BarrelAppTests.swift */; };
 		B1107AED19A92F91000D4DEF /* BLBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107AEC19A92F91000D4DEF /* BLBackgroundView.swift */; };
+		B14EDB5119AE17D30054C10A /* BLGameImport.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14EDB5019AE17D30054C10A /* BLGameImport.xib */; };
+		B167792119AE4BF900B58B00 /* BLMultiPanelWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B167792019AE4BF900B58B00 /* BLMultiPanelWindowController.swift */; };
+		B167792419AE553800B58B00 /* BLImportWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B167792319AE553800B58B00 /* BLImportWindowController.swift */; };
 		B17D822119AC9C4C00638DF9 /* BLGamesFolderPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822019AC9C4C00638DF9 /* BLGamesFolderPanelController.swift */; };
 		B17D822319ACA1D200638DF9 /* GamesFolderPanelOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17D822219ACA1D200638DF9 /* GamesFolderPanelOptions.xib */; };
 		B17D822519ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822419ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift */; };
@@ -48,6 +51,9 @@
 		B1107ADF19A924CE000D4DEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1107AE019A924CE000D4DEF /* BarrelAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarrelAppTests.swift; sourceTree = "<group>"; };
 		B1107AEC19A92F91000D4DEF /* BLBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLBackgroundView.swift; path = Classes/SubClasses/BLBackgroundView.swift; sourceTree = "<group>"; };
+		B14EDB5019AE17D30054C10A /* BLGameImport.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BLGameImport.xib; path = UserInterface/BLGameImport.xib; sourceTree = "<group>"; };
+		B167792019AE4BF900B58B00 /* BLMultiPanelWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLMultiPanelWindowController.swift; path = Classes/SubClasses/MultiPanelWindow/BLMultiPanelWindowController.swift; sourceTree = "<group>"; };
+		B167792319AE553800B58B00 /* BLImportWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLImportWindowController.swift; path = Classes/Controllers/BLImportWindowController.swift; sourceTree = "<group>"; };
 		B17D822019AC9C4C00638DF9 /* BLGamesFolderPanelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLGamesFolderPanelController.swift; path = Classes/SubClasses/BLPreferences/BLGamesFolderPanelController.swift; sourceTree = "<group>"; };
 		B17D822219ACA1D200638DF9 /* GamesFolderPanelOptions.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GamesFolderPanelOptions.xib; path = UserInterface/GamesFolderPanelOptions.xib; sourceTree = "<group>"; };
 		B17D822419ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSURL+NSURLExtensions.swift"; path = "Classes/Extensions/NSURL+NSURLExtensions.swift"; sourceTree = "<group>"; };
@@ -139,7 +145,6 @@
 			children = (
 				B1107ACF19A924CE000D4DEF /* AppDelegate.swift */,
 				B1F9AA7019A93A4F00259E27 /* Controllers */,
-				B1F597FE19ABCFE800AAF92B /* Extensions */,
 				B1107AEB19A92F5A000D4DEF /* SubClasses */,
 			);
 			name = Classes;
@@ -148,12 +153,37 @@
 		B1107AEB19A92F5A000D4DEF /* SubClasses */ = {
 			isa = PBXGroup;
 			children = (
-				B1F597FB19AB4DDA00AAF92B /* TabbedWindow */,
-				B1F597F519AA02BB00AAF92B /* BLPreferences */,
+				B167791E19AE4B7E00B58B00 /* BLToolkit */,
 				B1107AEC19A92F91000D4DEF /* BLBackgroundView.swift */,
 				B1F9AA6E19A938BB00259E27 /* BLWelcomeButtonCell.swift */,
 			);
 			name = SubClasses;
+			sourceTree = "<group>";
+		};
+		B167791E19AE4B7E00B58B00 /* BLToolkit */ = {
+			isa = PBXGroup;
+			children = (
+				B167791F19AE4BDB00B58B00 /* MultiPanelWindow */,
+				B1F597FE19ABCFE800AAF92B /* Extensions */,
+				B1F597FB19AB4DDA00AAF92B /* TabbedWindow */,
+			);
+			name = BLToolkit;
+			sourceTree = "<group>";
+		};
+		B167791F19AE4BDB00B58B00 /* MultiPanelWindow */ = {
+			isa = PBXGroup;
+			children = (
+				B167792019AE4BF900B58B00 /* BLMultiPanelWindowController.swift */,
+			);
+			name = MultiPanelWindow;
+			sourceTree = "<group>";
+		};
+		B167792219AE54F300B58B00 /* Importer Window */ = {
+			isa = PBXGroup;
+			children = (
+				B167792319AE553800B58B00 /* BLImportWindowController.swift */,
+			);
+			name = "Importer Window";
 			sourceTree = "<group>";
 		};
 		B17D821F19AC9C2F00638DF9 /* BLGamesFolderPanelController */ = {
@@ -196,6 +226,7 @@
 				B1107AD319A924CE000D4DEF /* MainMenu.xib */,
 				B1F597F819AA0BDA00AAF92B /* BLPreferences.xib */,
 				B17D822219ACA1D200638DF9 /* GamesFolderPanelOptions.xib */,
+				B14EDB5019AE17D30054C10A /* BLGameImport.xib */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
@@ -231,6 +262,8 @@
 		B1F9AA7019A93A4F00259E27 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B167792219AE54F300B58B00 /* Importer Window */,
+				B1F597F519AA02BB00AAF92B /* BLPreferences */,
 				B1F9AA7119A93AAE00259E27 /* BLWelcomeViewController.swift */,
 			);
 			name = Controllers;
@@ -317,6 +350,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B14EDB5119AE17D30054C10A /* BLGameImport.xib in Resources */,
 				B1E903D319AD07E2002DECC6 /* gamefolder.icns in Resources */,
 				B1107AD219A924CE000D4DEF /* Images.xcassets in Resources */,
 				B17D822319ACA1D200638DF9 /* GamesFolderPanelOptions.xib in Resources */,
@@ -347,9 +381,11 @@
 				B1F597F719AA031B00AAF92B /* BLPreferencesWindowController.swift in Sources */,
 				B1F9AA7219A93AAE00259E27 /* BLWelcomeViewController.swift in Sources */,
 				B1107AD019A924CE000D4DEF /* AppDelegate.swift in Sources */,
+				B167792419AE553800B58B00 /* BLImportWindowController.swift in Sources */,
 				B1F5980019ABCFFC00AAF92B /* NSArray+NSArrayExtensions.swift in Sources */,
 				B1F9AA6F19A938BB00259E27 /* BLWelcomeButtonCell.swift in Sources */,
 				B1107ACE19A924CE000D4DEF /* main.swift in Sources */,
+				B167792119AE4BF900B58B00 /* BLMultiPanelWindowController.swift in Sources */,
 				B17D822119AC9C4C00638DF9 /* BLGamesFolderPanelController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
