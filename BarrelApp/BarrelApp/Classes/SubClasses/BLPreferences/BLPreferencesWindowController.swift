@@ -48,7 +48,7 @@ class BLPreferencesWindowController: BLTabbedWindowController, NSOpenSavePanelDe
     }
     
     @IBAction func showGamesFolderChooser(sender:AnyObject) {
-        var chooser:BLGamesFolderPanelController = BLGamesFolderPanelController();
+        var chooser:BLGamesFolderPanelController = BLGamesFolderPanelController(coder: nil)!;
         chooser.showGamesFolderPanelWindow(self.window);
         self.gamesFolderSelector.selectItemAtIndex(0);
     }

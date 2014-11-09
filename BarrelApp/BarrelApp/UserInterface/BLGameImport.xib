@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6206.8" systemVersion="14A329f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="14A388a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6206.8"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="BLImportWindowController" customModule="BarrelApp" customModuleProvider="target">
             <connections>
+                <outlet property="dropZonePanel" destination="vdC-yy-Ba3" id="Sjg-VR-rmC"/>
                 <outlet property="panelContainer" destination="EiT-Mj-1SZ" id="mSm-cA-Tmy"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="SdT-p0-mBe"/>
             </connections>
@@ -26,5 +28,62 @@
             </connections>
             <point key="canvasLocation" x="216" y="278"/>
         </window>
+        <customView id="vdC-yy-Ba3" userLabel="Dropzone Panel" customClass="BLDelegatedView" customModule="BarrelApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="320"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ky-hS-Zvh">
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="40"/>
+                    <subviews>
+                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HXM-ef-97t">
+                            <rect key="frame" x="375" y="7" width="85" height="25"/>
+                            <buttonCell key="cell" type="roundTextured" title="Close" bezelStyle="texturedRounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZEM-FI-AK6">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                        </button>
+                    </subviews>
+                </customView>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MJ2-28-jBs" userLabel="Blueprint Panel" customClass="BLBlueprintPanel" customModule="BarrelApp" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="40" width="480" height="280"/>
+                    <subviews>
+                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QUm-op-y6w">
+                            <rect key="frame" x="69" y="20" width="342" height="34"/>
+                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Drop a Disc drive, mounted image, folder or executable and Barrel will import it into a new Bundle." id="Zmg-92-JgC">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EhO-MC-HqN" customClass="BLImportDropzone" customModule="BarrelApp" customModuleProvider="target">
+                            <rect key="frame" x="160" y="100" width="160" height="160"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Kzg-5A-LCF">
+                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                        </button>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xD9-Bw-wEm">
+                            <rect key="frame" x="18" y="62" width="444" height="54"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Drop your game here." id="5XG-ZA-jSY">
+                                <font key="font" size="32" name="AvenirNext-Medium"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                </customView>
+            </subviews>
+            <connections>
+                <outlet property="delegate" destination="028-7l-zkc" id="2Vh-La-vtW"/>
+                <outlet property="nextKeyView" destination="EhO-MC-HqN" id="bRp-S0-Ymp"/>
+            </connections>
+            <point key="canvasLocation" x="216" y="680"/>
+        </customView>
+        <customObject id="028-7l-zkc" userLabel="Dropzone Panel Controller" customClass="BLImportDropzonePanelController" customModule="BarrelApp" customModuleProvider="target">
+            <connections>
+                <outlet property="dropzone" destination="EhO-MC-HqN" id="xQJ-fQ-e8D"/>
+                <outlet property="view" destination="vdC-yy-Ba3" id="A2H-0o-9pp"/>
+            </connections>
+        </customObject>
     </objects>
 </document>

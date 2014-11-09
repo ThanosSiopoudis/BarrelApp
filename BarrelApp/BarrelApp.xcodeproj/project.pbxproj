@@ -7,21 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B103108319B7AB45007ACCEB /* BLImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103108219B7AB45007ACCEB /* BLImporter.swift */; };
+		B103108519B7B056007ACCEB /* BLFileTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103108419B7B056007ACCEB /* BLFileTypes.swift */; };
+		B10D409219C30137000D742B /* ObjC-Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B10D409119C30137000D742B /* ObjC-Helpers.m */; };
 		B1107ACE19A924CE000D4DEF /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107ACD19A924CE000D4DEF /* main.swift */; };
 		B1107AD019A924CE000D4DEF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107ACF19A924CE000D4DEF /* AppDelegate.swift */; };
 		B1107AD219A924CE000D4DEF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1107AD119A924CE000D4DEF /* Images.xcassets */; };
 		B1107AD519A924CE000D4DEF /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1107AD319A924CE000D4DEF /* MainMenu.xib */; };
 		B1107AE119A924CE000D4DEF /* BarrelAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107AE019A924CE000D4DEF /* BarrelAppTests.swift */; };
 		B1107AED19A92F91000D4DEF /* BLBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107AEC19A92F91000D4DEF /* BLBackgroundView.swift */; };
+		B1326FDF19AF8D2B002B0BD0 /* DropzoneTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B1326FDE19AF8D2B002B0BD0 /* DropzoneTemplate.pdf */; };
+		B1439BD219D3719000C4803E /* BLOperationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1439BD119D3719000C4803E /* BLOperationDelegate.swift */; };
 		B14EDB5119AE17D30054C10A /* BLGameImport.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14EDB5019AE17D30054C10A /* BLGameImport.xib */; };
 		B167792119AE4BF900B58B00 /* BLMultiPanelWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B167792019AE4BF900B58B00 /* BLMultiPanelWindowController.swift */; };
 		B167792419AE553800B58B00 /* BLImportWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B167792319AE553800B58B00 /* BLImportWindowController.swift */; };
+		B1794F9219AFF13C00045AA7 /* NSImage+NSImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1794F9119AFF13C00045AA7 /* NSImage+NSImageExtensions.swift */; };
 		B17D822119AC9C4C00638DF9 /* BLGamesFolderPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822019AC9C4C00638DF9 /* BLGamesFolderPanelController.swift */; };
 		B17D822319ACA1D200638DF9 /* GamesFolderPanelOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17D822219ACA1D200638DF9 /* GamesFolderPanelOptions.xib */; };
 		B17D822519ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822419ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift */; };
 		B17D822819ACD26B00638DF9 /* BLValueTransformers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822719ACD26B00638DF9 /* BLValueTransformers.swift */; };
 		B17D822A19ACE81F00638DF9 /* String+StringAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822919ACE81F00638DF9 /* String+StringAdditions.swift */; };
+		B19ACDDC19B7C21D00FBB50F /* NSWorkspace+MountedVolumes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19ACDDB19B7C21D00FBB50F /* NSWorkspace+MountedVolumes.swift */; };
+		B1A5CD2A19D1747200D8946B /* BLOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5CD2919D1747200D8946B /* BLOperation.swift */; };
 		B1E903D319AD07E2002DECC6 /* gamefolder.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1E903D219AD07E2002DECC6 /* gamefolder.icns */; };
+		B1E92C1519AF31FC00BA47A8 /* BLBlueprintPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E92C1419AF31FC00BA47A8 /* BLBlueprintPanel.swift */; };
+		B1E92C1819AF32E600BA47A8 /* BLSpinningProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E92C1719AF32E600BA47A8 /* BLSpinningProgressIndicator.swift */; };
+		B1E92C1A19AF467E00BA47A8 /* NSView+DrawingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E92C1919AF467E00BA47A8 /* NSView+DrawingHelpers.swift */; };
+		B1E92C1C19AF494F00BA47A8 /* NSPoint+Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E92C1B19AF494F00BA47A8 /* NSPoint+Geometry.swift */; };
+		B1E92C1F19AF694900BA47A8 /* BLDelegatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E92C1E19AF694900BA47A8 /* BLDelegatedView.swift */; };
+		B1E92C2119AF7C2000BA47A8 /* BLImportDropzonePanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E92C2019AF7C2000BA47A8 /* BLImportDropzonePanelController.swift */; };
+		B1E92C2319AF7C8D00BA47A8 /* BLImportDropzone.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E92C2219AF7C8D00BA47A8 /* BLImportDropzone.swift */; };
+		B1E92C2519AF8B5F00BA47A8 /* NSRect+Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E92C2419AF8B5F00BA47A8 /* NSRect+Geometry.swift */; };
+		B1EE4A1019D054F9001BB945 /* BLInstallerScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EE4A0F19D054F9001BB945 /* BLInstallerScan.swift */; };
 		B1F597F719AA031B00AAF92B /* BLPreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F597F619AA031B00AAF92B /* BLPreferencesWindowController.swift */; };
 		B1F597F919AA0BDA00AAF92B /* BLPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1F597F819AA0BDA00AAF92B /* BLPreferences.xib */; };
 		B1F597FD19AB4DFE00AAF92B /* BLTabbedWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F597FC19AB4DFE00AAF92B /* BLTabbedWindowController.swift */; };
@@ -41,6 +58,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B103108219B7AB45007ACCEB /* BLImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLImporter.swift; path = Classes/Controllers/BLImporter.swift; sourceTree = "<group>"; };
+		B103108419B7B056007ACCEB /* BLFileTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLFileTypes.swift; path = Classes/BLFileTypes.swift; sourceTree = "<group>"; };
+		B10D408F19C30136000D742B /* BarrelApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BarrelApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		B10D409019C30137000D742B /* ObjC-Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ObjC-Helpers.h"; path = "Classes/Extensions/ObjC-Helpers.h"; sourceTree = "<group>"; };
+		B10D409119C30137000D742B /* ObjC-Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ObjC-Helpers.m"; path = "Classes/Extensions/ObjC-Helpers.m"; sourceTree = "<group>"; };
 		B1107AC819A924CE000D4DEF /* BarrelApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BarrelApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1107ACC19A924CE000D4DEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1107ACD19A924CE000D4DEF /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -51,15 +73,29 @@
 		B1107ADF19A924CE000D4DEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1107AE019A924CE000D4DEF /* BarrelAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarrelAppTests.swift; sourceTree = "<group>"; };
 		B1107AEC19A92F91000D4DEF /* BLBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLBackgroundView.swift; path = Classes/SubClasses/BLBackgroundView.swift; sourceTree = "<group>"; };
+		B1326FDE19AF8D2B002B0BD0 /* DropzoneTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = DropzoneTemplate.pdf; sourceTree = "<group>"; };
+		B1439BD119D3719000C4803E /* BLOperationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLOperationDelegate.swift; path = Classes/SubClasses/Protocols/BLOperationDelegate.swift; sourceTree = "<group>"; };
 		B14EDB5019AE17D30054C10A /* BLGameImport.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BLGameImport.xib; path = UserInterface/BLGameImport.xib; sourceTree = "<group>"; };
 		B167792019AE4BF900B58B00 /* BLMultiPanelWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLMultiPanelWindowController.swift; path = Classes/SubClasses/MultiPanelWindow/BLMultiPanelWindowController.swift; sourceTree = "<group>"; };
 		B167792319AE553800B58B00 /* BLImportWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLImportWindowController.swift; path = Classes/Controllers/BLImportWindowController.swift; sourceTree = "<group>"; };
+		B1794F9119AFF13C00045AA7 /* NSImage+NSImageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSImage+NSImageExtensions.swift"; path = "Classes/Extensions/NSImage+NSImageExtensions.swift"; sourceTree = "<group>"; };
 		B17D822019AC9C4C00638DF9 /* BLGamesFolderPanelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLGamesFolderPanelController.swift; path = Classes/SubClasses/BLPreferences/BLGamesFolderPanelController.swift; sourceTree = "<group>"; };
 		B17D822219ACA1D200638DF9 /* GamesFolderPanelOptions.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GamesFolderPanelOptions.xib; path = UserInterface/GamesFolderPanelOptions.xib; sourceTree = "<group>"; };
 		B17D822419ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSURL+NSURLExtensions.swift"; path = "Classes/Extensions/NSURL+NSURLExtensions.swift"; sourceTree = "<group>"; };
 		B17D822719ACD26B00638DF9 /* BLValueTransformers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLValueTransformers.swift; path = Classes/Extensions/ValueTransformers/BLValueTransformers.swift; sourceTree = "<group>"; };
 		B17D822919ACE81F00638DF9 /* String+StringAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+StringAdditions.swift"; path = "Classes/Extensions/String+StringAdditions.swift"; sourceTree = "<group>"; };
+		B19ACDDB19B7C21D00FBB50F /* NSWorkspace+MountedVolumes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSWorkspace+MountedVolumes.swift"; path = "Classes/Extensions/NSWorkspace+MountedVolumes.swift"; sourceTree = "<group>"; };
+		B1A5CD2919D1747200D8946B /* BLOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLOperation.swift; path = Classes/SubClasses/BLOperation.swift; sourceTree = "<group>"; };
 		B1E903D219AD07E2002DECC6 /* gamefolder.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = gamefolder.icns; sourceTree = "<group>"; };
+		B1E92C1419AF31FC00BA47A8 /* BLBlueprintPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLBlueprintPanel.swift; path = Classes/SubClasses/BLBlueprintPanel.swift; sourceTree = "<group>"; };
+		B1E92C1719AF32E600BA47A8 /* BLSpinningProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLSpinningProgressIndicator.swift; path = Classes/SubClasses/BLSpinningProgressIndicator/BLSpinningProgressIndicator.swift; sourceTree = "<group>"; };
+		B1E92C1919AF467E00BA47A8 /* NSView+DrawingHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSView+DrawingHelpers.swift"; path = "Classes/Extensions/NSView+DrawingHelpers.swift"; sourceTree = "<group>"; };
+		B1E92C1B19AF494F00BA47A8 /* NSPoint+Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSPoint+Geometry.swift"; path = "Classes/Extensions/NSPoint+Geometry.swift"; sourceTree = "<group>"; };
+		B1E92C1E19AF694900BA47A8 /* BLDelegatedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLDelegatedView.swift; path = Classes/SubClasses/DelegatedView/BLDelegatedView.swift; sourceTree = "<group>"; };
+		B1E92C2019AF7C2000BA47A8 /* BLImportDropzonePanelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLImportDropzonePanelController.swift; path = Classes/Controllers/BLImportDropzonePanelController.swift; sourceTree = "<group>"; };
+		B1E92C2219AF7C8D00BA47A8 /* BLImportDropzone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLImportDropzone.swift; path = Classes/SubClasses/BLImportDropzone.swift; sourceTree = "<group>"; };
+		B1E92C2419AF8B5F00BA47A8 /* NSRect+Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSRect+Geometry.swift"; path = "Classes/Extensions/NSRect+Geometry.swift"; sourceTree = "<group>"; };
+		B1EE4A0F19D054F9001BB945 /* BLInstallerScan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLInstallerScan.swift; path = Classes/BLInstallerScan.swift; sourceTree = "<group>"; };
 		B1F597F619AA031B00AAF92B /* BLPreferencesWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLPreferencesWindowController.swift; path = Classes/SubClasses/BLPreferences/BLPreferencesWindowController.swift; sourceTree = "<group>"; };
 		B1F597F819AA0BDA00AAF92B /* BLPreferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BLPreferences.xib; path = UserInterface/BLPreferences.xib; sourceTree = "<group>"; };
 		B1F597FC19AB4DFE00AAF92B /* BLTabbedWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLTabbedWindowController.swift; path = Classes/SubClasses/TabbedWindow/BLTabbedWindowController.swift; sourceTree = "<group>"; };
@@ -144,8 +180,10 @@
 			isa = PBXGroup;
 			children = (
 				B1107ACF19A924CE000D4DEF /* AppDelegate.swift */,
+				B103108419B7B056007ACCEB /* BLFileTypes.swift */,
 				B1F9AA7019A93A4F00259E27 /* Controllers */,
 				B1107AEB19A92F5A000D4DEF /* SubClasses */,
+				B1EE4A0F19D054F9001BB945 /* BLInstallerScan.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -156,16 +194,30 @@
 				B167791E19AE4B7E00B58B00 /* BLToolkit */,
 				B1107AEC19A92F91000D4DEF /* BLBackgroundView.swift */,
 				B1F9AA6E19A938BB00259E27 /* BLWelcomeButtonCell.swift */,
+				B1E92C1419AF31FC00BA47A8 /* BLBlueprintPanel.swift */,
+				B1E92C2219AF7C8D00BA47A8 /* BLImportDropzone.swift */,
 			);
 			name = SubClasses;
+			sourceTree = "<group>";
+		};
+		B1439BD019D3716300C4803E /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B1439BD119D3719000C4803E /* BLOperationDelegate.swift */,
+			);
+			name = Protocols;
 			sourceTree = "<group>";
 		};
 		B167791E19AE4B7E00B58B00 /* BLToolkit */ = {
 			isa = PBXGroup;
 			children = (
-				B167791F19AE4BDB00B58B00 /* MultiPanelWindow */,
+				B1439BD019D3716300C4803E /* Protocols */,
+				B1E92C1D19AF692E00BA47A8 /* DelegatedView */,
 				B1F597FE19ABCFE800AAF92B /* Extensions */,
+				B1E92C1619AF32A400BA47A8 /* SpinningIndicator */,
+				B167791F19AE4BDB00B58B00 /* MultiPanelWindow */,
 				B1F597FB19AB4DDA00AAF92B /* TabbedWindow */,
+				B1A5CD2919D1747200D8946B /* BLOperation.swift */,
 			);
 			name = BLToolkit;
 			sourceTree = "<group>";
@@ -182,6 +234,8 @@
 			isa = PBXGroup;
 			children = (
 				B167792319AE553800B58B00 /* BLImportWindowController.swift */,
+				B1E92C2019AF7C2000BA47A8 /* BLImportDropzonePanelController.swift */,
+				B103108219B7AB45007ACCEB /* BLImporter.swift */,
 			);
 			name = "Importer Window";
 			sourceTree = "<group>";
@@ -213,9 +267,26 @@
 		B1E903D119AD07D9002DECC6 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				B1326FDE19AF8D2B002B0BD0 /* DropzoneTemplate.pdf */,
 				B1E903D219AD07E2002DECC6 /* gamefolder.icns */,
 			);
 			name = Icons;
+			sourceTree = "<group>";
+		};
+		B1E92C1619AF32A400BA47A8 /* SpinningIndicator */ = {
+			isa = PBXGroup;
+			children = (
+				B1E92C1719AF32E600BA47A8 /* BLSpinningProgressIndicator.swift */,
+			);
+			name = SpinningIndicator;
+			sourceTree = "<group>";
+		};
+		B1E92C1D19AF692E00BA47A8 /* DelegatedView */ = {
+			isa = PBXGroup;
+			children = (
+				B1E92C1E19AF694900BA47A8 /* BLDelegatedView.swift */,
+			);
+			name = DelegatedView;
 			sourceTree = "<group>";
 		};
 		B1F597F319A971E100AAF92B /* User Interface */ = {
@@ -255,6 +326,14 @@
 				B1F597FF19ABCFFC00AAF92B /* NSArray+NSArrayExtensions.swift */,
 				B17D822419ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift */,
 				B17D822919ACE81F00638DF9 /* String+StringAdditions.swift */,
+				B1E92C1919AF467E00BA47A8 /* NSView+DrawingHelpers.swift */,
+				B1E92C1B19AF494F00BA47A8 /* NSPoint+Geometry.swift */,
+				B1E92C2419AF8B5F00BA47A8 /* NSRect+Geometry.swift */,
+				B1794F9119AFF13C00045AA7 /* NSImage+NSImageExtensions.swift */,
+				B19ACDDB19B7C21D00FBB50F /* NSWorkspace+MountedVolumes.swift */,
+				B10D409019C30137000D742B /* ObjC-Helpers.h */,
+				B10D409119C30137000D742B /* ObjC-Helpers.m */,
+				B10D408F19C30136000D742B /* BarrelApp-Bridging-Header.h */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -353,6 +432,7 @@
 				B14EDB5119AE17D30054C10A /* BLGameImport.xib in Resources */,
 				B1E903D319AD07E2002DECC6 /* gamefolder.icns in Resources */,
 				B1107AD219A924CE000D4DEF /* Images.xcassets in Resources */,
+				B1326FDF19AF8D2B002B0BD0 /* DropzoneTemplate.pdf in Resources */,
 				B17D822319ACA1D200638DF9 /* GamesFolderPanelOptions.xib in Resources */,
 				B1107AD519A924CE000D4DEF /* MainMenu.xib in Resources */,
 				B1F597F919AA0BDA00AAF92B /* BLPreferences.xib in Resources */,
@@ -374,18 +454,34 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1107AED19A92F91000D4DEF /* BLBackgroundView.swift in Sources */,
+				B1EE4A1019D054F9001BB945 /* BLInstallerScan.swift in Sources */,
 				B17D822519ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift in Sources */,
 				B1F597FD19AB4DFE00AAF92B /* BLTabbedWindowController.swift in Sources */,
+				B10D409219C30137000D742B /* ObjC-Helpers.m in Sources */,
+				B103108319B7AB45007ACCEB /* BLImporter.swift in Sources */,
+				B19ACDDC19B7C21D00FBB50F /* NSWorkspace+MountedVolumes.swift in Sources */,
 				B17D822A19ACE81F00638DF9 /* String+StringAdditions.swift in Sources */,
 				B17D822819ACD26B00638DF9 /* BLValueTransformers.swift in Sources */,
+				B1E92C1F19AF694900BA47A8 /* BLDelegatedView.swift in Sources */,
 				B1F597F719AA031B00AAF92B /* BLPreferencesWindowController.swift in Sources */,
+				B1E92C1819AF32E600BA47A8 /* BLSpinningProgressIndicator.swift in Sources */,
 				B1F9AA7219A93AAE00259E27 /* BLWelcomeViewController.swift in Sources */,
+				B1E92C1A19AF467E00BA47A8 /* NSView+DrawingHelpers.swift in Sources */,
 				B1107AD019A924CE000D4DEF /* AppDelegate.swift in Sources */,
 				B167792419AE553800B58B00 /* BLImportWindowController.swift in Sources */,
+				B1439BD219D3719000C4803E /* BLOperationDelegate.swift in Sources */,
+				B1E92C1C19AF494F00BA47A8 /* NSPoint+Geometry.swift in Sources */,
 				B1F5980019ABCFFC00AAF92B /* NSArray+NSArrayExtensions.swift in Sources */,
+				B1794F9219AFF13C00045AA7 /* NSImage+NSImageExtensions.swift in Sources */,
 				B1F9AA6F19A938BB00259E27 /* BLWelcomeButtonCell.swift in Sources */,
+				B1E92C1519AF31FC00BA47A8 /* BLBlueprintPanel.swift in Sources */,
+				B1A5CD2A19D1747200D8946B /* BLOperation.swift in Sources */,
+				B1E92C2319AF7C8D00BA47A8 /* BLImportDropzone.swift in Sources */,
+				B103108519B7B056007ACCEB /* BLFileTypes.swift in Sources */,
 				B1107ACE19A924CE000D4DEF /* main.swift in Sources */,
 				B167792119AE4BF900B58B00 /* BLMultiPanelWindowController.swift in Sources */,
+				B1E92C2119AF7C2000BA47A8 /* BLImportDropzonePanelController.swift in Sources */,
+				B1E92C2519AF8B5F00BA47A8 /* NSRect+Geometry.swift in Sources */,
 				B17D822119AC9C4C00638DF9 /* BLGamesFolderPanelController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -501,12 +597,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = BarrelApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BarrelApp/BarrelApp-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -514,12 +613,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = BarrelApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BarrelApp/BarrelApp-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -538,6 +639,7 @@
 				);
 				INFOPLIST_FILE = BarrelAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BarrelApp.app/Contents/MacOS/BarrelApp";
 			};
@@ -554,6 +656,7 @@
 				);
 				INFOPLIST_FILE = BarrelAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BarrelApp.app/Contents/MacOS/BarrelApp";
 			};

@@ -14,7 +14,7 @@ class BLDisplayPathTransformer : NSValueTransformer {
     var maxComponents:NSInteger?
     var usesFileSystemDisplayPath:Bool?
     
-    override class func transformedValueClass() -> AnyClass! {
+    override class func transformedValueClass() -> AnyClass {
         return NSString.self;
     }
     
@@ -47,13 +47,13 @@ class BLDisplayPathTransformer : NSValueTransformer {
         // or we disabled filesystem display paths, just use ordinary path components
         if (components == nil) {
             var tempArray:NSArray = path.pathComponents;
-            components = tempArray.filteredArrayUsingPredicate(NSPredicate(format: "SELF != '/'"));
+            components = tempArray.filteredArrayUsingPredicate(NSPredicate(format: "SELF != '/'")!);
         }
         
         return components!;
     }
     
-    override func transformedValue(value: AnyObject!) -> AnyObject! {
+    override func transformedValue(value: AnyObject!) -> AnyObject? {
         if (value == nil) {
             return nil;
         }
@@ -83,21 +83,21 @@ class BLIconifiedDisplayPathTransformer : BLDisplayPathTransformer {
     var iconSize:NSSize?
     var hidesSystemRoots:Bool?
     
-    override class func transformedValueClass() -> AnyClass! {
+    override class func transformedValueClass() -> AnyClass {
         return NSAttributedString.self;
     }
     
     override init(joiner: String, ellipsis: String, maxComponents: NSInteger) {
         self.iconSize = NSMakeSize(16, 16);
         self.textAttributes = NSMutableDictionary(objectsAndKeys: NSFont.systemFontOfSize(0), NSFontAttributeName);
-        self.iconAttributes = NSMutableDictionary(objectsAndKeys: NSNumber.numberWithFloat(-3.0), NSBaselineOffsetAttributeName);
+        self.iconAttributes = NSMutableDictionary(objectsAndKeys: NSNumber(float: -3.0), NSBaselineOffsetAttributeName);
         
         super.init(joiner: joiner, ellipsis: ellipsis, maxComponents: maxComponents);
     }
     
     func componentForPath(path:String, defaultIcon:NSImage?) -> NSAttributedString {
         var displayName:String;
-        var icon:NSImage;
+        var icon:NSImage?;
         
         var manager:NSFileManager = NSFileManager.defaultManager();
         var workspace:NSWorkspace = NSWorkspace.sharedWorkspace();
@@ -109,13 +109,18 @@ class BLIconifiedDisplayPathTransformer : BLDisplayPathTransformer {
         }
         else {
             displayName = path.lastPathComponent;
-            icon = defaultIcon != nil ? defaultIcon : workspace.iconForFile(path);
+            if (defaultIcon != nil) {
+                icon = defaultIcon;
+            }
+            else {
+                icon = workspace.iconForFile(path);
+            }
         }
         
         var iconAttachment:NSTextAttachment = NSTextAttachment();
         var iconCell:NSTextAttachmentCell = iconAttachment.attachmentCell as NSTextAttachmentCell;
         iconCell.image = icon;
-        iconCell.image.size = self.iconSize!;
+        iconCell.image!.size = self.iconSize!;
         
         var component:NSMutableAttributedString = NSAttributedString(attachment: iconAttachment).mutableCopy() as NSMutableAttributedString;
         component.addAttributes(self.iconAttributes!, range: NSMakeRange(0, component.length));
@@ -126,7 +131,7 @@ class BLIconifiedDisplayPathTransformer : BLDisplayPathTransformer {
         return component;
     }
     
-    override func transformedValue(value: AnyObject!) -> AnyObject! {
+    override func transformedValue(value: AnyObject!) -> AnyObject? {
         if (value == nil) {
             return nil;
         }
@@ -154,7 +159,7 @@ class BLIconifiedDisplayPathTransformer : BLDisplayPathTransformer {
             displayPath.appendAttributedString(attributedEllipsis);
         }
         
-        var folderIcon:NSImage = NSImage(named: "NSFolder");
+        var folderIcon:NSImage = NSImage(named: "NSFolder")!;
         var i:NSInteger = components.count;
         var numComponents:NSInteger = i;
         for (i = 0; i < numComponents; i++) {

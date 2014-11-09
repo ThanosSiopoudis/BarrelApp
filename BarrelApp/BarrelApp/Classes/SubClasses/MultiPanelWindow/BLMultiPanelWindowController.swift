@@ -11,7 +11,13 @@ import Cocoa
 class BLMutliPanelWindowController: NSWindowController {
     var currentPanel:NSView? {
         get {
-            return self.panelContainer?.subviews.lastObject as? NSView;
+            if let pc = self.panelContainer {
+                if (pc.subviews.count > 0) {
+                    return pc.subviews.lastObject as? NSView;
+                }
+            }
+            
+            return nil;
         }
         set {
             var oldPanel:NSView? = self.currentPanel;
@@ -20,8 +26,8 @@ class BLMutliPanelWindowController: NSWindowController {
                 oldPanel?.removeFromSuperview();
             }
             else if (oldPanel != newValue) {
-                var newFrame:NSRect = self.window.frame;
-                var oldFrame:NSRect = self.window.frame;
+                var newFrame:NSRect = self.window!.frame;
+                var oldFrame:NSRect = self.window!.frame;
                 
                 var newSize:NSSize = newValue!.frame.size;
                 var oldSize:NSSize = self.panelContainer!.frame.size;
@@ -30,16 +36,16 @@ class BLMutliPanelWindowController: NSWindowController {
                 newFrame.origin = NSMakePoint(oldFrame.origin.x, oldFrame.origin.y - difference.height);
                 newFrame.size   = NSMakeSize(oldFrame.size.width + difference.width, oldFrame.size.height + difference.height);
                 
-                if (oldPanel != nil && self.window.visible) {
+                if (oldPanel != nil && self.window!.visible) {
                     self.panelContainer?.addSubview(newValue!, positioned: NSWindowOrderingMode.Below, relativeTo: oldPanel!);
                     var animation:NSViewAnimation = self.transitionFromPanel(oldPanel, toPanel: newValue);
                     
                     var resize:NSDictionary = [
-                        NSViewAnimationTargetKey: self.window,
+                        NSViewAnimationTargetKey: self.window!,
                         NSViewAnimationEndFrameKey: NSValue(rect: newFrame)
                     ];
                     
-                    var viewAnimations:NSArray = animation.viewAnimations as NSArray;
+                    var viewAnimations:NSArray = animation.viewAnimations! as NSArray;
                     animation.viewAnimations = viewAnimations.arrayByAddingObject(resize);
                     animation.animationBlockingMode = NSAnimationBlockingMode.Blocking;
                     animation.startAnimation();
@@ -51,11 +57,11 @@ class BLMutliPanelWindowController: NSWindowController {
                 }
                 else {
                     oldPanel?.removeFromSuperview();
-                    self.window.setFrame(newFrame, display: true);
+                    self.window!.setFrame(newFrame, display: true);
                     self.panelContainer?.addSubview(newValue!);
                 }
                 
-                self.window.makeFirstResponder(newValue?.nextKeyView);
+                self.window!.makeFirstResponder(newValue?.nextKeyView);
             }
         }
     }

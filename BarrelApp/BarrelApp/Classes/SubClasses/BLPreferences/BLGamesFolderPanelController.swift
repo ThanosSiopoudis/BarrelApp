@@ -14,7 +14,7 @@ class BLGamesFolderPanelController : NSViewController, NSOpenSavePanelDelegate {
     @IBOutlet
     var sampleGamesToggle:NSButton!
     
-    override convenience init() {
+    convenience required init?(coder: NSCoder?) {
         self.init(nibName: "GamesFolderPanelOptions", bundle: nil);
         self.initialization();
     }
@@ -56,21 +56,21 @@ class BLGamesFolderPanelController : NSViewController, NSOpenSavePanelDelegate {
         openPanel.prompt = "Select";
         openPanel.message = "Select a folder in which to keep your Windows games:";
         
-        self.sampleGamesToggle.state = true;
+        self.sampleGamesToggle.state = 1;
         
         if (window != nil) {
             openPanel.beginSheetModalForWindow(window, completionHandler: {(result) -> Void in
                 if (result == NSFileHandlingPanelOKButton) {
                     var folderError:NSError?
-                    var assigned:Bool = self.chooseGamesFolderURL(openPanel.URL, outError: &folderError);
+                    var assigned:Bool = self.chooseGamesFolderURL(openPanel.URL!, outError: &folderError);
                     
                     if (!assigned && folderError != nil) {
                         if (window != nil) {
                             openPanel.orderOut(self);
-                            self.presentError(folderError, modalForWindow: window, delegate: nil, didPresentSelector: nil, contextInfo: nil);
+                            self.presentError(folderError!, modalForWindow: window, delegate: nil, didPresentSelector: nil, contextInfo: nil);
                         }
                         else {
-                            self.presentError(folderError);
+                            self.presentError(folderError!);
                         }
                     }
                 }

@@ -13,39 +13,38 @@ class BLImportWindowController: BLMutliPanelWindowController {
     var dropZonePanel:NSView?
     @IBOutlet
     var loadingPanel:NSView?
-    
-    enum BLImportStage {
-        case WaitingForSource
-    };
-    
-    var importStage:BLImportStage = BLImportStage.WaitingForSource;
+    var importer:BLImporter!
     
     override func windowDidLoad() {
         // Default to dropzone panel when we initially load this window
         self.currentPanel = self.dropZonePanel;
         
         // Disable window restoration
-        self.window.restorable = false;
+        self.window!.restorable = false;
+        
+        self.importer = BLImporter();
         
         // Observe ourselves for changes to the import stage
         self.addObserver(self, forKeyPath: "importStage", options: NSKeyValueObservingOptions.Initial, context: nil);
     }
     
-    override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafeMutablePointer<Void>) {
+    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
         if (keyPath == "importStage") {
             self.syncActivePanel();
         }
     }
     
     func syncActivePanel() {
-        switch (self.importStage) {
-        case .WaitingForSource:
+        switch (self.importer.importStage) {
+        case .BLImportWaitingForSource:
             self.currentPanel = self.dropZonePanel;
+            break;
+        default:
             break;
         }
     }
     
     func windowShouldClose(sender:AnyObject?) -> Bool {
-        return self.window.firstResponder != nil || self.window.makeFirstResponder(nil);
+        return self.window != nil || self.window!.makeFirstResponder(nil);
     }
 }

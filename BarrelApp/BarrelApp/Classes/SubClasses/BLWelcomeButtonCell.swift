@@ -9,7 +9,7 @@
 import Cocoa
 
 class BLWelcomeButtonCell: NSButtonCell {
-    override func drawTitle(title: NSAttributedString!, withFrame frame: NSRect, inView controlView: NSView!) -> NSRect {
+    override func drawTitle(title: NSAttributedString, withFrame frame: NSRect, inView controlView: NSView) -> NSRect {
         var titleColor:NSColor = NSColor(calibratedRed: 254.0/255.0, green: 254.0/255.0, blue: 254.0/255.0, alpha: 1.0);
         var newtitle:NSMutableAttributedString = title.mutableCopy() as NSMutableAttributedString;
         newtitle.addAttribute(NSForegroundColorAttributeName, value: titleColor, range: NSMakeRange(0, newtitle.length));

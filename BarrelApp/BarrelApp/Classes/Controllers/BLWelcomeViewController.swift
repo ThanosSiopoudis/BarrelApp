@@ -12,6 +12,7 @@ class BLWelcomeViewController: NSViewController {
     @IBOutlet
     var installButton:NSButton?
     var preferencesWindow:BLPreferencesWindowController!
+    var importGameWindow:BLImportWindowController!
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -35,8 +36,17 @@ class BLWelcomeViewController: NSViewController {
             // Apply Shelf appearance
         }
         else {
-            var window:NSWindow? = sender.window as? NSWindow;
-            appdlg.promptForMissingGamesFolderInWindow(window);
+            var win:NSWindow? = sender.window as? NSWindow;
+            appdlg.promptForMissingGamesFolderInWindow(win);
         }
+    }
+    
+    @IBAction func showGameImportWindow(sender:AnyObject) {
+        // Close the current window first.
+        var selfview:NSView = sender as NSView;
+        selfview.window!.orderOut(self);
+        
+        self.importGameWindow = BLImportWindowController(windowNibName: "BLGameImport");
+        self.importGameWindow.showWindow(self);
     }
 }

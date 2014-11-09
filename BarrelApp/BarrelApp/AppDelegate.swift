@@ -24,7 +24,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 if (bookmarkData != nil) {
                     var dataIsStale:ObjCBool = false;
                     var resolutionError:NSError? = nil;
-                    var folderURL:NSURL? = NSURL.URLByResolvingBookmarkData(bookmarkData,
+                    var folderURL:NSURL? = NSURL(byResolvingBookmarkData: bookmarkData!,
                         options: NSURLBookmarkResolutionOptions.WithoutUI,
                         relativeToURL: nil,
                         bookmarkDataIsStale: &dataIsStale,
@@ -112,7 +112,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             var defaultName:NSString = "Windows Games";
             var manager:NSFileManager = NSFileManager.defaultManager();
             
-            var homeURL:NSURL = NSURL(fileURLWithPath: NSHomeDirectory());
+            var homeURL:NSURL = NSURL(fileURLWithPath: NSHomeDirectory())!;
             var docsURL:NSURL = manager.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask)[0] as NSURL;
             var userAppURL:NSURL = manager.URLsForDirectory(NSSearchPathDirectory.ApplicationDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask)[0] as NSURL;
             var appURL:NSURL = manager.URLsForDirectory(NSSearchPathDirectory.ApplicationDirectory, inDomains: NSSearchPathDomainMask.LocalDomainMask)[0] as NSURL;
@@ -190,7 +190,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return NSSet(objects: "gamesFolderURL");
     }
     
-    override class func automaticallyNotifiesObserversForKey(key: String!) -> Bool {
+    override class func automaticallyNotifiesObserversForKey(key: String) -> Bool {
         return true;
     }
     
@@ -253,7 +253,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         cancelButton.keyEquivalent = "\\e";
         
         if (window != nil) {
-            alert.beginSheetModalForWindow(window, completionHandler: {(returnCode:NSModalResponse) -> Void in
+            alert.beginSheetModalForWindow(window!, completionHandler: {(returnCode:NSModalResponse) -> Void in
                 if (returnCode == NSAlertFirstButtonReturn) {
                     alert.window.orderOut(self);
                     BLGamesFolderPanelController.controller()?.showGamesFolderPanelWindow(window);
@@ -279,7 +279,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             includingPropertiesForKeys: nil,
                             options: options,
                             errorHandler: nil
-                        );
+                        )!;
                         
                         var childURL:NSURL? = enumerator.nextObject() as? NSURL;
                         if (childURL != nil) {
@@ -288,7 +288,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         }
                     }
                     
-                    revealedAnyFiles = ws.selectFile(URL.path!, inFileViewerRootedAtPath: parentURL?.path!) || revealedAnyFiles;
+                    revealedAnyFiles = ws.selectFile(URL.path!, inFileViewerRootedAtPath: parentURL!.path!) || revealedAnyFiles;
                 }
                 else {
                     safeURLs.addObject(URL);
@@ -330,7 +330,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     NSURLErrorKey: URL!
                 ];
                 
-                outError = NSError.errorWithDomain("BLGamesFolderErrorDomain", code: BLErrorCodes.BLGamesFolderURLInvalid.toRaw(), userInfo: userInfo);
+                outError = NSError(domain: "BLGamesFolderErrorDomain", code: BLErrorCodes.BLGamesFolderURLInvalid.rawValue, userInfo: userInfo);
             }
             
             return false;
@@ -356,7 +356,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     NSURLErrorKey: URL!
                 ];
                 
-                outError = NSError.errorWithDomain(NSCocoaErrorDomain, code: NSFileWriteNoPermissionError, userInfo: userInfo);
+                outError = NSError(domain: NSCocoaErrorDomain, code: NSFileWriteNoPermissionError, userInfo: userInfo);
             }
             
             return false;
@@ -364,6 +364,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // If we got this far, the URL is OK
         return true;
+    }
+    
+    func applicationShouldHandleReopen(sender: NSApplication!, hasVisibleWindows flag: Bool) -> Bool {
+        if (!flag) {
+            self.window.makeKeyAndOrderFront(self);
+            return true;
+        }
+        return false;
     }
 }
 
