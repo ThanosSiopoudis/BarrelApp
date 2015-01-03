@@ -90,8 +90,35 @@ void PostMouseEvent(CGMouseButton button, CGEventType type, const CGPoint point)
         [self getWinetricksList];
     }
     else {
-        [self runWineWithWindowsBinary:(NSString *)[[self arguments] objectAtIndex:1]];
+        BOOL useStart = NO;
+        if ([(NSString *)[[self arguments] lastObject] isEqualToString:@"--withStart"]) {
+            useStart = YES;
+        }
+        [self runWineWithWindowsBinary:(NSString *)[[self arguments] objectAtIndex:1] useStart:useStart];
     }
+}
+
+-(void) runWineWithWindowsBinary:(NSString *)binaryPath {
+    [self runWineWithWindowsBinary:binaryPath useStart:NO];
+}
+
+-(void) runWineWithWindowsBinary:(NSString *)binaryPath useStart:(BOOL)withStart {
+    NSString *pathContainingBinary = [binaryPath stringByDeletingLastPathComponent];
+    NSString *binaryName = [binaryPath lastPathComponent];
+    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";cd \"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine \"%@\" > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], pathContainingBinary, [self dyldFallbackPath], binaryName];
+    if (withStart) {
+        script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";cd \"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine start /unix \"%@\" > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], pathContainingBinary, [self dyldFallbackPath], binaryName];
+    }
+    [self setScriptPath:@""];
+    [self systemCommand:script shouldWaitForProcess:YES redirectOutput:NO];
+}
+
+-(void) runWithWindowsBinary: (NSString *)binaryPath andTestSwitches:(NSString *)switches {
+    NSString *pathContainingBinary = [binaryPath stringByDeletingLastPathComponent];
+    NSString *binaryName = [binaryPath lastPathComponent];
+    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";export WINEDEBUG=\"%@\";cd \"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine \"%@\" > \"%@/Wine.log\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], switches, pathContainingBinary, [self dyldFallbackPath], binaryName, [self winePrefixPath]];
+    [self setScriptPath:@""];
+    [self systemCommand:script shouldWaitForProcess:NO redirectOutput:NO];
 }
 
 -(void) getWinetricksList {
@@ -102,14 +129,6 @@ void PostMouseEvent(CGMouseButton button, CGEventType type, const CGPoint point)
     [self systemCommand:script shouldWaitForProcess:YES redirectOutput:YES];
     
     [self restoreBinaryNames];
-}
-
--(void) runWithWindowsBinary: (NSString *)binaryPath andTestSwitches:(NSString *)switches {
-    NSString *pathContainingBinary = [binaryPath stringByDeletingLastPathComponent];
-    NSString *binaryName = [binaryPath lastPathComponent];
-    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";export WINEDEBUG=\"%@\";cd \"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine \"%@\" > \"%@/Wine.log\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], switches, pathContainingBinary, [self dyldFallbackPath], binaryName, [self winePrefixPath]];
-    [self setScriptPath:@""];
-    [self systemCommand:script shouldWaitForProcess:NO redirectOutput:NO];
 }
 
 - (void) prepareBinariesForWinetricks {
@@ -152,14 +171,6 @@ void PostMouseEvent(CGMouseButton button, CGEventType type, const CGPoint point)
     [self systemCommand:script shouldWaitForProcess:YES redirectOutput:YES];
     
     [self restoreBinaryNames];
-}
-
--(void) runWineWithWindowsBinary:(NSString *)binaryPath {
-    NSString *pathContainingBinary = [binaryPath stringByDeletingLastPathComponent];
-    NSString *binaryName = [binaryPath lastPathComponent];
-    NSString *script = [NSString stringWithFormat:@"export PATH=\"%@/bin:%@/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"%@\";cd \"%@\";DYLD_FALLBACK_LIBRARY_PATH=\"%@\" wine \"%@\" > \"/dev/null\" 2>&1", [self wineBundlePath], [self frameworksPath], [self winePrefixPath], pathContainingBinary, [self dyldFallbackPath], binaryName];
-    [self setScriptPath:@""];
-    [self systemCommand:script shouldWaitForProcess:YES redirectOutput:NO];
 }
 
 -(void) runWineConfig {

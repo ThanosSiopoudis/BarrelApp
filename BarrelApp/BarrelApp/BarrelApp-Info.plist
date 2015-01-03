@@ -36,5 +36,7 @@
 	<string>none</string>
 	<key>BLWineserverBin</key>
 	<string>none</string>
+	<key>BLUseStartExe</key>
+	<false/>
 </dict>
 </plist>

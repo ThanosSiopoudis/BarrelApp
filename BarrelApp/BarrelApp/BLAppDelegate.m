@@ -88,11 +88,16 @@
     else {
         // Normal wine launch (wine) [asynchronous]
         NSString *winBinaryPath = [NSString stringWithFormat:@"%@/Contents/Resources/%@", [[NSBundle mainBundle] bundlePath], [[self infoPlistDict] valueForKey:@"Windows Executable"]];
+        BOOL withStart = [[[self infoPlistDict] valueForKey:@"BLUseStartExe"] boolValue];
         OEHUDAlert *launchAlert = [OEHUDAlert showProgressAlertWithMessage:@"Launching Game..." andTitle:@"Launching Game" indeterminate:YES];
         [self setAlertCache:launchAlert];
         [[self alertCache] open];
         dispatch_async(dispatchQueue, ^{
-            [self runScript:@"BLWineLauncher" withArguments:[NSArray arrayWithObjects:winBinaryPath, nil] shouldWaitForProcess:YES callback:^(int result){
+            NSMutableArray *launchArgs = [[NSMutableArray alloc] initWithObjects:winBinaryPath, nil];
+            if (withStart) {
+                [launchArgs addObject:@"--withStart"];
+            }
+            [self runScript:@"BLWineLauncher" withArguments:launchArgs shouldWaitForProcess:YES callback:^(int result){
                 [[self alertCache] close];
                 [[NSApplication sharedApplication] terminate:nil];
             }];
