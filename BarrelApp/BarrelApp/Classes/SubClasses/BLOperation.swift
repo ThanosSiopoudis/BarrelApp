@@ -24,10 +24,18 @@ class BLOperation: NSOperation {
     var contextInfo:AnyObject?
     var notifiesOnMainThread:Bool!
     var isCancelled:Bool = false;
-    var delegate:BLOperationDelegateClass?
+    var delegate:BLOperationDelegate?
+    var willStartSelector:String?
+    var inProgressSelector:String?
+    var wasCancelledSelector:String?
+    var didFinishSelector:String?
     
     override init() {
         self.notifiesOnMainThread = true;
+        self.willStartSelector = "operationWillStart:";
+        self.inProgressSelector = "operationInProgress:";
+        self.wasCancelledSelector = "operationWasCancelled:";
+        self.didFinishSelector = "operationDidFinish:";
         
         super.init();
     }
@@ -35,7 +43,15 @@ class BLOperation: NSOperation {
     func sendWillStartNotificationWithInfo(info:NSDictionary) {
         if (self.isCancelled) { return; }
         
-        
+        self.postNotificationWithName(BLOperationWillStart, delegateSelector: self.willStartSelector!, userInfo: info);
+    }
+    
+    func sendWasCancelledNotificationWithInfo(info:NSDictionary) {
+        self.postNotificationWithName(BLOperationWasCancelled, delegateSelector: self.wasCancelledSelector!, userInfo: info);
+    }
+    
+    func sendDidFinishNotificationWithInfo(info:NSDictionary) {
+        // let finishInfo:NSMutableDictionary = NSMutableDictionary(objectsAndKeys:
     }
     
     func postNotificationWithName(name:String, delegateSelector:String, var userInfo:NSDictionary?) {
@@ -52,7 +68,29 @@ class BLOperation: NSOperation {
             var notification = NSNotification(name: name, object: self, userInfo: userInfo!);
             
             if (self.delegate!.respondsToSelector(Selector(delegateSelector))) {
-
+                if (self.notifiesOnMainThread == true) {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        // We should be probably using closures here but this will do for now
+                        let timer = NSTimer.scheduledTimerWithTimeInterval(0.01,
+                            target: self.delegate!, selector: Selector(delegateSelector), userInfo: notification, repeats: false);
+                    });
+                }
+                else {
+                    // We should be probably using closures here but this will do for now
+                    let timer = NSTimer.scheduledTimerWithTimeInterval(0.01,
+                        target: self.delegate!, selector: Selector(delegateSelector), userInfo: notification, repeats: false);
+                }
+            }
+            
+            if (self.notifiesOnMainThread == true) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    let timer = NSTimer.scheduledTimerWithTimeInterval(0.01,
+                        target: notificationCenter, selector: Selector("postNotification:"), userInfo: notification, repeats: false);
+                });
+            }
+            else {
+                let timer = NSTimer.scheduledTimerWithTimeInterval(0.01,
+                    target: notificationCenter, selector: Selector("postNotification:"), userInfo: notification, repeats: false);
             }
         }
     }
