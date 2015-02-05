@@ -20,12 +20,29 @@ let BLVirtualPCImageType   = "com.microsoft.virtualpc-disk-image";
 let BLRawFloppyImageType   = "com.winimage.raw-disk-image";
 let BLNDIFImageType        = "com.apple.disk-image-ndif";
 
+enum BLExecutableType:Int {
+    case BLExecutableTypeUnknown = 0
+    case BLExecutableTypeDOS = 1
+    case BLExecutableTypeWindows = 2
+    case BLExecutableTypeOS2 = 3
+};
+
 class BLFileTypes:NSObject {
     class func filesystemVolumeType() -> NSSet? {
         var types:NSSet? = nil;
         var onceToken:dispatch_once_t = 0;
         dispatch_once(&onceToken, {
             types = NSSet(objects: BLBarrelFilesystemFolderType);
+        });
+        
+        return types;
+    }
+    
+    class func macOSAppTypes() -> NSSet? {
+        var types:NSSet? = nil;
+        var onceToken:dispatch_once_t = 0;
+        dispatch_once(&onceToken, {
+            types = NSSet(objects: kUTTypeApplicationFile as String, kUTTypeApplicationBundle as String);
         });
         
         return types;
@@ -59,5 +76,17 @@ class BLFileTypes:NSObject {
         });
         
         return types;
+    }
+    
+    class func typeOfExecutableAtURL(URL:NSURL?, error outError:NSErrorPointer) -> BLExecutableType {
+        assert(URL != nil, "No URL specified!");
+        
+        var openError:NSError?
+        var handle:BLFileHandle? = BLFileHandle(handleForURL: URL, options: BLHandleOptions.BLOpenForReading, error: outError);
+        if (handle != nil) {
+            
+        }
+        
+        return BLExecutableType.BLExecutableTypeDOS;
     }
 }
