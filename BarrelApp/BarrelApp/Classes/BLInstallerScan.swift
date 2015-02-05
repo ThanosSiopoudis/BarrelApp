@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class BLInstallerScan: NSObject {
+class BLInstallerScan: BLOperation {
     let BLFileScanLastMatch:String = "BLFileScanLastMatch";
     
     var windowsExecutables:NSArray!
@@ -16,12 +16,20 @@ class BLInstallerScan: NSObject {
     var MacOSApps:NSArray!
     var isAlreadyInstalled:Bool!
     var skipHiddenFiles:Bool!
+    var skipSubdirectories:Bool!
+    var skipPackageContents:Bool!
     var predicate:NSPredicate?
     var filetypes:NSSet?
     var basePath:String!
     var workspace:NSWorkspace!
     var matchingPaths:NSMutableArray!
     var maxMatches:NSInteger!
+    var manager:NSFileManager?
+    var enumerator:NSDirectoryEnumerator? {
+        get {
+            return self.manager?.enumeratorAtPath(self.basePath);
+        }
+    }
     
     override init() {
         self.windowsExecutables = NSMutableArray(capacity: 10);
@@ -29,10 +37,13 @@ class BLInstallerScan: NSObject {
         self.BarrelConfigurations = NSMutableArray(capacity: 10);
         self.isAlreadyInstalled = false;
         self.skipHiddenFiles = true;
+        self.skipSubdirectories = false;
+        self.skipPackageContents = true;
         self.basePath = "";
         self.workspace = NSWorkspace();
         self.matchingPaths = NSMutableArray();
         self.maxMatches = 0;
+        self.manager = NSFileManager();
         
         super.init();
     }
@@ -62,9 +73,6 @@ class BLInstallerScan: NSObject {
                 return false;
             }
         }
-        else {
-            return false;
-        }
         
         if let ft = self.filetypes {
             var fullPath:String = self.fullPathFromRelativePath(relativePath);
@@ -72,12 +80,30 @@ class BLInstallerScan: NSObject {
                 return false;
             }
         }
-        
+
         return true;
     }
     
     func matchAgainstPath(relativePath:NSString) -> Bool {
         if (self.isMatchingPath(relativePath)) {
+            if (BLImportSession.isIgnoredFileAtPath(relativePath)) {
+                return true;
+            }
+            
+            var fullPath:String = self.fullPathFromRelativePath(relativePath);
+            
+            // TODO: Check for Barrel Configuration files here to detect if this is a bundle already
+            if (self.isAlreadyInstalled == false && BLImportSession.isPlayableGameTelltaleAtPath(relativePath)) {
+                self.isAlreadyInstalled = true;
+            }
+            
+            var executableTypes:NSSet? = BLFileTypes.executableTypes();
+            var macAppTypes:NSSet? = BLFileTypes.macOSAppTypes();
+            
+            if (self.workspace.file(fullPath, matchesTypes: executableTypes!)) {
+                
+            }
+            
             self.addMatchingPath(relativePath);
             
             var userInfo:NSDictionary = NSDictionary(object: self.lastMatch(), forKey: self.BLFileScanLastMatch);
@@ -95,5 +121,49 @@ class BLInstallerScan: NSObject {
     
     func addMatchingPath(relativePath:String) {
         self.mutableArrayValueForKey("matchingPaths").addObject(relativePath);
+    }
+    
+    func shouldScanSubPath(relativePath:String) -> Bool {
+        if (self.skipSubdirectories == true) {
+            return false;
+        }
+        
+        if (self.skipPackageContents == true) {
+            let fullPath:String = self.fullPathFromRelativePath(relativePath);
+            if (self.workspace.isFilePackageAtPath(fullPath) == true) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    override func main() {
+        assert(self.basePath != nil, "No base path provided for file scan operation");
+        if (self.basePath == nil) {
+            return;
+        }
+        
+        self.matchingPaths.removeAllObjects();
+        
+        var enumer:NSDirectoryEnumerator = self.enumerator!;
+        while let relativePath = enumer.nextObject() as? String {
+            let relPath:String = relativePath as String;
+            if (self.isCancelled) {
+                break;
+            }
+            
+            var fileType:String = enumer.fileAttributes!["NSFileType"] as String;
+            if (fileType == NSFileTypeDirectory) {
+                if (self.shouldScanSubPath(relPath) == false) {
+                    enumer.skipDescendants();
+                }
+            }
+            
+            var keepScanning:Bool = self.matchAgainstPath(relPath);
+            if (self.isCancelled == true || keepScanning == false) {
+                break;
+            }
+        }
     }
 }
