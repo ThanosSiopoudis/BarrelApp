@@ -8,10 +8,12 @@
 
 import Cocoa
 
-class BLImporter:NSObject {
+class BLImporter:NSObject, BLOperationDelegate {
     var importStage:BLImportStage = BLImportStage.BLImportWaitingForSource;
     var didMountSourceVolume:Bool = false;
     var sourceURL:NSURL?
+    var importWindowController:BLImportWindowController?
+    var scanQueue:NSOperationQueue?
     
     // MARK: Enum Types
     enum BLImportStage:Int {
@@ -40,6 +42,12 @@ class BLImporter:NSObject {
         case BLImportTypeDiskImage
         case BLImportTypeExecutable
         case BLImportTypeFolder
+    }
+    
+    override init() {
+        self.scanQueue = NSOperationQueue();
+        
+        super.init();
     }
     
     // MARK: - Class Methods
@@ -72,7 +80,17 @@ class BLImporter:NSObject {
     // MARK: - Instance Methods
     func importFromSourceURL(URL:NSURL) {
         var readError:NSError? = nil;
-//        var readSucceeded:Bool = 
+        var readSucceeded:Bool = self.readFromURL(URL, typeName:"", error: &readError);
+        
+        if (!readSucceeded) {
+            self.sourceURL = nil;
+            self.importStage = BLImportStage.BLImportWaitingForSource;
+            
+            if (readError != nil) {
+                var alert:NSAlert = NSAlert(error: readError!);
+                alert.beginSheetModalForWindow(self.windowForSheet(), completionHandler: nil);
+            }
+        }
     }
     
     func readFromURL(absoluteURL:NSURL?, typeName:String, inout error:NSError?) -> Bool {
@@ -86,7 +104,21 @@ class BLImporter:NSObject {
         
         self.sourceURL = prefferedURL;
         var scan:BLInstallerScan = BLInstallerScan.scanWithBasePath(prefferedURL!.path!) as BLInstallerScan;
+        scan.delegate = self;
+        scan.didFinishSelector = "installerScanDidFinish:";
         
-        return false;
+        self.scanQueue?.addOperation(scan);
+        self.importStage = BLImportStage.BLImportLoadingSource;
+        
+        return true;
+    }
+    
+    func windowForSheet() -> NSWindow {
+        var importWindow:NSWindow = self.importWindowController!.window!;
+        return importWindow;
+    }
+    
+    func installerScanDidFinish(notification:NSNotification) {
+        var scan:BLInstallerScan = notification.object as BLInstallerScan;
     }
 }
