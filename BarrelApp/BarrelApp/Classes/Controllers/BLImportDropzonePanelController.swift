@@ -38,7 +38,7 @@ class BLImportDropzonePanelController : NSViewController, NSOpenSavePanelDelegat
             if (result == NSFileHandlingPanelOKButton) {
                 openPanel.orderOut(self);
                 
-                self.controller?.importer
+                self.controller?.importer.importFromSourceURL(openPanel.URL!);
             }
         });
     }
