@@ -120,5 +120,9 @@ class BLImporter:NSObject, BLOperationDelegate {
     
     func installerScanDidFinish(notification:NSNotification) {
         var scan:BLInstallerScan = notification.object as BLInstallerScan;
+        
+        if (scan.succeeded) {
+            
+        }
     }
 }
