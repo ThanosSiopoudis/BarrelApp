@@ -65,6 +65,31 @@ class BLImportSession: NSObject, BLOperationDelegate {
         }
     }
     
+    class var installerPatterns:NSArray {
+        get {
+            let patterns:[String] = [
+                "inst",
+                "setup",
+                "config"
+            ];
+            
+            return patterns;
+        }
+    }
+    
+    class var preferredInstallerPatterns:NSArray {
+        get {
+            let patterns:[String] = [
+                "^setup\\.",
+                "^install\\.",
+                "^dosinst",
+                "^hdinstal\\."
+            ];
+            
+            return patterns;
+        }
+    }
+    
     class func isPlayableGameTelltaleAtPath(path:String) -> Bool {
         var filename:String = path.lastPathComponent.lowercaseString;
         
@@ -88,6 +113,19 @@ class BLImportSession: NSObject, BLOperationDelegate {
         for pattern in self.ignoredFilePatterns {
             let pat:String = pattern as String;
             if (Regex(pat).test(path)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    class func isInstallerAtPath(path:String) -> Bool {
+        var fileName:String = path.lastPathComponent.lowercaseString;
+        
+        for pattern in self.installerPatterns {
+            let pat:String = pattern as String;
+            if (Regex(pat).test(fileName)) {
                 return true;
             }
         }
