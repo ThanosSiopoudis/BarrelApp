@@ -40,6 +40,9 @@ class BLImportWindowController: BLMutliPanelWindowController {
         case .BLImportWaitingForSource:
             self.currentPanel = self.dropZonePanel;
             break;
+        case .BLImportLoadingSource:
+            self.currentPanel = self.loadingPanel;
+            break;
         default:
             break;
         }
