@@ -78,15 +78,47 @@ class BLFileTypes:NSObject {
         return types;
     }
     
-    class func typeOfExecutableAtURL(URL:NSURL?, error outError:NSErrorPointer) -> BLExecutableType {
+    class func typeOfExecutableAtURL(URL:NSURL?) -> BLExecutableType {
         assert(URL != nil, "No URL specified!");
         
-        var openError:NSError?
-        var handle:BLFileHandle? = BLFileHandle(handleForURL: URL, options: BLHandleOptions.BLOpenForReading, error: outError);
-        if (handle != nil) {
-            
+        // Contrast to Boxer, we don't need to distinguish between DOS and Windows Executables. We can run either! (how successfully is a different story)
+        if let pathURL = URL {
+            var pathExtension = pathURL.pathExtension!.lowercaseString
+ 
+            if (pathExtension == "exe" || pathExtension == "com" || pathExtension == "bat" || pathExtension == "msi") {
+                return BLExecutableType.BLExecutableTypeWindows
+            }
         }
         
-        return BLExecutableType.BLExecutableTypeDOS;
+        
+        return BLExecutableType.BLExecutableTypeUnknown;
+    }
+    
+    class func typeOfExecutableAtPath(path:String?) -> BLExecutableType {
+        assert(path != nil, "No Path specified!");
+        
+        // Contrast to Boxer, we don't need to distinguish between DOS and Windows Executables. We can run either! (how successfully is a different story)
+        if let unwrPath = path {
+            var pathExtension = unwrPath.pathExtension.lowercaseString
+            
+            if (pathExtension == "exe" || pathExtension == "msi") {
+                return BLExecutableType.BLExecutableTypeWindows;
+            }
+            else if (pathExtension == "com" || pathExtension == "bat") {
+                return BLExecutableType.BLExecutableTypeDOS;
+            }
+        }
+        
+        
+        return BLExecutableType.BLExecutableTypeUnknown;
+    }
+    
+    class func isCompatibleExecutable(URL:NSURL?) -> Bool {
+        if (BLFileTypes.typeOfExecutableAtURL(URL) == BLExecutableType.BLExecutableTypeWindows ||
+            BLFileTypes.typeOfExecutableAtURL(URL) == BLExecutableType.BLExecutableTypeDOS) {
+            return true;
+        }
+        
+        return false;
     }
 }
