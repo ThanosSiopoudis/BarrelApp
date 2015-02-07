@@ -11,9 +11,9 @@ import Cocoa
 class BLInstallerScan: BLOperation {
     let BLFileScanLastMatch:String = "BLFileScanLastMatch";
     
-    var windowsExecutables:NSArray!
-    var BarrelConfigurations:NSArray!
-    var MacOSApps:NSArray!
+    var windowsExecutables:NSMutableArray!
+    var BarrelConfigurations:NSMutableArray!
+    var MacOSApps:NSMutableArray!
     var isAlreadyInstalled:Bool!
     var skipHiddenFiles:Bool!
     var skipSubdirectories:Bool!
@@ -101,18 +101,20 @@ class BLInstallerScan: BLOperation {
             var macAppTypes:NSSet? = BLFileTypes.macOSAppTypes();
             
             if (self.workspace.file(fullPath, matchesTypes: executableTypes!)) {
-                
+                if (self.workspace.isCompatibleExecutableAtPath(fullPath)) {
+                    self.addWindowsExecutable(relativePath);
+                    
+                    // Does it look like an installer? Add it to the matches
+                    if (BLImportSession.isInstallerAtPath(relativePath)) {
+                        self.addMatchingPath(relativePath);
+                        
+                        let userInfo:NSDictionary = [self.lastMatch(): BLFileScanLastMatch];
+                        self.sendInProgressNotificationWithInfo(userInfo);
+                    }
+                }
             }
-            
-            self.addMatchingPath(relativePath);
-            
-            var userInfo:NSDictionary = NSDictionary(object: self.lastMatch(), forKey: self.BLFileScanLastMatch);
-            
-            // TODO: Send progress notification here!?
-            
-            // Check if we have enough matches
-            if (self.maxMatches > 0 && self.matchingPaths.count >= self.maxMatches) {
-                return false;
+            else if (self.workspace.file(fullPath, matchesTypes: macAppTypes!)) {
+                self.addMacOSApp(relativePath);
             }
         }
         
@@ -121,6 +123,14 @@ class BLInstallerScan: BLOperation {
     
     func addMatchingPath(relativePath:String) {
         self.mutableArrayValueForKey("matchingPaths").addObject(relativePath);
+    }
+    
+    func addWindowsExecutable(relativePath:String) {
+        self.mutableArrayValueForKey("windowsExecutables").addObject(relativePath);
+    }
+    
+    func addMacOSApp(relativePath:String) {
+        self.mutableArrayValueForKey("MacOSApps").addObject(relativePath);
     }
     
     func shouldScanSubPath(relativePath:String) -> Bool {
