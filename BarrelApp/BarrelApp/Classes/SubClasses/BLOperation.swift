@@ -19,6 +19,8 @@ let BLOperationErrorKey:String          = "BLOperationErrorKey";
 let BLOperationProgressKey:String		= "BLOperationProgressKey";
 let BLOperationIndeterminateKey:String	= "BLOperationIndeterminateKey";
 
+typealias BLOperationProgress = Float;
+
 class BLOperation: NSOperation {
     
     var contextInfo:AnyObject?
@@ -29,6 +31,14 @@ class BLOperation: NSOperation {
     var inProgressSelector:String?
     var wasCancelledSelector:String?
     var didFinishSelector:String?
+    var currentProgress:BLOperationProgress?
+    var isIndeterminate:Bool = true;
+    var error:NSError?
+    var succeeded:Bool {
+        get {
+            return self.error == nil;
+        }
+    }
     
     override init() {
         self.notifiesOnMainThread = true;
@@ -36,22 +46,56 @@ class BLOperation: NSOperation {
         self.inProgressSelector = "operationInProgress:";
         self.wasCancelledSelector = "operationWasCancelled:";
         self.didFinishSelector = "operationDidFinish:";
+        self.currentProgress = 0.0;
         
         super.init();
     }
     
-    func sendWillStartNotificationWithInfo(info:NSDictionary) {
+    override func start() {
+        self.sendWillStartNotificationWithInfo(nil);
+        super.start();
+        self.sendDidFinishNotificationWithInfo(nil);
+    }
+    
+    func sendWillStartNotificationWithInfo(info:NSDictionary?) {
         if (self.isCancelled) { return; }
         
         self.postNotificationWithName(BLOperationWillStart, delegateSelector: self.willStartSelector!, userInfo: info);
     }
     
-    func sendWasCancelledNotificationWithInfo(info:NSDictionary) {
+    func sendWasCancelledNotificationWithInfo(info:NSDictionary?) {
         self.postNotificationWithName(BLOperationWasCancelled, delegateSelector: self.wasCancelledSelector!, userInfo: info);
     }
     
-    func sendDidFinishNotificationWithInfo(info:NSDictionary) {
-        // let finishInfo:NSMutableDictionary = NSMutableDictionary(objectsAndKeys:
+    func sendDidFinishNotificationWithInfo(info:NSDictionary?) {
+        var errValue = self.error;
+        if (self.error == nil) {
+            errValue = NSError();
+        }
+        
+        var finishInfo:NSMutableDictionary = NSMutableDictionary(objectsAndKeys:
+                                                                    self.succeeded, BLOperationSuccessKey,
+                                                                    errValue!, BLOperationErrorKey);
+        if let uInfo = info {
+            finishInfo.addEntriesFromDictionary(uInfo);
+        }
+        
+        self.postNotificationWithName(BLOperationDidFinish, delegateSelector: self.didFinishSelector!, userInfo: finishInfo);
+    }
+    
+    func sendInProgressNotificationWithInfo(info:NSDictionary?) {
+        if (self.isCancelled) {
+            return;
+        }
+        
+        var progressInfo:NSMutableDictionary = NSMutableDictionary(objectsAndKeys:
+                                                                    self.currentProgress!, BLOperationProgressKey,
+                                                                    self.isIndeterminate, BLOperationIndeterminateKey);
+        if let passedInfo = info {
+            progressInfo.addEntriesFromDictionary(passedInfo);
+        }
+        
+        self.postNotificationWithName(BLOperationInProgress, delegateSelector: self.inProgressSelector!, userInfo: info);
     }
     
     func postNotificationWithName(name:String, delegateSelector:String, var userInfo:NSDictionary?) {
@@ -61,37 +105,32 @@ class BLOperation: NSOperation {
             
             if let uInfo = userInfo {
                 contextDict.addEntriesFromDictionary(uInfo);
-                userInfo = contextDict;
             }
-            
-            var notificationCenter:NSNotificationCenter = NSNotificationCenter.defaultCenter();
-            var notification = NSNotification(name: name, object: self, userInfo: userInfo!);
-            
-            if (self.delegate!.respondsToSelector(Selector(delegateSelector))) {
-                if (self.notifiesOnMainThread == true) {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        // We should be probably using closures here but this will do for now
-                        let timer = NSTimer.scheduledTimerWithTimeInterval(0.01,
-                            target: self.delegate!, selector: Selector(delegateSelector), userInfo: notification, repeats: false);
-                    });
-                }
-                else {
-                    // We should be probably using closures here but this will do for now
-                    let timer = NSTimer.scheduledTimerWithTimeInterval(0.01,
-                        target: self.delegate!, selector: Selector(delegateSelector), userInfo: notification, repeats: false);
-                }
-            }
-            
+            userInfo = contextDict;
+        }
+        
+        var notificationCenter:NSNotificationCenter = NSNotificationCenter.defaultCenter();
+        var notification = NSNotification(name: name, object: self, userInfo: userInfo);
+        
+        if (self.delegate!.respondsToSelector(Selector(delegateSelector))) {
             if (self.notifiesOnMainThread == true) {
                 dispatch_async(dispatch_get_main_queue(), {
-                    let timer = NSTimer.scheduledTimerWithTimeInterval(0.01,
-                        target: notificationCenter, selector: Selector("postNotification:"), userInfo: notification, repeats: false);
+                    self.delegate!.operationDidFinish!(notification);
                 });
             }
             else {
-                let timer = NSTimer.scheduledTimerWithTimeInterval(0.01,
-                    target: notificationCenter, selector: Selector("postNotification:"), userInfo: notification, repeats: false);
+                // We should be probably using closures here but this will do for now
+                self.delegate!.operationDidFinish!(notification);
             }
+        }
+        
+        if (self.notifiesOnMainThread == true) {
+            dispatch_async(dispatch_get_main_queue(), {
+                notificationCenter.postNotification(notification);
+            });
+        }
+        else {
+            notificationCenter.postNotification(notification);
         }
     }
 }
