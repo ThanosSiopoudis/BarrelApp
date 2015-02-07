@@ -10,8 +10,12 @@ import Cocoa
 
 class BLSpinningProgressIndicator : NSView {
     // MARK: Public Vars / Accessors
-    var animating:Bool! {
-        didSet(animate) {
+    var animating = false;
+    var isAnimating:Bool {
+        get {
+            return self.animating;
+        }
+        set(animate) {
             if (animate == true) {
                 self.startAnimation(self);
             }
@@ -20,9 +24,9 @@ class BLSpinningProgressIndicator : NSView {
             }
         }
     }
-    var indeterminate:Bool! {
+    var indeterminate:Bool = true {
         didSet {
-            if (self.indeterminate == true && self.animating == true) {
+            if (self.indeterminate == true && self.isAnimating == true) {
                 self.stopAnimation(self);
             }
             self.needsDisplay = true;
@@ -69,11 +73,11 @@ class BLSpinningProgressIndicator : NSView {
             if (self.indeterminate == true) {
                 self.indeterminate = false;
             }
-            self.currentValue = newValue;
+            self.currentValue = newValue!;
             self.needsDisplay = true;
         }
     }
-    var maxValue:Double! {
+    var maxValue:Double = 0.0 {
         didSet {
             self.needsDisplay = true;
         }
@@ -81,58 +85,46 @@ class BLSpinningProgressIndicator : NSView {
     var usesThreadedAnimation:Bool? {
         didSet {
             if (self.usesThreadedAnimation != oldValue) {
-                if (self.animating == true) {
+                if (self.isAnimating == true) {
                     self.stopAnimation(self);
                     self.startAnimation(self);
                 }
             }
         }
     }
-    var lineWidth:CGFloat!
-    var lineStartOffset:CGFloat!
-    var lineEndOffset:CGFloat!
+    var lineWidth:CGFloat = 2.75;
+    var lineStartOffset:CGFloat = 7.5;
+    var lineEndOffset:CGFloat = 13.5;
     
     // MARK: - Private Vars
-    private var position:Int!
-    private var numFins:Int!
-    private var isFadingOut:Bool!
-    private var currentValue:Double!
-    private var foreColour:NSColor!
+    private var position:Int = 0;
+    private var numFins:Int = 0;
+    private var isFadingOut:Bool = false;
+    private var currentValue:Double = 0.0;
+    private var foreColour:NSColor = NSColor.blackColor().copy() as NSColor;
     private var backColour:NSColor?
     private var animationThread:NSThread?
     private var animationTimer:NSTimer?
     private var drawBackground:Bool?
     
     // MARK: - Method Overrides
-    override init() {
-        super.init();
-    }
-    
     required init?(coder: NSCoder) {
+        self.currentValue = 0.0;
+        
         super.init(coder: coder);
     }
     
     override init(frame frameRect: NSRect) {
-        self.position = 0;
-        self.numFins = 0;
-        self.animating = false;
-        self.isFadingOut = false;
-        self.indeterminate = true;
         self.currentValue = 0.0;
-        self.maxValue = 0.0;
-        self.foreColour = NSColor.blackColor().copy() as NSColor;
-        self.lineWidth = 2.75;
-        self.lineStartOffset = 7.5;
-        self.lineEndOffset = 13.5;
         
-        super.init();
+        super.init(frame: frameRect);
     }
     
     override func viewDidMoveToWindow() {
         if (self.window == nil) {
             self.actuallyStopAnimation();
         }
-        else if (self.animating == true) {
+        else if (self.isAnimating == true) {
             self.actuallyStartAnimation();
         }
     }
@@ -177,7 +169,7 @@ class BLSpinningProgressIndicator : NSView {
             path.lineToPoint(NSMakePoint(0, lineEnd));
             
             for (i = 0; i < self.numFins; i++) {
-                if (self.animating == true) {
+                if (self.isAnimating == true) {
                     self.foreColour.colorWithAlphaComponent(CGFloat(alpha)).set();
                 }
                 else {
@@ -239,7 +231,7 @@ class BLSpinningProgressIndicator : NSView {
         if (self.indeterminate != true) {
             return;
         }
-        if (self.animating == true) {
+        if (self.isAnimating == true) {
             return;
         }
         
