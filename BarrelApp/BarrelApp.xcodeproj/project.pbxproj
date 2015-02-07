@@ -189,12 +189,13 @@
 		B1107AEA19A92F52000D4DEF /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B19F87E51A8224BF00432FC8 /* BLImportSession.swift */,
 				B1107ACF19A924CE000D4DEF /* AppDelegate.swift */,
 				B103108419B7B056007ACCEB /* BLFileTypes.swift */,
-				B1F9AA7019A93A4F00259E27 /* Controllers */,
-				B1107AEB19A92F5A000D4DEF /* SubClasses */,
 				B1EE4A0F19D054F9001BB945 /* BLInstallerScan.swift */,
 				B19F87E71A8234E500432FC8 /* RegexSwift.swift */,
+				B1F9AA7019A93A4F00259E27 /* Controllers */,
+				B1107AEB19A92F5A000D4DEF /* SubClasses */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -207,7 +208,6 @@
 				B1F9AA6E19A938BB00259E27 /* BLWelcomeButtonCell.swift */,
 				B1E92C1419AF31FC00BA47A8 /* BLBlueprintPanel.swift */,
 				B1E92C2219AF7C8D00BA47A8 /* BLImportDropzone.swift */,
-				B19F87E51A8224BF00432FC8 /* BLImportSession.swift */,
 			);
 			name = SubClasses;
 			sourceTree = "<group>";
