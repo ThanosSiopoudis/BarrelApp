@@ -9,7 +9,15 @@
 import Cocoa
 
 extension NSWorkspace {
-    func executableTypeAtPath(path:String, error outError:NSErrorPointer) -> BLExecutableType {
-        return BLExecutableType.BLExecutableTypeDOS;
+    func executableTypeAtPath(path:String?) -> BLExecutableType {
+        return BLFileTypes.typeOfExecutableAtPath(path);
+    }
+    
+    func isCompatibleExecutableAtPath(path:String?) -> Bool {
+        if let filePath = path {
+            return BLFileTypes.isCompatibleExecutable(NSURL(fileURLWithPath: filePath));
+        }
+        
+        return false;
     }
 }
