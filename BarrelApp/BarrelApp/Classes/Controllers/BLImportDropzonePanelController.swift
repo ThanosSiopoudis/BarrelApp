@@ -18,7 +18,7 @@ class BLImportDropzonePanelController : NSViewController, NSOpenSavePanelDelegat
     override func awakeFromNib() {
         self.view.registerForDraggedTypes([NSFilenamesPboardType]);
         if let loader = self.spinner {
-            loader.usesThreadedAnimation = true;
+            // loader.usesThreadedAnimation = true;
             loader.startAnimation(self);
         }
     }
