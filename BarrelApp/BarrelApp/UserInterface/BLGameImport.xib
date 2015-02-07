@@ -8,6 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="BLImportWindowController" customModule="BarrelApp" customModuleProvider="target">
             <connections>
                 <outlet property="dropZonePanel" destination="vdC-yy-Ba3" id="Sjg-VR-rmC"/>
+                <outlet property="loadingPanel" destination="sDa-kJ-hq2" id="KGQ-fb-jOb"/>
                 <outlet property="panelContainer" destination="EiT-Mj-1SZ" id="mSm-cA-Tmy"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="SdT-p0-mBe"/>
             </connections>
@@ -41,6 +42,9 @@
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="performClose:" target="QvC-M9-y7g" id="jTu-6P-ylV"/>
+                            </connections>
                         </button>
                     </subviews>
                 </customView>
@@ -86,8 +90,50 @@
             <connections>
                 <outlet property="controller" destination="-2" id="ROa-AV-cQe"/>
                 <outlet property="dropzone" destination="EhO-MC-HqN" id="xQJ-fQ-e8D"/>
+                <outlet property="spinner" destination="dRg-XB-fbO" id="Mfl-hQ-OjD"/>
                 <outlet property="view" destination="vdC-yy-Ba3" id="A2H-0o-9pp"/>
             </connections>
         </customObject>
+        <customView id="sDa-kJ-hq2" userLabel="Loading Panel" customClass="BLDelegatedView" customModule="BarrelApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="320"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o85-LZ-KIb" userLabel="Blueprint Panel" customClass="BLBlueprintPanel" customModule="BarrelApp" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="40" width="480" height="280"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gR9-Fv-8Yy">
+                            <rect key="frame" x="18" y="29" width="444" height="87"/>
+                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Please wait while Barrel scans your game" id="3oE-LY-n2M">
+                                <font key="font" size="32" name="HelveticaNeue"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dRg-XB-fbO" customClass="BLBlueprintProgressIndicator" customModule="BarrelApp" customModuleProvider="target">
+                            <rect key="frame" x="190" y="136" width="96" height="96"/>
+                        </customView>
+                    </subviews>
+                </customView>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NGM-Nr-4Xc" userLabel="Bottom Bar">
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="40"/>
+                    <subviews>
+                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kfM-VV-bgk">
+                            <rect key="frame" x="375" y="7" width="85" height="25"/>
+                            <buttonCell key="cell" type="roundTextured" title="Close" bezelStyle="texturedRounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="F7b-RV-f5y">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="performClose:" target="QvC-M9-y7g" id="kVq-8g-3Ee"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </customView>
+            </subviews>
+            <connections>
+                <outlet property="delegate" destination="028-7l-zkc" id="Mf7-Nb-aJk"/>
+            </connections>
+            <point key="canvasLocation" x="155" y="424"/>
+        </customView>
     </objects>
 </document>
