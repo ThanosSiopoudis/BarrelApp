@@ -13,6 +13,7 @@ class BLImportDropzonePanelController : NSViewController, NSOpenSavePanelDelegat
     @IBOutlet weak var dropzone:BLImportDropzone!
     @IBOutlet weak var spinner:BLBlueprintProgressIndicator?
     @IBOutlet weak var controller:BLImportWindowController?
+    @IBOutlet weak var progressText:NSTextField?
     
     // MARK: - Superclass Overrides
     override func awakeFromNib() {
@@ -21,6 +22,18 @@ class BLImportDropzonePanelController : NSViewController, NSOpenSavePanelDelegat
             // loader.usesThreadedAnimation = true;
             loader.startAnimation(self);
         }
+        
+        var title:String = self.progressText!.stringValue;
+        var textColour:NSColor = NSColor.whiteColor();
+        var theFont:NSFont = NSFont(name: "Avenir Next", size: 32.0)!
+        var textParagraph:NSMutableParagraphStyle = NSMutableParagraphStyle();
+        textParagraph.lineSpacing = 6.0;
+        textParagraph.maximumLineHeight = 38.0;
+        textParagraph.alignment = NSTextAlignment.CenterTextAlignment;
+        
+        var attrDict:NSDictionary = NSDictionary(objectsAndKeys: theFont, NSFontAttributeName, textColour, NSForegroundColorAttributeName, textParagraph, NSParagraphStyleAttributeName);
+        var attrString:NSAttributedString = NSAttributedString(string: title, attributes: attrDict);
+        self.progressText?.attributedStringValue = attrString;
     }
     
     // MARK: - Class Methods
