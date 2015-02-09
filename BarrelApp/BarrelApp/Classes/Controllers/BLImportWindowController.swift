@@ -26,12 +26,15 @@ class BLImportWindowController: BLMutliPanelWindowController {
         self.importer.importWindowController = self;
         
         // Observe ourselves for changes to the import stage
-        self.addObserver(self, forKeyPath: "importer.importStage", options: NSKeyValueObservingOptions.Initial, context: nil);
+        self.addObserver(self, forKeyPath: "importer.BLImportStageStateRaw", options: NSKeyValueObservingOptions.Initial, context: nil);
     }
     
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
-        if (keyPath == "importer.importStage") {
+        if (keyPath == "importer.BLImportStageStateRaw") {
             self.syncActivePanel();
+        }
+        else {
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context);
         }
     }
     

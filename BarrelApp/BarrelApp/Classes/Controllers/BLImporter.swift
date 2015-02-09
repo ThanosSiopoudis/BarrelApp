@@ -9,11 +9,11 @@
 import Cocoa
 
 class BLImporter:NSObject, BLOperationDelegate {
-    var importStage:BLImportStage = BLImportStage.BLImportWaitingForSource;
     var didMountSourceVolume:Bool = false;
     var sourceURL:NSURL?
     var importWindowController:BLImportWindowController?
     var scanQueue:NSOperationQueue?
+    var installerURLs:NSArray = NSArray();
     
     // MARK: Enum Types
     enum BLImportStage:Int {
@@ -44,10 +44,22 @@ class BLImporter:NSObject, BLOperationDelegate {
         case BLImportTypeFolder
     }
     
+    dynamic private(set) var BLImportStageStateRaw:Int = 0;
+    var importStage:BLImportStage {
+        didSet {
+            BLImportStageStateRaw = importStage.rawValue
+        }
+    }
+    
     override init() {
         self.scanQueue = NSOperationQueue();
+        self.importStage = BLImportStage.BLImportWaitingForSource
         
         super.init();
+    }
+    
+    override class func automaticallyNotifiesObserversForKey(key: String) -> Bool {
+        return true;
     }
     
     // MARK: - Class Methods
@@ -106,6 +118,7 @@ class BLImporter:NSObject, BLOperationDelegate {
         var scan:BLInstallerScan = BLInstallerScan.scanWithBasePath(prefferedURL!.path!) as BLInstallerScan;
         scan.delegate = self;
         scan.didFinishSelector = "installerScanDidFinish:";
+        scan.didFinishClosure = self.installerScanDidFinish;
         
         self.scanQueue?.addOperation(scan);
         self.importStage = BLImportStage.BLImportLoadingSource;
@@ -122,7 +135,23 @@ class BLImporter:NSObject, BLOperationDelegate {
         var scan:BLInstallerScan = notification.object as BLInstallerScan;
         
         if (scan.succeeded) {
+            self.sourceURL = NSURL(fileURLWithPath: scan.recommendedSourcePath);
+            self.didMountSourceVolume = false;
             
+            self.installerURLs = self.sourceURL!.URLsByAppendingPaths(scan.matchingPaths);
+            
+            if (self.installerURLs.count > 0) {
+                self.importStage = BLImportStage.BLImportWaitingForInstaller;
+                NSApp.requestUserAttention(NSRequestUserAttentionType.InformationalRequest);
+            }
+            else {
+                // We failed, so show a message and go back to waiting for source
+                self.importStage = BLImportStage.BLImportWaitingForSource;
+            }
+        }
+        else {
+            // We failed, so show a message and go back to waiting for source
+            self.importStage = BLImportStage.BLImportWaitingForSource;
         }
     }
 }
