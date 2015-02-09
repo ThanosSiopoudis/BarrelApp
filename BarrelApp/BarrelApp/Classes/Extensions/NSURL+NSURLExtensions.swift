@@ -49,4 +49,17 @@ extension NSURL {
     func isDirectory() -> Bool? {
         return self.resourceValueForKey(NSURLIsDirectoryKey)?.boolValue;
     }
+    
+    func URLsByAppendingPaths(paths:NSArray) -> NSArray {
+        var URLs:NSMutableArray = NSMutableArray(capacity: paths.count);
+        
+        for pathComponent in paths {
+            if let pComponent:String = pathComponent as? String {
+                var URL:NSURL = self.URLByAppendingPathComponent(pComponent);
+                URLs.addObject(URL);
+            }
+        }
+        
+        return URLs;
+    }
 }
