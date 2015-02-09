@@ -77,5 +77,19 @@ class BLBlueprintTextFieldCell : NSTextFieldCell {
 }
 
 class BLBlueprintProgressIndicator : BLSpinningProgressIndicator {
+    var dropShadow:NSShadow?
     
+    override func awakeFromNib() {
+        self.colour = NSColor.whiteColor();
+        self.drawsBackground = false;
+        self.lineWidth = 2.0;
+        self.dropShadow = NSShadow(blurRadius: 2.0, offset: NSMakeSize(0, -1.0), color: NSColor(calibratedWhite: 0.0, alpha: 0.5));
+    }
+    
+    override func drawRect(dirtyRect: NSRect) {
+        NSGraphicsContext.saveGraphicsState();
+        self.dropShadow?.set();
+        super.drawRect(dirtyRect);
+        NSGraphicsContext.restoreGraphicsState();
+    }
 }
