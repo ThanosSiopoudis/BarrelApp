@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
@@ -18,7 +18,7 @@
         <window title="Import a Game" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="480" height="340"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="340"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -90,6 +90,7 @@
             <connections>
                 <outlet property="controller" destination="-2" id="ROa-AV-cQe"/>
                 <outlet property="dropzone" destination="EhO-MC-HqN" id="xQJ-fQ-e8D"/>
+                <outlet property="progressText" destination="gR9-Fv-8Yy" id="qOq-AK-BqT"/>
                 <outlet property="spinner" destination="dRg-XB-fbO" id="Mfl-hQ-OjD"/>
                 <outlet property="view" destination="vdC-yy-Ba3" id="A2H-0o-9pp"/>
             </connections>
@@ -104,7 +105,7 @@
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gR9-Fv-8Yy">
                             <rect key="frame" x="18" y="29" width="444" height="87"/>
                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Please wait while Barrel scans your game" id="3oE-LY-n2M">
-                                <font key="font" size="32" name="HelveticaNeue"/>
+                                <font key="font" size="32" name="AvenirNext-Medium"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
