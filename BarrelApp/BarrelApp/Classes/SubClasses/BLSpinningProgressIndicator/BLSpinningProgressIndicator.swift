@@ -77,12 +77,12 @@ class BLSpinningProgressIndicator : NSView {
             self.needsDisplay = true;
         }
     }
-    var maxValue:Double = 0.0 {
+    var maxValue:Double = 100.0 {
         didSet {
             self.needsDisplay = true;
         }
     }
-    var usesThreadedAnimation:Bool? {
+    var usesThreadedAnimation:Bool = false {
         didSet {
             if (self.usesThreadedAnimation != oldValue) {
                 if (self.isAnimating == true) {
@@ -97,28 +97,15 @@ class BLSpinningProgressIndicator : NSView {
     var lineEndOffset:CGFloat = 13.5;
     
     // MARK: - Private Vars
-    private var position:Int = 0;
-    private var numFins:Int = 0;
-    private var isFadingOut:Bool = false;
-    private var currentValue:Double = 0.0;
-    private var foreColour:NSColor = NSColor.blackColor().copy() as NSColor;
-    private var backColour:NSColor?
-    private var animationThread:NSThread?
-    private var animationTimer:NSTimer?
-    private var drawBackground:Bool?
-    
-    // MARK: - Method Overrides
-    required init?(coder: NSCoder) {
-        self.currentValue = 0.0;
-        
-        super.init(coder: coder);
-    }
-    
-    override init(frame frameRect: NSRect) {
-        self.currentValue = 0.0;
-        
-        super.init(frame: frameRect);
-    }
+    var position:Int = 0;
+    var numFins:Int = 12;
+    var isFadingOut:Bool = false;
+    var currentValue:Double = 0.0;
+    var foreColour:NSColor = NSColor.blackColor().copy() as NSColor;
+    var backColour:NSColor?
+    var animationThread:NSThread?
+    var animationTimer:NSTimer?
+    var drawBackground:Bool?
     
     override func viewDidMoveToWindow() {
         if (self.window == nil) {
@@ -144,8 +131,8 @@ class BLSpinningProgressIndicator : NSView {
             }
         }
         
-        var contextPointer = NSGraphicsContext.currentContext()!.graphicsPort;
-        var currentContext = UnsafePointer<CGContext>(contextPointer).memory;
+        let contextPtr = NSGraphicsContext.currentContext()!.graphicsPort
+        let currentContext = unsafeBitCast(contextPtr, CGContext.self)
         NSGraphicsContext.saveGraphicsState();
         
         CGContextTranslateCTM(currentContext, self.bounds.size.width / 2, self.bounds.size.height / 2);
@@ -178,7 +165,7 @@ class BLSpinningProgressIndicator : NSView {
                 
                 path.stroke();
                 
-                CGContextRotateCTM(currentContext, angle);
+                CGContextRotateCTM(currentContext, anglePerFin);
                 alpha -= 1.0 / Float(self.numFins);
             }
         }
@@ -244,14 +231,14 @@ class BLSpinningProgressIndicator : NSView {
         self.actuallyStopAnimation();
         
         if (self.window != nil) {
-            if (self.usesThreadedAnimation!) {
+            if (self.usesThreadedAnimation == true) {
                 self.animationThread = NSThread(target: self, selector: "animateInBackgroundThread", object: nil);
                 if let animThread = self.animationThread {
                     animThread.start();
                 }
             }
             else {
-                self.animationTimer = NSTimer(timeInterval: NSTimeInterval(0.05), target: self, selector: "updateFrame:", userInfo: nil, repeats: true);
+                self.animationTimer = NSTimer(timeInterval: NSTimeInterval(0.05), target: self, selector: Selector("updateFrame:"), userInfo: nil, repeats: true);
                 if let animTimer = self.animationTimer {
                     NSRunLoop.currentRunLoop().addTimer(animTimer, forMode: NSRunLoopCommonModes);
                     NSRunLoop.currentRunLoop().addTimer(animTimer, forMode: NSDefaultRunLoopMode);
