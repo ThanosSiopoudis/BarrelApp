@@ -23,14 +23,25 @@ typealias BLOperationProgress = Float;
 
 class BLOperation: NSOperation {
     
+    typealias ExecClosure = ((notification:NSNotification) -> ());
+    
     var contextInfo:AnyObject?
     var notifiesOnMainThread:Bool!
     var isCancelled:Bool = false;
     var delegate:BLOperationDelegate?
+    
+    // Selectors for the NotificationCenter
     var willStartSelector:String?
     var inProgressSelector:String?
     var wasCancelledSelector:String?
     var didFinishSelector:String?
+    
+    // Closures to invoke on completion
+    var willStartClosure:ExecClosure?
+    var didFinishClosure:ExecClosure?
+    var inProgressClosure:ExecClosure?
+    var wasCancelledClosure:ExecClosure?
+    
     var currentProgress:BLOperationProgress?
     var isIndeterminate:Bool = true;
     var error:NSError?
@@ -60,11 +71,11 @@ class BLOperation: NSOperation {
     func sendWillStartNotificationWithInfo(info:NSDictionary?) {
         if (self.isCancelled) { return; }
         
-        self.postNotificationWithName(BLOperationWillStart, delegateSelector: self.willStartSelector!, userInfo: info);
+        self.postNotificationWithName(BLOperationWillStart, delegateSelector: self.willStartSelector!, eClosure: self.willStartClosure, userInfo: info);
     }
     
     func sendWasCancelledNotificationWithInfo(info:NSDictionary?) {
-        self.postNotificationWithName(BLOperationWasCancelled, delegateSelector: self.wasCancelledSelector!, userInfo: info);
+        self.postNotificationWithName(BLOperationWasCancelled, delegateSelector: self.wasCancelledSelector!, eClosure: self.wasCancelledClosure, userInfo: info);
     }
     
     func sendDidFinishNotificationWithInfo(info:NSDictionary?) {
@@ -80,7 +91,7 @@ class BLOperation: NSOperation {
             finishInfo.addEntriesFromDictionary(uInfo);
         }
         
-        self.postNotificationWithName(BLOperationDidFinish, delegateSelector: self.didFinishSelector!, userInfo: finishInfo);
+        self.postNotificationWithName(BLOperationDidFinish, delegateSelector: self.didFinishSelector!, eClosure: self.didFinishClosure, userInfo: finishInfo);
     }
     
     func sendInProgressNotificationWithInfo(info:NSDictionary?) {
@@ -95,10 +106,10 @@ class BLOperation: NSOperation {
             progressInfo.addEntriesFromDictionary(passedInfo);
         }
         
-        self.postNotificationWithName(BLOperationInProgress, delegateSelector: self.inProgressSelector!, userInfo: info);
+        self.postNotificationWithName(BLOperationInProgress, delegateSelector: self.inProgressSelector!, eClosure: self.inProgressClosure, userInfo: info);
     }
     
-    func postNotificationWithName(name:String, delegateSelector:String, var userInfo:NSDictionary?) {
+    func postNotificationWithName(name:String, delegateSelector:String, eClosure:ExecClosure?, var userInfo:NSDictionary?) {
         
         if let cInfo:AnyObject = self.contextInfo {
             var contextDict:NSMutableDictionary = NSMutableDictionary(object: cInfo, forKey: BLOperationContextInfoKey);
@@ -112,15 +123,14 @@ class BLOperation: NSOperation {
         var notificationCenter:NSNotificationCenter = NSNotificationCenter.defaultCenter();
         var notification = NSNotification(name: name, object: self, userInfo: userInfo);
         
-        if (self.delegate!.respondsToSelector(Selector(delegateSelector))) {
+        if let delegateClosure = eClosure {
             if (self.notifiesOnMainThread == true) {
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.delegate!.operationDidFinish!(notification);
+                    delegateClosure(notification:notification);
                 });
             }
             else {
-                // We should be probably using closures here but this will do for now
-                self.delegate!.operationDidFinish!(notification);
+                delegateClosure(notification:notification);
             }
         }
         
