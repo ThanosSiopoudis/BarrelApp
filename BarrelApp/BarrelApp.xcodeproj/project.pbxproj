@@ -50,6 +50,7 @@
 		B1F5980019ABCFFC00AAF92B /* NSArray+NSArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F597FF19ABCFFC00AAF92B /* NSArray+NSArrayExtensions.swift */; };
 		B1F9AA6F19A938BB00259E27 /* BLWelcomeButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9AA6E19A938BB00259E27 /* BLWelcomeButtonCell.swift */; };
 		B1F9AA7219A93AAE00259E27 /* BLWelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9AA7119A93AAE00259E27 /* BLWelcomeViewController.swift */; };
+		C19104E41A8907210092DFF4 /* NSShadow+BLShadowExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19104E31A8907210092DFF4 /* NSShadow+BLShadowExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,7 @@
 		B1F597FF19ABCFFC00AAF92B /* NSArray+NSArrayExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSArray+NSArrayExtensions.swift"; path = "Classes/Extensions/NSArray+NSArrayExtensions.swift"; sourceTree = "<group>"; };
 		B1F9AA6E19A938BB00259E27 /* BLWelcomeButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLWelcomeButtonCell.swift; path = Classes/SubClasses/BLWelcomeButtonCell.swift; sourceTree = "<group>"; };
 		B1F9AA7119A93AAE00259E27 /* BLWelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLWelcomeViewController.swift; path = Classes/Controllers/BLWelcomeViewController.swift; sourceTree = "<group>"; };
+		C19104E31A8907210092DFF4 /* NSShadow+BLShadowExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSShadow+BLShadowExtensions.swift"; path = "Classes/Extensions/NSShadow+BLShadowExtensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -357,6 +359,7 @@
 				B10D409119C30137000D742B /* ObjC-Helpers.m */,
 				B10D408F19C30136000D742B /* BarrelApp-Bridging-Header.h */,
 				B11242521A8261E100E6BC5A /* NSWorkspace+BLExecutableTypes.swift */,
+				C19104E31A8907210092DFF4 /* NSShadow+BLShadowExtensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 				B167792119AE4BF900B58B00 /* BLMultiPanelWindowController.swift in Sources */,
 				B1E92C2119AF7C2000BA47A8 /* BLImportDropzonePanelController.swift in Sources */,
 				B1E92C2519AF8B5F00BA47A8 /* NSRect+Geometry.swift in Sources */,
+				C19104E41A8907210092DFF4 /* NSShadow+BLShadowExtensions.swift in Sources */,
 				B17D822119AC9C4C00638DF9 /* BLGamesFolderPanelController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
