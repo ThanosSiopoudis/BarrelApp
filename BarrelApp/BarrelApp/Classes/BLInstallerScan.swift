@@ -30,6 +30,14 @@ class BLInstallerScan: BLOperation {
             return self.manager?.enumeratorAtPath(self.basePath);
         }
     }
+    var recommendedSourcePath:String {
+        get {
+            // Just return the base path for now
+            // Will need to return the mounter image volume in the future
+            // when we implement image mounting support
+            return self.basePath;
+        }
+    }
     
     override init() {
         self.windowsExecutables = NSMutableArray(capacity: 10);
