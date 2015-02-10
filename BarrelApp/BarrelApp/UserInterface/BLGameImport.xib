@@ -136,5 +136,104 @@
             </connections>
             <point key="canvasLocation" x="155" y="424"/>
         </customView>
+        <customView id="ufQ-zo-ydh" userLabel="Installer Panel" customClass="BLDelegatedView" customModule="BarrelApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="320"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K7Q-yE-1O5">
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="40"/>
+                    <subviews>
+                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tfM-ju-drP">
+                            <rect key="frame" x="375" y="7" width="85" height="25"/>
+                            <buttonCell key="cell" type="roundTextured" title="Close" bezelStyle="texturedRounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0g8-YA-MxL">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="performClose:" target="QvC-M9-y7g" id="cdT-Dw-c1Q"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </customView>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q1d-8f-Uvk" userLabel="Blueprint Panel" customClass="BLBlueprintPanel" customModule="BarrelApp" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="40" width="480" height="280"/>
+                    <subviews>
+                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ti6-Lf-lf1" customClass="BLImportDropzone" customModule="BarrelApp" customModuleProvider="target">
+                            <rect key="frame" x="160" y="100" width="160" height="160"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Keh-4E-8GL">
+                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="showImportPathPicker:" target="028-7l-zkc" id="uLE-RW-bb2"/>
+                            </connections>
+                        </button>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LWk-rN-Lf8">
+                            <rect key="frame" x="18" y="179" width="444" height="81"/>
+                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Barrel will now install your game." id="fjG-zZ-ahU">
+                                <font key="font" size="32" name="AvenirNext-Medium"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <popUpButton focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZgA-D0-OpU">
+                            <rect key="frame" x="176" y="135" width="253" height="26"/>
+                            <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingHead" state="on" borderStyle="borderAndBezel" focusRingType="none" tag="1" imageScaling="proportionallyDown" inset="2" id="ILK-2p-cDb">
+                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                                <menu key="menu" title="OtherViews" id="82y-BJ-E7x">
+                                    <items>
+                                        <menuItem isSeparatorItem="YES" state="on" tag="1" id="h3S-eE-mMA"/>
+                                        <menuItem title="Other…" id="UgC-eb-yBS"/>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                        </popUpButton>
+                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e0p-p1-zfD" customClass="BXBlueprintLabel">
+                            <rect key="frame" x="52" y="141" width="116" height="17"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Choose engine:" id="wS0-me-bdv">
+                                <font key="font" metaFont="systemBold"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <popUpButton focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lfm-Mf-9Qi">
+                            <rect key="frame" x="176" y="109" width="253" height="26"/>
+                            <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingHead" state="on" borderStyle="borderAndBezel" focusRingType="none" tag="1" imageScaling="proportionallyDown" inset="2" id="OzA-Ho-Xhp">
+                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                                <menu key="menu" title="OtherViews" id="HGf-2g-H5q">
+                                    <items>
+                                        <menuItem isSeparatorItem="YES" state="on" tag="1" id="vd4-Wy-ZS3"/>
+                                        <menuItem title="Other…" id="B0a-y0-4LF"/>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                        </popUpButton>
+                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8lr-qW-JlR" customClass="BXBlueprintLabel">
+                            <rect key="frame" x="52" y="115" width="116" height="17"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Choose installer:" id="hRB-Wq-s0a">
+                                <font key="font" metaFont="systemBold"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p17-18-dbR">
+                            <rect key="frame" x="69" y="58" width="342" height="34"/>
+                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Choose a suitable wine engine and the setup executable to create the new bundle." id="kzL-JU-0G1">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                </customView>
+            </subviews>
+            <connections>
+                <outlet property="delegate" destination="028-7l-zkc" id="oUU-Qi-lbW"/>
+                <outlet property="nextKeyView" destination="Ti6-Lf-lf1" id="WDS-vw-a5D"/>
+            </connections>
+            <point key="canvasLocation" x="210" y="500"/>
+        </customView>
     </objects>
 </document>
