@@ -19,6 +19,14 @@
 		B11242511A825F4100E6BC5A /* NSWorkspace+BLFileTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11242501A825F4100E6BC5A /* NSWorkspace+BLFileTypes.swift */; };
 		B11242531A8261E100E6BC5A /* NSWorkspace+BLExecutableTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11242521A8261E100E6BC5A /* NSWorkspace+BLExecutableTypes.swift */; };
 		B11242561A82641900E6BC5A /* BLFileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11242551A82641900E6BC5A /* BLFileHandle.swift */; };
+		B1312E191A8E7F04005E0587 /* RestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1312E161A8E7E87005E0587 /* RestKit.framework */; };
+		B1312E1A1A8E7F04005E0587 /* RestKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B1312E161A8E7E87005E0587 /* RestKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B1312E1F1A8E7F85005E0587 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1312E1E1A8E7F85005E0587 /* CoreData.framework */; };
+		B1312E211A8E7F91005E0587 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1312E201A8E7F91005E0587 /* CoreServices.framework */; };
+		B1312E231A8E7F9A005E0587 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1312E221A8E7F9A005E0587 /* Security.framework */; };
+		B1312E251A8E7FA3005E0587 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1312E241A8E7FA3005E0587 /* SystemConfiguration.framework */; };
+		B1312E281A8E812C005E0587 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1312E271A8E812C005E0587 /* Engine.swift */; };
+		B1312E2B1A8E85BD005E0587 /* BarrelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1312E2A1A8E85BD005E0587 /* BarrelAPI.swift */; };
 		B1326FDF19AF8D2B002B0BD0 /* DropzoneTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B1326FDE19AF8D2B002B0BD0 /* DropzoneTemplate.pdf */; };
 		B1439BD219D3719000C4803E /* BLOperationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1439BD119D3719000C4803E /* BLOperationDelegate.swift */; };
 		B14EDB5119AE17D30054C10A /* BLGameImport.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14EDB5019AE17D30054C10A /* BLGameImport.xib */; };
@@ -61,7 +69,56 @@
 			remoteGlobalIDString = B1107AC719A924CE000D4DEF;
 			remoteInfo = BarrelApp;
 		};
+		B1312E111A8E7E87005E0587 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25160D1614564E810060A5C5;
+			remoteInfo = RestKit;
+		};
+		B1312E131A8E7E87005E0587 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25160D2614564E820060A5C5;
+			remoteInfo = RestKitTests;
+		};
+		B1312E151A8E7E87005E0587 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25160E62145651060060A5C5;
+			remoteInfo = RestKitFramework;
+		};
+		B1312E171A8E7E87005E0587 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25160E78145651060060A5C5;
+			remoteInfo = RestKitFrameworkTests;
+		};
+		B1312E1B1A8E7F04005E0587 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 25160E61145651060060A5C5;
+			remoteInfo = RestKitFramework;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B1312E1D1A8E7F04005E0587 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B1312E1A1A8E7F04005E0587 /* RestKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B103108219B7AB45007ACCEB /* BLImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLImporter.swift; path = Classes/Controllers/BLImporter.swift; sourceTree = "<group>"; };
@@ -82,6 +139,13 @@
 		B11242501A825F4100E6BC5A /* NSWorkspace+BLFileTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSWorkspace+BLFileTypes.swift"; path = "Classes/Extensions/NSWorkspace+BLFileTypes.swift"; sourceTree = "<group>"; };
 		B11242521A8261E100E6BC5A /* NSWorkspace+BLExecutableTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSWorkspace+BLExecutableTypes.swift"; path = "Classes/Extensions/NSWorkspace+BLExecutableTypes.swift"; sourceTree = "<group>"; };
 		B11242551A82641900E6BC5A /* BLFileHandle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLFileHandle.swift; path = Classes/SubClasses/Filesystem/BLFileHandle.swift; sourceTree = "<group>"; };
+		B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = ../../RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
+		B1312E1E1A8E7F85005E0587 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		B1312E201A8E7F91005E0587 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		B1312E221A8E7F9A005E0587 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		B1312E241A8E7FA3005E0587 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B1312E271A8E812C005E0587 /* Engine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Engine.swift; path = Classes/RestClasses/Engine.swift; sourceTree = "<group>"; };
+		B1312E2A1A8E85BD005E0587 /* BarrelAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BarrelAPI.swift; path = Classes/BarrelAPI.swift; sourceTree = "<group>"; };
 		B1326FDE19AF8D2B002B0BD0 /* DropzoneTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = DropzoneTemplate.pdf; sourceTree = "<group>"; };
 		B1439BD119D3719000C4803E /* BLOperationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLOperationDelegate.swift; path = Classes/SubClasses/Protocols/BLOperationDelegate.swift; sourceTree = "<group>"; };
 		B14EDB5019AE17D30054C10A /* BLGameImport.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BLGameImport.xib; path = UserInterface/BLGameImport.xib; sourceTree = "<group>"; };
@@ -121,6 +185,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1312E251A8E7FA3005E0587 /* SystemConfiguration.framework in Frameworks */,
+				B1312E231A8E7F9A005E0587 /* Security.framework in Frameworks */,
+				B1312E211A8E7F91005E0587 /* CoreServices.framework in Frameworks */,
+				B1312E1F1A8E7F85005E0587 /* CoreData.framework in Frameworks */,
+				B1312E191A8E7F04005E0587 /* RestKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +224,7 @@
 		B1107ACA19A924CE000D4DEF /* BarrelApp */ = {
 			isa = PBXGroup;
 			children = (
+				B1312E091A8E7E78005E0587 /* Frameworks */,
 				B1F597F319A971E100AAF92B /* User Interface */,
 				B1107AEA19A92F52000D4DEF /* Classes */,
 				B1107ACB19A924CE000D4DEF /* Supporting Files */,
@@ -165,6 +235,7 @@
 		B1107ACB19A924CE000D4DEF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B10D408F19C30136000D742B /* BarrelApp-Bridging-Header.h */,
 				B1107ACC19A924CE000D4DEF /* Info.plist */,
 				B1107ACD19A924CE000D4DEF /* main.swift */,
 			);
@@ -191,6 +262,8 @@
 		B1107AEA19A92F52000D4DEF /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B1312E291A8E859D005E0587 /* Barrel.API */,
+				B1312E261A8E80FF005E0587 /* RestClasses */,
 				B19F87E51A8224BF00432FC8 /* BLImportSession.swift */,
 				B1107ACF19A924CE000D4DEF /* AppDelegate.swift */,
 				B103108419B7B056007ACCEB /* BLFileTypes.swift */,
@@ -220,6 +293,45 @@
 				B11242551A82641900E6BC5A /* BLFileHandle.swift */,
 			);
 			name = FileSystem;
+			sourceTree = "<group>";
+		};
+		B1312E091A8E7E78005E0587 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B1312E241A8E7FA3005E0587 /* SystemConfiguration.framework */,
+				B1312E221A8E7F9A005E0587 /* Security.framework */,
+				B1312E201A8E7F91005E0587 /* CoreServices.framework */,
+				B1312E1E1A8E7F85005E0587 /* CoreData.framework */,
+				B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B1312E0B1A8E7E87005E0587 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B1312E121A8E7E87005E0587 /* libRestKit.a */,
+				B1312E141A8E7E87005E0587 /* RestKitTests.xctest */,
+				B1312E161A8E7E87005E0587 /* RestKit.framework */,
+				B1312E181A8E7E87005E0587 /* RestKitFrameworkTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B1312E261A8E80FF005E0587 /* RestClasses */ = {
+			isa = PBXGroup;
+			children = (
+				B1312E271A8E812C005E0587 /* Engine.swift */,
+			);
+			name = RestClasses;
+			sourceTree = "<group>";
+		};
+		B1312E291A8E859D005E0587 /* Barrel.API */ = {
+			isa = PBXGroup;
+			children = (
+				B1312E2A1A8E85BD005E0587 /* BarrelAPI.swift */,
+			);
+			name = Barrel.API;
 			sourceTree = "<group>";
 		};
 		B1439BD019D3716300C4803E /* Protocols */ = {
@@ -357,7 +469,6 @@
 				B11242501A825F4100E6BC5A /* NSWorkspace+BLFileTypes.swift */,
 				B10D409019C30137000D742B /* ObjC-Helpers.h */,
 				B10D409119C30137000D742B /* ObjC-Helpers.m */,
-				B10D408F19C30136000D742B /* BarrelApp-Bridging-Header.h */,
 				B11242521A8261E100E6BC5A /* NSWorkspace+BLExecutableTypes.swift */,
 				C19104E31A8907210092DFF4 /* NSShadow+BLShadowExtensions.swift */,
 			);
@@ -384,10 +495,12 @@
 				B1107AC419A924CE000D4DEF /* Sources */,
 				B1107AC519A924CE000D4DEF /* Frameworks */,
 				B1107AC619A924CE000D4DEF /* Resources */,
+				B1312E1D1A8E7F04005E0587 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B1312E1C1A8E7F04005E0587 /* PBXTargetDependency */,
 			);
 			name = BarrelApp;
 			productName = BarrelApp;
@@ -442,6 +555,12 @@
 			mainGroup = B1107ABF19A924CE000D4DEF;
 			productRefGroup = B1107AC919A924CE000D4DEF /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B1312E0B1A8E7E87005E0587 /* Products */;
+					ProjectRef = B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				B1107AC719A924CE000D4DEF /* BarrelApp */,
@@ -449,6 +568,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		B1312E121A8E7E87005E0587 /* libRestKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRestKit.a;
+			remoteRef = B1312E111A8E7E87005E0587 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B1312E141A8E7E87005E0587 /* RestKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RestKitTests.xctest;
+			remoteRef = B1312E131A8E7E87005E0587 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B1312E161A8E7E87005E0587 /* RestKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = RestKit.framework;
+			remoteRef = B1312E151A8E7E87005E0587 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B1312E181A8E7E87005E0587 /* RestKitFrameworkTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RestKitFrameworkTests.xctest;
+			remoteRef = B1312E171A8E7E87005E0587 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		B1107AC619A924CE000D4DEF /* Resources */ = {
@@ -490,8 +640,10 @@
 				B19ACDDC19B7C21D00FBB50F /* NSWorkspace+MountedVolumes.swift in Sources */,
 				B17D822A19ACE81F00638DF9 /* String+StringAdditions.swift in Sources */,
 				B17D822819ACD26B00638DF9 /* BLValueTransformers.swift in Sources */,
+				B1312E281A8E812C005E0587 /* Engine.swift in Sources */,
 				B1E92C1F19AF694900BA47A8 /* BLDelegatedView.swift in Sources */,
 				B1F597F719AA031B00AAF92B /* BLPreferencesWindowController.swift in Sources */,
+				B1312E2B1A8E85BD005E0587 /* BarrelAPI.swift in Sources */,
 				B1E92C1819AF32E600BA47A8 /* BLSpinningProgressIndicator.swift in Sources */,
 				B1F9AA7219A93AAE00259E27 /* BLWelcomeViewController.swift in Sources */,
 				B11242511A825F4100E6BC5A /* NSWorkspace+BLFileTypes.swift in Sources */,
@@ -533,6 +685,11 @@
 			isa = PBXTargetDependency;
 			target = B1107AC719A924CE000D4DEF /* BarrelApp */;
 			targetProxy = B1107ADB19A924CE000D4DEF /* PBXContainerItemProxy */;
+		};
+		B1312E1C1A8E7F04005E0587 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RestKitFramework;
+			targetProxy = B1312E1B1A8E7F04005E0587 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
