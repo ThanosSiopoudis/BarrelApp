@@ -29,6 +29,7 @@ class BLOperation: NSOperation {
     var notifiesOnMainThread:Bool!
     var isCancelled:Bool = false;
     var delegate:BLOperationDelegate?
+    var manuallyHandleFinish:Bool = false;
     
     // Selectors for the NotificationCenter
     var willStartSelector:String?
@@ -65,7 +66,9 @@ class BLOperation: NSOperation {
     override func start() {
         self.sendWillStartNotificationWithInfo(nil);
         super.start();
-        self.sendDidFinishNotificationWithInfo(nil);
+        if (manuallyHandleFinish == false) {
+            self.sendDidFinishNotificationWithInfo(nil);
+        }
     }
     
     func sendWillStartNotificationWithInfo(info:NSDictionary?) {
