@@ -13,7 +13,27 @@ class BLImportWindowController: BLMutliPanelWindowController {
     var dropZonePanel:NSView?
     @IBOutlet
     var loadingPanel:NSView?
+    @IBOutlet
+    var installerPanel:NSView?
+    @IBOutlet
+    var finalizingPanel:NSView?
+    
     var importer:BLImporter!
+    
+    override init() {
+        super.init();
+    }
+    
+    override init(window: NSWindow?) {
+        self.importer = BLImporter();
+        self.importer.test = "Initialized";
+        super.init(window: window);
+        self.importer.importWindowController = self;
+    }
+    
+    required override init?(coder: NSCoder) {
+        super.init(coder: coder);
+    }
     
     override func windowDidLoad() {
         // Default to dropzone panel when we initially load this window
@@ -21,9 +41,6 @@ class BLImportWindowController: BLMutliPanelWindowController {
         
         // Disable window restoration
         self.window!.restorable = false;
-        
-        self.importer = BLImporter();
-        self.importer.importWindowController = self;
         
         // Observe ourselves for changes to the import stage
         self.addObserver(self, forKeyPath: "importer.BLImportStageStateRaw", options: NSKeyValueObservingOptions.Initial, context: nil);
@@ -45,6 +62,16 @@ class BLImportWindowController: BLMutliPanelWindowController {
             break;
         case .BLImportLoadingSource:
             self.currentPanel = self.loadingPanel;
+            break;
+        case .BLImportWaitingForInstaller:
+            self.currentPanel = self.installerPanel;
+            break;
+        case .BLImportDownloadingEngine,
+             .BLImportDownloadingRecipe,
+             .BLImportDownloadingSupportingFiles,
+             .BLImportDownloadingWinetricks,
+             .BLImportRunningInstaller:
+            self.currentPanel = self.finalizingPanel;
             break;
         default:
             break;
