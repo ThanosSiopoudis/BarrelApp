@@ -13,26 +13,29 @@ class BLImporter:NSObject, BLOperationDelegate {
     var sourceURL:NSURL?
     var importWindowController:BLImportWindowController?
     var scanQueue:NSOperationQueue?
-    var installerURLs:NSArray = NSArray();
+    dynamic var installerURLs:NSArray = NSArray();
+    dynamic var enginesList:NSArray = NSArray();
+    var test:String = "Uninitialised";
     
     // MARK: Enum Types
     enum BLImportStage:Int {
         case BLImportWaitingForSource = 0
         case BLImportLoadingSource = 1
-        case BLImportWaitingForInstaller = 2
-        case BLImportReadyToLaunchInstaller = 3
-        case BLImportRunningInstaller = 4
-        case BLImportReadyToLookupRecipe = 5
-        case BLImportSearchingForRecipe = 6
-        case BLImportDownloadingRecipe = 7
-        case BLImportReadyToDownloadEngine = 8
-        case BLImportDownloadingEngine = 9
-        case BLImportReadyToDownloadWinetricks = 10
-        case BLImportDownloadingWinetricks = 11
-        case BLImportReadyToDownloadSupportingFiles = 12
-        case BLImportDownloadingSupportingFiles = 13
-        case BLImportCleaningUp = 14
-        case BLImportFinished = 15
+        case BLImportReadyToFetchEnginesList = 2
+        case BLImportWaitingForInstaller = 3
+        case BLImportReadyToLaunchInstaller = 4
+        case BLImportRunningInstaller = 5
+        case BLImportReadyToLookupRecipe = 6
+        case BLImportSearchingForRecipe = 7
+        case BLImportDownloadingRecipe = 8
+        case BLImportReadyToDownloadEngine = 9
+        case BLImportDownloadingEngine = 10
+        case BLImportReadyToDownloadWinetricks = 11
+        case BLImportDownloadingWinetricks = 12
+        case BLImportReadyToDownloadSupportingFiles = 13
+        case BLImportDownloadingSupportingFiles = 14
+        case BLImportCleaningUp = 15
+        case BLImportFinished = 16
     }
     
     enum BLSourceFileImportType {
@@ -141,6 +144,32 @@ class BLImporter:NSObject, BLOperationDelegate {
             self.installerURLs = self.sourceURL!.URLsByAppendingPaths(scan.matchingPaths);
             
             if (self.installerURLs.count > 0) {
+                // Setup a new operation to fetch the engines list
+                var fetchEngines:BLRemoteEngineList = BLRemoteEngineList();
+                fetchEngines.delegate = self;
+                fetchEngines.didFinishSelector = "fetchEnginesDidFinish:";
+                fetchEngines.didFinishClosure = self.fetchEnginesDidFinish;
+                
+                self.scanQueue?.addOperation(fetchEngines);
+//                self.importStage = BLImportStage.BLImportReadyToFetchEnginesList;
+            }
+            else {
+                // We failed, so show a message and go back to waiting for source
+                self.importStage = BLImportStage.BLImportWaitingForSource;
+            }
+        }
+        else {
+            // We failed, so show a message and go back to waiting for source
+            self.importStage = BLImportStage.BLImportWaitingForSource;
+        }
+    }
+    
+    func fetchEnginesDidFinish(notification:NSNotification) {
+        var fetchEngines:BLRemoteEngineList = notification.object as BLRemoteEngineList;
+        
+        if (fetchEngines.succeeded) {
+            if let detectedEngines = fetchEngines.engineList {
+                self.enginesList = detectedEngines;
                 self.importStage = BLImportStage.BLImportWaitingForInstaller;
                 NSApp.requestUserAttention(NSRequestUserAttentionType.InformationalRequest);
             }
