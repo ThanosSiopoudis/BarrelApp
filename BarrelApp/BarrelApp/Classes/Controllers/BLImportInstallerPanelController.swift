@@ -195,7 +195,8 @@ class BLImportInstallerPanelController: NSViewController, NSOpenSavePanelDelegat
     func addEngineFromURL(URL:NSURL) {
         // Create a new Engine Object
         var localEngine:Engine = Engine();
-        localEngine.Name = URL.lastPathComponent!.stringByDeletingPathExtension;
+        var lastPathComponent:String! = URL.lastPathComponent;
+        localEngine.Name = lastPathComponent.stringByDeletingPathExtension;
         localEngine.Path = URL.path!;
         
         var itemIndex:Int = self.engineSelector!.indexOfItemWithRepresentedObject(URL);
