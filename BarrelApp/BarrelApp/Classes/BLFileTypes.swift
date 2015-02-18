@@ -83,7 +83,8 @@ class BLFileTypes:NSObject {
         
         // Contrast to Boxer, we don't need to distinguish between DOS and Windows Executables. We can run either! (how successfully is a different story)
         if let pathURL = URL {
-            var pathExtension = pathURL.pathExtension?.lowercaseString
+            var pathExtension:String! = pathURL.pathExtension;
+            pathExtension = pathExtension.lowercaseString;
  
             if (pathExtension == "exe" || pathExtension == "com" || pathExtension == "bat" || pathExtension == "msi") {
                 return BLExecutableType.BLExecutableTypeWindows

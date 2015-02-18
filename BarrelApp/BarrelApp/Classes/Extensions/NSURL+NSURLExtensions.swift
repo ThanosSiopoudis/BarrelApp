@@ -79,8 +79,8 @@ extension NSURL {
             }
         }
         else {
-            var components:NSArray      = originalURL!.pathComponents!
-            var baseComponents:NSArray  = baseURL.pathComponents!
+            var components:NSArray!     = originalURL!.pathComponents
+            var baseComponents:NSArray! = baseURL.pathComponents
             var numInOriginal:Int       = components.count;
             var numInBase:Int           = baseComponents.count;
             var from:Int, upTo:Int      = min(numInBase, numInOriginal);
