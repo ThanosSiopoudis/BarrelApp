@@ -13,7 +13,7 @@ class BarrelAPI:NSObject {
     class func listOfAllEngines(toBlock completionBlock:((RKObjectRequestOperation!, RKMappingResult!) -> Void)!, failBlock errorBlock:((RKObjectRequestOperation!, NSError!) -> Void)!) {
         var engineMapping:RKObjectMapping = RKObjectMapping(forClass: Engine.self);
         engineMapping.addAttributeMappingsFromDictionary([
-            "_id"       : "id",
+            "_id"       : "EngineID",
             "created"   : "Created",
             "name"      : "Name",
             "path"      : "Path"
