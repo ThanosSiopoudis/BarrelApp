@@ -1,0 +1,795 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B1ADEC151A93470E00E817E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC141A93470E00E817E7 /* AppDelegate.swift */; };
+		B1ADEC171A93470E00E817E7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1ADEC161A93470E00E817E7 /* Images.xcassets */; };
+		B1ADEC1A1A93470E00E817E7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1ADEC181A93470E00E817E7 /* MainMenu.xib */; };
+		B1ADEC261A93470E00E817E7 /* BarrelBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC251A93470E00E817E7 /* BarrelBundleTests.swift */; };
+		B1ADEC521A93824300E817E7 /* BLBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC3D1A93824300E817E7 /* BLBackgroundView.swift */; };
+		B1ADEC531A93824300E817E7 /* BLBlueprintPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC3E1A93824300E817E7 /* BLBlueprintPanel.swift */; };
+		B1ADEC541A93824300E817E7 /* BLImportDropzone.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC3F1A93824300E817E7 /* BLImportDropzone.swift */; };
+		B1ADEC551A93824300E817E7 /* BLImportSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC401A93824300E817E7 /* BLImportSession.swift */; };
+		B1ADEC561A93824300E817E7 /* BLOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC411A93824300E817E7 /* BLOperation.swift */; };
+		B1ADEC571A93824300E817E7 /* BLGamesFolderPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC431A93824300E817E7 /* BLGamesFolderPanelController.swift */; };
+		B1ADEC581A93824300E817E7 /* BLPreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC441A93824300E817E7 /* BLPreferencesWindowController.swift */; };
+		B1ADEC591A93824300E817E7 /* BLSpinningProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC461A93824300E817E7 /* BLSpinningProgressIndicator.swift */; };
+		B1ADEC5A1A93824300E817E7 /* BLWelcomeButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC471A93824300E817E7 /* BLWelcomeButtonCell.swift */; };
+		B1ADEC5B1A93824300E817E7 /* BLDelegatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC491A93824300E817E7 /* BLDelegatedView.swift */; };
+		B1ADEC5C1A93824300E817E7 /* BLFileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC4B1A93824300E817E7 /* BLFileHandle.swift */; };
+		B1ADEC5D1A93824300E817E7 /* BLMultiPanelWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC4D1A93824300E817E7 /* BLMultiPanelWindowController.swift */; };
+		B1ADEC5E1A93824300E817E7 /* BLOperationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC4F1A93824300E817E7 /* BLOperationDelegate.swift */; };
+		B1ADEC5F1A93824300E817E7 /* BLTabbedWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC511A93824300E817E7 /* BLTabbedWindowController.swift */; };
+		B1ADEC641A93825D00E817E7 /* BarrelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC601A93825D00E817E7 /* BarrelAPI.swift */; };
+		B1ADEC651A93825D00E817E7 /* BLFileTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC611A93825D00E817E7 /* BLFileTypes.swift */; };
+		B1ADEC661A93825D00E817E7 /* BLInstallerScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC621A93825D00E817E7 /* BLInstallerScan.swift */; };
+		B1ADEC671A93825D00E817E7 /* BLRemoteEngineList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC631A93825D00E817E7 /* BLRemoteEngineList.swift */; };
+		B1ADEC7A1A93827700E817E7 /* NSArray+NSArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC6B1A93827700E817E7 /* NSArray+NSArrayExtensions.swift */; };
+		B1ADEC7B1A93827700E817E7 /* NSImage+NSImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC6C1A93827700E817E7 /* NSImage+NSImageExtensions.swift */; };
+		B1ADEC7C1A93827700E817E7 /* NSPoint+Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC6D1A93827700E817E7 /* NSPoint+Geometry.swift */; };
+		B1ADEC7D1A93827700E817E7 /* NSRect+Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC6E1A93827700E817E7 /* NSRect+Geometry.swift */; };
+		B1ADEC7E1A93827700E817E7 /* NSShadow+BLShadowExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC6F1A93827700E817E7 /* NSShadow+BLShadowExtensions.swift */; };
+		B1ADEC7F1A93827700E817E7 /* NSURL+NSURLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC701A93827700E817E7 /* NSURL+NSURLExtensions.swift */; };
+		B1ADEC801A93827700E817E7 /* NSView+DrawingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC711A93827700E817E7 /* NSView+DrawingHelpers.swift */; };
+		B1ADEC811A93827700E817E7 /* NSWorkspace+BLExecutableTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC721A93827700E817E7 /* NSWorkspace+BLExecutableTypes.swift */; };
+		B1ADEC821A93827700E817E7 /* NSWorkspace+BLFileTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC731A93827700E817E7 /* NSWorkspace+BLFileTypes.swift */; };
+		B1ADEC831A93827700E817E7 /* NSWorkspace+MountedVolumes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC741A93827700E817E7 /* NSWorkspace+MountedVolumes.swift */; };
+		B1ADEC841A93827700E817E7 /* ObjC-Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC761A93827700E817E7 /* ObjC-Helpers.m */; };
+		B1ADEC851A93827700E817E7 /* String+StringAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC771A93827700E817E7 /* String+StringAdditions.swift */; };
+		B1ADEC861A93827700E817E7 /* BLValueTransformers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC791A93827700E817E7 /* BLValueTransformers.swift */; };
+		B1ADEC8A1A93827E00E817E7 /* RegexSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC871A93827E00E817E7 /* RegexSwift.swift */; };
+		B1ADEC8B1A93827E00E817E7 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC891A93827E00E817E7 /* Engine.swift */; };
+		B1D97E6E1A93835E005F4BEF /* RestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D97E6B1A938357005F4BEF /* RestKit.framework */; };
+		B1D97E6F1A93835E005F4BEF /* RestKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B1D97E6B1A938357005F4BEF /* RestKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B1D97E761A938511005F4BEF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D97E751A938511005F4BEF /* SystemConfiguration.framework */; };
+		B1D97E781A938518005F4BEF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D97E771A938518005F4BEF /* Security.framework */; };
+		B1D97E7A1A93851E005F4BEF /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D97E791A93851E005F4BEF /* CoreServices.framework */; };
+		B1D97E7C1A938525005F4BEF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D97E7B1A938525005F4BEF /* CoreData.framework */; };
+		B1D97E821A938D7D005F4BEF /* BLImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D97E811A938D7D005F4BEF /* BLImporter.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B1ADEC201A93470E00E817E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1ADEC071A93470E00E817E7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B1ADEC0E1A93470E00E817E7;
+			remoteInfo = BarrelBundle;
+		};
+		B1D97E661A938357005F4BEF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1D97E5F1A938357005F4BEF /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25160D1614564E810060A5C5;
+			remoteInfo = RestKit;
+		};
+		B1D97E681A938357005F4BEF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1D97E5F1A938357005F4BEF /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25160D2614564E820060A5C5;
+			remoteInfo = RestKitTests;
+		};
+		B1D97E6A1A938357005F4BEF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1D97E5F1A938357005F4BEF /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25160E62145651060060A5C5;
+			remoteInfo = RestKitFramework;
+		};
+		B1D97E6C1A938357005F4BEF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1D97E5F1A938357005F4BEF /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25160E78145651060060A5C5;
+			remoteInfo = RestKitFrameworkTests;
+		};
+		B1D97E701A93835E005F4BEF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1D97E5F1A938357005F4BEF /* RestKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 25160E61145651060060A5C5;
+			remoteInfo = RestKitFramework;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B1ADEC8F1A9382C400E817E7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B1D97E6F1A93835E005F4BEF /* RestKit.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		B1ADEC0F1A93470E00E817E7 /* BarrelBundle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BarrelBundle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1ADEC131A93470E00E817E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B1ADEC141A93470E00E817E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B1ADEC161A93470E00E817E7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B1ADEC191A93470E00E817E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		B1ADEC1F1A93470E00E817E7 /* BarrelBundleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BarrelBundleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1ADEC241A93470E00E817E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B1ADEC251A93470E00E817E7 /* BarrelBundleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarrelBundleTests.swift; sourceTree = "<group>"; };
+		B1ADEC3D1A93824300E817E7 /* BLBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLBackgroundView.swift; sourceTree = "<group>"; };
+		B1ADEC3E1A93824300E817E7 /* BLBlueprintPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLBlueprintPanel.swift; sourceTree = "<group>"; };
+		B1ADEC3F1A93824300E817E7 /* BLImportDropzone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLImportDropzone.swift; sourceTree = "<group>"; };
+		B1ADEC401A93824300E817E7 /* BLImportSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLImportSession.swift; sourceTree = "<group>"; };
+		B1ADEC411A93824300E817E7 /* BLOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLOperation.swift; sourceTree = "<group>"; };
+		B1ADEC431A93824300E817E7 /* BLGamesFolderPanelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLGamesFolderPanelController.swift; sourceTree = "<group>"; };
+		B1ADEC441A93824300E817E7 /* BLPreferencesWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLPreferencesWindowController.swift; sourceTree = "<group>"; };
+		B1ADEC461A93824300E817E7 /* BLSpinningProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLSpinningProgressIndicator.swift; sourceTree = "<group>"; };
+		B1ADEC471A93824300E817E7 /* BLWelcomeButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLWelcomeButtonCell.swift; sourceTree = "<group>"; };
+		B1ADEC491A93824300E817E7 /* BLDelegatedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLDelegatedView.swift; sourceTree = "<group>"; };
+		B1ADEC4B1A93824300E817E7 /* BLFileHandle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLFileHandle.swift; sourceTree = "<group>"; };
+		B1ADEC4D1A93824300E817E7 /* BLMultiPanelWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLMultiPanelWindowController.swift; sourceTree = "<group>"; };
+		B1ADEC4F1A93824300E817E7 /* BLOperationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLOperationDelegate.swift; sourceTree = "<group>"; };
+		B1ADEC511A93824300E817E7 /* BLTabbedWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLTabbedWindowController.swift; sourceTree = "<group>"; };
+		B1ADEC601A93825D00E817E7 /* BarrelAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BarrelAPI.swift; path = ../../BarrelApp/Classes/BarrelAPI.swift; sourceTree = "<group>"; };
+		B1ADEC611A93825D00E817E7 /* BLFileTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLFileTypes.swift; path = ../../BarrelApp/Classes/BLFileTypes.swift; sourceTree = "<group>"; };
+		B1ADEC621A93825D00E817E7 /* BLInstallerScan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLInstallerScan.swift; path = ../../BarrelApp/Classes/BLInstallerScan.swift; sourceTree = "<group>"; };
+		B1ADEC631A93825D00E817E7 /* BLRemoteEngineList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLRemoteEngineList.swift; path = ../../BarrelApp/Classes/BLRemoteEngineList.swift; sourceTree = "<group>"; };
+		B1ADEC6B1A93827700E817E7 /* NSArray+NSArrayExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSArray+NSArrayExtensions.swift"; sourceTree = "<group>"; };
+		B1ADEC6C1A93827700E817E7 /* NSImage+NSImageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSImage+NSImageExtensions.swift"; sourceTree = "<group>"; };
+		B1ADEC6D1A93827700E817E7 /* NSPoint+Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPoint+Geometry.swift"; sourceTree = "<group>"; };
+		B1ADEC6E1A93827700E817E7 /* NSRect+Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRect+Geometry.swift"; sourceTree = "<group>"; };
+		B1ADEC6F1A93827700E817E7 /* NSShadow+BLShadowExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSShadow+BLShadowExtensions.swift"; sourceTree = "<group>"; };
+		B1ADEC701A93827700E817E7 /* NSURL+NSURLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+NSURLExtensions.swift"; sourceTree = "<group>"; };
+		B1ADEC711A93827700E817E7 /* NSView+DrawingHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSView+DrawingHelpers.swift"; sourceTree = "<group>"; };
+		B1ADEC721A93827700E817E7 /* NSWorkspace+BLExecutableTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSWorkspace+BLExecutableTypes.swift"; sourceTree = "<group>"; };
+		B1ADEC731A93827700E817E7 /* NSWorkspace+BLFileTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSWorkspace+BLFileTypes.swift"; sourceTree = "<group>"; };
+		B1ADEC741A93827700E817E7 /* NSWorkspace+MountedVolumes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSWorkspace+MountedVolumes.swift"; sourceTree = "<group>"; };
+		B1ADEC751A93827700E817E7 /* ObjC-Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ObjC-Helpers.h"; sourceTree = "<group>"; };
+		B1ADEC761A93827700E817E7 /* ObjC-Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ObjC-Helpers.m"; sourceTree = "<group>"; };
+		B1ADEC771A93827700E817E7 /* String+StringAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+StringAdditions.swift"; sourceTree = "<group>"; };
+		B1ADEC791A93827700E817E7 /* BLValueTransformers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLValueTransformers.swift; sourceTree = "<group>"; };
+		B1ADEC871A93827E00E817E7 /* RegexSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegexSwift.swift; path = ../RegexSwift.swift; sourceTree = "<group>"; };
+		B1ADEC891A93827E00E817E7 /* Engine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		B1D97E5F1A938357005F4BEF /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = /Users/Thanos/Projects/Barrel/BarrelApp/BarrelApp/BarrelApp/../../RestKit/RestKit.xcodeproj; sourceTree = "<absolute>"; };
+		B1D97E721A9383AE005F4BEF /* BarrelBundle-BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "BarrelBundle-BridgingHeader.h"; path = "BarrelBundle/BarrelBundle-BridgingHeader.h"; sourceTree = "<group>"; };
+		B1D97E751A938511005F4BEF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B1D97E771A938518005F4BEF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		B1D97E791A93851E005F4BEF /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		B1D97E7B1A938525005F4BEF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		B1D97E811A938D7D005F4BEF /* BLImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLImporter.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B1ADEC0C1A93470E00E817E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1D97E7C1A938525005F4BEF /* CoreData.framework in Frameworks */,
+				B1D97E7A1A93851E005F4BEF /* CoreServices.framework in Frameworks */,
+				B1D97E781A938518005F4BEF /* Security.framework in Frameworks */,
+				B1D97E761A938511005F4BEF /* SystemConfiguration.framework in Frameworks */,
+				B1D97E6E1A93835E005F4BEF /* RestKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1ADEC1C1A93470E00E817E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B1ADEC061A93470E00E817E7 = {
+			isa = PBXGroup;
+			children = (
+				B1D97E721A9383AE005F4BEF /* BarrelBundle-BridgingHeader.h */,
+				B1ADEC111A93470E00E817E7 /* BarrelBundle */,
+				B1ADEC221A93470E00E817E7 /* BarrelBundleTests */,
+				B1ADEC101A93470E00E817E7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B1ADEC101A93470E00E817E7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC0F1A93470E00E817E7 /* BarrelBundle.app */,
+				B1ADEC1F1A93470E00E817E7 /* BarrelBundleTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B1ADEC111A93470E00E817E7 /* BarrelBundle */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC911A9382DB00E817E7 /* Frameworks */,
+				B1ADEC6A1A93827700E817E7 /* Extensions */,
+				B1ADEC601A93825D00E817E7 /* BarrelAPI.swift */,
+				B1ADEC611A93825D00E817E7 /* BLFileTypes.swift */,
+				B1ADEC621A93825D00E817E7 /* BLInstallerScan.swift */,
+				B1ADEC631A93825D00E817E7 /* BLRemoteEngineList.swift */,
+				B1ADEC3C1A93824300E817E7 /* SubClasses */,
+				B1ADEC3B1A9347AA00E817E7 /* User Interface */,
+				B1ADEC141A93470E00E817E7 /* AppDelegate.swift */,
+				B1ADEC161A93470E00E817E7 /* Images.xcassets */,
+				B1ADEC121A93470E00E817E7 /* Supporting Files */,
+				B1D97E811A938D7D005F4BEF /* BLImporter.swift */,
+			);
+			path = BarrelBundle;
+			sourceTree = "<group>";
+		};
+		B1ADEC121A93470E00E817E7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC131A93470E00E817E7 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B1ADEC221A93470E00E817E7 /* BarrelBundleTests */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC251A93470E00E817E7 /* BarrelBundleTests.swift */,
+				B1ADEC231A93470E00E817E7 /* Supporting Files */,
+			);
+			path = BarrelBundleTests;
+			sourceTree = "<group>";
+		};
+		B1ADEC231A93470E00E817E7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC241A93470E00E817E7 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B1ADEC3B1A9347AA00E817E7 /* User Interface */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC181A93470E00E817E7 /* MainMenu.xib */,
+			);
+			name = "User Interface";
+			sourceTree = "<group>";
+		};
+		B1ADEC3C1A93824300E817E7 /* SubClasses */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC3D1A93824300E817E7 /* BLBackgroundView.swift */,
+				B1ADEC3E1A93824300E817E7 /* BLBlueprintPanel.swift */,
+				B1ADEC3F1A93824300E817E7 /* BLImportDropzone.swift */,
+				B1ADEC401A93824300E817E7 /* BLImportSession.swift */,
+				B1ADEC411A93824300E817E7 /* BLOperation.swift */,
+				B1ADEC421A93824300E817E7 /* BLPreferences */,
+				B1ADEC451A93824300E817E7 /* BLSpinningProgressIndicator */,
+				B1ADEC471A93824300E817E7 /* BLWelcomeButtonCell.swift */,
+				B1ADEC481A93824300E817E7 /* DelegatedView */,
+				B1ADEC4A1A93824300E817E7 /* Filesystem */,
+				B1ADEC4C1A93824300E817E7 /* MultiPanelWindow */,
+				B1ADEC4E1A93824300E817E7 /* Protocols */,
+				B1ADEC501A93824300E817E7 /* TabbedWindow */,
+			);
+			name = SubClasses;
+			path = ../../BarrelApp/Classes/SubClasses;
+			sourceTree = "<group>";
+		};
+		B1ADEC421A93824300E817E7 /* BLPreferences */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC431A93824300E817E7 /* BLGamesFolderPanelController.swift */,
+				B1ADEC441A93824300E817E7 /* BLPreferencesWindowController.swift */,
+			);
+			path = BLPreferences;
+			sourceTree = "<group>";
+		};
+		B1ADEC451A93824300E817E7 /* BLSpinningProgressIndicator */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC461A93824300E817E7 /* BLSpinningProgressIndicator.swift */,
+			);
+			path = BLSpinningProgressIndicator;
+			sourceTree = "<group>";
+		};
+		B1ADEC481A93824300E817E7 /* DelegatedView */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC491A93824300E817E7 /* BLDelegatedView.swift */,
+			);
+			path = DelegatedView;
+			sourceTree = "<group>";
+		};
+		B1ADEC4A1A93824300E817E7 /* Filesystem */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC4B1A93824300E817E7 /* BLFileHandle.swift */,
+			);
+			path = Filesystem;
+			sourceTree = "<group>";
+		};
+		B1ADEC4C1A93824300E817E7 /* MultiPanelWindow */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC4D1A93824300E817E7 /* BLMultiPanelWindowController.swift */,
+			);
+			path = MultiPanelWindow;
+			sourceTree = "<group>";
+		};
+		B1ADEC4E1A93824300E817E7 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC4F1A93824300E817E7 /* BLOperationDelegate.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B1ADEC501A93824300E817E7 /* TabbedWindow */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC511A93824300E817E7 /* BLTabbedWindowController.swift */,
+			);
+			path = TabbedWindow;
+			sourceTree = "<group>";
+		};
+		B1ADEC6A1A93827700E817E7 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC871A93827E00E817E7 /* RegexSwift.swift */,
+				B1ADEC881A93827E00E817E7 /* RestClasses */,
+				B1ADEC6B1A93827700E817E7 /* NSArray+NSArrayExtensions.swift */,
+				B1ADEC6C1A93827700E817E7 /* NSImage+NSImageExtensions.swift */,
+				B1ADEC6D1A93827700E817E7 /* NSPoint+Geometry.swift */,
+				B1ADEC6E1A93827700E817E7 /* NSRect+Geometry.swift */,
+				B1ADEC6F1A93827700E817E7 /* NSShadow+BLShadowExtensions.swift */,
+				B1ADEC701A93827700E817E7 /* NSURL+NSURLExtensions.swift */,
+				B1ADEC711A93827700E817E7 /* NSView+DrawingHelpers.swift */,
+				B1ADEC721A93827700E817E7 /* NSWorkspace+BLExecutableTypes.swift */,
+				B1ADEC731A93827700E817E7 /* NSWorkspace+BLFileTypes.swift */,
+				B1ADEC741A93827700E817E7 /* NSWorkspace+MountedVolumes.swift */,
+				B1ADEC751A93827700E817E7 /* ObjC-Helpers.h */,
+				B1ADEC761A93827700E817E7 /* ObjC-Helpers.m */,
+				B1ADEC771A93827700E817E7 /* String+StringAdditions.swift */,
+				B1ADEC781A93827700E817E7 /* ValueTransformers */,
+			);
+			name = Extensions;
+			path = ../../BarrelApp/Classes/Extensions;
+			sourceTree = "<group>";
+		};
+		B1ADEC781A93827700E817E7 /* ValueTransformers */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC791A93827700E817E7 /* BLValueTransformers.swift */,
+			);
+			path = ValueTransformers;
+			sourceTree = "<group>";
+		};
+		B1ADEC881A93827E00E817E7 /* RestClasses */ = {
+			isa = PBXGroup;
+			children = (
+				B1ADEC891A93827E00E817E7 /* Engine.swift */,
+			);
+			name = RestClasses;
+			path = ../RestClasses;
+			sourceTree = "<group>";
+		};
+		B1ADEC911A9382DB00E817E7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B1D97E7B1A938525005F4BEF /* CoreData.framework */,
+				B1D97E791A93851E005F4BEF /* CoreServices.framework */,
+				B1D97E771A938518005F4BEF /* Security.framework */,
+				B1D97E751A938511005F4BEF /* SystemConfiguration.framework */,
+				B1D97E5F1A938357005F4BEF /* RestKit.xcodeproj */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B1D97E601A938357005F4BEF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B1D97E671A938357005F4BEF /* libRestKit.a */,
+				B1D97E691A938357005F4BEF /* RestKitTests.xctest */,
+				B1D97E6B1A938357005F4BEF /* RestKit.framework */,
+				B1D97E6D1A938357005F4BEF /* RestKitFrameworkTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B1ADEC0E1A93470E00E817E7 /* BarrelBundle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1ADEC291A93470E00E817E7 /* Build configuration list for PBXNativeTarget "BarrelBundle" */;
+			buildPhases = (
+				B1ADEC0B1A93470E00E817E7 /* Sources */,
+				B1ADEC0C1A93470E00E817E7 /* Frameworks */,
+				B1ADEC0D1A93470E00E817E7 /* Resources */,
+				B1ADEC8F1A9382C400E817E7 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B1D97E711A93835E005F4BEF /* PBXTargetDependency */,
+			);
+			name = BarrelBundle;
+			productName = BarrelBundle;
+			productReference = B1ADEC0F1A93470E00E817E7 /* BarrelBundle.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B1ADEC1E1A93470E00E817E7 /* BarrelBundleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1ADEC2C1A93470E00E817E7 /* Build configuration list for PBXNativeTarget "BarrelBundleTests" */;
+			buildPhases = (
+				B1ADEC1B1A93470E00E817E7 /* Sources */,
+				B1ADEC1C1A93470E00E817E7 /* Frameworks */,
+				B1ADEC1D1A93470E00E817E7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B1ADEC211A93470E00E817E7 /* PBXTargetDependency */,
+			);
+			name = BarrelBundleTests;
+			productName = BarrelBundleTests;
+			productReference = B1ADEC1F1A93470E00E817E7 /* BarrelBundleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B1ADEC071A93470E00E817E7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "AppCake Limited";
+				TargetAttributes = {
+					B1ADEC0E1A93470E00E817E7 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					B1ADEC1E1A93470E00E817E7 = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = B1ADEC0E1A93470E00E817E7;
+					};
+				};
+			};
+			buildConfigurationList = B1ADEC0A1A93470E00E817E7 /* Build configuration list for PBXProject "BarrelBundle" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B1ADEC061A93470E00E817E7;
+			productRefGroup = B1ADEC101A93470E00E817E7 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B1D97E601A938357005F4BEF /* Products */;
+					ProjectRef = B1D97E5F1A938357005F4BEF /* RestKit.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				B1ADEC0E1A93470E00E817E7 /* BarrelBundle */,
+				B1ADEC1E1A93470E00E817E7 /* BarrelBundleTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		B1D97E671A938357005F4BEF /* libRestKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRestKit.a;
+			remoteRef = B1D97E661A938357005F4BEF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B1D97E691A938357005F4BEF /* RestKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RestKitTests.xctest;
+			remoteRef = B1D97E681A938357005F4BEF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B1D97E6B1A938357005F4BEF /* RestKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = RestKit.framework;
+			remoteRef = B1D97E6A1A938357005F4BEF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B1D97E6D1A938357005F4BEF /* RestKitFrameworkTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RestKitFrameworkTests.xctest;
+			remoteRef = B1D97E6C1A938357005F4BEF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B1ADEC0D1A93470E00E817E7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1ADEC171A93470E00E817E7 /* Images.xcassets in Resources */,
+				B1ADEC1A1A93470E00E817E7 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1ADEC1D1A93470E00E817E7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B1ADEC0B1A93470E00E817E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1ADEC571A93824300E817E7 /* BLGamesFolderPanelController.swift in Sources */,
+				B1ADEC7B1A93827700E817E7 /* NSImage+NSImageExtensions.swift in Sources */,
+				B1D97E821A938D7D005F4BEF /* BLImporter.swift in Sources */,
+				B1ADEC551A93824300E817E7 /* BLImportSession.swift in Sources */,
+				B1ADEC7F1A93827700E817E7 /* NSURL+NSURLExtensions.swift in Sources */,
+				B1ADEC671A93825D00E817E7 /* BLRemoteEngineList.swift in Sources */,
+				B1ADEC841A93827700E817E7 /* ObjC-Helpers.m in Sources */,
+				B1ADEC581A93824300E817E7 /* BLPreferencesWindowController.swift in Sources */,
+				B1ADEC811A93827700E817E7 /* NSWorkspace+BLExecutableTypes.swift in Sources */,
+				B1ADEC561A93824300E817E7 /* BLOperation.swift in Sources */,
+				B1ADEC8A1A93827E00E817E7 /* RegexSwift.swift in Sources */,
+				B1ADEC7D1A93827700E817E7 /* NSRect+Geometry.swift in Sources */,
+				B1ADEC7E1A93827700E817E7 /* NSShadow+BLShadowExtensions.swift in Sources */,
+				B1ADEC801A93827700E817E7 /* NSView+DrawingHelpers.swift in Sources */,
+				B1ADEC5A1A93824300E817E7 /* BLWelcomeButtonCell.swift in Sources */,
+				B1ADEC521A93824300E817E7 /* BLBackgroundView.swift in Sources */,
+				B1ADEC861A93827700E817E7 /* BLValueTransformers.swift in Sources */,
+				B1ADEC851A93827700E817E7 /* String+StringAdditions.swift in Sources */,
+				B1ADEC591A93824300E817E7 /* BLSpinningProgressIndicator.swift in Sources */,
+				B1ADEC5F1A93824300E817E7 /* BLTabbedWindowController.swift in Sources */,
+				B1ADEC151A93470E00E817E7 /* AppDelegate.swift in Sources */,
+				B1ADEC5B1A93824300E817E7 /* BLDelegatedView.swift in Sources */,
+				B1ADEC531A93824300E817E7 /* BLBlueprintPanel.swift in Sources */,
+				B1ADEC5E1A93824300E817E7 /* BLOperationDelegate.swift in Sources */,
+				B1ADEC821A93827700E817E7 /* NSWorkspace+BLFileTypes.swift in Sources */,
+				B1ADEC641A93825D00E817E7 /* BarrelAPI.swift in Sources */,
+				B1ADEC831A93827700E817E7 /* NSWorkspace+MountedVolumes.swift in Sources */,
+				B1ADEC541A93824300E817E7 /* BLImportDropzone.swift in Sources */,
+				B1ADEC5D1A93824300E817E7 /* BLMultiPanelWindowController.swift in Sources */,
+				B1ADEC7C1A93827700E817E7 /* NSPoint+Geometry.swift in Sources */,
+				B1ADEC661A93825D00E817E7 /* BLInstallerScan.swift in Sources */,
+				B1ADEC651A93825D00E817E7 /* BLFileTypes.swift in Sources */,
+				B1ADEC5C1A93824300E817E7 /* BLFileHandle.swift in Sources */,
+				B1ADEC7A1A93827700E817E7 /* NSArray+NSArrayExtensions.swift in Sources */,
+				B1ADEC8B1A93827E00E817E7 /* Engine.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1ADEC1B1A93470E00E817E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1ADEC261A93470E00E817E7 /* BarrelBundleTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B1ADEC211A93470E00E817E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B1ADEC0E1A93470E00E817E7 /* BarrelBundle */;
+			targetProxy = B1ADEC201A93470E00E817E7 /* PBXContainerItemProxy */;
+		};
+		B1D97E711A93835E005F4BEF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RestKitFramework;
+			targetProxy = B1D97E701A93835E005F4BEF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B1ADEC181A93470E00E817E7 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B1ADEC191A93470E00E817E7 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B1ADEC271A93470E00E817E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "BarrelBundle/BarrelBundle-BridgingHeader.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B1ADEC281A93470E00E817E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "BarrelBundle/BarrelBundle-BridgingHeader.h";
+			};
+			name = Release;
+		};
+		B1ADEC2A1A93470E00E817E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/Thanos/Projects/Barrel/BarrelApp/RestKit/build/Debug,
+				);
+				INFOPLIST_FILE = BarrelBundle/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BarrelBundle/BarrelBundle-BridgingHeader.h";
+			};
+			name = Debug;
+		};
+		B1ADEC2B1A93470E00E817E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/Thanos/Projects/Barrel/BarrelApp/RestKit/build/Debug,
+				);
+				INFOPLIST_FILE = BarrelBundle/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BarrelBundle/BarrelBundle-BridgingHeader.h";
+			};
+			name = Release;
+		};
+		B1ADEC2D1A93470E00E817E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = BarrelBundleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BarrelBundle.app/Contents/MacOS/BarrelBundle";
+			};
+			name = Debug;
+		};
+		B1ADEC2E1A93470E00E817E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = BarrelBundleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BarrelBundle.app/Contents/MacOS/BarrelBundle";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B1ADEC0A1A93470E00E817E7 /* Build configuration list for PBXProject "BarrelBundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1ADEC271A93470E00E817E7 /* Debug */,
+				B1ADEC281A93470E00E817E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1ADEC291A93470E00E817E7 /* Build configuration list for PBXNativeTarget "BarrelBundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1ADEC2A1A93470E00E817E7 /* Debug */,
+				B1ADEC2B1A93470E00E817E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1ADEC2C1A93470E00E817E7 /* Build configuration list for PBXNativeTarget "BarrelBundleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1ADEC2D1A93470E00E817E7 /* Debug */,
+				B1ADEC2E1A93470E00E817E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B1ADEC071A93470E00E817E7 /* Project object */;
+}
