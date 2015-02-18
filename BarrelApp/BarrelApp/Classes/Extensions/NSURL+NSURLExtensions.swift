@@ -62,4 +62,50 @@ extension NSURL {
         
         return URLs;
     }
+    
+    func pathRelativeToURL(baseURL:NSURL) -> String {
+        let newBaseURL  = baseURL.URLByStandardizingPath;
+        let originalURL = self.URLByStandardizingPath;
+        
+        if (originalURL!.isBasedInURL(baseURL)) {
+            var prefixLength = countElements(baseURL.path!);
+            var originalPath:NSString = originalURL!.path! as NSString;
+            var relativePath:NSString = originalPath.substringFromIndex(prefixLength);
+            
+            if (relativePath.hasPrefix("/")) {
+                relativePath = relativePath.substringFromIndex(1);
+                
+                return relativePath as String;
+            }
+        }
+        else {
+            var components:NSArray      = originalURL!.pathComponents!
+            var baseComponents:NSArray  = baseURL.pathComponents!
+            var numInOriginal:Int       = components.count;
+            var numInBase:Int           = baseComponents.count;
+            var from:Int, upTo:Int      = min(numInBase, numInOriginal);
+            
+            // Skip over any common prefixes
+            for (from = 0; from < upTo; from++) {
+                if ((components.objectAtIndex(from) as String) != (baseComponents.objectAtIndex(from) as String)) {
+                    break;
+                }
+            }
+            
+            var i:Int, stepsBack:Int = (numInBase - from);
+            var relativeComponents:NSMutableArray = NSMutableArray(capacity: (stepsBack + numInOriginal - from));
+            // First, add the steps to get back from the first common directory
+            for (i = 0; i < stepsBack; i++) {
+                relativeComponents.addObject("..");
+            }
+            
+            // Then, add the steps from there to the original path
+            relativeComponents.addObjectsFromArray(components.subarrayWithRange(NSMakeRange(from, numInOriginal - from)));
+            
+            return NSString.pathWithComponents(relativeComponents) as String;
+        }
+        
+        // Apparently, swift is not smart enough to understand that all code paths above DO return a value.
+        return "";
+    }
 }
