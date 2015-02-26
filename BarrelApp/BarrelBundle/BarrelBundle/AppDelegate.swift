@@ -17,6 +17,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var gamesFolderURL:NSURL?
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+        #if DEBUG
+            // Delay the launch so we have time to attach a debugger when testing
+            // from BarrelApp
+            NSThread.sleepForTimeInterval(10);
+        #endif
+        
         // Insert code here to initialize your application
         if (!shouldDisplayMainWindow) {
             self.window.orderOut(self);
@@ -24,6 +30,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Was this launched with any arguments?
         var args:NSArray = NSProcessInfo.processInfo().arguments as NSArray;
+        // Let's decide on what to do in order of importance
+        for arg in args {
+            let argString:String = arg as String;
+            if (argString == "--initPrefix") {
+                BLWineMediator.initWinePrefix();
+            }
+        }
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
