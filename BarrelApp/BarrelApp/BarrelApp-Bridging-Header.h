@@ -6,3 +6,4 @@
 #import <CoreServices/CoreServices.h>
 #import <RestKit/RestKit.h>
 #import "ObjC-Helpers.h"
+#import "SSZipArchive.h"
