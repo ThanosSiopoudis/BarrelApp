@@ -13,4 +13,5 @@ class Engine:NSObject {
     var Created:NSDate = NSDate()
     var Name:String = ""
     var Path:String = ""
+    var isRemote:Bool = true
 }
