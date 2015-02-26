@@ -167,6 +167,12 @@ class BLImportInstallerPanelController: NSViewController, NSOpenSavePanelDelegat
         });
     }
     
+    @IBAction func launchInstaller(sender:AnyObject) {
+        let installerURL:NSURL = self.installerSelector?.selectedItem?.representedObject as NSURL;
+        let engine:Engine = self.engineSelector?.selectedItem?.representedObject as Engine;
+        self.controller?.importer.launchInstallerAtURL(installerURL, withEngine: engine);
+    }
+    
     @IBAction func showInstallerPicker(sender:AnyObject) {
         var openPanel:NSOpenPanel = NSOpenPanel();
         openPanel.delegate = self;
@@ -198,6 +204,7 @@ class BLImportInstallerPanelController: NSViewController, NSOpenSavePanelDelegat
         var lastPathComponent:String! = URL.lastPathComponent;
         localEngine.Name = lastPathComponent.stringByDeletingPathExtension;
         localEngine.Path = URL.path!;
+        localEngine.isRemote = false;
         
         var itemIndex:Int = self.engineSelector!.indexOfItemWithRepresentedObject(URL);
         if (itemIndex != -1) {
