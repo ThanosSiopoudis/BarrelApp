@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class BLImporter:NSObject, BLOperationDelegate {
+class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
     var didMountSourceVolume:Bool = false;
     var sourceURL:NSURL?
     var importWindowController:BLImportWindowController?
@@ -16,6 +16,13 @@ class BLImporter:NSObject, BLOperationDelegate {
     dynamic var installerURLs:NSArray = NSArray();
     dynamic var enginesList:NSArray = NSArray();
     var test:String = "Uninitialised";
+    dynamic var currentImportIsIndeterminate:Bool = true;
+    dynamic var currentImportValue:Int64 = 0;
+    dynamic var currentImportMax:Int64 = 100;
+    dynamic var currentImportAnimate:Bool = false;
+    dynamic var currentStageName:String = "None";
+    var downloadedEngine:NSURL?
+    
     
     // MARK: Enum Types
     enum BLImportStage:Int {
@@ -182,5 +189,155 @@ class BLImporter:NSObject, BLOperationDelegate {
             // We failed, so show a message and go back to waiting for source
             self.importStage = BLImportStage.BLImportWaitingForSource;
         }
+    }
+    
+    func launchInstallerAtURL(URL:NSURL?, withEngine engine:Engine) {
+        // Run some sanity checks
+        assert(URL != nil, "No URL specified");
+        assert(self.sourceURL != nil, "No source URL for the import has been chosen");
+        
+        // If the engine is stored remotely, download it from the remote server
+        if (engine.isRemote) {
+            self.currentImportIsIndeterminate = true;
+            self.currentImportAnimate = true;
+            self.importStage = BLImportStage.BLImportDownloadingEngine;
+            self.downloadSelectedEngine(engine);
+        }
+    }
+    
+    // MARK: - Engine related methods
+    func downloadSelectedEngine(engine:Engine) {
+        // Setup the progress indicators
+        self.currentStageName = "Downloading Engine: \(engine.Name)...";
+        self.currentImportIsIndeterminate = false;
+        self.currentImportAnimate = false;
+        self.currentImportValue = 0;
+        self.currentImportMax = 100;
+        
+        var engineSourceURL:NSURL? = NSURL(string: "http://localhost:3000\(engine.Path)");
+        // Always save our engines in the games URL, under a hidden folder
+        var engineCache:NSURL = AppDelegate.preferredGamesFolderURL().URLByAppendingPathComponent(".engines", isDirectory: true);
+        var engineDownloader:BLFileDownloader = BLFileDownloader(fromURL: engineSourceURL, toURL: engineCache);
+        engineDownloader.didFinishCallback = self.didFinishDownload;
+        
+        self.currentImportMax = engineDownloader.totalBytes;
+        self.currentImportValue = engineDownloader.currentBytes;
+        engineDownloader.startDownoad();
+    }
+    
+    func didFinishDownload(resultCode:Int, downloadedFileURL:NSURL) {
+        if (resultCode == 1) {
+            self.downloadedEngine = downloadedFileURL;
+            // Start recipe download
+            self.downloadRecipe();
+        }
+    }
+    
+    func downloadRecipe() {
+        // Skip recipes for now
+        // TODO: Recipes not implemented
+        
+        self.currentStageName = "Downloading Recipe...";
+        self.currentImportIsIndeterminate = true;
+        self.currentImportAnimate = true;
+        self.importStage = BLImportStage.BLImportDownloadingRecipe;
+        self.downloadSupportingFiles();
+    }
+    
+    func downloadSupportingFiles() {
+        // Skip supporting files
+        // TODO: Supporting Files not implemented
+        
+        self.currentStageName = "Downloading Supporting Files...";
+        self.currentImportIsIndeterminate = true;
+        self.currentImportAnimate = true;
+        self.importStage = BLImportStage.BLImportDownloadingSupportingFiles;
+        self.downloadWinetricks();
+    }
+    
+    func downloadWinetricks() {
+        // Skip Winetricks for now
+        // TODO: Winetricks not implemented
+        
+        self.currentStageName = "Downloading Winetricks...";
+        self.currentImportIsIndeterminate = true;
+        self.currentImportAnimate = true;
+        self.importStage = BLImportStage.BLImportDownloadingWinetricks;
+        self.buildBundleAndRunSetup();
+    }
+    
+    func buildBundleAndRunSetup() {
+        self.currentStageName = "Preparing Bundle...";
+        self.currentImportIsIndeterminate = true;
+        self.currentImportAnimate = true;
+        self.importStage = BLImportStage.BLImportRunningInstaller;
+        
+        // Let's create a copy of our incuded Bundle in the .tmp directory
+        // If the tmp directory exists, clean it up first; we don't want too much junk in there
+        var tempDirURL:NSURL = AppDelegate.preferredGamesFolderURL().URLByAppendingPathComponent(".tmp", isDirectory: true);
+        if (NSFileManager.defaultManager().fileExistsAtPath(tempDirURL.path!)) {
+            var fileArray:NSArray = NSFileManager.defaultManager().contentsOfDirectoryAtURL(tempDirURL, includingPropertiesForKeys: [ NSURLNameKey ], options: NSDirectoryEnumerationOptions.allZeros, error: nil)!;
+            for fURL in fileArray {
+                var fileURL:NSURL = fURL as NSURL;
+                NSFileManager.defaultManager().removeItemAtURL(fileURL, error: nil);
+            }
+        }
+        
+        // TODO: Do some error handling here, in case the copy fails for some reason
+        let bundleTemplateURL:NSURL = NSBundle.mainBundle().resourceURL!.URLByAppendingPathComponent("BarrelBundle.app");
+        NSFileManager.defaultManager().copyItemAtURL(bundleTemplateURL, toURL: tempDirURL.URLByAppendingPathComponent("BarrelBundle.app"), error: nil);
+        let newBundleURL:NSURL = tempDirURL.URLByAppendingPathComponent("BarrelBundle.app");
+        
+        // Now decompress the downloaded engine and included libs in the Frameworks folder
+        // Set the target path URL
+        let frameworksURL = NSBundle(URL: newBundleURL)!.privateFrameworksURL;
+        
+        // Let's setup a new thread
+        let asyncThread:dispatch_queue_t = dispatch_queue_create("uk.co.barrelapp.decompress", DISPATCH_QUEUE_SERIAL);
+        dispatch_async(asyncThread, {() in
+            self.currentStageName = "Extracting Engine archive..."
+            self.currentImportIsIndeterminate = false;
+            self.currentImportAnimate = false;
+            if let dEngine = self.downloadedEngine {
+                var sourcePath:String = dEngine.path!
+                var destinationPath:String = frameworksURL!.path!
+                SSZipArchive.unzipFileAtPath(sourcePath, toDestination: destinationPath, delegate: self);
+            }
+        });
+    }
+    
+    func zipArchiveProgressEvent(loaded: Int, total: Int) {
+        self.currentImportMax = Int64(total);
+        self.currentImportValue = Int64(loaded);
+    }
+    
+    func zipArchiveDidUnzipArchiveAtPath(path: String!, zipInfo: unz_global_info, unzippedPath: String!) {
+        NSLog("Done!");
+        // Now, on the unzipped path we should have the libraries archive.
+        // Decompress it on the spot, then delete the .zip
+        // Which file did we just extract? If it was the main engine bundle, proceed with the libraries
+        if (path.lastPathComponent == self.downloadedEngine!.lastPathComponent!) {
+            self.currentStageName = "Extracting Libraries archive..."
+            let librariesURL:NSURL = NSURL(fileURLWithPath: unzippedPath)!.URLByAppendingPathComponent("libraries.zip");
+            let destinationURL:NSURL = NSURL(fileURLWithPath: unzippedPath)!
+            SSZipArchive.unzipFileAtPath(librariesURL.path!, toDestination: destinationURL.path!, delegate: self);
+        }
+        else if (path.lastPathComponent == "libraries.zip") {
+            // Good to proceed with initialising Wine
+            // First, delete the libraries
+            var tempDirURL:NSURL = AppDelegate.preferredGamesFolderURL().URLByAppendingPathComponent(".tmp", isDirectory: true);
+            let newBundlePath:String = "\(tempDirURL.path!)/BarrelBundle.app";
+            NSFileManager.defaultManager().removeItemAtURL(NSURL(fileURLWithPath: path)!, error: nil);
+            var taskManager:BLTaskManager = BLTaskManager();
+            taskManager.didFinishCommandSelector = "didFinishInitPrefixCommand:";
+            taskManager.startTaskWithCommand(newBundlePath, arguments: [ "--initPrefix" ], observer: self);
+        }
+        else {
+            // What the hell just happened?
+        }
+    }
+    
+    func didFinishInitPrefixCommand(notification:NSNotification) {
+        NSLog("finished???");
     }
 }
