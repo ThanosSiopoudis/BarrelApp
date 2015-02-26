@@ -152,7 +152,7 @@
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
                             <connections>
-                                <action selector="performClose:" target="QvC-M9-y7g" id="cdT-Dw-c1Q"/>
+                                <action selector="launchInstaller:" target="2qD-5j-I6O" id="s7s-4G-XRx"/>
                             </connections>
                         </button>
                     </subviews>
@@ -265,14 +265,6 @@
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8We-Tw-wtS" userLabel="Blueprint Panel" customClass="BLBlueprintPanel" customModule="BarrelApp" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="40" width="480" height="280"/>
                     <subviews>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gIw-6u-onW">
-                            <rect key="frame" x="18" y="179" width="444" height="81"/>
-                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Please wait while Barrel finishes importing your game." id="AXC-uE-dOQ">
-                                <font key="font" size="32" name="AvenirNext-Medium"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                        </textField>
                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MAA-Jn-0W7">
                             <rect key="frame" x="69" y="46" width="342" height="46"/>
                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Follow the installer instructions and any popups to complete the game setup. " id="lNv-nw-nb6">
@@ -283,12 +275,29 @@
                         </textField>
                         <progressIndicator fixedFrame="YES" maxValue="100" indeterminate="YES" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="1kk-LQ-G8V">
                             <rect key="frame" x="71" y="130" width="338" height="20"/>
+                            <connections>
+                                <binding destination="wkq-dd-xi2" name="animate" keyPath="selection.currentImportAnimate" id="S9H-AT-deF"/>
+                                <binding destination="wkq-dd-xi2" name="isIndeterminate" keyPath="selection.currentImportIsIndeterminate" previousBinding="S9H-AT-deF" id="BxS-rF-ysK"/>
+                                <binding destination="wkq-dd-xi2" name="maxValue" keyPath="selection.currentImportMax" id="g6j-PR-IKm"/>
+                                <binding destination="wkq-dd-xi2" name="value" keyPath="selection.currentImportValue" previousBinding="g6j-PR-IKm" id="reO-Ri-xON"/>
+                            </connections>
                         </progressIndicator>
                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aD5-5I-T2y">
                             <rect key="frame" x="69" y="113" width="342" height="23"/>
                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="[Current import stage]" id="9Tl-9S-0Wh">
                                 <font key="font" size="13" name="AvenirNext-Regular"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                            <connections>
+                                <binding destination="wkq-dd-xi2" name="value" keyPath="selection.currentStageName" id="4H5-h0-5eR"/>
+                            </connections>
+                        </textField>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gIw-6u-onW">
+                            <rect key="frame" x="51" y="157" width="370" height="103"/>
+                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Please wait while Barrel imports your game." id="AXC-uE-dOQ">
+                                <font key="font" size="32" name="AvenirNext-Medium"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
@@ -300,6 +309,18 @@
             </connections>
             <point key="canvasLocation" x="103" y="463"/>
         </customView>
-        <customObject id="D60-HX-Xzu" userLabel="Finalizing Panel Controller" customClass="BLFinalizingViewController" customModule="BarrelApp" customModuleProvider="target"/>
+        <customObject id="D60-HX-Xzu" userLabel="Finalizing Panel Controller" customClass="BLFinalizingViewController" customModule="BarrelApp" customModuleProvider="target">
+            <connections>
+                <outlet property="controller" destination="-2" id="xvo-er-KhP"/>
+                <outlet property="titleText" destination="gIw-6u-onW" id="0Kn-DM-htg"/>
+                <outlet property="view" destination="5Ng-6a-bwa" id="8Eq-Mf-W7w"/>
+            </connections>
+        </customObject>
+        <objectController objectClassName="BLImporter" id="wkq-dd-xi2" userLabel="ImportController">
+            <connections>
+                <binding destination="-2" name="contentObject" keyPath="importer" id="k6i-vs-Yqy"/>
+            </connections>
+        </objectController>
+        <userDefaultsController representsSharedInstance="YES" id="Iec-aI-ygj"/>
     </objects>
 </document>
