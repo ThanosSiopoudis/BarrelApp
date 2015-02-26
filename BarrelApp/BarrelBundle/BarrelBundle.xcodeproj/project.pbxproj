@@ -44,6 +44,7 @@
 		B1ADEC861A93827700E817E7 /* BLValueTransformers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC791A93827700E817E7 /* BLValueTransformers.swift */; };
 		B1ADEC8A1A93827E00E817E7 /* RegexSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC871A93827E00E817E7 /* RegexSwift.swift */; };
 		B1ADEC8B1A93827E00E817E7 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC891A93827E00E817E7 /* Engine.swift */; };
+		B1C56C261A9B7CA10010ADEF /* BLWineMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C56C251A9B7CA10010ADEF /* BLWineMediator.swift */; };
 		B1D97E6E1A93835E005F4BEF /* RestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D97E6B1A938357005F4BEF /* RestKit.framework */; };
 		B1D97E6F1A93835E005F4BEF /* RestKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B1D97E6B1A938357005F4BEF /* RestKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B1D97E761A938511005F4BEF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D97E751A938511005F4BEF /* SystemConfiguration.framework */; };
@@ -154,6 +155,7 @@
 		B1ADEC791A93827700E817E7 /* BLValueTransformers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLValueTransformers.swift; sourceTree = "<group>"; };
 		B1ADEC871A93827E00E817E7 /* RegexSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegexSwift.swift; path = ../RegexSwift.swift; sourceTree = "<group>"; };
 		B1ADEC891A93827E00E817E7 /* Engine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		B1C56C251A9B7CA10010ADEF /* BLWineMediator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLWineMediator.swift; sourceTree = "<group>"; };
 		B1D97E5F1A938357005F4BEF /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = /Users/Thanos/Projects/Barrel/BarrelApp/BarrelApp/BarrelApp/../../RestKit/RestKit.xcodeproj; sourceTree = "<absolute>"; };
 		B1D97E721A9383AE005F4BEF /* BarrelBundle-BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "BarrelBundle-BridgingHeader.h"; path = "BarrelBundle/BarrelBundle-BridgingHeader.h"; sourceTree = "<group>"; };
 		B1D97E751A938511005F4BEF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -220,6 +222,7 @@
 				B1ADEC161A93470E00E817E7 /* Images.xcassets */,
 				B1ADEC121A93470E00E817E7 /* Supporting Files */,
 				B1D97E811A938D7D005F4BEF /* BLImporter.swift */,
+				B1C56C251A9B7CA10010ADEF /* BLWineMediator.swift */,
 			);
 			path = BarrelBundle;
 			sourceTree = "<group>";
@@ -546,6 +549,7 @@
 				B1ADEC841A93827700E817E7 /* ObjC-Helpers.m in Sources */,
 				B1ADEC581A93824300E817E7 /* BLPreferencesWindowController.swift in Sources */,
 				B1ADEC811A93827700E817E7 /* NSWorkspace+BLExecutableTypes.swift in Sources */,
+				B1C56C261A9B7CA10010ADEF /* BLWineMediator.swift in Sources */,
 				B1ADEC561A93824300E817E7 /* BLOperation.swift in Sources */,
 				B1ADEC8A1A93827E00E817E7 /* RegexSwift.swift in Sources */,
 				B1ADEC7D1A93827700E817E7 /* NSRect+Geometry.swift in Sources */,
@@ -701,6 +705,7 @@
 				INFOPLIST_FILE = BarrelBundle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BarrelBundle/BarrelBundle-BridgingHeader.h";
 			};
@@ -718,6 +723,7 @@
 				INFOPLIST_FILE = BarrelBundle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BarrelBundle/BarrelBundle-BridgingHeader.h";
 			};
