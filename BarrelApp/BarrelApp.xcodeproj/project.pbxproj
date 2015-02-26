@@ -29,6 +29,7 @@
 		B1326FDF19AF8D2B002B0BD0 /* DropzoneTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B1326FDE19AF8D2B002B0BD0 /* DropzoneTemplate.pdf */; };
 		B1439BD219D3719000C4803E /* BLOperationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1439BD119D3719000C4803E /* BLOperationDelegate.swift */; };
 		B14EDB5119AE17D30054C10A /* BLGameImport.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14EDB5019AE17D30054C10A /* BLGameImport.xib */; };
+		B15D57BE1A9A1D5A001597C8 /* BLFileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D57BD1A9A1D5A001597C8 /* BLFileDownloader.swift */; };
 		B167792119AE4BF900B58B00 /* BLMultiPanelWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B167792019AE4BF900B58B00 /* BLMultiPanelWindowController.swift */; };
 		B167792419AE553800B58B00 /* BLImportWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B167792319AE553800B58B00 /* BLImportWindowController.swift */; };
 		B1794F9219AFF13C00045AA7 /* NSImage+NSImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1794F9119AFF13C00045AA7 /* NSImage+NSImageExtensions.swift */; };
@@ -37,10 +38,18 @@
 		B17D822519ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822419ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift */; };
 		B17D822819ACD26B00638DF9 /* BLValueTransformers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822719ACD26B00638DF9 /* BLValueTransformers.swift */; };
 		B17D822A19ACE81F00638DF9 /* String+StringAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17D822919ACE81F00638DF9 /* String+StringAdditions.swift */; };
+		B19A57781A9B45680048CB5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B19A57771A9B45680048CB5E /* Foundation.framework */; };
 		B19ACDDC19B7C21D00FBB50F /* NSWorkspace+MountedVolumes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19ACDDB19B7C21D00FBB50F /* NSWorkspace+MountedVolumes.swift */; };
+		B19E5B1C1A9C001400CC0F5D /* BLTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19E5B1B1A9C001400CC0F5D /* BLTaskManager.swift */; };
 		B19F87E61A8224BF00432FC8 /* BLImportSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19F87E51A8224BF00432FC8 /* BLImportSession.swift */; };
 		B19F87E81A8234E500432FC8 /* RegexSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19F87E71A8234E500432FC8 /* RegexSwift.swift */; };
 		B1A5CD2A19D1747200D8946B /* BLOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5CD2919D1747200D8946B /* BLOperation.swift */; };
+		B1C56C1A1A9B52D70010ADEF /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = B1C56C101A9B52D70010ADEF /* ioapi.c */; };
+		B1C56C1B1A9B52D70010ADEF /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = B1C56C121A9B52D70010ADEF /* mztools.c */; };
+		B1C56C1C1A9B52D70010ADEF /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = B1C56C141A9B52D70010ADEF /* unzip.c */; };
+		B1C56C1D1A9B52D70010ADEF /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = B1C56C161A9B52D70010ADEF /* zip.c */; };
+		B1C56C1E1A9B52D70010ADEF /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C56C191A9B52D70010ADEF /* SSZipArchive.m */; };
+		B1C56C201A9B53150010ADEF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B1C56C1F1A9B53150010ADEF /* libz.dylib */; };
 		B1D97E5B1A93834B005F4BEF /* RestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D97E581A938346005F4BEF /* RestKit.framework */; };
 		B1D97E5C1A93834B005F4BEF /* RestKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B1D97E581A938346005F4BEF /* RestKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B1E903D319AD07E2002DECC6 /* gamefolder.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1E903D219AD07E2002DECC6 /* gamefolder.icns */; };
@@ -186,6 +195,7 @@
 		B1326FDE19AF8D2B002B0BD0 /* DropzoneTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = DropzoneTemplate.pdf; sourceTree = "<group>"; };
 		B1439BD119D3719000C4803E /* BLOperationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLOperationDelegate.swift; path = Classes/SubClasses/Protocols/BLOperationDelegate.swift; sourceTree = "<group>"; };
 		B14EDB5019AE17D30054C10A /* BLGameImport.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BLGameImport.xib; path = UserInterface/BLGameImport.xib; sourceTree = "<group>"; };
+		B15D57BD1A9A1D5A001597C8 /* BLFileDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLFileDownloader.swift; path = Classes/SubClasses/BLFileDownloader.swift; sourceTree = "<group>"; };
 		B167792019AE4BF900B58B00 /* BLMultiPanelWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLMultiPanelWindowController.swift; path = Classes/SubClasses/MultiPanelWindow/BLMultiPanelWindowController.swift; sourceTree = "<group>"; };
 		B167792319AE553800B58B00 /* BLImportWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLImportWindowController.swift; path = Classes/Controllers/BLImportWindowController.swift; sourceTree = "<group>"; };
 		B1794F9119AFF13C00045AA7 /* NSImage+NSImageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSImage+NSImageExtensions.swift"; path = "Classes/Extensions/NSImage+NSImageExtensions.swift"; sourceTree = "<group>"; };
@@ -194,11 +204,25 @@
 		B17D822419ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSURL+NSURLExtensions.swift"; path = "Classes/Extensions/NSURL+NSURLExtensions.swift"; sourceTree = "<group>"; };
 		B17D822719ACD26B00638DF9 /* BLValueTransformers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLValueTransformers.swift; path = Classes/Extensions/ValueTransformers/BLValueTransformers.swift; sourceTree = "<group>"; };
 		B17D822919ACE81F00638DF9 /* String+StringAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+StringAdditions.swift"; path = "Classes/Extensions/String+StringAdditions.swift"; sourceTree = "<group>"; };
+		B19A57771A9B45680048CB5E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B19ACDDB19B7C21D00FBB50F /* NSWorkspace+MountedVolumes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSWorkspace+MountedVolumes.swift"; path = "Classes/Extensions/NSWorkspace+MountedVolumes.swift"; sourceTree = "<group>"; };
+		B19E5B1B1A9C001400CC0F5D /* BLTaskManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLTaskManager.swift; path = Classes/BLTaskManager.swift; sourceTree = "<group>"; };
 		B19F87E51A8224BF00432FC8 /* BLImportSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLImportSession.swift; path = Classes/SubClasses/BLImportSession.swift; sourceTree = "<group>"; };
 		B19F87E71A8234E500432FC8 /* RegexSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegexSwift.swift; path = Classes/RegexSwift.swift; sourceTree = "<group>"; };
 		B1A5CD2919D1747200D8946B /* BLOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLOperation.swift; path = Classes/SubClasses/BLOperation.swift; sourceTree = "<group>"; };
 		B1ADEC2F1A93470E00E817E7 /* BarrelBundle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BarrelBundle.xcodeproj; path = BarrelBundle/BarrelBundle.xcodeproj; sourceTree = "<group>"; };
+		B1C56C0F1A9B52D70010ADEF /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		B1C56C101A9B52D70010ADEF /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		B1C56C111A9B52D70010ADEF /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		B1C56C121A9B52D70010ADEF /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		B1C56C131A9B52D70010ADEF /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		B1C56C141A9B52D70010ADEF /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		B1C56C151A9B52D70010ADEF /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		B1C56C161A9B52D70010ADEF /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		B1C56C171A9B52D70010ADEF /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		B1C56C181A9B52D70010ADEF /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
+		B1C56C191A9B52D70010ADEF /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
+		B1C56C1F1A9B53150010ADEF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		B1E903D219AD07E2002DECC6 /* gamefolder.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = gamefolder.icns; sourceTree = "<group>"; };
 		B1E92C1419AF31FC00BA47A8 /* BLBlueprintPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLBlueprintPanel.swift; path = Classes/SubClasses/BLBlueprintPanel.swift; sourceTree = "<group>"; };
 		B1E92C1719AF32E600BA47A8 /* BLSpinningProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLSpinningProgressIndicator.swift; path = Classes/SubClasses/BLSpinningProgressIndicator/BLSpinningProgressIndicator.swift; sourceTree = "<group>"; };
@@ -225,6 +249,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1C56C201A9B53150010ADEF /* libz.dylib in Frameworks */,
+				B19A57781A9B45680048CB5E /* Foundation.framework in Frameworks */,
 				B1312E251A8E7FA3005E0587 /* SystemConfiguration.framework in Frameworks */,
 				B1D97E5B1A93834B005F4BEF /* RestKit.framework in Frameworks */,
 				B1312E231A8E7F9A005E0587 /* Security.framework in Frameworks */,
@@ -248,6 +274,7 @@
 			children = (
 				B1EE4A0F19D054F9001BB945 /* BLInstallerScan.swift */,
 				B110214C1A8F768D00900B8B /* BLRemoteEngineList.swift */,
+				B19E5B1B1A9C001400CC0F5D /* BLTaskManager.swift */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -347,7 +374,10 @@
 		B1312E091A8E7E78005E0587 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1C56C0D1A9B52D70010ADEF /* SSZipArchive */,
+				B1C56C1F1A9B53150010ADEF /* libz.dylib */,
 				B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */,
+				B19A57771A9B45680048CB5E /* Foundation.framework */,
 				B1312E241A8E7FA3005E0587 /* SystemConfiguration.framework */,
 				B1312E221A8E7F9A005E0587 /* Security.framework */,
 				B1312E201A8E7F91005E0587 /* CoreServices.framework */,
@@ -392,6 +422,7 @@
 				B167791F19AE4BDB00B58B00 /* MultiPanelWindow */,
 				B1F597FB19AB4DDA00AAF92B /* TabbedWindow */,
 				B1A5CD2919D1747200D8946B /* BLOperation.swift */,
+				B15D57BD1A9A1D5A001597C8 /* BLFileDownloader.swift */,
 			);
 			name = BLToolkit;
 			sourceTree = "<group>";
@@ -439,6 +470,33 @@
 				B1ADEC371A93470F00E817E7 /* BarrelBundleTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B1C56C0D1A9B52D70010ADEF /* SSZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				B1C56C0E1A9B52D70010ADEF /* minizip */,
+				B1C56C181A9B52D70010ADEF /* SSZipArchive.h */,
+				B1C56C191A9B52D70010ADEF /* SSZipArchive.m */,
+			);
+			name = SSZipArchive;
+			path = ../../SSZipArchive/SSZipArchive;
+			sourceTree = "<group>";
+		};
+		B1C56C0E1A9B52D70010ADEF /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				B1C56C0F1A9B52D70010ADEF /* crypt.h */,
+				B1C56C101A9B52D70010ADEF /* ioapi.c */,
+				B1C56C111A9B52D70010ADEF /* ioapi.h */,
+				B1C56C121A9B52D70010ADEF /* mztools.c */,
+				B1C56C131A9B52D70010ADEF /* mztools.h */,
+				B1C56C141A9B52D70010ADEF /* unzip.c */,
+				B1C56C151A9B52D70010ADEF /* unzip.h */,
+				B1C56C161A9B52D70010ADEF /* zip.c */,
+				B1C56C171A9B52D70010ADEF /* zip.h */,
+			);
+			path = minizip;
 			sourceTree = "<group>";
 		};
 		B1D97E4D1A938346005F4BEF /* Products */ = {
@@ -711,6 +769,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1C56C1A1A9B52D70010ADEF /* ioapi.c in Sources */,
 				B11242531A8261E100E6BC5A /* NSWorkspace+BLExecutableTypes.swift in Sources */,
 				B1ED5FA71A93CEB400C565D2 /* BLFinalizingViewController.swift in Sources */,
 				B1107AED19A92F91000D4DEF /* BLBackgroundView.swift in Sources */,
@@ -719,6 +778,7 @@
 				B19F87E61A8224BF00432FC8 /* BLImportSession.swift in Sources */,
 				B1F597FD19AB4DFE00AAF92B /* BLTabbedWindowController.swift in Sources */,
 				B10D409219C30137000D742B /* ObjC-Helpers.m in Sources */,
+				B1C56C1E1A9B52D70010ADEF /* SSZipArchive.m in Sources */,
 				B103108319B7AB45007ACCEB /* BLImporter.swift in Sources */,
 				B19ACDDC19B7C21D00FBB50F /* NSWorkspace+MountedVolumes.swift in Sources */,
 				B17D822A19ACE81F00638DF9 /* String+StringAdditions.swift in Sources */,
@@ -735,6 +795,7 @@
 				B1107AD019A924CE000D4DEF /* AppDelegate.swift in Sources */,
 				B167792419AE553800B58B00 /* BLImportWindowController.swift in Sources */,
 				B1439BD219D3719000C4803E /* BLOperationDelegate.swift in Sources */,
+				B19E5B1C1A9C001400CC0F5D /* BLTaskManager.swift in Sources */,
 				B1E92C1C19AF494F00BA47A8 /* NSPoint+Geometry.swift in Sources */,
 				B19F87E81A8234E500432FC8 /* RegexSwift.swift in Sources */,
 				B11242561A82641900E6BC5A /* BLFileHandle.swift in Sources */,
@@ -746,9 +807,13 @@
 				B1A5CD2A19D1747200D8946B /* BLOperation.swift in Sources */,
 				B1E92C2319AF7C8D00BA47A8 /* BLImportDropzone.swift in Sources */,
 				B103108519B7B056007ACCEB /* BLFileTypes.swift in Sources */,
+				B1C56C1C1A9B52D70010ADEF /* unzip.c in Sources */,
 				B1107ACE19A924CE000D4DEF /* main.swift in Sources */,
 				B167792119AE4BF900B58B00 /* BLMultiPanelWindowController.swift in Sources */,
+				B1C56C1B1A9B52D70010ADEF /* mztools.c in Sources */,
 				B1E92C2119AF7C2000BA47A8 /* BLImportDropzonePanelController.swift in Sources */,
+				B1C56C1D1A9B52D70010ADEF /* zip.c in Sources */,
+				B15D57BE1A9A1D5A001597C8 /* BLFileDownloader.swift in Sources */,
 				B1E92C2519AF8B5F00BA47A8 /* NSRect+Geometry.swift in Sources */,
 				C19104E41A8907210092DFF4 /* NSShadow+BLShadowExtensions.swift in Sources */,
 				B17D822119AC9C4C00638DF9 /* BLGamesFolderPanelController.swift in Sources */,
@@ -880,6 +945,11 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"../**",
+				);
 				INFOPLIST_FILE = BarrelApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -897,6 +967,11 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"../**",
+				);
 				INFOPLIST_FILE = BarrelApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
