@@ -9,4 +9,5 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <CoreServices/CoreServices.h>
 #import <RestKit/RestKit.h>
+#import <Sparkle/Sparkle.h>
 #import "ObjC-Helpers.h"
