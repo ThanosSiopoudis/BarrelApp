@@ -9,27 +9,92 @@
 import Foundation
 import Darwin
 
-class BLWineMediator {
+class BLWineMediator:NSObject {
+    let resourcesURL:NSURL = NSBundle.mainBundle().resourceURL!
+
+    var wineBundlePath:String = NSBundle.mainBundle().privateFrameworksPath! + "/blwine.bundle";
+    var frameworksPath:String = NSBundle.mainBundle().privateFrameworksPath!
+    var winePrefixPath:String = NSBundle.mainBundle().resourcePath!
+    var dyldFallbackPath:String;
+    
+    override init() {
+        self.dyldFallbackPath = "\(self.frameworksPath):\(self.frameworksPath)/blwine.bundle/lib:/usr/lib:/usr/libexec:/usr/lib/system:/opt/X11/lib:/opt/local/lib:/usr/X11/lib:/usr/X11R6/lib";
+        
+        super.init();
+    }
+    
     class func initWinePrefix() {
+        var that:BLWineMediator = BLWineMediator();
+        
         BLWineMediator.makeCustomBundleIDs();
         BLWineMediator.fixWineTempFolder();
-        let wineBundleURL:NSURL = NSBundle.mainBundle().privateFrameworksURL!.URLByAppendingPathComponent("blwine.bundle");
-        let frameworksURL:NSURL = NSBundle.mainBundle().privateFrameworksURL!
-        let resourcesURL:NSURL = NSBundle.mainBundle().resourceURL!
-        // Make sure we escape any empty spaces before we export them to the path environment variable
-        let wineBundlePath:String = wineBundleURL.path!.stringByReplacingOccurrencesOfString(" ", withString: "\\ ", options: NSStringCompareOptions.LiteralSearch, range: nil);
-        let frameworksPath:String = frameworksURL.path!.stringByReplacingOccurrencesOfString(" ", withString: "\\ ", options: NSStringCompareOptions.LiteralSearch, range: nil);
-        let resourcesPath:String = resourcesURL.path!.stringByReplacingOccurrencesOfString(" ", withString: "\\ ", options: NSStringCompareOptions.LiteralSearch, range: nil);
         
+        var script:String = "export WINEDLLOVERRIDES=\"mscoree,mshtml=\";export PATH=\"\(that.wineBundlePath)/bin:\(that.frameworksPath)/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"\(that.winePrefixPath)\";DYLD_FALLBACK_LIBRARY_PATH=\"\(that.dyldFallbackPath)\" wine wineboot > /dev/null 2>&1";
         
-        let dyldFallback:String = "\(frameworksPath):\(frameworksPath)/blwine.bundle/lib:/usr/lib:/usr/libexec:/usr/lib/system:/opt/X11/lib:/opt/local/lib:/usr/X11/lib:/usr/X11R6/lib"
-        var script:String = "export PATH=\"\(wineBundlePath)/bin:\(frameworksPath)/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"\(resourcesPath)\";DYLD_FALLBACK_LIBRARY_PATH=\"\(dyldFallback)\" wine wineboot > \"/dev/null\" 2>&1";
-        
-        var commandResult:String = BLWineMediator.runSystemCommand(script, waitForProcess: true);
+        // Start on a separate thread, to prevent the main app from killing itself
+        let dQueue:dispatch_queue_t = dispatch_queue_create("uk.co.barrelapp.wineserverWatcher", DISPATCH_QUEUE_CONCURRENT);
+        dispatch_async(dQueue, {()
+            ObjC_Helpers.systemCommand(script);
+        });
         BLWineMediator.waitForWineserverToExitForMaximumTime(60);
         
         // Wait for all wine processes to exit gracefully
         NSThread.sleepForTimeInterval(5);
+        
+        // Create a symlink to the C:\ drive
+        NSFileManager.defaultManager().createSymbolicLinkAtPath("\(NSBundle.mainBundle().bundlePath)/drive_c", withDestinationPath: "\(that.winePrefixPath)/drive_c", error: nil);
+        
+        // Use unique enclosed document folders instead of the global ones by default
+        // Remove the symlinks
+        NSFileManager.defaultManager().removeItemAtPath("\(that.winePrefixPath)/drive_c/users/\(NSUserName())/My Documents", error: nil);
+        NSFileManager.defaultManager().removeItemAtPath("\(that.winePrefixPath)/drive_c/users/\(NSUserName())/My Music", error: nil);
+        NSFileManager.defaultManager().removeItemAtPath("\(that.winePrefixPath)/drive_c/users/\(NSUserName())/My Pictures", error: nil);
+        NSFileManager.defaultManager().removeItemAtPath("\(that.winePrefixPath)/drive_c/users/\(NSUserName())/My Videos", error: nil);
+        
+        // ... and create actual directories
+        NSFileManager.defaultManager().createDirectoryAtPath("\(that.winePrefixPath)/drive_c/users/\(NSUserName())/My Documents",
+            withIntermediateDirectories: false,
+            attributes: nil, error: nil);
+        NSFileManager.defaultManager().createDirectoryAtPath("\(that.winePrefixPath)/drive_c/users/\(NSUserName())/My Music",
+            withIntermediateDirectories: false,
+            attributes: nil, error: nil);
+        NSFileManager.defaultManager().createDirectoryAtPath("\(that.winePrefixPath)/drive_c/users/\(NSUserName())/My Pictures",
+            withIntermediateDirectories: false,
+            attributes: nil, error: nil);
+        NSFileManager.defaultManager().createDirectoryAtPath("\(that.winePrefixPath)/drive_c/users/\(NSUserName())/My Videos",
+            withIntermediateDirectories: false,
+            attributes: nil, error: nil);
+        
+        // Finally, make sure access rights are a-ok
+        ObjC_Helpers.systemCommand("chmod -R 777 \(NSBundle.mainBundle().bundlePath)/Contents/*");
+        
+        // Now terminate the app
+        NSApplication.sharedApplication().terminate(nil);
+    }
+    
+    class func executeBinary(path:String, withStart useStart:Bool, waitForExit:Bool) {
+        BLWineMediator.fixWineTempFolder();
+        var that:BLWineMediator = BLWineMediator();
+        
+        let binaryPath:String = path.stringByDeletingLastPathComponent;
+        let binaryName:String = path.lastPathComponent;
+        var script:String = "export PATH=\"\(that.wineBundlePath)/bin:\(that.frameworksPath)/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"\(that.winePrefixPath)\";cd \"\(binaryPath)\";DYLD_FALLBACK_LIBRARY_PATH=\"\(that.dyldFallbackPath)\" wine \"\(binaryName)\" > \"/dev/null\" 2>&1";
+        if (useStart) {
+            script = "export PATH=\"\(that.wineBundlePath)/bin:\(that.frameworksPath)/bin:$PATH:/opt/local/bin:/opt/local/sbin\";export WINEPREFIX=\"\(that.winePrefixPath)\";cd \"\(binaryPath)\";DYLD_FALLBACK_LIBRARY_PATH=\"\(that.dyldFallbackPath)\" wine start /unix \"\(binaryName)\" > \"/dev/null\" 2>&1";
+        }
+        
+        // Start on a separate thread, to prevent the main app from killing itself
+        let dQueue:dispatch_queue_t = dispatch_queue_create("uk.co.barrelapp.wineserverWatcher", DISPATCH_QUEUE_CONCURRENT);
+        dispatch_async(dQueue, {()
+            ObjC_Helpers.systemCommand(script);
+        });
+        
+        if (waitForExit) {
+            BLWineMediator.waitForWineserverToExitForMaximumTime(0);
+            
+            // Wait for all wine processes to exit gracefully
+            NSThread.sleepForTimeInterval(5);
+        }
         
         // Now terminate the app
         NSApplication.sharedApplication().terminate(nil);
@@ -74,23 +139,23 @@ class BLWineMediator {
             wineBash.writeToURL(wineBundleURL.URLByAppendingPathComponent("bin/wine"), atomically: true, encoding: NSUTF8StringEncoding, error: nil);
             wineserverBash.writeToURL(wineBundleURL.URLByAppendingPathComponent("bin/wineserver"), atomically: true, encoding: NSUTF8StringEncoding, error: nil);
             
-            BLWineMediator.runSystemCommand("chmod -R 777 \"\(wineBundleURL.path!)/bin\"", waitForProcess: true);
+            ObjC_Helpers.systemCommand("chmod -R 777 \"\(wineBundleURL.path!)/bin\"");
         }
     }
     
     class func fixWineTempFolder() {
-        // Make sure the /tmp/.wine-uid folder and lock files are correct since Wine is buggy about it
+        // Make sure the /tmp/.wine-uid folder and lock files are correct since Wine complains about it
         var info:NSDictionary = NSFileManager.defaultManager().attributesOfItemAtPath(NSBundle.mainBundle().resourceURL!.path!, error: nil)!;
         var uid:String = "\(getuid())";
         
-        var inode:String = "\(info[NSFileSystemFileNumber]!.longValue)";
-        var deviceID:String = "\(info[NSFileSystemNumber]!.longValue)";
+        var inode:String = String(format: "%lx", info[NSFileSystemFileNumber]!.longValue);
+        var deviceID:String = String(format: "%lx", info[NSFileSystemNumber]!.longValue);
         var pathToWineLockFolder:String = "/tmp/.wine-\(uid)/server-\(deviceID)-\(inode)";
         if (NSFileManager.defaultManager().fileExistsAtPath(pathToWineLockFolder)) {
             NSFileManager.defaultManager().removeItemAtPath(pathToWineLockFolder, error: nil);
         }
         NSFileManager.defaultManager().createDirectoryAtPath(pathToWineLockFolder, withIntermediateDirectories: true, attributes: nil, error: nil);
-        BLWineMediator.runSystemCommand("chmod -R 700 \"/tmp/.wine-\(uid)\"", waitForProcess: true);
+        ObjC_Helpers.systemCommand("chmod -R 700 \"/tmp/.wine-\(uid)\"");
     }
     
     class func bundleWineBinaryNames() -> NSArray {
@@ -101,7 +166,7 @@ class BLWineMediator {
             includingPropertiesForKeys: [ NSURLNameKey ], options: NSDirectoryEnumerationOptions.allZeros, error: nil)!;
         for engineBinFileUnwr in engineBinFiles {
             let engineBinFile:NSURL = engineBinFileUnwr as NSURL;
-            if (engineBinFile.path!.hasPrefix("Barrel")) {
+            if (engineBinFile.path!.lastPathComponent.hasPrefix("Barrel")) {
                 results.addObject(engineBinFile.path!.lastPathComponent);
             }
         }
@@ -109,45 +174,31 @@ class BLWineMediator {
         return results;
     }
     
-    class func waitForWineserverToExitForMaximumTime(seconds:Int) {
+    class func isWineserverRunning(wineserverProcess:String) -> Bool {
+        let running:NSString = ObjC_Helpers.systemCommand("killall -0 \"\(wineserverProcess)\" 2>&1");
+        return running.length < 1;
+    }
+    
+    class func waitForWineserverToExitForMaximumTime(var seconds:Int) {
         // Find out our wine bin names
         let binaryNames:NSArray = BLWineMediator.bundleWineBinaryNames();
         var wineserverName:String = "";
         for binaryname in binaryNames {
             let binary:String = binaryname as String;
-            if (NSString(string: binary).hasSuffix("wineserver")) {
+            if (NSString(string: binary).hasSuffix("Wineserver")) {
                 wineserverName = binary;
             }
         }
         
         NSThread.sleepForTimeInterval(10);
+        if (seconds == 0) {
+            seconds = 31536000; // Wait for one year. Should be enough.
+        }
+        
         for (var i:Int = 0; i < seconds; i++) {
-            var stillRunning:Bool = false;
-            let commandResult:String = BLWineMediator.runSystemCommand("ps -eo pcpu,pid,args | grep \"\(wineserverName)\"", waitForProcess: true);
-            let resultArray:NSArray = NSString(string: commandResult).componentsSeparatedByString(" ");
-            var cleanArray:NSMutableArray = NSMutableArray();
-            for item in resultArray {
-                let rowItem:String = item as String;
-                if (countElements(rowItem) > 0) {
-                    cleanArray.addObject(rowItem);
-                }
-            }
-            
-            if (cleanArray.count > 0) {
-                for (var x:Int = 0; x < cleanArray.count; x++) {
-                    let cleanArrayEntry:String = cleanArray.objectAtIndex(x) as String;
-                    var test:NSString = NSString(string:cleanArrayEntry);
-                    var strRange:NSRange = test.rangeOfString(wineserverName);
-                    var stuckRange:NSRange = test.rangeOfString(")");
-                    var previousObject:NSString = NSString(string: (cleanArray.objectAtIndex(x - 1) as String));
-                    if ((strRange.location != NSNotFound && stuckRange.location != NSNotFound) &&
-                        previousObject.isEqualToString("grep")) {
-                            stillRunning = true;
-                    }
-                }
-            }
-            
+            var stillRunning:Bool = BLWineMediator.isWineserverRunning(wineserverName);
             if (!stillRunning) {
+                NSLog("Wineserver exited.");
                 return;
             }
             NSThread.sleepForTimeInterval(1);
@@ -162,29 +213,12 @@ class BLWineMediator {
         let wineName:String = binaryNames.objectAtIndex(0) as String;
         let wineserverName:String = binaryNames.objectAtIndex(1) as String;
         
-        BLWineMediator.runSystemCommand("killall -9 \"\(wineName)\" > /dev/null 2>&1", waitForProcess: true);
-        BLWineMediator.runSystemCommand("killall -9 \"\(wineserverName)\" > /dev/null 2>&1", waitForProcess: true);
+        ObjC_Helpers.systemCommand("killall -9 \"\(wineName)\" > /dev/null 2>&1");
+        ObjC_Helpers.systemCommand("killall -9 \"\(wineserverName)\" > /dev/null 2>&1");
     }
     
     func didFinishCommand(notification:NSNotification) {
         NSLog("Finished CHModding");
-    }
-    
-    class func runSystemCommand(command:String, waitForProcess shouldWait:Bool) -> String {
-        var returnString:String = "";
-        var fp:UnsafeMutablePointer<FILE>;
-        let bufsize = 512;
-        var buff = UnsafeMutablePointer<Int8>.alloc(bufsize)
-        fp = popen(NSString(string: command).cStringUsingEncoding(NSUTF8StringEncoding), "r");
-        if (shouldWait) {
-            while (fgets(buff, CInt(bufsize), fp) != nil) {
-                returnString += NSString(CString: buff, encoding: NSUTF8StringEncoding)!;
-            }
-            
-            pclose(fp);
-        }
-        
-        return returnString;
     }
     
     class func startTaskWithCommand(command:String, arguments args:NSArray, observer:AnyObject) {
