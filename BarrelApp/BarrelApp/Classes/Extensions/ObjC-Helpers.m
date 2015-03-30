@@ -25,4 +25,38 @@
     return deviceName;
 }
 
++ (NSString *)systemCommand:(NSString *)command {
+    return [ObjC_Helpers systemCommand:command shouldWaitForProcess:YES redirectOutput:NO logOutputToFilePath:nil];
+}
+
++ (NSString *)systemCommand:(NSString *)command shouldWaitForProcess:(BOOL)waitForProcess redirectOutput:(BOOL)redirect logOutputToFilePath:(NSString *)logFilePath
+{
+    FILE *fp;
+    char buff[512];
+    NSMutableString *returnString = [[NSMutableString alloc] init];
+    fp = popen([command cStringUsingEncoding:NSUTF8StringEncoding], "r");
+    if (waitForProcess) {
+        while (fgets( buff, sizeof buff, fp))
+        {
+            [returnString appendString:[NSString stringWithCString:buff encoding:NSUTF8StringEncoding]];
+            if (redirect) {
+                // NSLog(@"%@", [NSString stringWithCString:buff encoding:NSUTF8StringEncoding]);
+                printf("%s", buff);
+            }
+            else if ([logFilePath length] > 0) {
+                NSFileHandle *aFileHandle;
+                NSString *aFile;
+                
+                aFile = [NSString stringWithString:logFilePath];
+                aFileHandle = [NSFileHandle fileHandleForWritingAtPath:aFile];
+                [aFileHandle truncateFileAtOffset:[aFileHandle seekToEndOfFile]];
+                [aFileHandle writeData: [[NSString stringWithCString:buff encoding:NSUTF8StringEncoding] dataUsingEncoding:NSUTF8StringEncoding]];
+            }
+        }
+        pclose(fp);
+        returnString = [NSMutableString stringWithString:[returnString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+    }
+    return [NSString stringWithString:returnString];
+}
+
 @end
