@@ -72,11 +72,13 @@ class BLFileDownloader:NSObject, NSURLConnectionDelegate, NSURLConnectionDataDel
     func connectionDidFinishLoading(connection: NSURLConnection) {
         var error:NSError?
         NSFileManager.defaultManager().createDirectoryAtURL(self.targetURL!, withIntermediateDirectories: true, attributes: nil, error: &error);
-        var filename:String = self.sourceURL!.lastPathComponent!;
-        var finalPathWithFile:NSURL = self.targetURL!.URLByAppendingPathComponent(filename);
-        self.receivedData?.writeToURL(finalPathWithFile, atomically: true);
-        if let closure = self.didFinishCallback {
-            closure(resultCode:1, downloadedFileURL:finalPathWithFile);
+        var fname:String? = self.sourceURL!.lastPathComponent;
+        if let filename = fname {
+            var finalPathWithFile:NSURL = self.targetURL!.URLByAppendingPathComponent(filename);
+            self.receivedData?.writeToURL(finalPathWithFile, atomically: true);
+            if let closure = self.didFinishCallback {
+                closure(resultCode:1, downloadedFileURL:finalPathWithFile);
+            }
         }
     }
 }
