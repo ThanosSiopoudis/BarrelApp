@@ -7,3 +7,6 @@
 [submodule "SSZipArchive"]
 	path = SSZipArchive
 	url = https://github.com/soffes/ssziparchive.git
+[submodule "Sparkle"]
+	path = Sparkle
+	url = https://github.com/sparkle-project/Sparkle.git
