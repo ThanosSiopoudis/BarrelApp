@@ -17,6 +17,8 @@ class BLImportWindowController: BLMutliPanelWindowController {
     var installerPanel:NSView?
     @IBOutlet
     var finalizingPanel:NSView?
+    @IBOutlet
+    var finishedPanel:NSView?
     
     var importer:BLImporter!
     
@@ -72,6 +74,9 @@ class BLImportWindowController: BLMutliPanelWindowController {
              .BLImportDownloadingWinetricks,
              .BLImportRunningInstaller:
             self.currentPanel = self.finalizingPanel;
+            break;
+        case .BLImportFinished:
+            self.currentPanel = self.finishedPanel;
             break;
         default:
             break;
