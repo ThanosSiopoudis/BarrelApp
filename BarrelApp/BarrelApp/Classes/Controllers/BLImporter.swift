@@ -14,6 +14,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
     var importWindowController:BLImportWindowController?
     var scanQueue:NSOperationQueue?
     dynamic var installerURLs:NSArray = NSArray();
+    dynamic var executableURLs:NSArray = NSArray();
     dynamic var enginesList:NSArray = NSArray();
     var test:String = "Uninitialised";
     dynamic var currentImportIsIndeterminate:Bool = true;
@@ -22,7 +23,10 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
     dynamic var currentImportAnimate:Bool = false;
     dynamic var currentStageName:String = "None";
     var downloadedEngine:NSURL?
-    
+    var installerURL:NSURL?
+    var temporaryBundlePath:String?
+    var oldExecutablesList:NSMutableArray?
+    dynamic var detectedGameName:String?
     
     // MARK: Enum Types
     enum BLImportStage:Int {
@@ -195,6 +199,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
         // Run some sanity checks
         assert(URL != nil, "No URL specified");
         assert(self.sourceURL != nil, "No source URL for the import has been chosen");
+        self.installerURL = URL;
         
         // If the engine is stored remotely, download it from the remote server
         if (engine.isRemote) {
@@ -312,32 +317,126 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
     }
     
     func zipArchiveDidUnzipArchiveAtPath(path: String!, zipInfo: unz_global_info, unzippedPath: String!) {
-        NSLog("Done!");
         // Now, on the unzipped path we should have the libraries archive.
         // Decompress it on the spot, then delete the .zip
         // Which file did we just extract? If it was the main engine bundle, proceed with the libraries
-        if (path.lastPathComponent == self.downloadedEngine!.lastPathComponent!) {
+        if (path.lastPathComponent == self.downloadedEngine!.lastPathComponent) {
             self.currentStageName = "Extracting Libraries archive..."
             let librariesURL:NSURL = NSURL(fileURLWithPath: unzippedPath)!.URLByAppendingPathComponent("libraries.zip");
             let destinationURL:NSURL = NSURL(fileURLWithPath: unzippedPath)!
             SSZipArchive.unzipFileAtPath(librariesURL.path!, toDestination: destinationURL.path!, delegate: self);
         }
         else if (path.lastPathComponent == "libraries.zip") {
+            self.currentStageName = "Initialising Wine Prefix..."
+            self.currentImportIsIndeterminate = true;
+            self.currentImportAnimate = true;
+            
             // Good to proceed with initialising Wine
             // First, delete the libraries
             var tempDirURL:NSURL = AppDelegate.preferredGamesFolderURL().URLByAppendingPathComponent(".tmp", isDirectory: true);
             let newBundlePath:String = "\(tempDirURL.path!)/BarrelBundle.app";
+            self.temporaryBundlePath = newBundlePath;
             NSFileManager.defaultManager().removeItemAtURL(NSURL(fileURLWithPath: path)!, error: nil);
             var taskManager:BLTaskManager = BLTaskManager();
-            taskManager.didFinishCommandSelector = "didFinishInitPrefixCommand:";
-            taskManager.startTaskWithCommand(newBundlePath, arguments: [ "--initPrefix" ], observer: self);
+            taskManager.startTaskWithCommand(newBundlePath, arguments: [ "--initPrefix" ], observer: self, self.initPrefixDidFinish);
         }
         else {
             // What the hell just happened?
         }
     }
     
-    func didFinishInitPrefixCommand(notification:NSNotification) {
-        NSLog("finished???");
+    func initPrefixDidFinish(task:NSTask!) {
+        // Our bundle is now ready to start the installation
+        // First, create an array of the executables that exist, so we can compare with the new ones
+        let workspace:NSWorkspace = NSWorkspace();
+        self.oldExecutablesList = NSMutableArray();
+        var enumer:NSDirectoryEnumerator = NSFileManager.defaultManager().enumeratorAtPath("\(self.temporaryBundlePath!)/drive_c")!;
+        while let relativePath = enumer.nextObject() as? String {
+            let relPath:String = relativePath as String;
+            let absPath:String = "\(self.temporaryBundlePath!)/drive_c/\(relPath)";
+            if (!BLImportSession.isIgnoredFileAtPath(relPath)) {
+                var executableTypes:NSSet? = BLFileTypes.executableTypes();
+                if (workspace.file(absPath, matchesTypes: executableTypes!)) {
+                    if (workspace.isCompatibleExecutableAtPath(absPath)) {
+                        self.oldExecutablesList?.addObject(relPath);
+                    }
+                }
+            }
+        }
+        
+        self.currentStageName = "Running Setup..."
+        var taskManager:BLTaskManager = BLTaskManager();
+        taskManager.startTaskWithCommand(self.temporaryBundlePath!, arguments: [ "--runSetup", self.installerURL!.path! ], observer: self, self.setupDidFinish);
+    }
+    
+    func setupDidFinish(task:NSTask!) {
+        // Return to the main thread
+        dispatch_async(dispatch_get_main_queue(), {
+            self.currentStageName = "Scanning for new executables..."
+            self.currentImportIsIndeterminate = true;
+            self.currentImportAnimate = true;
+            
+            // Next step is to scan for executables in the bundle
+            var scan:BLExecutableScan = BLExecutableScan.scanWithBasePath("\(self.temporaryBundlePath!)/drive_c") as BLExecutableScan;
+            scan.delegate = self;
+            scan.didFinishSelector = "executableScanDidFinish:";
+            scan.didFinishClosure = self.executableScanDidFinish;
+            scan.previousExecutablesArray = self.oldExecutablesList;
+            
+            self.scanQueue?.addOperation(scan);
+            self.importStage = BLImportStage.BLImportLoadingSource;
+        });
+    }
+    
+    func executableScanDidFinish(notification:NSNotification) {
+        var scan:BLExecutableScan = notification.object as BLExecutableScan;
+        
+        if (scan.succeeded) {
+            self.sourceURL = NSURL(fileURLWithPath: scan.recommendedSourcePath);
+            self.didMountSourceVolume = false;
+            
+            self.executableURLs = self.sourceURL!.URLsByAppendingPaths(scan.matchingPaths);
+            
+            if (self.executableURLs.count > 0) {
+                // Let's "guess" the game name, by getting the folder in the first
+                // matched executable
+                // Most install in the Program Files folder, but some create a directory with
+                // the company's name. Make sure we get the right one
+                var execURL:NSURL = self.executableURLs.objectAtIndex(0) as NSURL;
+                var execPath:String = execURL.path!
+                // Are we in Program Files?
+                var execPathComponents:NSArray = execPath.pathComponents;
+                let progFilesIdx = execPathComponents.indexOfObject("Program Files")
+                if (progFilesIdx != NSNotFound) {
+                    // We are in ProgFiles
+                    // Create a path to the next component, so we can test if there is only one folder
+                    var gamePath:String = "";
+                    for (var i = 0; i <= progFilesIdx + 1; i++) {
+                        gamePath += execPathComponents.objectAtIndex(i) as String;
+                        if (i > 0) {
+                            gamePath += "/";
+                        }
+                    }
+                    
+                    let pathContents:NSArray = NSFileManager.defaultManager().contentsOfDirectoryAtPath(gamePath, error: nil)!;
+                    if (pathContents.count > 1) {
+                        // We must be in the game directory
+                        // Take the directory name as our temp game name
+                        self.detectedGameName = gamePath.lastPathComponent;
+                    }
+                }
+                
+                // Move the final bundle in our games folder, and get ready to set the settings
+                self.importStage = BLImportStage.BLImportFinished;
+            }
+            else {
+                // We failed, so show a message and go back to waiting for source
+                self.importStage = BLImportStage.BLImportWaitingForSource;
+            }
+        }
+        else {
+            // We failed, so show a message and go back to waiting for source
+            self.importStage = BLImportStage.BLImportWaitingForSource;
+        }
     }
 }
