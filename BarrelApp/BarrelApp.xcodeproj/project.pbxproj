@@ -20,6 +20,8 @@
 		B11242511A825F4100E6BC5A /* NSWorkspace+BLFileTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11242501A825F4100E6BC5A /* NSWorkspace+BLFileTypes.swift */; };
 		B11242531A8261E100E6BC5A /* NSWorkspace+BLExecutableTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11242521A8261E100E6BC5A /* NSWorkspace+BLExecutableTypes.swift */; };
 		B11242561A82641900E6BC5A /* BLFileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11242551A82641900E6BC5A /* BLFileHandle.swift */; };
+		B11EB64C1AC1B3FC002266A7 /* BLImportFinishedPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11EB64B1AC1B3FC002266A7 /* BLImportFinishedPanelController.swift */; };
+		B129E2F01AB379990026D16E /* BLExecutableScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B129E2EF1AB379990026D16E /* BLExecutableScan.swift */; };
 		B1312E1F1A8E7F85005E0587 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1312E1E1A8E7F85005E0587 /* CoreData.framework */; };
 		B1312E211A8E7F91005E0587 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1312E201A8E7F91005E0587 /* CoreServices.framework */; };
 		B1312E231A8E7F9A005E0587 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1312E221A8E7F9A005E0587 /* Security.framework */; };
@@ -72,6 +74,8 @@
 		B1F854051A8F8EBF00BD16E9 /* BLImportInstallerPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F854041A8F8EBF00BD16E9 /* BLImportInstallerPanelController.swift */; };
 		B1F9AA6F19A938BB00259E27 /* BLWelcomeButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9AA6E19A938BB00259E27 /* BLWelcomeButtonCell.swift */; };
 		B1F9AA7219A93AAE00259E27 /* BLWelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9AA7119A93AAE00259E27 /* BLWelcomeViewController.swift */; };
+		B1FE67F31AA72207003371E0 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1FE67CE1AA721C6003371E0 /* Sparkle.framework */; };
+		B1FE67F41AA72207003371E0 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B1FE67CE1AA721C6003371E0 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C19104E41A8907210092DFF4 /* NSShadow+BLShadowExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19104E31A8907210092DFF4 /* NSShadow+BLShadowExtensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -139,6 +143,48 @@
 			remoteGlobalIDString = B1ADEC0E1A93470E00E817E7;
 			remoteInfo = BarrelBundle;
 		};
+		B1FE67CD1AA721C6003371E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1FE67BE1AA721C6003371E0 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = Sparkle;
+		};
+		B1FE67CF1AA721C6003371E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1FE67BE1AA721C6003371E0 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 61B5F90209C4CEE200B25A18;
+			remoteInfo = "Sparkle Test App";
+		};
+		B1FE67D11AA721C6003371E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1FE67BE1AA721C6003371E0 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 612279D90DB5470200AB99EA;
+			remoteInfo = "Sparkle Unit Tests";
+		};
+		B1FE67D31AA721C6003371E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1FE67BE1AA721C6003371E0 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5D06E8D00FD68C7C005AE3F6;
+			remoteInfo = BinaryDelta;
+		};
+		B1FE67D51AA721C6003371E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1FE67BE1AA721C6003371E0 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55C14BB7136EEF1500649790;
+			remoteInfo = Autoupdate;
+		};
+		B1FE67F51AA72208003371E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B1FE67BE1AA721C6003371E0 /* Sparkle.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = Sparkle;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -149,6 +195,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				B1D97E5C1A93834B005F4BEF /* RestKit.framework in Embed Frameworks */,
+				B1FE67F41AA72207003371E0 /* Sparkle.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -185,6 +232,8 @@
 		B11242501A825F4100E6BC5A /* NSWorkspace+BLFileTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSWorkspace+BLFileTypes.swift"; path = "Classes/Extensions/NSWorkspace+BLFileTypes.swift"; sourceTree = "<group>"; };
 		B11242521A8261E100E6BC5A /* NSWorkspace+BLExecutableTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSWorkspace+BLExecutableTypes.swift"; path = "Classes/Extensions/NSWorkspace+BLExecutableTypes.swift"; sourceTree = "<group>"; };
 		B11242551A82641900E6BC5A /* BLFileHandle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLFileHandle.swift; path = Classes/SubClasses/Filesystem/BLFileHandle.swift; sourceTree = "<group>"; };
+		B11EB64B1AC1B3FC002266A7 /* BLImportFinishedPanelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLImportFinishedPanelController.swift; path = Classes/Controllers/BLImportFinishedPanelController.swift; sourceTree = "<group>"; };
+		B129E2EF1AB379990026D16E /* BLExecutableScan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLExecutableScan.swift; path = Classes/BLExecutableScan.swift; sourceTree = "<group>"; };
 		B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = ../../RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
 		B1312E1E1A8E7F85005E0587 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		B1312E201A8E7F91005E0587 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
@@ -241,6 +290,7 @@
 		B1F854041A8F8EBF00BD16E9 /* BLImportInstallerPanelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLImportInstallerPanelController.swift; path = Classes/Controllers/BLImportInstallerPanelController.swift; sourceTree = "<group>"; };
 		B1F9AA6E19A938BB00259E27 /* BLWelcomeButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLWelcomeButtonCell.swift; path = Classes/SubClasses/BLWelcomeButtonCell.swift; sourceTree = "<group>"; };
 		B1F9AA7119A93AAE00259E27 /* BLWelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLWelcomeViewController.swift; path = Classes/Controllers/BLWelcomeViewController.swift; sourceTree = "<group>"; };
+		B1FE67BE1AA721C6003371E0 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		C19104E31A8907210092DFF4 /* NSShadow+BLShadowExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSShadow+BLShadowExtensions.swift"; path = "Classes/Extensions/NSShadow+BLShadowExtensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -256,6 +306,7 @@
 				B1312E231A8E7F9A005E0587 /* Security.framework in Frameworks */,
 				B1312E211A8E7F91005E0587 /* CoreServices.framework in Frameworks */,
 				B1312E1F1A8E7F85005E0587 /* CoreData.framework in Frameworks */,
+				B1FE67F31AA72207003371E0 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +326,7 @@
 				B1EE4A0F19D054F9001BB945 /* BLInstallerScan.swift */,
 				B110214C1A8F768D00900B8B /* BLRemoteEngineList.swift */,
 				B19E5B1B1A9C001400CC0F5D /* BLTaskManager.swift */,
+				B129E2EF1AB379990026D16E /* BLExecutableScan.swift */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -374,6 +426,7 @@
 		B1312E091A8E7E78005E0587 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1FE67BE1AA721C6003371E0 /* Sparkle.xcodeproj */,
 				B1C56C0D1A9B52D70010ADEF /* SSZipArchive */,
 				B1C56C1F1A9B53150010ADEF /* libz.dylib */,
 				B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */,
@@ -443,6 +496,7 @@
 				B103108219B7AB45007ACCEB /* BLImporter.swift */,
 				B1F854041A8F8EBF00BD16E9 /* BLImportInstallerPanelController.swift */,
 				B1ED5FA61A93CEB400C565D2 /* BLFinalizingViewController.swift */,
+				B11EB64B1AC1B3FC002266A7 /* BLImportFinishedPanelController.swift */,
 			);
 			name = "Importer Window";
 			sourceTree = "<group>";
@@ -604,6 +658,18 @@
 			name = Controllers;
 			sourceTree = "<group>";
 		};
+		B1FE67BF1AA721C6003371E0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B1FE67CE1AA721C6003371E0 /* Sparkle.framework */,
+				B1FE67D01AA721C6003371E0 /* Sparkle Test App.app */,
+				B1FE67D21AA721C6003371E0 /* Sparkle Unit Tests.xctest */,
+				B1FE67D41AA721C6003371E0 /* BinaryDelta */,
+				B1FE67D61AA721C6003371E0 /* Autoupdate.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -622,6 +688,7 @@
 			dependencies = (
 				B1D97E5E1A93834B005F4BEF /* PBXTargetDependency */,
 				B1ED5FA01A93C9CE00C565D2 /* PBXTargetDependency */,
+				B1FE67F61AA72208003371E0 /* PBXTargetDependency */,
 			);
 			name = BarrelApp;
 			productName = BarrelApp;
@@ -685,6 +752,10 @@
 					ProductGroup = B1D97E4D1A938346005F4BEF /* Products */;
 					ProjectRef = B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */;
 				},
+				{
+					ProductGroup = B1FE67BF1AA721C6003371E0 /* Products */;
+					ProjectRef = B1FE67BE1AA721C6003371E0 /* Sparkle.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -737,6 +808,41 @@
 			remoteRef = B1D97E591A938346005F4BEF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		B1FE67CE1AA721C6003371E0 /* Sparkle.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Sparkle.framework;
+			remoteRef = B1FE67CD1AA721C6003371E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B1FE67D01AA721C6003371E0 /* Sparkle Test App.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "Sparkle Test App.app";
+			remoteRef = B1FE67CF1AA721C6003371E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B1FE67D21AA721C6003371E0 /* Sparkle Unit Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Sparkle Unit Tests.xctest";
+			remoteRef = B1FE67D11AA721C6003371E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B1FE67D41AA721C6003371E0 /* BinaryDelta */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = BinaryDelta;
+			remoteRef = B1FE67D31AA721C6003371E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B1FE67D61AA721C6003371E0 /* Autoupdate.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Autoupdate.app;
+			remoteRef = B1FE67D51AA721C6003371E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -774,6 +880,7 @@
 				B1ED5FA71A93CEB400C565D2 /* BLFinalizingViewController.swift in Sources */,
 				B1107AED19A92F91000D4DEF /* BLBackgroundView.swift in Sources */,
 				B1EE4A1019D054F9001BB945 /* BLInstallerScan.swift in Sources */,
+				B129E2F01AB379990026D16E /* BLExecutableScan.swift in Sources */,
 				B17D822519ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift in Sources */,
 				B19F87E61A8224BF00432FC8 /* BLImportSession.swift in Sources */,
 				B1F597FD19AB4DFE00AAF92B /* BLTabbedWindowController.swift in Sources */,
@@ -795,6 +902,7 @@
 				B1107AD019A924CE000D4DEF /* AppDelegate.swift in Sources */,
 				B167792419AE553800B58B00 /* BLImportWindowController.swift in Sources */,
 				B1439BD219D3719000C4803E /* BLOperationDelegate.swift in Sources */,
+				B11EB64C1AC1B3FC002266A7 /* BLImportFinishedPanelController.swift in Sources */,
 				B19E5B1C1A9C001400CC0F5D /* BLTaskManager.swift in Sources */,
 				B1E92C1C19AF494F00BA47A8 /* NSPoint+Geometry.swift in Sources */,
 				B19F87E81A8234E500432FC8 /* RegexSwift.swift in Sources */,
@@ -845,6 +953,11 @@
 			isa = PBXTargetDependency;
 			name = BarrelBundle;
 			targetProxy = B1ED5F9F1A93C9CE00C565D2 /* PBXContainerItemProxy */;
+		};
+		B1FE67F61AA72208003371E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Sparkle;
+			targetProxy = B1FE67F51AA72208003371E0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
