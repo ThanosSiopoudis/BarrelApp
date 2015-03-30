@@ -11,9 +11,12 @@ import Foundation
 class BLTaskManager:NSObject {
     var didReceiveStdoutDataSelector:String = "didReceiveStdoutData:";
     var didReceiveStderrDataSelector:String = "didReceiveStderrData:";
-    var didFinishCommandSelector:String     = "didFinishCommang:";
     
     func startTaskWithCommand(command:String, arguments args:NSArray, observer:AnyObject) {
+        self.startTaskWithCommand(command, arguments: args, observer: observer, terminationCallback: nil);
+    }
+    
+    func startTaskWithCommand(command:String, arguments args:NSArray, observer:AnyObject, terminationCallback:((NSTask!) -> Void)?) {
         var task:NSTask = NSTask();
         task.launchPath = command;
         task.arguments = args;
@@ -35,9 +38,6 @@ class BLTaskManager:NSObject {
         if (observer.respondsToSelector(Selector(didReceiveStdoutDataSelector))) {
             NSNotificationCenter.defaultCenter().addObserver(observer, selector: Selector(didReceiveStdoutDataSelector), name: NSFileHandleDataAvailableNotification, object: fhStdout);
         }
-        if (observer.respondsToSelector(Selector(didFinishCommandSelector))) {
-            NSNotificationCenter.defaultCenter().addObserver(observer, selector: Selector(didFinishCommandSelector), name: NSFileHandleReadToEndOfFileCompletionNotification, object: fhStdout);
-        }
         
         var fhStdErr:NSFileHandle = stderr.fileHandleForReading;
         fhStdErr.waitForDataInBackgroundAndNotify();
@@ -45,6 +45,9 @@ class BLTaskManager:NSObject {
             NSNotificationCenter.defaultCenter().addObserver(observer, selector: Selector(didReceiveStderrDataSelector), name: NSFileHandleDataAvailableNotification, object: fhStdErr);
         }
         
+        if (terminationCallback != nil) {
+            task.terminationHandler = terminationCallback;
+        }
         task.launch();
     }
     
