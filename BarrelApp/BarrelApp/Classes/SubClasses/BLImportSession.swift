@@ -15,9 +15,11 @@ class BLImportSession: NSObject, BLOperationDelegate {
             let patterns:[String] = [
                 "(^|/)directx",             // DirectX redistributables
                 "(^|/)acrodos",             // Adobe Acrobat reader (DOS)
+                "(^|/)windows",             // The Windows OS directory
                 "(^|/)acroread\\.exe$",     // Adobe Acrobat reader (Windows)
                 "(^|/)uvconfig\\.exe$",     // UniVBE detection program
                 "(^|/)univbe",              // UniVBE program/redistributable folder
+                "(^|/)_CommonRedist",       // Common Redistributables folder
                 
                 "(^|/)unins000\\.",                 // GOG uninstaller files
                 "(^|/)Graphic mode setup\\.exe$",   // GOG Configiration programs
