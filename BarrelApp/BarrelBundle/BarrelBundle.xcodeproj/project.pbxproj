@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B10BF11E1B658A1F003B4D71 /* BLWinetricksPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10BF11D1B658A1F003B4D71 /* BLWinetricksPanelController.swift */; };
+		B10BF12B1B658D39003B4D71 /* BLFileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10BF12A1B658D39003B4D71 /* BLFileDownloader.swift */; };
 		B15158CC1AAB180D00559FB2 /* BundleConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = B15158CB1AAB180D00559FB2 /* BundleConfiguration.plist */; };
+		B18B04901B15D89C00B22392 /* BLPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = B18B048F1B15D89C00B22392 /* BLPreferences.xib */; };
 		B1ADEC151A93470E00E817E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC141A93470E00E817E7 /* AppDelegate.swift */; };
 		B1ADEC171A93470E00E817E7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1ADEC161A93470E00E817E7 /* Images.xcassets */; };
 		B1ADEC1A1A93470E00E817E7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1ADEC181A93470E00E817E7 /* MainMenu.xib */; };
@@ -168,7 +171,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B10BF11D1B658A1F003B4D71 /* BLWinetricksPanelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLWinetricksPanelController.swift; sourceTree = "<group>"; };
+		B10BF12A1B658D39003B4D71 /* BLFileDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLFileDownloader.swift; path = Network/BLFileDownloader.swift; sourceTree = "<group>"; };
 		B15158CB1AAB180D00559FB2 /* BundleConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BundleConfiguration.plist; sourceTree = "<group>"; };
+		B18B048F1B15D89C00B22392 /* BLPreferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLPreferences.xib; sourceTree = "<group>"; };
 		B1ADEC0F1A93470E00E817E7 /* BarrelBundle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BarrelBundle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1ADEC131A93470E00E817E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1ADEC141A93470E00E817E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -246,6 +252,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B10BF1291B658D1F003B4D71 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				B10BF12A1B658D39003B4D71 /* BLFileDownloader.swift */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
 		B1ADEC061A93470E00E817E7 = {
 			isa = PBXGroup;
 			children = (
@@ -315,6 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				B1ADEC181A93470E00E817E7 /* MainMenu.xib */,
+				B18B048F1B15D89C00B22392 /* BLPreferences.xib */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
@@ -322,6 +337,7 @@
 		B1ADEC3C1A93824300E817E7 /* SubClasses */ = {
 			isa = PBXGroup;
 			children = (
+				B10BF1291B658D1F003B4D71 /* Network */,
 				B1ADEC3D1A93824300E817E7 /* BLBackgroundView.swift */,
 				B1ADEC3E1A93824300E817E7 /* BLBlueprintPanel.swift */,
 				B1ADEC3F1A93824300E817E7 /* BLImportDropzone.swift */,
@@ -345,6 +361,7 @@
 			children = (
 				B1ADEC431A93824300E817E7 /* BLGamesFolderPanelController.swift */,
 				B1ADEC441A93824300E817E7 /* BLPreferencesWindowController.swift */,
+				B10BF11D1B658A1F003B4D71 /* BLWinetricksPanelController.swift */,
 			);
 			path = BLPreferences;
 			sourceTree = "<group>";
@@ -527,6 +544,7 @@
 				TargetAttributes = {
 					B1ADEC0E1A93470E00E817E7 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = J7255X77UZ;
 					};
 					B1ADEC1E1A93470E00E817E7 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -636,6 +654,7 @@
 			files = (
 				B15158CC1AAB180D00559FB2 /* BundleConfiguration.plist in Resources */,
 				B1ADEC171A93470E00E817E7 /* Images.xcassets in Resources */,
+				B18B04901B15D89C00B22392 /* BLPreferences.xib in Resources */,
 				B1ADEC1A1A93470E00E817E7 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -662,6 +681,7 @@
 				B1ADEC671A93825D00E817E7 /* BLRemoteEngineList.swift in Sources */,
 				B1ADEC841A93827700E817E7 /* ObjC-Helpers.m in Sources */,
 				B1ADEC581A93824300E817E7 /* BLPreferencesWindowController.swift in Sources */,
+				B10BF12B1B658D39003B4D71 /* BLFileDownloader.swift in Sources */,
 				B1ADEC811A93827700E817E7 /* NSWorkspace+BLExecutableTypes.swift in Sources */,
 				B1C56C261A9B7CA10010ADEF /* BLWineMediator.swift in Sources */,
 				B1ADEC561A93824300E817E7 /* BLOperation.swift in Sources */,
@@ -670,6 +690,7 @@
 				B1ADEC7E1A93827700E817E7 /* NSShadow+BLShadowExtensions.swift in Sources */,
 				B1ADEC801A93827700E817E7 /* NSView+DrawingHelpers.swift in Sources */,
 				B1ADEC5A1A93824300E817E7 /* BLWelcomeButtonCell.swift in Sources */,
+				B10BF11E1B658A1F003B4D71 /* BLWinetricksPanelController.swift in Sources */,
 				B1ADEC521A93824300E817E7 /* BLBackgroundView.swift in Sources */,
 				B1ADEC861A93827700E817E7 /* BLValueTransformers.swift in Sources */,
 				B1ADEC851A93827700E817E7 /* String+StringAdditions.swift in Sources */,
@@ -816,6 +837,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -835,6 +857,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

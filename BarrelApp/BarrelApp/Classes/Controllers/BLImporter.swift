@@ -27,6 +27,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
     var temporaryBundlePath:String?
     var oldExecutablesList:NSMutableArray?
     dynamic var detectedGameName:String?
+    var finalURL:NSURL?
     
     // MARK: Enum Types
     enum BLImportStage:Int {
@@ -47,6 +48,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
         case BLImportDownloadingSupportingFiles = 14
         case BLImportCleaningUp = 15
         case BLImportFinished = 16
+        case BLImportAllDone = 17
     }
     
     enum BLSourceFileImportType {
@@ -129,7 +131,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
         }
         
         self.sourceURL = prefferedURL;
-        var scan:BLInstallerScan = BLInstallerScan.scanWithBasePath(prefferedURL!.path!) as BLInstallerScan;
+        var scan:BLInstallerScan = BLInstallerScan.scanWithBasePath(prefferedURL!.path!) as! BLInstallerScan;
         scan.delegate = self;
         scan.didFinishSelector = "installerScanDidFinish:";
         scan.didFinishClosure = self.installerScanDidFinish;
@@ -146,7 +148,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
     }
     
     func installerScanDidFinish(notification:NSNotification) {
-        var scan:BLInstallerScan = notification.object as BLInstallerScan;
+        var scan:BLInstallerScan = notification.object as! BLInstallerScan;
         
         if (scan.succeeded) {
             self.sourceURL = NSURL(fileURLWithPath: scan.recommendedSourcePath);
@@ -176,7 +178,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
     }
     
     func fetchEnginesDidFinish(notification:NSNotification) {
-        var fetchEngines:BLRemoteEngineList = notification.object as BLRemoteEngineList;
+        var fetchEngines:BLRemoteEngineList = notification.object as! BLRemoteEngineList;
         
         if (fetchEngines.succeeded) {
             if let detectedEngines = fetchEngines.engineList {
@@ -283,7 +285,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
         if (NSFileManager.defaultManager().fileExistsAtPath(tempDirURL.path!)) {
             var fileArray:NSArray = NSFileManager.defaultManager().contentsOfDirectoryAtURL(tempDirURL, includingPropertiesForKeys: [ NSURLNameKey ], options: NSDirectoryEnumerationOptions.allZeros, error: nil)!;
             for fURL in fileArray {
-                var fileURL:NSURL = fURL as NSURL;
+                var fileURL:NSURL = fURL as! NSURL;
                 NSFileManager.defaultManager().removeItemAtURL(fileURL, error: nil);
             }
         }
@@ -311,7 +313,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
         });
     }
     
-    func zipArchiveProgressEvent(loaded: Int, total: Int) {
+    func zipArchiveProgressEvent(loaded: UInt64, total: UInt64) {
         self.currentImportMax = Int64(total);
         self.currentImportValue = Int64(loaded);
     }
@@ -338,7 +340,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
             self.temporaryBundlePath = newBundlePath;
             NSFileManager.defaultManager().removeItemAtURL(NSURL(fileURLWithPath: path)!, error: nil);
             var taskManager:BLTaskManager = BLTaskManager();
-            taskManager.startTaskWithCommand(newBundlePath, arguments: [ "--initPrefix" ], observer: self, self.initPrefixDidFinish);
+            taskManager.startTaskWithCommand(newBundlePath, arguments: [ "--initPrefix" ], observer: self, terminationCallback: self.initPrefixDidFinish);
         }
         else {
             // What the hell just happened?
@@ -366,7 +368,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
         
         self.currentStageName = "Running Setup..."
         var taskManager:BLTaskManager = BLTaskManager();
-        taskManager.startTaskWithCommand(self.temporaryBundlePath!, arguments: [ "--runSetup", self.installerURL!.path! ], observer: self, self.setupDidFinish);
+        taskManager.startTaskWithCommand(self.temporaryBundlePath!, arguments: [ "--runSetup", self.installerURL!.path! ], observer: self, terminationCallback: self.setupDidFinish);
     }
     
     func setupDidFinish(task:NSTask!) {
@@ -377,7 +379,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
             self.currentImportAnimate = true;
             
             // Next step is to scan for executables in the bundle
-            var scan:BLExecutableScan = BLExecutableScan.scanWithBasePath("\(self.temporaryBundlePath!)/drive_c") as BLExecutableScan;
+            var scan:BLExecutableScan = BLExecutableScan.scanWithBasePath("\(self.temporaryBundlePath!)/drive_c") as! BLExecutableScan;
             scan.delegate = self;
             scan.didFinishSelector = "executableScanDidFinish:";
             scan.didFinishClosure = self.executableScanDidFinish;
@@ -389,7 +391,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
     }
     
     func executableScanDidFinish(notification:NSNotification) {
-        var scan:BLExecutableScan = notification.object as BLExecutableScan;
+        var scan:BLExecutableScan = notification.object as! BLExecutableScan;
         
         if (scan.succeeded) {
             self.sourceURL = NSURL(fileURLWithPath: scan.recommendedSourcePath);
@@ -402,17 +404,21 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
                 // matched executable
                 // Most install in the Program Files folder, but some create a directory with
                 // the company's name. Make sure we get the right one
-                var execURL:NSURL = self.executableURLs.objectAtIndex(0) as NSURL;
+                var execURL:NSURL = self.executableURLs.objectAtIndex(0) as! NSURL;
                 var execPath:String = execURL.path!
                 // Are we in Program Files?
                 var execPathComponents:NSArray = execPath.pathComponents;
-                let progFilesIdx = execPathComponents.indexOfObject("Program Files")
+                var progFilesIdx = execPathComponents.indexOfObject("Program Files");
+                if (progFilesIdx == NSNotFound) {
+                    // Maybe it's Wine64?
+                    progFilesIdx = execPathComponents.indexOfObject("Program Files (x86)")
+                }
                 if (progFilesIdx != NSNotFound) {
                     // We are in ProgFiles
                     // Create a path to the next component, so we can test if there is only one folder
                     var gamePath:String = "";
                     for (var i = 0; i <= progFilesIdx + 1; i++) {
-                        gamePath += execPathComponents.objectAtIndex(i) as String;
+                        gamePath += execPathComponents.objectAtIndex(i) as! String;
                         if (i > 0) {
                             gamePath += "/";
                         }
@@ -426,7 +432,6 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
                     }
                 }
                 
-                // Move the final bundle in our games folder, and get ready to set the settings
                 self.importStage = BLImportStage.BLImportFinished;
             }
             else {

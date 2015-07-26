@@ -27,7 +27,7 @@ class BLOperation: NSOperation {
     
     var contextInfo:AnyObject?
     var notifiesOnMainThread:Bool!
-    var isCancelled:Bool = false;
+    var isOperationCancelled:Bool = false;
     var delegate:BLOperationDelegate?
     var manuallyHandleFinish:Bool = false;
     
@@ -72,7 +72,7 @@ class BLOperation: NSOperation {
     }
     
     func sendWillStartNotificationWithInfo(info:NSDictionary?) {
-        if (self.isCancelled) { return; }
+        if (self.isOperationCancelled) { return; }
         
         self.postNotificationWithName(BLOperationWillStart, delegateSelector: self.willStartSelector!, eClosure: self.willStartClosure, userInfo: info);
     }
@@ -91,14 +91,14 @@ class BLOperation: NSOperation {
                                                                     self.succeeded, BLOperationSuccessKey,
                                                                     errValue!, BLOperationErrorKey);
         if let uInfo = info {
-            finishInfo.addEntriesFromDictionary(uInfo);
+            finishInfo.addEntriesFromDictionary(uInfo as [NSObject : AnyObject]);
         }
         
         self.postNotificationWithName(BLOperationDidFinish, delegateSelector: self.didFinishSelector!, eClosure: self.didFinishClosure, userInfo: finishInfo);
     }
     
     func sendInProgressNotificationWithInfo(info:NSDictionary?) {
-        if (self.isCancelled) {
+        if (self.isOperationCancelled) {
             return;
         }
         
@@ -106,7 +106,7 @@ class BLOperation: NSOperation {
                                                                     self.currentProgress!, BLOperationProgressKey,
                                                                     self.isIndeterminate, BLOperationIndeterminateKey);
         if let passedInfo = info {
-            progressInfo.addEntriesFromDictionary(passedInfo);
+            progressInfo.addEntriesFromDictionary(passedInfo as [NSObject : AnyObject]);
         }
         
         self.postNotificationWithName(BLOperationInProgress, delegateSelector: self.inProgressSelector!, eClosure: self.inProgressClosure, userInfo: info);
@@ -118,13 +118,13 @@ class BLOperation: NSOperation {
             var contextDict:NSMutableDictionary = NSMutableDictionary(object: cInfo, forKey: BLOperationContextInfoKey);
             
             if let uInfo = userInfo {
-                contextDict.addEntriesFromDictionary(uInfo);
+                contextDict.addEntriesFromDictionary(uInfo as [NSObject : AnyObject]);
             }
             userInfo = contextDict;
         }
         
         var notificationCenter:NSNotificationCenter = NSNotificationCenter.defaultCenter();
-        var notification = NSNotification(name: name, object: self, userInfo: userInfo);
+        var notification = NSNotification(name: name, object: self, userInfo: userInfo as? [NSObject: AnyObject]);
         
         if let delegateClosure = eClosure {
             if (self.notifiesOnMainThread == true) {

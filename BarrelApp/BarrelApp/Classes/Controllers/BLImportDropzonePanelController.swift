@@ -32,7 +32,7 @@ class BLImportDropzonePanelController : NSViewController, NSOpenSavePanelDelegat
         textParagraph.alignment = NSTextAlignment.CenterTextAlignment;
         
         var attrDict:NSDictionary = NSDictionary(objectsAndKeys: theFont, NSFontAttributeName, textColour, NSForegroundColorAttributeName, textParagraph, NSParagraphStyleAttributeName);
-        var attrString:NSAttributedString = NSAttributedString(string: title, attributes: attrDict);
+        var attrString:NSAttributedString = NSAttributedString(string: title, attributes: attrDict as [NSObject : AnyObject]);
         self.progressText?.attributedStringValue = attrString;
     }
     
@@ -61,8 +61,8 @@ class BLImportDropzonePanelController : NSViewController, NSOpenSavePanelDelegat
         var pboard:NSPasteboard = sender.draggingPasteboard();
         var dragClasses:NSArray = [NSURL.self];
         var dragOptions:NSDictionary = [NSPasteboardURLReadingFileURLsOnlyKey : true];
-        if (pboard.canReadObjectForClasses(dragClasses, options: dragOptions)) {
-            var droppedURLs:NSArray = pboard.readObjectsForClasses(dragClasses, options: dragOptions)!;
+        if (pboard.canReadObjectForClasses(dragClasses as [AnyObject], options: dragOptions as [NSObject : AnyObject])) {
+            var droppedURLs:NSArray = pboard.readObjectsForClasses(dragClasses as [AnyObject], options: dragOptions as [NSObject : AnyObject])!;
             for URL in droppedURLs {
                 // check if the importer cannot import from source URL
                 // return NSDragOperation.None;

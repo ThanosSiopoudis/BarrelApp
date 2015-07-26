@@ -23,7 +23,7 @@ class BLFinalizingViewController: NSViewController {
         textParagraph.alignment = NSTextAlignment.CenterTextAlignment;
         
         var attrDict:NSDictionary = NSDictionary(objectsAndKeys: theFont, NSFontAttributeName, textColour, NSForegroundColorAttributeName, textParagraph, NSParagraphStyleAttributeName);
-        var attrString:NSAttributedString = NSAttributedString(string: title, attributes: attrDict);
+        var attrString:NSAttributedString = NSAttributedString(string: title, attributes: attrDict as [NSObject : AnyObject]);
         self.titleText!.attributedStringValue = attrString;
     }
 }

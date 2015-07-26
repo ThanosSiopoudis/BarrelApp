@@ -38,7 +38,7 @@ class BLSpinningProgressIndicator : NSView {
         }
         set {
             if (self.foreColour != newValue) {
-                self.foreColour = newValue?.copy() as NSColor;
+                self.foreColour = newValue?.copy() as! NSColor;
                 self.needsDisplay = true;
             }
         }
@@ -101,7 +101,7 @@ class BLSpinningProgressIndicator : NSView {
     var numFins:Int = 12;
     var isFadingOut:Bool = false;
     var currentValue:Double = 0.0;
-    var foreColour:NSColor = NSColor.blackColor().copy() as NSColor;
+    var foreColour:NSColor = NSColor.blackColor().copy() as! NSColor;
     var backColour:NSColor?
     var animationThread:NSThread?
     var animationTimer:NSTimer?

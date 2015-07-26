@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6206.8" systemVersion="14A329f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6206.8"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="BLPreferencesWindowController" customModule="BarrelApp" customModuleProvider="target">
@@ -53,12 +54,12 @@
                                                 </button>
                                                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wCl-7D-HdZ">
                                                     <rect key="frame" x="205" y="107" width="328" height="26"/>
-                                                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="nxM-0D-nrt">
+                                                    <popUpButtonCell key="cell" type="push" title="(No folder specified)" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="RHI-Ai-BPN" id="nxM-0D-nrt">
                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="menu"/>
                                                         <menu key="menu" title="OtherViews" id="yxB-Im-s7a">
                                                             <items>
-                                                                <menuItem title="(No folder specified)" id="RHI-Ai-BPN"/>
+                                                                <menuItem title="(No folder specified)" state="on" id="RHI-Ai-BPN"/>
                                                                 <menuItem isSeparatorItem="YES" id="B6A-Qt-KLQ"/>
                                                                 <menuItem title="Other…" id="uAS-ei-r6i">
                                                                     <connections>
@@ -164,7 +165,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="VpU-UL-jqg"/>
             </connections>
-            <point key="canvasLocation" x="240" y="418"/>
+            <point key="canvasLocation" x="278" y="397"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="TEt-I2-b5e"/>
     </objects>

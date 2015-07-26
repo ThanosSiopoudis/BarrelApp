@@ -61,7 +61,7 @@ class BLFileDownloader:NSObject, NSURLConnectionDelegate, NSURLConnectionDataDel
     }
     
     func connection(connection: NSURLConnection, didFailWithError error: NSError) {
-        // Throw some kind of error
+        // FIXME: Throw some kind of error
         return;
     }
     

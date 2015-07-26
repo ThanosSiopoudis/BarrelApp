@@ -10,7 +10,7 @@ import Foundation
 
 extension String {
     func fullPathComponents() -> NSArray {
-        if (countElements(self) < 1) {
+        if (count(self) < 1) {
             return NSArray();
         }
 
@@ -22,7 +22,7 @@ extension String {
             paths.addObject(path);
             path = path.stringByDeletingLastPathComponent;
         }
-        while (countElements(path) > 0 && path != rootPath);
+        while (count(path) > 0 && path != rootPath);
 
         // Reverse the array to put the components back in their original order
         var reverse:NSArray = paths.reverseObjectEnumerator().allObjects;

@@ -18,16 +18,16 @@ extension NSWorkspace {
         var fileType:String? = self.typeOfFile(filePath, error: nil);
         if let ft = fileType {
             for acceptedType in acceptedTypes {
-                if (self.type(ft, conformsToType: acceptedType as String) == true) {
+                if (self.type(ft, conformsToType: acceptedType as! String) == true) {
                     return true;
                 }
             }
         }
         
         var fileExtension:String = filePath.pathExtension;
-        if (countElements(fileExtension) > 0) {
+        if (count(fileExtension) > 0) {
             for acceptedType in acceptedTypes {
-                if (self.filenameExtension(fileExtension, isValidForType: acceptedType as String)) {
+                if (self.filenameExtension(fileExtension, isValidForType: acceptedType as! String)) {
                     return true;
                 }
             }
@@ -60,7 +60,7 @@ extension NSWorkspace {
         var volumeURLs:NSArray = self.mountedVolumeURLsIncludingHidden(hidden);
         var matches:NSMutableArray = NSMutableArray(capacity: 5);
         for volumeURL in volumeURLs {
-            var volumeType:String = self.typeOfVolumeAtURL(volumeURL as? NSURL)!;
+            var volumeType:String = self.typeOfVolumeAtURL(volumeURL as? NSURL)! as String;
             if (volumeType == requiredType!) {
                 matches.addObject(volumeURL);
             }
@@ -74,7 +74,7 @@ extension NSWorkspace {
         var dataVolumes:NSArray = self.mountedVolumeURLSOfType(BLDataCDVolumeType, hidden: true);
         
         for dataVolumeURL in dataVolumes {
-            var dataDeviceName:String = ObjC_Helpers.BSDDeviceNameForVolumeAtURL(dataVolumeURL as NSURL);
+            var dataDeviceName:String = ObjC_Helpers.BSDDeviceNameForVolumeAtURL(dataVolumeURL as! NSURL);
             if (dataDeviceName.hasPrefix(audioDeviceName)) {
                 return dataVolumeURL as? NSURL;
             }

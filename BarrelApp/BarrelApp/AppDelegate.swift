@@ -81,7 +81,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         super.init();
     }
     
-    func applicationWillFinishLaunching(notification: NSNotification!) {
+    func applicationWillFinishLaunching(notification: NSNotification) {
         if (self.gamesFolderURL == nil && self.gamesFolderChosen() == false) {
             var defaultURL:NSURL = AppDelegate.preferredGamesFolderURL();
             var nilError:NSError? = nil;
@@ -91,10 +91,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     class func prepareValueTransformers() {
         let pathTransformer:BLIconifiedDisplayPathTransformer = BLIconifiedDisplayPathTransformer(joiner: " ▸ ", ellipsis: "",  maxComponents: 0);
-        pathTransformer.missingFileIcon = NSImage(named: "gamefolder");
+        pathTransformer.missingFileIcon = NSImage(named: "noIcon");
         pathTransformer.hidesSystemRoots = true;
         
-        var pathStyle:NSMutableParagraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy() as NSMutableParagraphStyle;
+        var pathStyle:NSMutableParagraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle;
         pathStyle.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle;
         pathTransformer.textAttributes?.setObject(pathStyle, forKey: NSParagraphStyleAttributeName);
         NSValueTransformer.setValueTransformer(pathTransformer, forName: "BLIconifiedGamesFolderPath");
@@ -102,7 +102,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // MARK: - Type Methods
     class func preferredGamesFolderURL() -> NSURL {
-        return self.commonGamesFolderURLs()[0] as NSURL;
+        return self.commonGamesFolderURLs()[0] as! NSURL;
     }
     
     class func commonGamesFolderURLs() -> NSArray {
@@ -113,15 +113,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             var manager:NSFileManager = NSFileManager.defaultManager();
             
             var homeURL:NSURL = NSURL(fileURLWithPath: NSHomeDirectory())!;
-            var docsURL:NSURL = manager.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask)[0] as NSURL;
-            var userAppURL:NSURL = manager.URLsForDirectory(NSSearchPathDirectory.ApplicationDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask)[0] as NSURL;
-            var appURL:NSURL = manager.URLsForDirectory(NSSearchPathDirectory.ApplicationDirectory, inDomains: NSSearchPathDomainMask.LocalDomainMask)[0] as NSURL;
+            var docsURL:NSURL = manager.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask)[0] as! NSURL;
+            var userAppURL:NSURL = manager.URLsForDirectory(NSSearchPathDirectory.ApplicationDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask)[0] as! NSURL;
+            var appURL:NSURL = manager.URLsForDirectory(NSSearchPathDirectory.ApplicationDirectory, inDomains: NSSearchPathDomainMask.LocalDomainMask)[0] as! NSURL;
             
             URLs = [
-                homeURL.URLByAppendingPathComponent(defaultName),
-                docsURL.URLByAppendingPathComponent(defaultName),
-                userAppURL.URLByAppendingPathComponent(defaultName),
-                appURL.URLByAppendingPathComponent(defaultName)
+                homeURL.URLByAppendingPathComponent(defaultName as String),
+                docsURL.URLByAppendingPathComponent(defaultName as String),
+                userAppURL.URLByAppendingPathComponent(defaultName as String),
+                appURL.URLByAppendingPathComponent(defaultName as String)
             ];
         });
         
@@ -150,7 +150,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             for var i = 0; i < NUM_DIRS; i++ {
                 var searchURLs:NSArray = manager.URLsForDirectory(reservedDirs[i], inDomains: NSSearchPathDomainMask.AllDomainsMask);
-                reservedURLs?.addObjectsFromArray(searchURLs);
+                reservedURLs?.addObjectsFromArray(searchURLs as [AnyObject]);
             }
         });
         
@@ -268,7 +268,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         var safeURLs:NSMutableArray = NSMutableArray(capacity: URLs.count);
         for val in URLs {
-            let URL:NSURL = val as NSURL;
+            let URL:NSURL = val as! NSURL;
             if (URL.checkResourceIsReachableAndReturnError(nil)) {
                 var parentURL:NSURL? = URL.URLByDeletingLastPathComponent!;
                 var parentIsPackage:Bool? = parentURL?.resourceValueForKey(NSURLIsPackageKey)?.boolValue!
@@ -298,7 +298,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         if (safeURLs.count > 0) {
-            ws.activateFileViewerSelectingURLs(safeURLs);
+            ws.activateFileViewerSelectingURLs(safeURLs as [AnyObject]);
         }
         
         return revealedAnyFiles;
@@ -330,7 +330,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     NSURLErrorKey: URL!
                 ];
                 
-                outError = NSError(domain: "BLGamesFolderErrorDomain", code: BLErrorCodes.BLGamesFolderURLInvalid.rawValue, userInfo: userInfo);
+                outError = NSError(domain: "BLGamesFolderErrorDomain", code: BLErrorCodes.BLGamesFolderURLInvalid.rawValue, userInfo: userInfo as [NSObject : AnyObject]);
             }
             
             return false;
@@ -356,7 +356,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     NSURLErrorKey: URL!
                 ];
                 
-                outError = NSError(domain: NSCocoaErrorDomain, code: NSFileWriteNoPermissionError, userInfo: userInfo);
+                outError = NSError(domain: NSCocoaErrorDomain, code: NSFileWriteNoPermissionError, userInfo: userInfo as [NSObject : AnyObject]);
             }
             
             return false;
@@ -366,7 +366,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true;
     }
     
-    func applicationShouldHandleReopen(sender: NSApplication!, hasVisibleWindows flag: Bool) -> Bool {
+    func applicationShouldHandleReopen(sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         if (!flag) {
             self.window.makeKeyAndOrderFront(self);
             return true;

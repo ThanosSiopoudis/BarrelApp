@@ -24,7 +24,7 @@ class BLWelcomeViewController: NSViewController {
     }
     
     @IBAction func showGamesFolder(sender:AnyObject) {
-        var appdlg:AppDelegate = NSApplication.sharedApplication().delegate as AppDelegate;
+        var appdlg:AppDelegate = NSApplication.sharedApplication().delegate as! AppDelegate;
         var URL:NSURL? = appdlg.gamesFolderURL;
         var revealed:Bool = false;
         
@@ -43,7 +43,7 @@ class BLWelcomeViewController: NSViewController {
     
     @IBAction func showGameImportWindow(sender:AnyObject) {
         // Close the current window first.
-        var selfview:NSView = sender as NSView;
+        var selfview:NSView = sender as! NSView;
         selfview.window!.orderOut(self);
         
         self.importGameWindow = BLImportWindowController(windowNibName: "BLGameImport");

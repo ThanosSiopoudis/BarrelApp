@@ -118,7 +118,7 @@ class BLImporter:NSObject, BLOperationDelegate {
         }
         
         self.sourceURL = prefferedURL;
-        var scan:BLInstallerScan = BLInstallerScan.scanWithBasePath(prefferedURL!.path!) as BLInstallerScan;
+        var scan:BLInstallerScan = BLInstallerScan.scanWithBasePath(prefferedURL!.path!) as! BLInstallerScan;
         scan.delegate = self;
         scan.didFinishSelector = "installerScanDidFinish:";
         scan.didFinishClosure = self.installerScanDidFinish;
@@ -135,7 +135,7 @@ class BLImporter:NSObject, BLOperationDelegate {
     }
     
     func installerScanDidFinish(notification:NSNotification) {
-        var scan:BLInstallerScan = notification.object as BLInstallerScan;
+        var scan:BLInstallerScan = notification.object as! BLInstallerScan;
         
         if (scan.succeeded) {
             self.sourceURL = NSURL(fileURLWithPath: scan.recommendedSourcePath);
@@ -165,7 +165,7 @@ class BLImporter:NSObject, BLOperationDelegate {
     }
     
     func fetchEnginesDidFinish(notification:NSNotification) {
-        var fetchEngines:BLRemoteEngineList = notification.object as BLRemoteEngineList;
+        var fetchEngines:BLRemoteEngineList = notification.object as! BLRemoteEngineList;
         
         if (fetchEngines.succeeded) {
             if let detectedEngines = fetchEngines.engineList {

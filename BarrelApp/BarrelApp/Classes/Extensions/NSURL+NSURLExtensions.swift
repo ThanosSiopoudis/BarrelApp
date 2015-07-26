@@ -68,7 +68,7 @@ extension NSURL {
         let originalURL = self.URLByStandardizingPath;
         
         if (originalURL!.isBasedInURL(baseURL)) {
-            var prefixLength = countElements(baseURL.path!);
+            var prefixLength = count(baseURL.path!);
             var originalPath:NSString = originalURL!.path! as NSString;
             var relativePath:NSString = originalPath.substringFromIndex(prefixLength);
             
@@ -87,7 +87,7 @@ extension NSURL {
             
             // Skip over any common prefixes
             for (from = 0; from < upTo; from++) {
-                if ((components.objectAtIndex(from) as String) != (baseComponents.objectAtIndex(from) as String)) {
+                if ((components.objectAtIndex(from) as! String) != (baseComponents.objectAtIndex(from) as! String)) {
                     break;
                 }
             }
@@ -102,7 +102,7 @@ extension NSURL {
             // Then, add the steps from there to the original path
             relativeComponents.addObjectsFromArray(components.subarrayWithRange(NSMakeRange(from, numInOriginal - from)));
             
-            return NSString.pathWithComponents(relativeComponents) as String;
+            return NSString.pathWithComponents(relativeComponents as [AnyObject]) as String;
         }
         
         // Apparently, swift is not smart enough to understand that all code paths above DO return a value.

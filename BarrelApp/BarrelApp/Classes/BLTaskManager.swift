@@ -19,7 +19,7 @@ class BLTaskManager:NSObject {
     func startTaskWithCommand(command:String, arguments args:NSArray, observer:AnyObject, terminationCallback:((NSTask!) -> Void)?) {
         var task:NSTask = NSTask();
         task.launchPath = command;
-        task.arguments = args;
+        task.arguments = args as [AnyObject];
         
         // Is the command an .app bundle?
         if (command.pathExtension == "app") {

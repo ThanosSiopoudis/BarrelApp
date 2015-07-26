@@ -58,7 +58,7 @@ class BLExecutableScan: BLOperation {
     }
     
     func lastMatch() -> String {
-        return self.matchingPaths.lastObject as String;
+        return self.matchingPaths.lastObject as! String;
     }
     
     func fullPathFromRelativePath(relativePath:String) -> String {
@@ -87,12 +87,12 @@ class BLExecutableScan: BLOperation {
     }
     
     func matchAgainstPath(relativePath:NSString) -> Bool {
-        if (self.isMatchingPath(relativePath)) {
-            if (BLImportSession.isIgnoredFileAtPath(relativePath)) {
+        if (self.isMatchingPath(relativePath as String)) {
+            if (BLImportSession.isIgnoredFileAtPath(relativePath as String)) {
                 return true;
             }
         
-            var fullPath:String = self.fullPathFromRelativePath(relativePath);
+            var fullPath:String = self.fullPathFromRelativePath(relativePath as String);
             var executableTypes:NSSet? = BLFileTypes.executableTypes();
             
             if (self.workspace.file(fullPath, matchesTypes: executableTypes!)) {
@@ -100,19 +100,21 @@ class BLExecutableScan: BLOperation {
                     // Make sure this isn't in the old executables list
                     if let oldsArray = self.previousExecutablesArray {
                         for oldPathVar in oldsArray {
-                            let oldPath = oldPathVar as String;
-                            if (relativePath.lastPathComponent != oldPath.lastPathComponent) {
-                                self.addWindowsExecutable(relativePath);
-                                self.addMatchingPath(relativePath);
-                                
-                                let userInfo:NSDictionary = [self.lastMatch(): BLExecutableScanLastMatch];
-                                self.sendInProgressNotificationWithInfo(userInfo);
+                            let oldPath = oldPathVar as! String;
+                            if (relativePath.lastPathComponent == oldPath.lastPathComponent) {
+                                // break it off!
+                                return true;
                             }
                         }
+                        self.addWindowsExecutable(relativePath as String);
+                        self.addMatchingPath(relativePath as String);
+                        
+                        let userInfo:NSDictionary = [self.lastMatch(): BLExecutableScanLastMatch];
+                        self.sendInProgressNotificationWithInfo(userInfo);
                     }
                     else {
-                        self.addWindowsExecutable(relativePath);
-                        self.addMatchingPath(relativePath);
+                        self.addWindowsExecutable(relativePath as String);
+                        self.addMatchingPath(relativePath as String);
                         
                         let userInfo:NSDictionary = [self.lastMatch(): BLExecutableScanLastMatch];
                         self.sendInProgressNotificationWithInfo(userInfo);
@@ -162,11 +164,11 @@ class BLExecutableScan: BLOperation {
         var enumer:NSDirectoryEnumerator = self.enumerator!;
         while let relativePath = enumer.nextObject() as? String {
             let relPath:String = relativePath as String;
-            if (self.isCancelled) {
+            if (self.isOperationCancelled) {
                 break;
             }
             
-            var fileType:String = enumer.fileAttributes!["NSFileType"] as String;
+            var fileType:String = enumer.fileAttributes!["NSFileType"] as! String;
             if (fileType == NSFileTypeDirectory) {
                 if (self.shouldScanSubPath(relPath) == false) {
                     enumer.skipDescendants();
@@ -174,7 +176,7 @@ class BLExecutableScan: BLOperation {
             }
             
             var keepScanning:Bool = self.matchAgainstPath(relPath);
-            if (self.isCancelled == true || keepScanning == false) {
+            if (self.isOperationCancelled == true || keepScanning == false) {
                 break;
             }
         }

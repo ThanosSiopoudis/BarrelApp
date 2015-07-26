@@ -102,7 +102,7 @@ class BLImportSession: NSObject, BLOperationDelegate {
         
         // Next, test against our filename patterns
         for pattern in self.playableGameTelltalePatterns {
-            let pat:String = pattern as String;
+            let pat:String = pattern as! String;
             if (Regex(pat).test(filename)) {
                 return true;
             }
@@ -113,7 +113,7 @@ class BLImportSession: NSObject, BLOperationDelegate {
     
     class func isIgnoredFileAtPath(path:String) -> Bool {
         for pattern in self.ignoredFilePatterns {
-            let pat:String = pattern as String;
+            let pat:String = pattern as! String;
             if (Regex(pat).test(path)) {
                 return true;
             }
@@ -126,7 +126,7 @@ class BLImportSession: NSObject, BLOperationDelegate {
         var fileName:String = path.lastPathComponent.lowercaseString;
         
         for pattern in self.installerPatterns {
-            let pat:String = pattern as String;
+            let pat:String = pattern as! String;
             if (Regex(pat).test(fileName)) {
                 return true;
             }

@@ -29,6 +29,8 @@
 		B1312E281A8E812C005E0587 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1312E271A8E812C005E0587 /* Engine.swift */; };
 		B1312E2B1A8E85BD005E0587 /* BarrelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1312E2A1A8E85BD005E0587 /* BarrelAPI.swift */; };
 		B1326FDF19AF8D2B002B0BD0 /* DropzoneTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B1326FDE19AF8D2B002B0BD0 /* DropzoneTemplate.pdf */; };
+		B13D39A81B2EDA3900F4FAD3 /* BLWineEngineBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13D39A61B2EDA3900F4FAD3 /* BLWineEngineBuilder.swift */; };
+		B13D39A91B2EDA3900F4FAD3 /* BLWineEngineBuilder.xib in Resources */ = {isa = PBXBuildFile; fileRef = B13D39A71B2EDA3900F4FAD3 /* BLWineEngineBuilder.xib */; };
 		B1439BD219D3719000C4803E /* BLOperationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1439BD119D3719000C4803E /* BLOperationDelegate.swift */; };
 		B14EDB5119AE17D30054C10A /* BLGameImport.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14EDB5019AE17D30054C10A /* BLGameImport.xib */; };
 		B15D57BE1A9A1D5A001597C8 /* BLFileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15D57BD1A9A1D5A001597C8 /* BLFileDownloader.swift */; };
@@ -242,6 +244,8 @@
 		B1312E271A8E812C005E0587 /* Engine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Engine.swift; path = Classes/RestClasses/Engine.swift; sourceTree = "<group>"; };
 		B1312E2A1A8E85BD005E0587 /* BarrelAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BarrelAPI.swift; path = Classes/BarrelAPI.swift; sourceTree = "<group>"; };
 		B1326FDE19AF8D2B002B0BD0 /* DropzoneTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = DropzoneTemplate.pdf; sourceTree = "<group>"; };
+		B13D39A61B2EDA3900F4FAD3 /* BLWineEngineBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLWineEngineBuilder.swift; path = Classes/Controllers/BLWineEngineBuilder.swift; sourceTree = "<group>"; };
+		B13D39A71B2EDA3900F4FAD3 /* BLWineEngineBuilder.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BLWineEngineBuilder.xib; path = Classes/Controllers/BLWineEngineBuilder.xib; sourceTree = "<group>"; };
 		B1439BD119D3719000C4803E /* BLOperationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLOperationDelegate.swift; path = Classes/SubClasses/Protocols/BLOperationDelegate.swift; sourceTree = "<group>"; };
 		B14EDB5019AE17D30054C10A /* BLGameImport.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BLGameImport.xib; path = UserInterface/BLGameImport.xib; sourceTree = "<group>"; };
 		B15D57BD1A9A1D5A001597C8 /* BLFileDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLFileDownloader.swift; path = Classes/SubClasses/BLFileDownloader.swift; sourceTree = "<group>"; };
@@ -456,6 +460,14 @@
 			name = Barrel.API;
 			sourceTree = "<group>";
 		};
+		B13D39AA1B2EDA4600F4FAD3 /* BLWineEngineBuilder */ = {
+			isa = PBXGroup;
+			children = (
+				B13D39A61B2EDA3900F4FAD3 /* BLWineEngineBuilder.swift */,
+			);
+			name = BLWineEngineBuilder;
+			sourceTree = "<group>";
+		};
 		B1439BD019D3716300C4803E /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -606,6 +618,7 @@
 				B1F597F819AA0BDA00AAF92B /* BLPreferences.xib */,
 				B17D822219ACA1D200638DF9 /* GamesFolderPanelOptions.xib */,
 				B14EDB5019AE17D30054C10A /* BLGameImport.xib */,
+				B13D39A71B2EDA3900F4FAD3 /* BLWineEngineBuilder.xib */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
@@ -651,6 +664,7 @@
 		B1F9AA7019A93A4F00259E27 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B13D39AA1B2EDA4600F4FAD3 /* BLWineEngineBuilder */,
 				B167792219AE54F300B58B00 /* Importer Window */,
 				B1F597F519AA02BB00AAF92B /* BLPreferences */,
 				B1F9AA7119A93AAE00259E27 /* BLWelcomeViewController.swift */,
@@ -853,6 +867,7 @@
 				B14EDB5119AE17D30054C10A /* BLGameImport.xib in Resources */,
 				B1ED5F9E1A93C9CE00C565D2 /* BarrelBundle.app in Resources */,
 				B1E903D319AD07E2002DECC6 /* gamefolder.icns in Resources */,
+				B13D39A91B2EDA3900F4FAD3 /* BLWineEngineBuilder.xib in Resources */,
 				B1107AD219A924CE000D4DEF /* Images.xcassets in Resources */,
 				B1326FDF19AF8D2B002B0BD0 /* DropzoneTemplate.pdf in Resources */,
 				B17D822319ACA1D200638DF9 /* GamesFolderPanelOptions.xib in Resources */,
@@ -895,6 +910,7 @@
 				B1E92C1F19AF694900BA47A8 /* BLDelegatedView.swift in Sources */,
 				B1F597F719AA031B00AAF92B /* BLPreferencesWindowController.swift in Sources */,
 				B1312E2B1A8E85BD005E0587 /* BarrelAPI.swift in Sources */,
+				B13D39A81B2EDA3900F4FAD3 /* BLWineEngineBuilder.swift in Sources */,
 				B1E92C1819AF32E600BA47A8 /* BLSpinningProgressIndicator.swift in Sources */,
 				B1F9AA7219A93AAE00259E27 /* BLWelcomeViewController.swift in Sources */,
 				B11242511A825F4100E6BC5A /* NSWorkspace+BLFileTypes.swift in Sources */,

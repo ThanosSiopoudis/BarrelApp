@@ -20,7 +20,7 @@ class BarrelAPI:NSObject {
         ]);
         
         var responseDescriptor:RKResponseDescriptor = RKResponseDescriptor(mapping: engineMapping,
-            pathPattern: nil, keyPath: "", statusCodes: RKStatusCodeIndexSetForClass(RKStatusCodeClass.Successful));
+            method: RKRequestMethod.Any, pathPattern: nil, keyPath: nil, statusCodes: RKStatusCodeIndexSetForClass(RKStatusCodeClass.Successful))
         
         let url:NSURL = NSURL(string: "http://localhost:3000/engines")!;
         let urlRequest:NSURLRequest = NSURLRequest(URL: url);

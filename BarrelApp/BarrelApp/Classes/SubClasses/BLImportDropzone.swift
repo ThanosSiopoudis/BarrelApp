@@ -145,7 +145,7 @@ class BLImportDropzone : NSButton {
         var borderColour:NSColor = NSColor.whiteColor();
         var icon:NSImage? = BLImportDropzone.dropzoneIcon();
         var dropzoneShadow:NSShadow?
-        var selfCell:NSButtonCell = self.cell() as NSButtonCell;
+        var selfCell:NSButtonCell = self.cell() as! NSButtonCell;
         
         if (self.highlighted || selfCell.highlighted) {
             dropzoneShadow = BLImportDropzone.dropzoneHighlight();

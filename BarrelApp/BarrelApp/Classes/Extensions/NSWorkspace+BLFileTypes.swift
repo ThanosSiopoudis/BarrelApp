@@ -19,7 +19,7 @@ extension NSWorkspace {
         
         if let ft = fileType {
             for at in acceptedTypes {
-                let acceptedType:String = at as String;
+                let acceptedType:String = at as! String;
                 if (self.type(ft, conformsToType: acceptedType) == true) {
                     return true;
                 }
@@ -31,9 +31,9 @@ extension NSWorkspace {
         // and works around an NSWorkspace typeOfFile: limitation whereby it may return an overly generic UTI
         // for a file or folder instead of a proper specific UTI.
         var fileExtension:String = filePath.pathExtension;
-        if (countElements(fileExtension) > 0) {
+        if (count(fileExtension) > 0) {
             for at in acceptedTypes {
-                let acceptedType:String = at as String;
+                let acceptedType:String = at as! String;
                 if (self.filenameExtension(fileExtension, isValidForType: acceptedType) == true) {
                     return true;
                 }

@@ -28,7 +28,7 @@ class BLDisplayPathTransformer : NSValueTransformer {
     
     init(joiner:String, ellipsis:String, maxComponents:NSInteger) {
         self.joiner = joiner;
-        self.ellipsis = countElements(ellipsis) > 0 ? ellipsis : self.ellipsis;
+        self.ellipsis = count(ellipsis) > 0 ? ellipsis : self.ellipsis;
         self.maxComponents = maxComponents;
         self.usesFileSystemDisplayPath = true;
     }
@@ -47,7 +47,7 @@ class BLDisplayPathTransformer : NSValueTransformer {
         // or we disabled filesystem display paths, just use ordinary path components
         if (components == nil) {
             var tempArray:NSArray = path.pathComponents;
-            components = tempArray.filteredArrayUsingPredicate(NSPredicate(format: "SELF != '/'")!);
+            components = tempArray.filteredArrayUsingPredicate(NSPredicate(format: "SELF != '/'"));
         }
         
         return components!;
@@ -58,7 +58,7 @@ class BLDisplayPathTransformer : NSValueTransformer {
             return nil;
         }
         
-        var components:NSMutableArray = self._componentsForPath(value as String).mutableCopy() as NSMutableArray;
+        var components:NSMutableArray = self._componentsForPath(value as! String).mutableCopy() as! NSMutableArray;
         var count:NSInteger = components.count;
         var shortened:Bool = false;
         
@@ -118,14 +118,14 @@ class BLIconifiedDisplayPathTransformer : BLDisplayPathTransformer {
         }
         
         var iconAttachment:NSTextAttachment = NSTextAttachment();
-        var iconCell:NSTextAttachmentCell = iconAttachment.attachmentCell as NSTextAttachmentCell;
+        var iconCell:NSTextAttachmentCell = iconAttachment.attachmentCell as! NSTextAttachmentCell;
         iconCell.image = icon;
         iconCell.image!.size = self.iconSize!;
         
-        var component:NSMutableAttributedString = NSAttributedString(attachment: iconAttachment).mutableCopy() as NSMutableAttributedString;
-        component.addAttributes(self.iconAttributes!, range: NSMakeRange(0, component.length));
+        var component:NSMutableAttributedString = NSAttributedString(attachment: iconAttachment).mutableCopy() as! NSMutableAttributedString;
+        component.addAttributes(self.iconAttributes! as [NSObject : AnyObject], range: NSMakeRange(0, component.length));
         
-        var label:NSAttributedString = NSAttributedString(string: " \(displayName)", attributes: self.textAttributes!);
+        var label:NSAttributedString = NSAttributedString(string: " \(displayName)", attributes: self.textAttributes! as [NSObject : AnyObject]);
         component.appendAttributedString(label);
         
         return component;
@@ -136,9 +136,9 @@ class BLIconifiedDisplayPathTransformer : BLDisplayPathTransformer {
             return nil;
         }
         
-        var path:String = value as String;
+        var path:String = value as! String;
         
-        var components:NSMutableArray = path.fullPathComponents().mutableCopy() as NSMutableArray;
+        var components:NSMutableArray = path.fullPathComponents().mutableCopy() as! NSMutableArray;
         if (components.count < 1) {
             return NSAttributedString();
         }
@@ -150,12 +150,12 @@ class BLIconifiedDisplayPathTransformer : BLDisplayPathTransformer {
         }
         
         var displayPath:NSMutableAttributedString = NSMutableAttributedString();
-        var attributesJoiner:NSAttributedString = NSAttributedString(string: self.joiner!, attributes: self.textAttributes!);
+        var attributesJoiner:NSAttributedString = NSAttributedString(string: self.joiner!, attributes: self.textAttributes! as [NSObject : AnyObject]);
         // Truncate the path with ellipses if there are too many components
         var count:NSInteger = components.count;
         if (self.maxComponents! > 0 && count > self.maxComponents!) {
             components.removeObjectsInRange(NSMakeRange(0, count - self.maxComponents!));
-            var attributedEllipsis:NSAttributedString = NSAttributedString(string: self.ellipsis!, attributes: self.textAttributes!);
+            var attributedEllipsis:NSAttributedString = NSAttributedString(string: self.ellipsis!, attributes: self.textAttributes! as [NSObject : AnyObject]);
             displayPath.appendAttributedString(attributedEllipsis);
         }
         
@@ -163,7 +163,7 @@ class BLIconifiedDisplayPathTransformer : BLDisplayPathTransformer {
         var i:NSInteger = components.count;
         var numComponents:NSInteger = i;
         for (i = 0; i < numComponents; i++) {
-            var subPath:String = components.objectAtIndex(i) as String;
+            var subPath:String = components.objectAtIndex(i) as! String;
             
             // Use regular folder icon for all missing path components except for the final one
             var defaultIcon:NSImage = (i == numComponents - 1) ? self.missingFileIcon! : folderIcon;

@@ -22,10 +22,6 @@ class BLImportWindowController: BLMutliPanelWindowController {
     
     var importer:BLImporter!
     
-    override init() {
-        super.init();
-    }
-    
     override init(window: NSWindow?) {
         self.importer = BLImporter();
         self.importer.test = "Initialized";
@@ -33,7 +29,7 @@ class BLImportWindowController: BLMutliPanelWindowController {
         self.importer.importWindowController = self;
     }
     
-    required override init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         super.init(coder: coder);
     }
     
@@ -77,6 +73,9 @@ class BLImportWindowController: BLMutliPanelWindowController {
             break;
         case .BLImportFinished:
             self.currentPanel = self.finishedPanel;
+            break;
+        case .BLImportAllDone:
+            self.window?.close();
             break;
         default:
             break;

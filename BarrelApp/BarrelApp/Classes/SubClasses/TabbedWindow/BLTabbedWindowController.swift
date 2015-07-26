@@ -43,17 +43,17 @@ class BLTabbedWindowController : NSWindowController, NSTabViewDelegate, NSToolba
     }
     
     @IBAction func takeSelectedTabViewItemFromSegment(sender:NSSegmentedControl) {
-        let cell:NSSegmentedCell = sender.cell() as NSSegmentedCell;
+        let cell:NSSegmentedCell = sender.cell() as! NSSegmentedCell;
         var selectedTag:NSInteger = cell.tagForSegment(sender.selectedSegment);
         self.tabView.selectTabViewItemAtIndex(selectedTag);
     }
     
     // MARK: - NSTabView Delegate
-    func tabView(tabView: NSTabView!, willSelectTabViewItem tabViewItem: NSTabViewItem!) {
+    func tabView(tabView: NSTabView, willSelectTabViewItem tabViewItem: NSTabViewItem?) {
         var currentItem:NSTabViewItem = tabView.selectedTabViewItem!;
         
-        var newView:NSView = tabViewItem.view!.subviews.lastObject as NSView;
-        var oldView:NSView = currentItem.view!.subviews.lastObject as NSView;
+        var newView:NSView = tabViewItem!.view!.subviews.lastObject as! NSView;
+        var oldView:NSView = currentItem.view!.subviews.lastObject as! NSView;
         
         var newSize:NSSize = newView.frame.size;
         var oldSize:NSSize = tabView.frame.size;
@@ -124,12 +124,12 @@ class BLTabbedWindowController : NSWindowController, NSTabViewDelegate, NSToolba
         }
     }
     
-    func tabView(tabView: NSTabView!, didSelectTabViewItem tabViewItem: NSTabViewItem!) {
+    func tabView(tabView: NSTabView, didSelectTabViewItem tabViewItem: NSTabViewItem?) {
         // Sync the toolbar selection after switching tabs
-        self.toolbarForTabs.selectedItemIdentifier = tabViewItem.identifier as? String;
+        self.toolbarForTabs.selectedItemIdentifier = tabViewItem!.identifier as? String;
         
         // Sync the window title to the selected tab's label if desired
-        var tabLabel:String! = tabViewItem.label;
+        var tabLabel:String! = tabViewItem!.label;
         if (tabLabel != nil && self.shouldSyncWindowTitleToTabLabel(tabLabel)) {
             self.window!.title = self.windowTitleForDocumentDisplayName(tabLabel);
         }
@@ -140,10 +140,10 @@ class BLTabbedWindowController : NSWindowController, NSTabViewDelegate, NSToolba
     }
     
     // MARK: - NSToolbarDelegate Methods
-    func toolbarWillAddItem(notification: NSNotification!) {
+    func toolbarWillAddItem(notification: NSNotification) {
         var item:NSToolbarItem!
         if let info = notification.userInfo {
-            item = info["item"] as NSToolbarItem;
+            item = info["item"] as! NSToolbarItem;
         }
         else { return; }
         
@@ -160,12 +160,12 @@ class BLTabbedWindowController : NSWindowController, NSTabViewDelegate, NSToolba
         }
     }
     
-    func toolbarSelectableItemIdentifiers(toolbar: NSToolbar!) -> [AnyObject]! {
+    func toolbarSelectableItemIdentifiers(toolbar: NSToolbar) -> [AnyObject] {
         var tabs:NSArray = self.tabView.tabViewItems;
         var identifiers:NSMutableArray = NSMutableArray(capacity: tabs.count);
         for tab in tabs {
             identifiers.addObject(tab.identifier);
         }
-        return identifiers;
+        return identifiers as [AnyObject];
     }
 }

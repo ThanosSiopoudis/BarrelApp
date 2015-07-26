@@ -14,19 +14,15 @@ class BLImportInstallerPanelController: NSViewController, NSOpenSavePanelDelegat
     @IBOutlet var controller:BLImportWindowController?
     @IBOutlet weak var installerSelector:NSPopUpButton?
     @IBOutlet weak var engineSelector:NSPopUpButton?
-    
-    override init() {
-        var nameTransformer:BLDisplayPathTransformer = BLDisplayPathTransformer(joiner: " ▸ ", maxComponents: 0);
-        NSValueTransformer.setValueTransformer(nameTransformer, forName: "BLImportInstallerMenuTitle");
-        
-        super.init();
-    }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder);
     }
     
     override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        var nameTransformer:BLDisplayPathTransformer = BLDisplayPathTransformer(joiner: " ▸ ", maxComponents: 0);
+        NSValueTransformer.setValueTransformer(nameTransformer, forName: "BLImportInstallerMenuTitle");
+        
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil);
     }
     
@@ -41,7 +37,7 @@ class BLImportInstallerPanelController: NSViewController, NSOpenSavePanelDelegat
         textParagraph.alignment = NSTextAlignment.CenterTextAlignment;
         
         var attrDict:NSDictionary = NSDictionary(objectsAndKeys: theFont, NSFontAttributeName, textColour, NSForegroundColorAttributeName, textParagraph, NSParagraphStyleAttributeName);
-        var attrString:NSAttributedString = NSAttributedString(string: title, attributes: attrDict);
+        var attrString:NSAttributedString = NSAttributedString(string: title, attributes: attrDict as [NSObject : AnyObject]);
         self.titleText!.attributedStringValue = attrString;
         
         
@@ -77,7 +73,7 @@ class BLImportInstallerPanelController: NSViewController, NSOpenSavePanelDelegat
         var installerURLs:NSArray = self.controller!.importer.installerURLs;
         if (installerURLs.count > 0) {
             for installerURL in installerURLs {
-                var url:NSURL = installerURL as NSURL;
+                var url:NSURL = installerURL as! NSURL;
                 var item:NSMenuItem = self.installerSelectorItemForURL(url);
                 
                 menu.insertItem(item, atIndex: insertionPoint++);
@@ -100,7 +96,7 @@ class BLImportInstallerPanelController: NSViewController, NSOpenSavePanelDelegat
         
         // Prettify the shortened path by using display names and converting slashes to arrows
         var nameTransformer:NSValueTransformer = NSValueTransformer(forName: "BLImportInstallerMenuTitle")!;
-        var title:NSAttributedString = nameTransformer.transformedValue(shortenedPath) as NSAttributedString;
+        var title:NSAttributedString = nameTransformer.transformedValue(shortenedPath) as! NSAttributedString;
         
         var item:NSMenuItem = NSMenuItem();
         item.representedObject = URL;
@@ -127,7 +123,7 @@ class BLImportInstallerPanelController: NSViewController, NSOpenSavePanelDelegat
         var enginesList:NSArray = self.controller!.importer.enginesList;
         if (enginesList.count > 0) {
             for abstractEngine in enginesList {
-                var engine:Engine = abstractEngine as Engine;
+                var engine:Engine = abstractEngine as! Engine;
                 var item:NSMenuItem = NSMenuItem();
                 item.representedObject = engine;
                 item.title = engine.Name;
@@ -168,8 +164,8 @@ class BLImportInstallerPanelController: NSViewController, NSOpenSavePanelDelegat
     }
     
     @IBAction func launchInstaller(sender:AnyObject) {
-        let installerURL:NSURL = self.installerSelector?.selectedItem?.representedObject as NSURL;
-        let engine:Engine = self.engineSelector?.selectedItem?.representedObject as Engine;
+        let installerURL:NSURL = self.installerSelector?.selectedItem?.representedObject as! NSURL;
+        let engine:Engine = self.engineSelector?.selectedItem?.representedObject as! Engine;
         self.controller?.importer.launchInstallerAtURL(installerURL, withEngine: engine);
     }
     

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -31,7 +31,11 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
-                            <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW"/>
+                            <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
+                                <connections>
+                                    <action selector="showPreferences:" target="Voe-Tx-rLC" id="HYI-1C-Qtz"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
                             <menuItem title="Services" id="NMo-om-nkz">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -628,6 +632,28 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Run" id="hju-ej-Ep5">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Run" id="M3Q-xK-zEp">
+                        <items>
+                            <menuItem title="Wine Configuration" keyEquivalent="C" id="M54-Kq-Ts4">
+                                <connections>
+                                    <action selector="startWineConfig:" target="Voe-Tx-rLC" id="tUm-MV-eGm"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Registry Editor" keyEquivalent="R" id="OoS-hp-0RC">
+                                <connections>
+                                    <action selector="startRegistryEditor:" target="Voe-Tx-rLC" id="5Yx-e2-ODq"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Run Wineboot" keyEquivalent="W" id="rsf-16-cxc">
+                                <connections>
+                                    <action selector="runWineboot:" target="Voe-Tx-rLC" id="nCq-2D-NgI"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Window" id="aUF-d1-5bR">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">
@@ -701,6 +727,9 @@
                                     <behavior key="behavior" lightByContents="YES"/>
                                     <font key="font" size="16" name="AvenirNext-Medium"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="showInstallerPicker:" target="Voe-Tx-rLC" id="IKP-9F-OUO"/>
+                                </connections>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="arB-SK-Cod">
                                 <rect key="frame" x="20" y="28" width="141" height="183"/>
@@ -712,6 +741,9 @@
                                     <behavior key="behavior" lightByContents="YES"/>
                                     <font key="font" size="16" name="AvenirNext-Medium"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="didSelectShowCDrive:" target="Voe-Tx-rLC" id="D1q-yS-ip2"/>
+                                </connections>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="ala-1y-DoV">
                                 <rect key="frame" x="410" y="35" width="154" height="182"/>
@@ -745,6 +777,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="didSelectExit:" target="Voe-Tx-rLC" id="5h3-MW-VAE"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>

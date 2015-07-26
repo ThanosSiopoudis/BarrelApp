@@ -29,7 +29,7 @@ class BLGamesFolderPanelController : NSViewController, NSOpenSavePanelDelegate {
     
     func showGamesFolderPanelWindow(window:NSWindow!) {
         var openPanel:NSOpenPanel = NSOpenPanel();
-        var dlg:AppDelegate = NSApplication.sharedApplication().delegate as AppDelegate;
+        var dlg:AppDelegate = NSApplication.sharedApplication().delegate as! AppDelegate;
         
         var currentFolderURL:NSURL?
         if let gamesURL = dlg.gamesFolderURL {
@@ -79,7 +79,7 @@ class BLGamesFolderPanelController : NSViewController, NSOpenSavePanelDelegate {
     }
     
     func chooseGamesFolderURL(URL:NSURL, inout outError:NSError?) -> Bool {
-        var controller:AppDelegate = NSApplication.sharedApplication().delegate as AppDelegate;
+        var controller:AppDelegate = NSApplication.sharedApplication().delegate as! AppDelegate;
         var addSampleGames:Bool = self.sampleGamesToggle.state == 1 ? true : false;
         
         return controller.assignGamesFolderURL(URL, addSampleGames: addSampleGames, createIfMissing: false, outError: &outError);

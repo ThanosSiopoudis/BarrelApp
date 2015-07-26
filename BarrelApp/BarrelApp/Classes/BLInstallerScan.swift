@@ -64,7 +64,7 @@ class BLInstallerScan: BLOperation {
     }
     
     func lastMatch() -> String {
-        return self.matchingPaths.lastObject as String;
+        return self.matchingPaths.lastObject as! String;
     }
     
     func fullPathFromRelativePath(relativePath:String) -> String {
@@ -93,15 +93,15 @@ class BLInstallerScan: BLOperation {
     }
     
     func matchAgainstPath(relativePath:NSString) -> Bool {
-        if (self.isMatchingPath(relativePath)) {
-            if (BLImportSession.isIgnoredFileAtPath(relativePath)) {
+        if (self.isMatchingPath(relativePath as String)) {
+            if (BLImportSession.isIgnoredFileAtPath(relativePath as String)) {
                 return true;
             }
             
-            var fullPath:String = self.fullPathFromRelativePath(relativePath);
+            var fullPath:String = self.fullPathFromRelativePath(relativePath as String);
             
             // TODO: Check for Barrel Configuration files here to detect if this is a bundle already
-            if (self.isAlreadyInstalled == false && BLImportSession.isPlayableGameTelltaleAtPath(relativePath)) {
+            if (self.isAlreadyInstalled == false && BLImportSession.isPlayableGameTelltaleAtPath(relativePath as String)) {
                 self.isAlreadyInstalled = true;
             }
             
@@ -110,11 +110,11 @@ class BLInstallerScan: BLOperation {
             
             if (self.workspace.file(fullPath, matchesTypes: executableTypes!)) {
                 if (self.workspace.isCompatibleExecutableAtPath(fullPath)) {
-                    self.addWindowsExecutable(relativePath);
+                    self.addWindowsExecutable(relativePath as String);
                     
                     // Does it look like an installer? Add it to the matches
-                    if (BLImportSession.isInstallerAtPath(relativePath)) {
-                        self.addMatchingPath(relativePath);
+                    if (BLImportSession.isInstallerAtPath(relativePath as String)) {
+                        self.addMatchingPath(relativePath as String);
                         
                         let userInfo:NSDictionary = [self.lastMatch(): BLFileScanLastMatch];
                         self.sendInProgressNotificationWithInfo(userInfo);
@@ -122,7 +122,7 @@ class BLInstallerScan: BLOperation {
                 }
             }
             else if (self.workspace.file(fullPath, matchesTypes: macAppTypes!)) {
-                self.addMacOSApp(relativePath);
+                self.addMacOSApp(relativePath as String);
             }
         }
         
@@ -167,11 +167,11 @@ class BLInstallerScan: BLOperation {
         var enumer:NSDirectoryEnumerator = self.enumerator!;
         while let relativePath = enumer.nextObject() as? String {
             let relPath:String = relativePath as String;
-            if (self.isCancelled) {
+            if (self.isOperationCancelled) {
                 break;
             }
             
-            var fileType:String = enumer.fileAttributes!["NSFileType"] as String;
+            var fileType:String = enumer.fileAttributes!["NSFileType"] as! String;
             if (fileType == NSFileTypeDirectory) {
                 if (self.shouldScanSubPath(relPath) == false) {
                     enumer.skipDescendants();
@@ -179,7 +179,7 @@ class BLInstallerScan: BLOperation {
             }
             
             var keepScanning:Bool = self.matchAgainstPath(relPath);
-            if (self.isCancelled == true || keepScanning == false) {
+            if (self.isOperationCancelled == true || keepScanning == false) {
                 break;
             }
         }
