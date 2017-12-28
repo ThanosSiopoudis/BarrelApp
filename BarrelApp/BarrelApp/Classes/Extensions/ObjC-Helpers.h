@@ -11,6 +11,7 @@
 @interface ObjC_Helpers : NSObject
 
 + (NSString *) BSDDeviceNameForVolumeAtURL: (NSURL *)volumeURL;
++ (void)systemCommand:(NSString *)command withObserver:(id)observer;
 + (NSString *)systemCommand:(NSString *)command;
 + (NSString *)systemCommand:(NSString *)command shouldWaitForProcess:(BOOL)waitForProcess redirectOutput:(BOOL)redirect logOutputToFilePath:(NSString *)logFilePath;
 

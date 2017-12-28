@@ -48,14 +48,15 @@
 		B19F87E61A8224BF00432FC8 /* BLImportSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19F87E51A8224BF00432FC8 /* BLImportSession.swift */; };
 		B19F87E81A8234E500432FC8 /* RegexSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19F87E71A8234E500432FC8 /* RegexSwift.swift */; };
 		B1A5CD2A19D1747200D8946B /* BLOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5CD2919D1747200D8946B /* BLOperation.swift */; };
-		B1C56C1A1A9B52D70010ADEF /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = B1C56C101A9B52D70010ADEF /* ioapi.c */; };
-		B1C56C1B1A9B52D70010ADEF /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = B1C56C121A9B52D70010ADEF /* mztools.c */; };
-		B1C56C1C1A9B52D70010ADEF /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = B1C56C141A9B52D70010ADEF /* unzip.c */; };
-		B1C56C1D1A9B52D70010ADEF /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = B1C56C161A9B52D70010ADEF /* zip.c */; };
-		B1C56C1E1A9B52D70010ADEF /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C56C191A9B52D70010ADEF /* SSZipArchive.m */; };
 		B1C56C201A9B53150010ADEF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B1C56C1F1A9B53150010ADEF /* libz.dylib */; };
 		B1D97E5B1A93834B005F4BEF /* RestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D97E581A938346005F4BEF /* RestKit.framework */; };
 		B1D97E5C1A93834B005F4BEF /* RestKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B1D97E581A938346005F4BEF /* RestKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B1E58EA21B66B2990020197D /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B1E58E941B66B2990020197D /* Info.plist */; };
+		B1E58EA31B66B2990020197D /* Main.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E58E961B66B2990020197D /* Main.m */; };
+		B1E58EA41B66B2990020197D /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = B1E58E991B66B2990020197D /* ioapi.c */; };
+		B1E58EA51B66B2990020197D /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = B1E58E9B1B66B2990020197D /* mztools.c */; };
+		B1E58EA61B66B2990020197D /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = B1E58E9D1B66B2990020197D /* unzip.c */; };
+		B1E58EA71B66B2990020197D /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = B1E58E9F1B66B2990020197D /* zip.c */; };
 		B1E903D319AD07E2002DECC6 /* gamefolder.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1E903D219AD07E2002DECC6 /* gamefolder.icns */; };
 		B1E92C1519AF31FC00BA47A8 /* BLBlueprintPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E92C1419AF31FC00BA47A8 /* BLBlueprintPanel.swift */; };
 		B1E92C1819AF32E600BA47A8 /* BLSpinningProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E92C1719AF32E600BA47A8 /* BLSpinningProgressIndicator.swift */; };
@@ -264,18 +265,20 @@
 		B19F87E71A8234E500432FC8 /* RegexSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegexSwift.swift; path = Classes/RegexSwift.swift; sourceTree = "<group>"; };
 		B1A5CD2919D1747200D8946B /* BLOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLOperation.swift; path = Classes/SubClasses/BLOperation.swift; sourceTree = "<group>"; };
 		B1ADEC2F1A93470E00E817E7 /* BarrelBundle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BarrelBundle.xcodeproj; path = BarrelBundle/BarrelBundle.xcodeproj; sourceTree = "<group>"; };
-		B1C56C0F1A9B52D70010ADEF /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
-		B1C56C101A9B52D70010ADEF /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
-		B1C56C111A9B52D70010ADEF /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
-		B1C56C121A9B52D70010ADEF /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
-		B1C56C131A9B52D70010ADEF /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
-		B1C56C141A9B52D70010ADEF /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
-		B1C56C151A9B52D70010ADEF /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
-		B1C56C161A9B52D70010ADEF /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
-		B1C56C171A9B52D70010ADEF /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
-		B1C56C181A9B52D70010ADEF /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
-		B1C56C191A9B52D70010ADEF /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
 		B1C56C1F1A9B53150010ADEF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		B1E58E941B66B2990020197D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B1E58E951B66B2990020197D /* Main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Main.h; sourceTree = "<group>"; };
+		B1E58E961B66B2990020197D /* Main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Main.m; sourceTree = "<group>"; };
+		B1E58E981B66B2990020197D /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		B1E58E991B66B2990020197D /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		B1E58E9A1B66B2990020197D /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		B1E58E9B1B66B2990020197D /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		B1E58E9C1B66B2990020197D /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		B1E58E9D1B66B2990020197D /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		B1E58E9E1B66B2990020197D /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		B1E58E9F1B66B2990020197D /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		B1E58EA01B66B2990020197D /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		B1E58EA11B66B2990020197D /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
 		B1E903D219AD07E2002DECC6 /* gamefolder.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = gamefolder.icns; sourceTree = "<group>"; };
 		B1E92C1419AF31FC00BA47A8 /* BLBlueprintPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLBlueprintPanel.swift; path = Classes/SubClasses/BLBlueprintPanel.swift; sourceTree = "<group>"; };
 		B1E92C1719AF32E600BA47A8 /* BLSpinningProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLSpinningProgressIndicator.swift; path = Classes/SubClasses/BLSpinningProgressIndicator/BLSpinningProgressIndicator.swift; sourceTree = "<group>"; };
@@ -430,8 +433,8 @@
 		B1312E091A8E7E78005E0587 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1E58E931B66B2990020197D /* ZipArchive */,
 				B1FE67BE1AA721C6003371E0 /* Sparkle.xcodeproj */,
-				B1C56C0D1A9B52D70010ADEF /* SSZipArchive */,
 				B1C56C1F1A9B53150010ADEF /* libz.dylib */,
 				B1312E0A1A8E7E87005E0587 /* RestKit.xcodeproj */,
 				B19A57771A9B45680048CB5E /* Foundation.framework */,
@@ -538,33 +541,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B1C56C0D1A9B52D70010ADEF /* SSZipArchive */ = {
-			isa = PBXGroup;
-			children = (
-				B1C56C0E1A9B52D70010ADEF /* minizip */,
-				B1C56C181A9B52D70010ADEF /* SSZipArchive.h */,
-				B1C56C191A9B52D70010ADEF /* SSZipArchive.m */,
-			);
-			name = SSZipArchive;
-			path = ../../SSZipArchive/SSZipArchive;
-			sourceTree = "<group>";
-		};
-		B1C56C0E1A9B52D70010ADEF /* minizip */ = {
-			isa = PBXGroup;
-			children = (
-				B1C56C0F1A9B52D70010ADEF /* crypt.h */,
-				B1C56C101A9B52D70010ADEF /* ioapi.c */,
-				B1C56C111A9B52D70010ADEF /* ioapi.h */,
-				B1C56C121A9B52D70010ADEF /* mztools.c */,
-				B1C56C131A9B52D70010ADEF /* mztools.h */,
-				B1C56C141A9B52D70010ADEF /* unzip.c */,
-				B1C56C151A9B52D70010ADEF /* unzip.h */,
-				B1C56C161A9B52D70010ADEF /* zip.c */,
-				B1C56C171A9B52D70010ADEF /* zip.h */,
-			);
-			path = minizip;
-			sourceTree = "<group>";
-		};
 		B1D97E4D1A938346005F4BEF /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -574,6 +550,35 @@
 				B1D97E5A1A938346005F4BEF /* RestKitFrameworkTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B1E58E931B66B2990020197D /* ZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				B1E58E941B66B2990020197D /* Info.plist */,
+				B1E58E951B66B2990020197D /* Main.h */,
+				B1E58E961B66B2990020197D /* Main.m */,
+				B1E58E971B66B2990020197D /* minizip */,
+				B1E58EA11B66B2990020197D /* ZipArchive.h */,
+			);
+			name = ZipArchive;
+			path = ../../SSZipArchive/ZipArchive;
+			sourceTree = "<group>";
+		};
+		B1E58E971B66B2990020197D /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				B1E58E981B66B2990020197D /* crypt.h */,
+				B1E58E991B66B2990020197D /* ioapi.c */,
+				B1E58E9A1B66B2990020197D /* ioapi.h */,
+				B1E58E9B1B66B2990020197D /* mztools.c */,
+				B1E58E9C1B66B2990020197D /* mztools.h */,
+				B1E58E9D1B66B2990020197D /* unzip.c */,
+				B1E58E9E1B66B2990020197D /* unzip.h */,
+				B1E58E9F1B66B2990020197D /* zip.c */,
+				B1E58EA01B66B2990020197D /* zip.h */,
+			);
+			path = minizip;
 			sourceTree = "<group>";
 		};
 		B1E903D019AD07D2002DECC6 /* Resources */ = {
@@ -733,6 +738,7 @@
 		B1107AC019A924CE000D4DEF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "AppCake Limited";
 				TargetAttributes = {
@@ -872,6 +878,7 @@
 				B1326FDF19AF8D2B002B0BD0 /* DropzoneTemplate.pdf in Resources */,
 				B17D822319ACA1D200638DF9 /* GamesFolderPanelOptions.xib in Resources */,
 				B1107AD519A924CE000D4DEF /* MainMenu.xib in Resources */,
+				B1E58EA21B66B2990020197D /* Info.plist in Resources */,
 				B1F597F919AA0BDA00AAF92B /* BLPreferences.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -890,23 +897,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B1C56C1A1A9B52D70010ADEF /* ioapi.c in Sources */,
 				B11242531A8261E100E6BC5A /* NSWorkspace+BLExecutableTypes.swift in Sources */,
 				B1ED5FA71A93CEB400C565D2 /* BLFinalizingViewController.swift in Sources */,
 				B1107AED19A92F91000D4DEF /* BLBackgroundView.swift in Sources */,
 				B1EE4A1019D054F9001BB945 /* BLInstallerScan.swift in Sources */,
 				B129E2F01AB379990026D16E /* BLExecutableScan.swift in Sources */,
 				B17D822519ACBCEB00638DF9 /* NSURL+NSURLExtensions.swift in Sources */,
+				B1E58EA71B66B2990020197D /* zip.c in Sources */,
 				B19F87E61A8224BF00432FC8 /* BLImportSession.swift in Sources */,
 				B1F597FD19AB4DFE00AAF92B /* BLTabbedWindowController.swift in Sources */,
+				B1E58EA31B66B2990020197D /* Main.m in Sources */,
 				B10D409219C30137000D742B /* ObjC-Helpers.m in Sources */,
-				B1C56C1E1A9B52D70010ADEF /* SSZipArchive.m in Sources */,
 				B103108319B7AB45007ACCEB /* BLImporter.swift in Sources */,
 				B19ACDDC19B7C21D00FBB50F /* NSWorkspace+MountedVolumes.swift in Sources */,
 				B17D822A19ACE81F00638DF9 /* String+StringAdditions.swift in Sources */,
 				B17D822819ACD26B00638DF9 /* BLValueTransformers.swift in Sources */,
 				B1312E281A8E812C005E0587 /* Engine.swift in Sources */,
 				B1F854051A8F8EBF00BD16E9 /* BLImportInstallerPanelController.swift in Sources */,
+				B1E58EA61B66B2990020197D /* unzip.c in Sources */,
 				B1E92C1F19AF694900BA47A8 /* BLDelegatedView.swift in Sources */,
 				B1F597F719AA031B00AAF92B /* BLPreferencesWindowController.swift in Sources */,
 				B1312E2B1A8E85BD005E0587 /* BarrelAPI.swift in Sources */,
@@ -923,6 +931,7 @@
 				B1E92C1C19AF494F00BA47A8 /* NSPoint+Geometry.swift in Sources */,
 				B19F87E81A8234E500432FC8 /* RegexSwift.swift in Sources */,
 				B11242561A82641900E6BC5A /* BLFileHandle.swift in Sources */,
+				B1E58EA51B66B2990020197D /* mztools.c in Sources */,
 				B1F5980019ABCFFC00AAF92B /* NSArray+NSArrayExtensions.swift in Sources */,
 				B110214D1A8F768D00900B8B /* BLRemoteEngineList.swift in Sources */,
 				B1794F9219AFF13C00045AA7 /* NSImage+NSImageExtensions.swift in Sources */,
@@ -931,12 +940,10 @@
 				B1A5CD2A19D1747200D8946B /* BLOperation.swift in Sources */,
 				B1E92C2319AF7C8D00BA47A8 /* BLImportDropzone.swift in Sources */,
 				B103108519B7B056007ACCEB /* BLFileTypes.swift in Sources */,
-				B1C56C1C1A9B52D70010ADEF /* unzip.c in Sources */,
 				B1107ACE19A924CE000D4DEF /* main.swift in Sources */,
 				B167792119AE4BF900B58B00 /* BLMultiPanelWindowController.swift in Sources */,
-				B1C56C1B1A9B52D70010ADEF /* mztools.c in Sources */,
+				B1E58EA41B66B2990020197D /* ioapi.c in Sources */,
 				B1E92C2119AF7C2000BA47A8 /* BLImportDropzonePanelController.swift in Sources */,
-				B1C56C1D1A9B52D70010ADEF /* zip.c in Sources */,
 				B15D57BE1A9A1D5A001597C8 /* BLFileDownloader.swift in Sources */,
 				B1E92C2519AF8B5F00BA47A8 /* NSRect+Geometry.swift in Sources */,
 				C19104E41A8907210092DFF4 /* NSShadow+BLShadowExtensions.swift in Sources */,

@@ -9,6 +9,9 @@
 #import <sys/mount.h>
 #import "ObjC-Helpers.h"
 
+NSString * const BLSystemCommandDataAvailable = @"BLSystemCommandDataAvailable";
+NSString * const BLSystemCommandFinished = @"BLSystemCommandFinished";
+
 @implementation ObjC_Helpers
 
 + (NSString *) BSDDeviceNameForVolumeAtURL: (NSURL *)volumeURL
@@ -23,6 +26,30 @@
                                                           length: strlen(fs.f_mntfromname)];
     }
     return deviceName;
+    uint8_t hello = 0;
+}
+
++ (void)systemCommand:(NSString *)command withObserver:(id)observer {
+    FILE *fp;
+    char buff[512];
+    fp = popen([command cStringUsingEncoding:NSUTF8StringEncoding], "r");
+    
+    SEL selector = NSSelectorFromString(@"didReceiveData:");
+    if ([observer respondsToSelector:selector]) {
+        [[NSNotificationCenter defaultCenter] addObserver:observer selector:selector name:BLSystemCommandDataAvailable object:nil];
+    }
+    
+    SEL finalSelector = NSSelectorFromString(@"didFinish:");
+    if ([observer respondsToSelector:finalSelector]) {
+        [[NSNotificationCenter defaultCenter] addObserver:observer selector:finalSelector name:BLSystemCommandFinished object:nil];
+    }
+    
+    while (fgets(buff, sizeof buff, fp)) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:BLSystemCommandDataAvailable
+                                                            object:[NSString stringWithCString:buff encoding:NSUTF8StringEncoding]];
+    }
+    pclose(fp);
+    [[NSNotificationCenter defaultCenter] postNotificationName:BLSystemCommandFinished object:nil];
 }
 
 + (NSString *)systemCommand:(NSString *)command {

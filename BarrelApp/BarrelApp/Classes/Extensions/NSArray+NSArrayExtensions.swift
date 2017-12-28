@@ -9,7 +9,7 @@
 import Cocoa
 
 extension Array {
-    var lastObject: T {
+    var lastObject: Element {
         return self[endIndex - 1];
     }
 }

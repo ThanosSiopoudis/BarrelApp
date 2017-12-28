@@ -33,7 +33,7 @@ class BLBlueprintPanel : NSView {
     }
     
     func drawLightingInRect(dirtyRect:NSRect) {
-        var lighting:NSGradient = NSGradient(startingColor: NSColor(calibratedWhite: 1.0, alpha: 0.2), endingColor: NSColor(calibratedWhite: 0.0, alpha: 0.4));
+        var lighting:NSGradient = NSGradient(startingColor: NSColor(calibratedWhite: 1.0, alpha: 0.2), endingColor: NSColor(calibratedWhite: 0.0, alpha: 0.4))!;
         
         var backgroundRect:NSRect   = self.bounds;
         var startPoint:NSPoint      = NSMakePoint(NSMidX(backgroundRect), NSMaxY(backgroundRect));
@@ -58,7 +58,7 @@ class BLBlueprintPanel : NSView {
         grooveRect.size.height = 1.0;
         
         if (NSIntersectsRect(dirtyRect, shadowRect)) {
-            var topShadow:NSGradient = NSGradient(startingColor: NSColor(calibratedWhite: 0.0, alpha: 0.2), endingColor: NSColor(calibratedWhite: 0.0, alpha: 0.0));
+            var topShadow:NSGradient = NSGradient(startingColor: NSColor(calibratedWhite: 0.0, alpha: 0.2), endingColor: NSColor(calibratedWhite: 0.0, alpha: 0.0))!;
             topShadow.drawInRect(shadowRect, angle: 270.0);
         }
         

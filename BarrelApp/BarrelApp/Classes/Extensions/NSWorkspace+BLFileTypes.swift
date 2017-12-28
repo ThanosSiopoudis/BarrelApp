@@ -15,7 +15,13 @@ extension NSWorkspace {
     }
     
     func file(filePath:String, matchesTypes acceptedTypes:NSSet) -> Bool {
-        var fileType:String? = self.typeOfFile(filePath, error: nil);
+        var fileType:String? = nil;
+        do {
+            fileType = try self.typeOfFile(filePath);
+        }
+        catch {
+            print(error);
+        }
         
         if let ft = fileType {
             for at in acceptedTypes {
@@ -30,8 +36,8 @@ extension NSWorkspace {
         // (This allows us to judge filetypes based on filename alone, e.g. for nonexistent/inaccessible files;
         // and works around an NSWorkspace typeOfFile: limitation whereby it may return an overly generic UTI
         // for a file or folder instead of a proper specific UTI.
-        var fileExtension:String = filePath.pathExtension;
-        if (count(fileExtension) > 0) {
+        let fileExtension:String = filePath.pathExtension;
+        if (fileExtension.characters.count > 0) {
             for at in acceptedTypes {
                 let acceptedType:String = at as! String;
                 if (self.filenameExtension(fileExtension, isValidForType: acceptedType) == true) {

@@ -15,7 +15,14 @@ let BLHFSColumeType = "hfs";
 
 extension NSWorkspace {
     func fileMatchesTypes(filePath:String, acceptedTypes:NSSet) -> Bool {
-        var fileType:String? = self.typeOfFile(filePath, error: nil);
+        var fileType:String? = nil;
+        do {
+            fileType = try self.typeOfFile(filePath);
+        }
+        catch {
+            return false;
+        }
+        
         if let ft = fileType {
             for acceptedType in acceptedTypes {
                 if (self.type(ft, conformsToType: acceptedType as! String) == true) {
@@ -25,7 +32,7 @@ extension NSWorkspace {
         }
         
         var fileExtension:String = filePath.pathExtension;
-        if (count(fileExtension) > 0) {
+        if (fileExtension.characters.count > 0) {
             for acceptedType in acceptedTypes {
                 if (self.filenameExtension(fileExtension, isValidForType: acceptedType as! String)) {
                     return true;
@@ -50,7 +57,7 @@ extension NSWorkspace {
     }
     
     func mountedVolumeURLsIncludingHidden(hidden:Bool) -> NSArray {
-        var options:NSVolumeEnumerationOptions = (hidden == true) ? NSVolumeEnumerationOptions.allZeros : NSVolumeEnumerationOptions.SkipHiddenVolumes;
+        var options:NSVolumeEnumerationOptions = (hidden == true) ? [] : NSVolumeEnumerationOptions.SkipHiddenVolumes;
         return NSFileManager.defaultManager().mountedVolumeURLsIncludingResourceValuesForKeys(nil, options: options)!;
     }
     

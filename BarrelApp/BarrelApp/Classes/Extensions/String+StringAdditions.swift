@@ -9,20 +9,35 @@
 import Foundation
 
 extension String {
+    var ns: NSString {
+        return self as NSString
+    }
+    var pathExtension: String {
+        return ns.pathExtension
+    }
+    var lastPathComponent: String {
+        return ns.lastPathComponent
+    }
+    var pathComponents: NSArray {
+        return ns.pathComponents;
+    }
+    func stringByAppendingPathComponent(str: String) -> String {
+        return ns.stringByAppendingPathComponent(str);
+    }
     func fullPathComponents() -> NSArray {
-        if (count(self) < 1) {
+        if (self.characters.count < 1) {
             return NSArray();
         }
 
-        var path:String = self.stringByStandardizingPath;
+        var path:String = NSURL(fileURLWithPath: self).URLByStandardizingPath!.path!;
         var rootPath:String = "/";
 
         var paths:NSMutableArray = NSMutableArray(capacity: 10);
-        do {
+        repeat {
             paths.addObject(path);
-            path = path.stringByDeletingLastPathComponent;
+            path = NSURL(fileURLWithPath: path).URLByDeletingLastPathComponent!.path!;
         }
-        while (count(path) > 0 && path != rootPath);
+        while (path.characters.count > 0 && path != rootPath);
 
         // Reverse the array to put the components back in their original order
         var reverse:NSArray = paths.reverseObjectEnumerator().allObjects;

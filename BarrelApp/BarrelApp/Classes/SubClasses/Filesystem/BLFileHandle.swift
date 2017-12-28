@@ -8,17 +8,17 @@
 
 import Cocoa
 
-struct BLHandleOptions:RawOptionSetType {
+struct BLHandleOptions:OptionSetType {
     typealias RawValue = UInt
     private var value:UInt = 0
     init(_ value:UInt) { self.value = value }
     init(rawValue value:UInt) { self.value = value }
     init(nilLiteral: ()) { self.value = 0 }
-    static var allZeros:BLHandleOptions { return self(0) }
-    static func fromMask(raw:UInt) -> BLHandleOptions { return self(raw) }
+    static var allZeros:BLHandleOptions { return self.init(0) }
+    static func fromMask(raw:UInt) -> BLHandleOptions { return self.init(raw) }
     var rawValue:UInt { return self.value }
     
-    static var None:BLHandleOptions { return self(0) }
+    static var None:BLHandleOptions { return self.init(0) }
     static var BLOpenForReading:BLHandleOptions { return BLHandleOptions(1 << 0) }
     static var BLOpenForWriting:BLHandleOptions { return BLHandleOptions(1 << 1) }
     
@@ -32,19 +32,19 @@ struct BLHandleOptions:RawOptionSetType {
     
     // Equivalents to fopen() access modes
     static var BLPOSIXModeR:BLHandleOptions { return BLHandleOptions.BLOpenForReading }
-    static var BLPOSIXModeRPlus:BLHandleOptions { return (BLHandleOptions.BLPOSIXModeR | BLHandleOptions.BLOpenForWriting) }
+    static var BLPOSIXModeRPlus:BLHandleOptions { return  BLHandleOptions(BLHandleOptions.BLPOSIXModeR.rawValue | BLHandleOptions.BLOpenForWriting.rawValue) }
     
-    static var BLPOSIXModeW:BLHandleOptions { return (BLHandleOptions.BLOpenForWriting | BLHandleOptions.BLTruncate | BLHandleOptions.BLCreateIfMissing) }
-    static var BLPOSIXModeWPlus:BLHandleOptions { return (BLHandleOptions.BLPOSIXModeW | BLHandleOptions.BLOpenForReading) }
+    static var BLPOSIXModeW:BLHandleOptions { return BLHandleOptions(BLHandleOptions.BLOpenForWriting.rawValue | BLHandleOptions.BLTruncate.rawValue | BLHandleOptions.BLCreateIfMissing.rawValue) }
+    static var BLPOSIXModeWPlus:BLHandleOptions { return BLHandleOptions(BLHandleOptions.BLPOSIXModeW.rawValue | BLHandleOptions.BLOpenForReading.rawValue) }
     
-    static var BLPOSIXModeA:BLHandleOptions { return (BLHandleOptions.BLOpenForWriting | BLHandleOptions.BLAppend | BLHandleOptions.BLCreateIfMissing) }
-    static var BLPOSIXModeAPlus:BLHandleOptions { return (BLHandleOptions.BLPOSIXModeA | BLHandleOptions.BLOpenForReading) }
+    static var BLPOSIXModeA:BLHandleOptions { return BLHandleOptions(BLHandleOptions.BLOpenForWriting.rawValue | BLHandleOptions.BLAppend.rawValue | BLHandleOptions.BLCreateIfMissing.rawValue) }
+    static var BLPOSIXModeAPlus:BLHandleOptions { return BLHandleOptions(BLHandleOptions.BLPOSIXModeA.rawValue | BLHandleOptions.BLOpenForReading.rawValue) }
     
-    static var BLPOSIXModeWX:BLHandleOptions { return (BLHandleOptions.BLOpenForWriting | BLHandleOptions.BLTruncate | BLHandleOptions.BLCreateAlways) }
-    static var BLPOSIXModeWPlusX:BLHandleOptions { return (BLHandleOptions.BLPOSIXModeWX | BLHandleOptions.BLOpenForReading) }
+    static var BLPOSIXModeWX:BLHandleOptions { return BLHandleOptions(BLHandleOptions.BLOpenForWriting.rawValue | BLHandleOptions.BLTruncate.rawValue | BLHandleOptions.BLCreateAlways.rawValue) }
+    static var BLPOSIXModeWPlusX:BLHandleOptions { return BLHandleOptions(BLHandleOptions.BLPOSIXModeWX.rawValue | BLHandleOptions.BLOpenForReading.rawValue) }
     
-    static var BLPOSIXModeAX:BLHandleOptions { return (BLHandleOptions.BLOpenForWriting | BLHandleOptions.BLAppend | BLHandleOptions.BLCreateAlways) }
-    static var BLPOSIXModeAPlusX:BLHandleOptions { return (BLHandleOptions.BLPOSIXModeAX | BLHandleOptions.BLOpenForReading) }
+    static var BLPOSIXModeAX:BLHandleOptions { return BLHandleOptions(BLHandleOptions.BLOpenForWriting.rawValue | BLHandleOptions.BLAppend.rawValue | BLHandleOptions.BLCreateAlways.rawValue) }
+    static var BLPOSIXModeAPlusX:BLHandleOptions { return BLHandleOptions(BLHandleOptions.BLPOSIXModeAX.rawValue | BLHandleOptions.BLOpenForReading.rawValue) }
 }
 
 class BLFileHandle:NSObject {

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B10BF11E1B658A1F003B4D71 /* BLWinetricksPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10BF11D1B658A1F003B4D71 /* BLWinetricksPanelController.swift */; };
 		B10BF12B1B658D39003B4D71 /* BLFileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10BF12A1B658D39003B4D71 /* BLFileDownloader.swift */; };
+		B13BF2841FF50FCE0015A16B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B13BF2831FF50FCE0015A16B /* CoreGraphics.framework */; };
 		B15158CC1AAB180D00559FB2 /* BundleConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = B15158CB1AAB180D00559FB2 /* BundleConfiguration.plist */; };
 		B18B04901B15D89C00B22392 /* BLPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = B18B048F1B15D89C00B22392 /* BLPreferences.xib */; };
 		B1ADEC151A93470E00E817E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ADEC141A93470E00E817E7 /* AppDelegate.swift */; };
@@ -173,6 +174,7 @@
 /* Begin PBXFileReference section */
 		B10BF11D1B658A1F003B4D71 /* BLWinetricksPanelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLWinetricksPanelController.swift; sourceTree = "<group>"; };
 		B10BF12A1B658D39003B4D71 /* BLFileDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BLFileDownloader.swift; path = Network/BLFileDownloader.swift; sourceTree = "<group>"; };
+		B13BF2831FF50FCE0015A16B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B15158CB1AAB180D00559FB2 /* BundleConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BundleConfiguration.plist; sourceTree = "<group>"; };
 		B18B048F1B15D89C00B22392 /* BLPreferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLPreferences.xib; sourceTree = "<group>"; };
 		B1ADEC0F1A93470E00E817E7 /* BarrelBundle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BarrelBundle.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -233,6 +235,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B13BF2841FF50FCE0015A16B /* CoreGraphics.framework in Frameworks */,
 				B1D97E7C1A938525005F4BEF /* CoreData.framework in Frameworks */,
 				B1FE67EF1AA721FD003371E0 /* Sparkle.framework in Frameworks */,
 				B1D97E7A1A93851E005F4BEF /* CoreServices.framework in Frameworks */,
@@ -263,6 +266,7 @@
 		B1ADEC061A93470E00E817E7 = {
 			isa = PBXGroup;
 			children = (
+				B13BF2831FF50FCE0015A16B /* CoreGraphics.framework */,
 				B1D97E721A9383AE005F4BEF /* BarrelBundle-BridgingHeader.h */,
 				B1ADEC111A93470E00E817E7 /* BarrelBundle */,
 				B1ADEC221A93470E00E817E7 /* BarrelBundleTests */,
@@ -539,6 +543,7 @@
 		B1ADEC071A93470E00E817E7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "AppCake Limited";
 				TargetAttributes = {
@@ -846,7 +851,8 @@
 				);
 				INFOPLIST_FILE = BarrelBundle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BarrelBundle/BarrelBundle-BridgingHeader.h";
@@ -866,7 +872,8 @@
 				);
 				INFOPLIST_FILE = BarrelBundle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BarrelBundle/BarrelBundle-BridgingHeader.h";

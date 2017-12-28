@@ -43,7 +43,7 @@ class BLTabbedWindowController : NSWindowController, NSTabViewDelegate, NSToolba
     }
     
     @IBAction func takeSelectedTabViewItemFromSegment(sender:NSSegmentedControl) {
-        let cell:NSSegmentedCell = sender.cell() as! NSSegmentedCell;
+        let cell:NSSegmentedCell = sender.cell! as! NSSegmentedCell;
         var selectedTag:NSInteger = cell.tagForSegment(sender.selectedSegment);
         self.tabView.selectTabViewItemAtIndex(selectedTag);
     }
@@ -75,17 +75,17 @@ class BLTabbedWindowController : NSWindowController, NSTabViewDelegate, NSToolba
             if (self.animatesTabTransitionsWithFade) {
                 oldView.hidden = false;
                 newView.hidden = false;
-                var resize:NSDictionary = [
+                var resize:[String: AnyObject] = [
                     NSViewAnimationTargetKey: self.window!,
                     NSViewAnimationEndFrameKey: NSValue(rect: newFrame)
                 ];
                 
-                var fadeOut:NSDictionary = [
+                var fadeOut:[String: AnyObject] = [
                     NSViewAnimationTargetKey: oldView,
                     NSViewAnimationFadeOutEffect: NSViewAnimationEffectKey
                 ];
                 
-                var fadeIn:NSDictionary = [
+                var fadeIn:[String: AnyObject] = [
                     NSViewAnimationTargetKey:newView,
                     NSViewAnimationFadeInEffect: NSViewAnimationEffectKey
                 ];
@@ -101,7 +101,7 @@ class BLTabbedWindowController : NSWindowController, NSTabViewDelegate, NSToolba
                 // Otherwise we need to resize the window, then hide the original view
                 // while animating the resize
                 oldView.hidden = true;
-                var resize:NSDictionary = [
+                var resize:[String: AnyObject] = [
                     NSViewAnimationTargetKey: self.window!,
                     NSViewAnimationEndFrameKey: NSValue(rect: newFrame)
                 ];
@@ -160,12 +160,13 @@ class BLTabbedWindowController : NSWindowController, NSTabViewDelegate, NSToolba
         }
     }
     
-    func toolbarSelectableItemIdentifiers(toolbar: NSToolbar) -> [AnyObject] {
+    
+    func toolbarSelectableItemIdentifiers(toolbar: NSToolbar) -> [String] {
         var tabs:NSArray = self.tabView.tabViewItems;
         var identifiers:NSMutableArray = NSMutableArray(capacity: tabs.count);
         for tab in tabs {
             identifiers.addObject(tab.identifier);
         }
-        return identifiers as [AnyObject];
+        return (identifiers as NSArray) as! [String];
     }
 }

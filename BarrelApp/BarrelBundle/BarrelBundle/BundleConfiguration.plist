@@ -6,5 +6,7 @@
 	<string>no.exe</string>
 	<key>BLUseStart</key>
 	<false/>
+	<key>BLDebugFlags</key>
+	<string>err+all,fixme+all</string>
 </dict>
 </plist>

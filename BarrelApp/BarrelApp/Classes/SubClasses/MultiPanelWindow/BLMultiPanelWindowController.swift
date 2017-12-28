@@ -40,13 +40,12 @@ class BLMutliPanelWindowController: NSWindowController {
                     self.panelContainer?.addSubview(newValue!, positioned: NSWindowOrderingMode.Below, relativeTo: oldPanel!);
                     var animation:NSViewAnimation = self.transitionFromPanel(oldPanel, toPanel: newValue);
                     
-                    var resize:NSDictionary = [
+                    var resize:[String: AnyObject] = [
                         NSViewAnimationTargetKey: self.window!,
                         NSViewAnimationEndFrameKey: NSValue(rect: newFrame)
                     ];
                     
-                    var viewAnimations:NSArray = animation.viewAnimations! as NSArray;
-                    animation.viewAnimations = viewAnimations.arrayByAddingObject(resize);
+                    animation.viewAnimations.append(resize);
                     animation.animationBlockingMode = NSAnimationBlockingMode.Blocking;
                     animation.startAnimation();
                     
@@ -70,7 +69,7 @@ class BLMutliPanelWindowController: NSWindowController {
     var panelContainer:NSView?
     
     func hidePanel(oldPanel:NSView?, andFadeInPanel:NSView?) -> NSViewAnimation {
-        var fadeIn:NSDictionary = [
+        var fadeIn:[String: AnyObject] = [
             NSViewAnimationTargetKey: andFadeInPanel!,
             NSViewAnimationEffectKey: NSViewAnimationFadeInEffect
         ];

@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
+class BLImporter:NSObject, BLOperationDelegate, ZipArchiveDelegate {
     var didMountSourceVolume:Bool = false;
     var sourceURL:NSURL?
     var importWindowController:BLImportWindowController?
@@ -308,7 +308,8 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
             if let dEngine = self.downloadedEngine {
                 var sourcePath:String = dEngine.path!
                 var destinationPath:String = frameworksURL!.path!
-                SSZipArchive.unzipFileAtPath(sourcePath, toDestination: destinationPath, delegate: self);
+                
+                Main.unzipFileAtPath(sourcePath, toDestination: destinationPath, delegate: self);
             }
         });
     }
@@ -318,7 +319,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
         self.currentImportValue = Int64(loaded);
     }
     
-    func zipArchiveDidUnzipArchiveAtPath(path: String!, zipInfo: unz_global_info, unzippedPath: String!) {
+    func zipArchiveDidUnzipArchiveAtPath(path: String!, zipInformation: unz_global_info, unzippedPath: String!) {
         // Now, on the unzipped path we should have the libraries archive.
         // Decompress it on the spot, then delete the .zip
         // Which file did we just extract? If it was the main engine bundle, proceed with the libraries
@@ -326,7 +327,7 @@ class BLImporter:NSObject, BLOperationDelegate, SSZipArchiveDelegate {
             self.currentStageName = "Extracting Libraries archive..."
             let librariesURL:NSURL = NSURL(fileURLWithPath: unzippedPath)!.URLByAppendingPathComponent("libraries.zip");
             let destinationURL:NSURL = NSURL(fileURLWithPath: unzippedPath)!
-            SSZipArchive.unzipFileAtPath(librariesURL.path!, toDestination: destinationURL.path!, delegate: self);
+            Main.unzipFileAtPath(librariesURL.path!, toDestination: destinationURL.path!, delegate: self);
         }
         else if (path.lastPathComponent == "libraries.zip") {
             self.currentStageName = "Initialising Wine Prefix..."

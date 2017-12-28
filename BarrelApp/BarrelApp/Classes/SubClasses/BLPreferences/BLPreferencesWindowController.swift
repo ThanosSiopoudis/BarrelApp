@@ -45,6 +45,7 @@ class BLPreferencesWindowController: BLTabbedWindowController, NSOpenSavePanelDe
             if let unwSettings = settings {
                 self.executablePath = unwSettings.objectForKey("BLExecutablePath") as! String;
                 self.useStart = unwSettings.objectForKey("BLUseStart") as! Bool;
+                self.debugFlags = unwSettings.objectForKey("BLDebugFlags") as! String;
             }
         }
         
@@ -63,6 +64,11 @@ class BLPreferencesWindowController: BLTabbedWindowController, NSOpenSavePanelDe
             self.addObserver(self, forKeyPath: "useStart", options: NSKeyValueObservingOptions.New, context: nil);
         }
         
+        if let cDebugFlags = self.currentDebugFlags {
+            cDebugFlags.bind("value", toObject: self, withKeyPath: "debugFlags", options: nil);
+            self.addObserver(self, forKeyPath: "debugFlags", options: NSKeyValueObservingOptions.New, context: nil);
+        }
+        
         // Select the tab that the user had open the last time.
         var selectedIndex:NSInteger = NSUserDefaults.standardUserDefaults().integerForKey("initialPreferencesPanelIndex");
         if (selectedIndex >= 0 && selectedIndex < self.tabView.numberOfTabViewItems) {
@@ -70,12 +76,21 @@ class BLPreferencesWindowController: BLTabbedWindowController, NSOpenSavePanelDe
         }
     }
     
-    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if (keyPath == "useStart") {
             if let bConfigPath = NSBundle.mainBundle().URLForResource("BundleConfiguration", withExtension: "plist") {
                 let settings:NSMutableDictionary? = NSMutableDictionary(contentsOfURL: bConfigPath);
                 if let unwSettings = settings {
                     unwSettings.setObject(useStart, forKey: "BLUseStart");
+                    unwSettings.writeToURL(bConfigPath, atomically: true);
+                }
+            }
+        }
+        else if (keyPath == "debugFlags") {
+            if let bConfigPath = NSBundle.mainBundle().URLForResource("BundleConfiguration", withExtension: "plist") {
+                let settings:NSMutableDictionary? = NSMutableDictionary(contentsOfURL: bConfigPath);
+                if let unwSettings = settings {
+                    unwSettings.setObject(debugFlags, forKey: "BLDebugFlags");
                     unwSettings.writeToURL(bConfigPath, atomically: true);
                 }
             }
@@ -111,7 +126,7 @@ class BLPreferencesWindowController: BLTabbedWindowController, NSOpenSavePanelDe
         
         if (self.executablePath != "" && self.executablePath != "no.exe") {
             currentFolderPath = "\(NSBundle.mainBundle().resourcePath!)/\(self.executablePath)";
-            currentFolderPath = NSURL(fileURLWithPath: currentFolderPath)?.URLByDeletingLastPathComponent!.path!
+            currentFolderPath = NSURL(fileURLWithPath: currentFolderPath).URLByDeletingLastPathComponent!.path!
         }
         else {
             currentFolderPath = NSBundle.mainBundle().resourceURL?.URLByAppendingPathComponent("drive_c").path!;

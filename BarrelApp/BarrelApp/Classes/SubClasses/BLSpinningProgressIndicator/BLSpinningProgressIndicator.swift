@@ -208,7 +208,7 @@ class BLSpinningProgressIndicator : NSView {
         var omega:Int = 100; // RPM
         var animationDelay:Int = 60 * 1000000 / omega / self.numFins;
         
-        do {
+        repeat {
             self.updateFrame(nil);
             usleep(useconds_t(animationDelay));
         } while(!NSThread.currentThread().cancelled);

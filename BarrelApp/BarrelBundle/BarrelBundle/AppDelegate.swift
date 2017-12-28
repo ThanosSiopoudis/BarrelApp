@@ -116,7 +116,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSOpenSavePanelDelegate {
                 args.addObject("sleep 0.2; open \"\(NSBundle.mainBundle().bundlePath)\"")
                 
                 task.launchPath = "/bin/sh";
-                task.arguments = args as [AnyObject];
+                task.arguments = args as! [String];
                 task.launch()
                 NSApplication.sharedApplication().terminate(nil)
             }
@@ -152,10 +152,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSOpenSavePanelDelegate {
         if let BLConfiguration = BundleConfiguration {
             let configPath:String = BLConfiguration.objectForKey("BLExecutablePath") as! String;
             let useStart:Bool = BLConfiguration.objectForKey("BLUseStart") as! Bool;
+            let debugFlags:String = BLConfiguration.objectForKey("BLDebugFlags") as! String;
             let executablePath:String = "\(NSBundle.mainBundle().resourcePath!)/\(configPath)";
             
             if (self.shouldRunWithDebugLogging) {
-                BLWineMediator.executeBinary(executablePath, withStart: useStart, waitForExit: true, debugLogging: true, debugSwitches: "error+all, fixme+all");
+                BLWineMediator.executeBinary(executablePath, withStart: useStart, waitForExit: true, debugLogging: true, debugSwitches: debugFlags);
             }
             else {
                 BLWineMediator.executeBinary(executablePath, withStart: useStart, waitForExit: true);
@@ -171,13 +172,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSOpenSavePanelDelegate {
         // If a game is not installed, always launch the config window
         
         // If the Fn key is pressed down, show the config window.
-        var event:CGEventRef = CGEventCreate(nil).takeRetainedValue();
+        var event:CGEventRef = CGEventCreate(nil)!;
         var modifiers:CGEventFlags = CGEventGetFlags(event);
-        if ((Int(modifiers) & kCGEventFlagMaskAlternate) == kCGEventFlagMaskAlternate || (Int(modifiers) & kCGEventFlagMaskSecondaryFn) == kCGEventFlagMaskSecondaryFn)
+        if ((modifiers.rawValue & CGEventFlags.MaskAlternate.rawValue) == CGEventFlags.MaskAlternate.rawValue || (modifiers.rawValue & CGEventFlags.MaskSecondaryFn.rawValue) == CGEventFlags.MaskSecondaryFn.rawValue)
         {
             self.shouldDisplayMainWindow = true;
         }
-        else if ((Int(modifiers) & kCGEventFlagMaskCommand) == kCGEventFlagMaskCommand)
+        else if ((modifiers.rawValue & CGEventFlags.MaskCommand.rawValue) == CGEventFlags.MaskCommand.rawValue)
         {
             self.shouldRunWithDebugLogging = true;
         }
@@ -203,7 +204,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSOpenSavePanelDelegate {
                 var parentIsPackage:Bool? = parentURL?.resourceValueForKey(NSURLIsPackageKey)?.boolValue!
                 if (parentIsPackage!) {
                     if (URL.isDirectory()!) {
-                        var options:NSDirectoryEnumerationOptions = NSDirectoryEnumerationOptions.SkipsHiddenFiles | NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants;
+                        var options:NSDirectoryEnumerationOptions = [NSDirectoryEnumerationOptions.SkipsHiddenFiles, NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants];
                         var enumerator:NSDirectoryEnumerator = NSFileManager.defaultManager().enumeratorAtURL(URL,
                             includingPropertiesForKeys: nil,
                             options: options,
@@ -227,7 +228,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSOpenSavePanelDelegate {
         }
         
         if (safeURLs.count > 0) {
-            ws.activateFileViewerSelectingURLs(safeURLs as [AnyObject]);
+            ws.activateFileViewerSelectingURLs((safeURLs as NSArray) as! [NSURL]);
         }
         
         return revealedAnyFiles;

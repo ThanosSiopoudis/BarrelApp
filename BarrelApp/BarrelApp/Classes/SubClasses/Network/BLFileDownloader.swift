@@ -72,14 +72,13 @@ class BLFileDownloader: NSObject, NSURLConnectionDataDelegate {
     }
     
     func connectionDidFinishLoading(connection: NSURLConnection) {
-        var error:NSError? = nil;
         if let sURL = self.saveURL {
-            NSFileManager.defaultManager().createDirectoryAtURL(sURL,
-                withIntermediateDirectories: true,
-                attributes: nil,
-                error: &error);
-            
-            if let err = error {
+            do {
+                try NSFileManager.defaultManager().createDirectoryAtURL(sURL,
+                    withIntermediateDirectories: true,
+                    attributes: nil);
+            }
+            catch let err as NSError {
                 let errorAlert:NSAlert = NSAlert(error: err);
                 errorAlert.runModal();
             }

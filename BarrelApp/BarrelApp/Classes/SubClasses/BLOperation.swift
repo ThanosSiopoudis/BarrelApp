@@ -84,17 +84,20 @@ class BLOperation: NSOperation {
     func sendDidFinishNotificationWithInfo(info:NSDictionary?) {
         var errValue = self.error;
         if (self.error == nil) {
-            errValue = NSError();
+            errValue = NSError(domain: "barrel", code: 123, userInfo: nil);
         }
         
-        var finishInfo:NSMutableDictionary = NSMutableDictionary(objectsAndKeys:
-                                                                    self.succeeded, BLOperationSuccessKey,
-                                                                    errValue!, BLOperationErrorKey);
-        if let uInfo = info {
-            finishInfo.addEntriesFromDictionary(uInfo as [NSObject : AnyObject]);
+        do {
+            var finishInfo:NSMutableDictionary = NSMutableDictionary(objects: [self.succeeded, errValue!], forKeys: [BLOperationSuccessKey, BLOperationErrorKey]);
+            if let uInfo = info {
+                finishInfo.addEntriesFromDictionary(uInfo as [NSObject : AnyObject]);
+            }
+            
+            self.postNotificationWithName(BLOperationDidFinish, delegateSelector: self.didFinishSelector!, eClosure: self.didFinishClosure, userInfo: finishInfo);
         }
-        
-        self.postNotificationWithName(BLOperationDidFinish, delegateSelector: self.didFinishSelector!, eClosure: self.didFinishClosure, userInfo: finishInfo);
+        catch {
+            
+        }
     }
     
     func sendInProgressNotificationWithInfo(info:NSDictionary?) {
@@ -102,9 +105,7 @@ class BLOperation: NSOperation {
             return;
         }
         
-        var progressInfo:NSMutableDictionary = NSMutableDictionary(objectsAndKeys:
-                                                                    self.currentProgress!, BLOperationProgressKey,
-                                                                    self.isIndeterminate, BLOperationIndeterminateKey);
+        var progressInfo:NSMutableDictionary = NSMutableDictionary(objects: [self.currentProgress!, self.isIndeterminate], forKeys: [BLOperationProgressKey, BLOperationIndeterminateKey]);
         if let passedInfo = info {
             progressInfo.addEntriesFromDictionary(passedInfo as [NSObject : AnyObject]);
         }

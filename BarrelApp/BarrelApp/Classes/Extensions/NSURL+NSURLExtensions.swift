@@ -37,11 +37,11 @@ extension NSURL {
 
     func resourceValueForKey(key:String) -> AnyObject? {
         var value:AnyObject?
-        var retrieved:Bool = self.getResourceValue(&value, forKey: key, error: nil);
-        if (retrieved) {
-            return value
+        do {
+            try self.getResourceValue(&value, forKey: key);
+            return value;
         }
-        else {
+        catch {
             return nil;
         }
     }
@@ -68,7 +68,7 @@ extension NSURL {
         let originalURL = self.URLByStandardizingPath;
         
         if (originalURL!.isBasedInURL(baseURL)) {
-            var prefixLength = count(baseURL.path!);
+            var prefixLength = baseURL.path!.characters.count;
             var originalPath:NSString = originalURL!.path! as NSString;
             var relativePath:NSString = originalPath.substringFromIndex(prefixLength);
             
@@ -102,7 +102,7 @@ extension NSURL {
             // Then, add the steps from there to the original path
             relativeComponents.addObjectsFromArray(components.subarrayWithRange(NSMakeRange(from, numInOriginal - from)));
             
-            return NSString.pathWithComponents(relativeComponents as [AnyObject]) as String;
+            return NSString.pathWithComponents(relativeComponents as NSArray as! [String]) as String;
         }
         
         // Apparently, swift is not smart enough to understand that all code paths above DO return a value.

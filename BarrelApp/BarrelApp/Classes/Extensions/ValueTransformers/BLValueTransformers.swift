@@ -28,7 +28,7 @@ class BLDisplayPathTransformer : NSValueTransformer {
     
     init(joiner:String, ellipsis:String, maxComponents:NSInteger) {
         self.joiner = joiner;
-        self.ellipsis = count(ellipsis) > 0 ? ellipsis : self.ellipsis;
+        self.ellipsis = ellipsis.characters.count > 0 ? ellipsis : self.ellipsis;
         self.maxComponents = maxComponents;
         self.usesFileSystemDisplayPath = true;
     }
@@ -89,8 +89,8 @@ class BLIconifiedDisplayPathTransformer : BLDisplayPathTransformer {
     
     override init(joiner: String, ellipsis: String, maxComponents: NSInteger) {
         self.iconSize = NSMakeSize(16, 16);
-        self.textAttributes = NSMutableDictionary(objectsAndKeys: NSFont.systemFontOfSize(0), NSFontAttributeName);
-        self.iconAttributes = NSMutableDictionary(objectsAndKeys: NSNumber(float: -3.0), NSBaselineOffsetAttributeName);
+        self.textAttributes = NSMutableDictionary(objects: [NSFont.systemFontOfSize(0)], forKeys: [NSFontAttributeName]);
+        self.iconAttributes = NSMutableDictionary(objects: [NSNumber(float: -3.0)], forKeys: [NSBaselineOffsetAttributeName]);
         
         super.init(joiner: joiner, ellipsis: ellipsis, maxComponents: maxComponents);
     }
@@ -123,9 +123,9 @@ class BLIconifiedDisplayPathTransformer : BLDisplayPathTransformer {
         iconCell.image!.size = self.iconSize!;
         
         var component:NSMutableAttributedString = NSAttributedString(attachment: iconAttachment).mutableCopy() as! NSMutableAttributedString;
-        component.addAttributes(self.iconAttributes! as [NSObject : AnyObject], range: NSMakeRange(0, component.length));
+        component.addAttributes((self.iconAttributes! as NSDictionary) as! [String : AnyObject], range: NSMakeRange(0, component.length));
         
-        var label:NSAttributedString = NSAttributedString(string: " \(displayName)", attributes: self.textAttributes! as [NSObject : AnyObject]);
+        var label:NSAttributedString = NSAttributedString(string: " \(displayName)", attributes: (self.textAttributes! as NSDictionary) as! [String : AnyObject]);
         component.appendAttributedString(label);
         
         return component;
@@ -150,12 +150,12 @@ class BLIconifiedDisplayPathTransformer : BLDisplayPathTransformer {
         }
         
         var displayPath:NSMutableAttributedString = NSMutableAttributedString();
-        var attributesJoiner:NSAttributedString = NSAttributedString(string: self.joiner!, attributes: self.textAttributes! as [NSObject : AnyObject]);
+        var attributesJoiner:NSAttributedString = NSAttributedString(string: self.joiner!, attributes: (self.textAttributes! as NSDictionary) as! [String : AnyObject]);
         // Truncate the path with ellipses if there are too many components
         var count:NSInteger = components.count;
         if (self.maxComponents! > 0 && count > self.maxComponents!) {
             components.removeObjectsInRange(NSMakeRange(0, count - self.maxComponents!));
-            var attributedEllipsis:NSAttributedString = NSAttributedString(string: self.ellipsis!, attributes: self.textAttributes! as [NSObject : AnyObject]);
+            var attributedEllipsis:NSAttributedString = NSAttributedString(string: self.ellipsis!, attributes: (self.textAttributes! as NSDictionary) as! [String : AnyObject]);
             displayPath.appendAttributedString(attributedEllipsis);
         }
         
